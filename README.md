@@ -1,0 +1,2 @@
+# Chums
+CHUrch Management Software
