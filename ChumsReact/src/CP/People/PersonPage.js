@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Person from './Components/Person'
 import Groups from './Components/Groups'
 import ApiHelper from '../../Utils/ApiHelper';

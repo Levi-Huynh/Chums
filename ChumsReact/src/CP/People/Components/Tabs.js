@@ -1,33 +1,33 @@
-import React from 'react';
-import DisplayBox from '../../Components/DisplayBox'
-import ApiHelper from '../../../Utils/ApiHelper';
-import { Link } from 'react-router-dom';
+import React, { Fragment } from 'react';
 import UserHelper from '../../../Utils/UserHelper';
+import Notes from '../../Components/Notes'
 
 class Tabs extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { personId: null, selectedTab: '' };
+        this.state = { personId: this.props.personId, selectedTab: '' };
     }
 
-    toggleTab(keyName, e) {
-        if (e !== undefined) e.preventDefault();
-
+    toggleTab(keyName) {
+        this.setState({ selectedTab: keyName });
     }
 
     componentDidUpdate(prevProps) {
-
+        if (prevProps.personId !== this.props.personId) this.setState({ personId: this.props.personId })
     }
 
     getTab(keyName, icon, text) {
         var className = (keyName === this.state.selectedTab) ? 'nav-link active' : 'nav-link';
-        return <li class="nav-item"><a href="#" onClick={this.toggleTab(keyName)} className={className}><i class={icon}></i> {text}</a></li>
+        return <li className="nav-item" key={keyName}><a href="javascript:void();" onClick={() => this.toggleTab(keyName)} className={className}><i className={icon}></i> {text}</a></li>
     }
 
     render() {
+        if (this.props.personId === undefined || this.props.personId === null) return null;
+
         var tabs = [];
         var defaultTab = ''
+        var currentTab = null;
         if (UserHelper.checkAccess('People', 'View Notes')) {
             tabs.push(this.getTab('notes', 'far fa-sticky-note', 'Notes'));
             defaultTab = 'notes';
@@ -42,9 +42,17 @@ class Tabs extends React.Component {
         }
         if (this.state.selectedTab === '' && defaultTab !== '') this.setState({ selectedTab: defaultTab });
 
+        switch (this.state.selectedTab) {
+            case 'notes': currentTab = <Notes contentType="person" contentId={this.state.personId} />; break;
+            default: currentTab = null; break;
+        }
+
         return (
-            <ul class="nav nav-tabs">{tabs}</ul>
-        )
+            <Fragment>
+                <ul className="nav nav-tabs">{tabs}</ul>
+                {currentTab}
+            </Fragment>
+        );
     }
 }
 

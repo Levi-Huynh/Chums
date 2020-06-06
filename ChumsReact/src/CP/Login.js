@@ -62,10 +62,7 @@ class Login extends React.Component {
 
     render() {
         const user = this.context.user
-
-
         if (user.apiKey === '') {
-            console.log(user)
             return (
                 <form onSubmit={this.handleSubmit}>
 

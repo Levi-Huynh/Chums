@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 class DisplayBox extends React.Component {
     render() {

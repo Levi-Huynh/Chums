@@ -23,7 +23,7 @@ class Groups extends React.Component {
         if (this.state.groupMembers !== null) {
             for (var i = 0; i < this.state.groupMembers.length; i++) {
                 var gm = this.state.groupMembers[i];
-                items.push(<tr><td><i class="fas fa-list"></i> <Link to={"/cp/groups/group/" + gm.groupId}>{gm.group.name}</Link></td></tr>);
+                items.push(<tr key={gm.id}><td><i className="fas fa-list"></i> <Link to={"/cp/groups/group/" + gm.groupId}>{gm.group.name}</Link></td></tr>);
             }
         }
 
@@ -31,7 +31,7 @@ class Groups extends React.Component {
 
             <DisplayBox headerIcon="fas fa-list" headerText="Groups">
                 <table className="table table-sm">
-                    {items}
+                    <tbody>{items}</tbody>
                 </table>
             </DisplayBox>
 

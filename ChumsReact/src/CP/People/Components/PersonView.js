@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import UserContext from '../../../UserContext'
 import PersonHelper from '../../../Utils/PersonHelper'
 import DisplayBox from '../../Components/DisplayBox'
@@ -9,7 +9,7 @@ class PersonView extends React.Component {
     getPhoto() {
         if (this.props.person) {
             var url = PersonHelper.getPhotoUrl(1, this.props.person.id, this.props.person.photoUpdated)
-            return <img src={url} className="img-fluid profilePic" id="imgPreview" />
+            return <img src={url} className="img-fluid profilePic" id="imgPreview" alt="avatar" />
         } else return;
     }
     /*
@@ -24,26 +24,26 @@ class PersonView extends React.Component {
         var contactMethods = [];
         if (this.props.person) {
             var p = this.props.person;
-            if (p.gender !== undefined) leftAttributes.push(<div><label>Gender:</label> {p.gender}</div>);
-            if (p.birthDate !== undefined) leftAttributes.push(<div><label>Age:</label> {PersonHelper.getAge(p.birthDate)}</div>);
+            if (p.gender !== undefined) leftAttributes.push(<div key="gender"><label>Gender:</label> {p.gender}</div>);
+            if (p.birthDate !== undefined) leftAttributes.push(<div key="age"><label>Age:</label> {PersonHelper.getAge(p.birthDate)}</div>);
             if (p.maritalStatus !== undefined) {
-                if (p.anniversary !== undefined) leftAttributes.push(<div><label>Marital Status:</label> {p.maritalStatus} ({new Date(p.anniversary).toLocaleDateString()})</div>);
-                else leftAttributes.push(<div><label>Marital Status:</label> {p.maritalStatus}</div>);
+                if (p.anniversary !== undefined) leftAttributes.push(<div key="maritalStatus"><label>Marital Status:</label> {p.maritalStatus} ({new Date(p.anniversary).toLocaleDateString()})</div>);
+                else leftAttributes.push(<div key="maritalStatus"><label>Marital Status:</label> {p.maritalStatus}</div>);
             }
-            if (p.membershipStatus !== undefined) leftAttributes.push(<div><label>Membership:</label> {p.membershipStatus}</div>);
+            if (p.membershipStatus !== undefined) leftAttributes.push(<div key="membership"><label>Membership:</label> {p.membershipStatus}</div>);
 
             var homeLabel = 'Home';
             if (p.email !== undefined && p.email !== '') {
-                contactMethods.push(<tr><td><label>{homeLabel}</label></td><td><i className="far fa-envelope"></i></td><td><a href={"mailto:" + p.email}>{p.email}</a></td></tr>);
+                contactMethods.push(<tr key="email"><td><label>{homeLabel}</label></td><td><i className="far fa-envelope"></i></td><td><a href={"mailto:" + p.email}>{p.email}</a></td></tr>);
                 homeLabel = '';
             }
             if (p.homePhone !== undefined && p.homePhone !== '') {
-                contactMethods.push(<tr><td><label>{homeLabel}</label></td><td><i className="fas fa-phone"></i></td><td>{p.homePhone}</td></tr>);
+                contactMethods.push(<tr key="homePhone"><td><label>{homeLabel}</label></td><td><i className="fas fa-phone"></i></td><td>{p.homePhone}</td></tr>);
                 homeLabel = '';
             }
-            if (p.address1 !== undefined && p.address1 !== '') contactMethods.push(<tr><td><label>{homeLabel}</label></td><td><i className="fas fa-map-marker-alt"></i></td><td>{p.address1}<br />{p.address2}<br />{p.city}, {p.state} {p.zip}</td></tr>);
-            if (p.mobilePhone !== undefined && p.mobilePhone !== '') contactMethods.push(<tr><td><label>Mobile</label></td><td><i className="fas fa-phone"></i></td><td>{p.mobilePhone}</td></tr>);
-            if (p.workPhone !== undefined && p.workPhone !== '') contactMethods.push(<tr><td><label>Mobile</label></td><td><i className="fas fa-phone"></i></td><td>{p.workPhone}</td></tr>);
+            if (p.address1 !== undefined && p.address1 !== '') contactMethods.push(<tr key="address"><td><label>{homeLabel}</label></td><td><i className="fas fa-map-marker-alt"></i></td><td>{p.address1}<br />{p.address2}<br />{p.city}, {p.state} {p.zip}</td></tr>);
+            if (p.mobilePhone !== undefined && p.mobilePhone !== '') contactMethods.push(<tr key="mobilePHone"><td><label>Mobile</label></td><td><i className="fas fa-phone"></i></td><td>{p.mobilePhone}</td></tr>);
+            if (p.workPhone !== undefined && p.workPhone !== '') contactMethods.push(<tr key="workPhone"><td><label>Mobile</label></td><td><i className="fas fa-phone"></i></td><td>{p.workPhone}</td></tr>);
         }
 
         return (

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import UserContext from '../../../UserContext'
 import PersonHelper from '../../../Utils/PersonHelper'
 import Helper from '../../../Utils/Helper'
@@ -23,7 +23,7 @@ class PersonEdit extends React.Component {
     getPhoto() {
         if (this.props.person) {
             var url = PersonHelper.getPhotoUrl(1, this.props.person.id, this.props.person.photoUpdated)
-            return <img src={url} className="img-fluid profilePic" id="imgPreview" />
+            return <img src={url} className="img-fluid profilePic" id="imgPreview" alt="avatar" />
         } else return;
     }
 
@@ -69,10 +69,6 @@ class PersonEdit extends React.Component {
     }
 
     render() {
-        var leftAttributes = [];
-        var contactMethods = [];
-        var p = this.props.person;
-
         if (this.state.redirect !== null) return <Redirect to={this.state.redirect} />
         else return (
             <InputBox headerIcon="fas fa-user" headerText="Personal Details" cancelFunction={this.handleCancel} deleteFunction={this.handleDelete} saveFunction={this.handleSave} >

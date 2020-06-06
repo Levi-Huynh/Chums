@@ -1,6 +1,4 @@
-import React, { Fragment } from 'react';
-import UserContext from '../../../UserContext'
-import PersonHelper from '../../../Utils/PersonHelper'
+import React from 'react';
 import PersonView from './PersonView'
 import PersonEdit from './PersonEdit'
 

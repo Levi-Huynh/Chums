@@ -1,7 +1,15 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 class InputBox extends React.Component {
     render() {
+        var saveText = 'Save';
+        if (this.props.saveText !== undefined) saveText = this.props.saveText;
+
+        var buttons = [];
+        if (this.props.cancelFunction !== undefined) buttons.push(<div className="col" key="cancel"><input type="submit" value="Cancel" className="btn btn-warning btn-block" onClick={this.props.cancelFunction} /></div>);
+        if (this.props.deleteFunction !== undefined) buttons.push(<div className="col" key="delete"><input type="submit" value="Delete" className="btn btn-danger btn-block" onClick={this.props.deleteFunction} /></div>);
+        if (this.props.saveFunction !== undefined) buttons.push(<div className="col" key="save"><input type="submit" value={saveText} className="btn btn-success btn-block" onClick={this.props.saveFunction} /></div>);
+
         return (
             <form method="post">
                 <div className="inputBox">
@@ -11,9 +19,7 @@ class InputBox extends React.Component {
                     </div>
                     <div className="footer">
                         <div className="row">
-                            <div className="col"><input type="submit" value="Cancel" className="btn btn-warning btn-block" onClick={this.props.cancelFunction} /></div>
-                            <div className="col"><input type="submit" value="Delete" className="btn btn-danger btn-block" onClick={this.props.deleteFunction} /></div>
-                            <div className="col"><input type="submit" value="Save" className="btn btn-success btn-block" onClick={this.props.saveFunction} /></div>
+                            {buttons}
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import UserContext from '../UserContext'
 import Header from '../Components/Header'
 import Sidebar from './Components/Sidebar'
