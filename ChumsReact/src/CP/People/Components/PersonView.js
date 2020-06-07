@@ -2,6 +2,7 @@ import React from 'react';
 import UserContext from '../../../UserContext'
 import PersonHelper from '../../../Utils/PersonHelper'
 import DisplayBox from '../../Components/DisplayBox'
+import AssociatedForms from '../../Components/AssociatedForms';
 
 class PersonView extends React.Component {
     static contextType = UserContext
@@ -12,12 +13,7 @@ class PersonView extends React.Component {
             return <img src={url} className="img-fluid profilePic" id="imgPreview" alt="avatar" />
         } else return;
     }
-    /*
-        handleEdit(e) {
-            e.preventDefault();
-            alert('Edit');
-        }
-    */
+
     render() {
 
         var leftAttributes = [];
@@ -48,26 +44,31 @@ class PersonView extends React.Component {
 
         return (
 
-            <DisplayBox headerIcon="fas fa-user" headerText="Personal Details" editFunction={this.props.editFunction}>
-                <div className="row">
-                    <div className="col-3">{this.getPhoto()}</div>
-                    <div className="col-9">
-                        <h2>{this.props.person?.displayName}</h2>
-                        <div className="row">
-                            <div className="col-6">
-                                {leftAttributes}
-                            </div>
-                            <div className="col-6">
-                                <table className="contactTable">
-                                    <tbody>
-                                        {contactMethods}
-                                    </tbody>
-                                </table>
+            <div className="inputBox">
+                <div className="header"><a className="fa-pull-right" onClick={this.props.editFunction} href="#"><i className="fas fa-pencil-alt"></i></a> <i className="fas fa-user"></i> Personal Details</div>
+                <div className="content">
+                    <div className="row">
+                        <div className="col-3">{this.getPhoto()}</div>
+                        <div className="col-9">
+                            <h2>{this.props.person?.displayName}</h2>
+                            <div className="row">
+                                <div className="col-6">
+                                    {leftAttributes}
+                                </div>
+                                <div className="col-6">
+                                    <table className="contactTable">
+                                        <tbody>
+                                            {contactMethods}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </DisplayBox>
+                <AssociatedForms contentType="person" contentId={this.props.person?.id} formSubmissions={this.props.person?.formSubmissions} />
+            </div>
+
 
         )
     }

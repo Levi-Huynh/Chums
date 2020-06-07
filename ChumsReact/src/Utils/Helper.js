@@ -23,6 +23,10 @@ class Helper {
         else return (seconds === 1) ? "1 second" : Math.floor(seconds).toString() + " seconds";
     }
 
+    static getShortDate(d) {
+        return (d.getMonth() + 1).toString() + '/' + (d.getDate() + 1).toString() + '/' + d.getFullYear().toString();
+    }
+
 }
 
 export default Helper;

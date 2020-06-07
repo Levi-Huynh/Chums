@@ -19,6 +19,27 @@ class Login extends React.Component {
     componentDidMount() {
         //const user = this.context
         //console.log(user)
+        var apiKey = this.getCookieValue('apiKey');
+        if (apiKey !== '') {
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ resetGuid: apiKey })
+            };
+            fetch('https://mus2ockmn2.execute-api.us-east-2.amazonaws.com/Stage/users/login', requestOptions)
+                .then(response => response.json())
+                .then(data => {
+                    ApiHelper.apiKey = data.apiToken;
+                    UserHelper.populate(data.mappings).then(data => {
+                        const newUser = { apiKey: data.apiToken, name: data.name }
+                        this.context.setUser(newUser)
+                    });
+                    document.cookie = "apiKey=" + data.apiToken;
+                })
+                .catch(error => {
+                    document.cookie = "";
+                });
+        }
     }
 
 
@@ -43,13 +64,19 @@ class Login extends React.Component {
                         const newUser = { apiKey: data.apiToken, name: data.name }
                         this.context.setUser(newUser)
                     });
+                    document.cookie = "apiKey=" + data.apiToken;
+                })
+                .catch(error => {
+                    var errors = [];
+                    errors.push(error.message);
+                    this.setState({ errors: errors });
                 });
-            /*.catch(error => {
-                var errors = [];
-                errors.push(error.message);
-                this.setState({ errors: errors });
-            });*/
         }
+    }
+
+    getCookieValue(a) {
+        var b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)');
+        return b ? b.pop() : '';
     }
 
     validate() {

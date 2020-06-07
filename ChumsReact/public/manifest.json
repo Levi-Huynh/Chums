@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "CHUMS",
+  "name": "CHUMS - Church Management Software",
   "icons": [
     {
       "src": "favicon.ico",

@@ -3,6 +3,7 @@ import Person from './Components/Person'
 import Groups from './Components/Groups'
 import ApiHelper from '../../Utils/ApiHelper';
 import Tabs from './Components/Tabs';
+import DisplayBox from '../Components/DisplayBox';
 
 class PersonPage extends React.Component {
     constructor(props) {
