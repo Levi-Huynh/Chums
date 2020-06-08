@@ -66,7 +66,7 @@ class PersonView extends React.Component {
                         </div>
                     </div>
                 </div>
-                <AssociatedForms contentType="person" contentId={this.props.person?.id} formSubmissions={this.props.person?.formSubmissions} />
+                <AssociatedForms contentType="person" contentId={this.props.person?.id} formSubmissions={this.props.person?.formSubmissions} forms={this.props.forms} addFormId={this.props.addFormId} />
             </div>
 
 

@@ -9,6 +9,7 @@ class Person extends React.Component {
         this.state = { mode: 'display', person: this.props.person };
         this.handleEdit = this.handleEdit.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
+        this.handleAddForm = this.handleAddForm.bind(this);
     }
 
     componentDidUpdate(prevProps) {
@@ -16,7 +17,6 @@ class Person extends React.Component {
             this.setState({ person: this.props.person })
         }
     }
-
 
     handleEdit(e) {
         e.preventDefault();
@@ -29,9 +29,13 @@ class Person extends React.Component {
         if (person !== null) this.setState({ person: person });
     }
 
+    handleAddForm(formId) {
+        this.setState({ addFormId: formId, mode: 'display' });
+    }
+
     render() {
-        if (this.state.mode === 'display') return <PersonView person={this.state.person} editFunction={this.handleEdit} />
-        else return <PersonEdit person={this.state.person} updatedFunction={this.handleUpdate} />
+        if (this.state.mode === 'display') return <PersonView person={this.state.person} editFunction={this.handleEdit} addFormId={this.state.addFormId} />
+        else return <PersonEdit person={this.state.person} updatedFunction={this.handleUpdate} addFormFunction={this.handleAddForm} />
     }
 }
 

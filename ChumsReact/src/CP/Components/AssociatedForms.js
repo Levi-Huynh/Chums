@@ -6,31 +6,30 @@ class AssociatedForms extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { formSubmissions: this.props.formSubmissions, contentType: this.props.contentType, contentId: this.props.contentId, mode: 'display', editFormSubmissionId: 0 };
+        this.state = { formSubmissions: this.props.formSubmissions, contentType: this.props.contentType, contentId: this.props.contentId, mode: 'display', editFormSubmissionId: 0, addFormId: this.props.addFormId };
         this.handleEdit = this.handleEdit.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.contentType !== this.props.contentType || prevProps.contentId !== this.props.contentId || prevProps.formSubmissions !== this.props.formSubmissions) {
-            this.setState({ contentType: this.props.contentType, contentId: this.props.contentId, formSubmissions: this.props.formSubmissions });
+        if (prevProps.contentType !== this.props.contentType || prevProps.contentId !== this.props.contentId || prevProps.formSubmissions !== this.props.formSubmissions || prevProps.addFormId !== this.props.addFormId) {
+            this.setState({ contentType: this.props.contentType, contentId: this.props.contentId, formSubmissions: this.props.formSubmissions, addFormId: this.props.addFormId });
         }
     }
 
     handleEdit(formSubmissionId) {
-
         this.setState({ mode: 'edit', editFormSubmissionId: formSubmissionId });
     }
 
     handleUpdate(person, e) {
         if (e !== undefined) e.preventDefault();
-        this.setState({ mode: 'display' });
+        this.setState({ mode: 'display', addFormId: 0 });
         //if (person !== null) this.setState({ person: person });
     }
 
     render() {
-        if (this.state.mode == 'edit') {
-            return <FormSubmissionEdit formSubmissionId={this.state.editFormSubmissionId} updatedFunction={this.handleUpdate} />
+        if (this.state.mode == 'edit' || this.state.addFormId > 0) {
+            return <FormSubmissionEdit formSubmissionId={this.state.editFormSubmissionId} updatedFunction={this.handleUpdate} addFormId={this.state.addFormId} contentType={this.state.contentType} contentId={this.state.contentId} />
         } else {
             if (this.state.formSubmissions !== undefined) {
 
