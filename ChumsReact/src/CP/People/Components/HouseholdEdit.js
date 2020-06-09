@@ -95,7 +95,7 @@ class HouseholdEdit extends React.Component {
                                 <option value="Other">Other</option>
                             </select>
                         </td>
-                        <td><a href="#" onClick={this.handleRemove} className="text-danger"><i class="fas fa-user-times"></i> Remove</a></td>
+                        <td><a href="#" onClick={this.handleRemove} className="text-danger"><i className="fas fa-user-times"></i> Remove</a></td>
                     </tr>
                 );
             }
@@ -106,7 +106,7 @@ class HouseholdEdit extends React.Component {
 
         return (
             <InputBox headerIcon="fas fa-users" headerText={(this.state.household?.name || '') + " Household"} saveFunction={this.handleSave} cancelFunction={this.handleCancel} >
-                <div class="form-group">
+                <div className="form-group">
                     <label>Household Name</label>
                     <input type="text" className="form-control" value={this.state.household?.name || ''} onChange={this.handleChange} />
                 </div>
@@ -115,7 +115,7 @@ class HouseholdEdit extends React.Component {
                     <tr>
                         <td></td>
                         <td></td>
-                        <td><a href="#" className="text-success" onClick={this.handleAdd}> <i class="fas fa-user"></i> Add</a></td>
+                        <td><a href="#" className="text-success" onClick={this.handleAdd}> <i className="fas fa-user"></i> Add</a></td>
                     </tr>
                 </tbody></table>
                 {personAdd}

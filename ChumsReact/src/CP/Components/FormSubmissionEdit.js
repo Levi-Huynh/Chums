@@ -42,7 +42,7 @@ class FormSubmissionEdit extends React.Component {
 
     getAnswer(questionId) {
         var answers = this.state.formSubmission.answers;
-        for (var i = 0; i < answers.length; i++) if (answers[i].questionId == questionId) return answers[i];
+        for (var i = 0; i < answers.length; i++) if (answers[i].questionId === questionId) return answers[i];
         return null;
     }
 
@@ -62,13 +62,13 @@ class FormSubmissionEdit extends React.Component {
 
     handleCancel(e) {
         e.preventDefault();
-        this.props.updateFunction();
+        this.props.updatedFunction();
     }
 
     handleChange(questionId, value) {
         var fs = this.state.formSubmission;
         var answer = null;
-        for (var i = 0; i < fs.answers.length; i++) if (fs.answers[i].questionId == questionId) answer = fs.answers[i];
+        for (var i = 0; i < fs.answers.length; i++) if (fs.answers[i].questionId === questionId) answer = fs.answers[i];
         if (answer !== null) answer.value = value;
         else {
             answer = { formSubmissionId: fs.id, questionId: questionId, value: value };

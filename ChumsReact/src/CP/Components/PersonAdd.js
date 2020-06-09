@@ -41,7 +41,7 @@ class PersonAdd extends React.Component {
                     <tr key={sr.id}>
                         <td><img src={PersonHelper.getPhotoUrl(sr.d, sr.photoUpdated)} alt="avatar" /></td>
                         <td>{sr.displayName}</td>
-                        <td><a href="#" className="text-success" data-index={i} onClick={this.handleAdd}><i class="fas fa-user"></i> Add</a></td>
+                        <td><a href="#" className="text-success" data-index={i} onClick={this.handleAdd}><i className="fas fa-user"></i> Add</a></td>
                     </tr>
                 );
             }
@@ -49,11 +49,11 @@ class PersonAdd extends React.Component {
 
         return (
             <Fragment>
-                <div class="input-group">
+                <div className="input-group">
                     <input type="text" className="form-control" value={this.state.searchText} onChange={this.handleChange} />
-                    <div class="input-group-append"><a href="#" className="btn btn-primary" onClick={this.handleSearch} ><i class="fas fa-search"></i> Search</a></div>
+                    <div className="input-group-append"><a href="#" className="btn btn-primary" onClick={this.handleSearch} ><i className="fas fa-search"></i> Search</a></div>
                 </div>
-                <table class="table table-sm" id="householdMemberAddTable">
+                <table className="table table-sm" id="householdMemberAddTable">
                     <tbody>{rows}</tbody>
                 </table>
             </Fragment>

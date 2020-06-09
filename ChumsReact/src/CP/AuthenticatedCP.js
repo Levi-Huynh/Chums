@@ -9,6 +9,8 @@ import PersonPage from './People/PersonPage'
 function AuthenticatedCP(props) {
     const user = React.useContext(UserContext).user;
 
+
+    //*** warning on hreef=javascript:sidebarToggle().  Not sure how to include a js file and call from react.
     return (
         <Fragment>
             <link rel="stylesheet" href="/css/cp.css" />

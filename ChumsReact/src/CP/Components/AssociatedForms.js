@@ -24,11 +24,10 @@ class AssociatedForms extends React.Component {
     handleUpdate(person, e) {
         if (e !== undefined) e.preventDefault();
         this.setState({ mode: 'display', addFormId: 0 });
-        //if (person !== null) this.setState({ person: person });
     }
 
     render() {
-        if (this.state.mode == 'edit' || this.state.addFormId > 0) {
+        if (this.state.mode === 'edit' || this.state.addFormId > 0) {
             return <FormSubmissionEdit formSubmissionId={this.state.editFormSubmissionId} updatedFunction={this.handleUpdate} addFormId={this.state.addFormId} contentType={this.state.contentType} contentId={this.state.contentId} />
         } else {
             if (this.state.formSubmissions !== undefined) {
@@ -37,7 +36,7 @@ class AssociatedForms extends React.Component {
                 for (var i = 0; i < this.state.formSubmissions.length; i++) {
                     var fs = this.state.formSubmissions[i];
                     cards.push(
-                        <div className="card">
+                        <div key={fs.id} className="card">
                             <div className="card-header" id={"heading" + fs.id}>
                                 <h2>
                                     <button className="btn btn-link" type="button" data-toggle="collapse" data-target={"#collapse" + fs.id} aria-controls={"collapse" + fs.id}>{fs.form.name}</button>

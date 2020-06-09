@@ -25,7 +25,7 @@ class FormSubmission extends React.Component {
 
     getAnswer(questionId) {
         var answers = this.state.formSubmission.answers;
-        for (var i = 0; i < answers.length; i++) if (answers[i].questionId == questionId) return answers[i];
+        for (var i = 0; i < answers.length; i++) if (answers[i].questionId === questionId) return answers[i];
         return null;
     }
 
@@ -40,14 +40,14 @@ class FormSubmission extends React.Component {
         if (this.state.formSubmission != null) {
             var questions = this.state.formSubmission.questions;
             var halfWay = Math.round(questions.length / 2);
-            for (var i = 0; i < halfWay; i++) firstHalf.push(<Question question={questions[i]} answer={this.getAnswer(questions[i].id)} />);
-            for (var i = halfWay; i < questions.length; i++) secondHalf.push(<Question question={questions[i]} answer={this.getAnswer(questions[i].id)} />);
+            for (var i = 0; i < halfWay; i++) firstHalf.push(<Question key={i} question={questions[i]} answer={this.getAnswer(questions[i].id)} />);
+            for (var j = halfWay; j < questions.length; j++) secondHalf.push(<Question key={j} question={questions[j]} answer={this.getAnswer(questions[j].id)} />);
         }
 
 
         return (
             <Fragment>
-                <a href="#" className="fa-pull-right" onClick={this.handleEdit}><i class="fas fa-pencil-alt"></i></a>
+                <a href="#" className="fa-pull-right" onClick={this.handleEdit}><i className="fas fa-pencil-alt"></i></a>
                 <div className="content">
                     <div className="row">
                         <div className="col-lg-6">{firstHalf}</div>

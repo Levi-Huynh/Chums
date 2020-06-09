@@ -45,7 +45,7 @@ class PeopleSearchResults extends React.Component {
             const items = [];
             for (var i = 0; i < this.props.people.length; i++) {
                 var p = this.props.people[i];
-                items.push(<tr>
+                items.push(<tr key={p.id}>
                     <td><img src={PersonHelper.getPhotoUrl(1, p.id, p.photoUpdated)} alt="avatar" /></td>
                     <td><Link to={"/cp/people/" + p.id.toString()}>{p.displayName}</Link></td>
                 </tr>);

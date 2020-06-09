@@ -14,7 +14,6 @@ class AddForm extends React.Component {
     }
 
     componentDidMount() {
-        var promises = [];
         ApiHelper.apiGet('/forms?contentType=person').then(data => {
             this.setState({ forms: data });
             this.determineUnsubmitted();
@@ -50,7 +49,7 @@ class AddForm extends React.Component {
             if (sf !== undefined && sf !== null) {
                 for (var i = 0; i < this.state.forms.length; i++) {
                     var exists = false;
-                    for (var j = 0; j < sf.length; j++) if (sf[j].formId == this.state.forms[i].id) exists = true;
+                    for (var j = 0; j < sf.length; j++) if (sf[j].formId === this.state.forms[i].id) exists = true;
                     if (!exists) unsubmittedForms.push(this.state.forms[i]);
                 }
             } else unsubmittedForms = this.state.forms;
@@ -60,7 +59,7 @@ class AddForm extends React.Component {
     }
 
     render() {
-        if (this.state.unsubmittedForms.length == 0) return null;
+        if (this.state.unsubmittedForms.length === 0) return null;
         else if (!this.state.clicked) return (<Fragment><hr /><a href="#" onClick={this.handleClick}>Add a form</a></Fragment>);
         else {
             var options = [];

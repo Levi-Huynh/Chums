@@ -19,7 +19,7 @@ class Question extends React.Component {
         var a = this.props.answer;
         if (a === null) return null;
 
-        if (q.fieldType == 'Heading') return <h5>{q.title}</h5>;
+        if (q.fieldType === 'Heading') return <h5>{q.title}</h5>;
         else {
             var displayValue = '';
             switch (q.fieldType) {
@@ -27,7 +27,7 @@ class Question extends React.Component {
                     displayValue = (a.value === null || a.value === "") ? "" : Helper.getShortDate(new Date(a.value));
                     break;
                 case 'Yes/No':
-                    displayValue = (a.value == null || a.value == "") ? "" : a.value.replace("False", "No").replace("True", "Yes");
+                    displayValue = (a.value === null || a.value === "") ? "" : a.value.replace("False", "No").replace("True", "Yes");
                     break;
                 default:
                     displayValue = a.value;

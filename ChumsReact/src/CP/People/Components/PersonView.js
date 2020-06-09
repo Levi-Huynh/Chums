@@ -1,7 +1,6 @@
 import React from 'react';
 import UserContext from '../../../UserContext'
 import PersonHelper from '../../../Utils/PersonHelper'
-import DisplayBox from '../../Components/DisplayBox'
 import AssociatedForms from '../../Components/AssociatedForms';
 
 class PersonView extends React.Component {
