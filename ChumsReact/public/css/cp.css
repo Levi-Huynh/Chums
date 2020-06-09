@@ -30,8 +30,10 @@
 #household img {width:50px;height:50px;border-radius:5px;}
 #householdMemberTable td {vertical-align:middle;}
 #householdMemberTable td:last-child {text-align:center;}
+#householdMemberTable img {width:50px;height:50px;border-radius:5px;}
 #householdMemberAddTable {margin-top:10px;}
 #householdMemberAddTable td:last-child {text-align:center;}
+#householdMemberAddTable img {width:50px;height:50px;border-radius:5px;}
 
 #groupMemberTable img, #roleMemberTable img {width:50px;height:50px;border-radius:5px;}
 #groupMemberTable td, #roleMemberTable td {vertical-align:middle;}

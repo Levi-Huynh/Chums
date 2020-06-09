@@ -4,6 +4,7 @@ import Groups from './Components/Groups'
 import ApiHelper from '../../Utils/ApiHelper';
 import Tabs from './Components/Tabs';
 import DisplayBox from '../Components/DisplayBox';
+import Household from './Components/Household';
 
 class PersonPage extends React.Component {
     constructor(props) {
@@ -12,6 +13,16 @@ class PersonPage extends React.Component {
     }
 
     componentDidMount() {
+        this.loadData();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.match.params.id !== this.props.match.params.id) {
+            this.loadData();
+        }
+    }
+
+    loadData() {
         ApiHelper.apiGet('/people/' + this.props.match.params.id)
             .then(data => this.setState({ person: data }));
     }
@@ -25,6 +36,7 @@ class PersonPage extends React.Component {
                     <Tabs personId={this.state.person?.id} />
                 </div >
                 <div className="col-md-4">
+                    <Household personId={this.state.person?.id} />
                     <Groups personId={this.state.person?.id} />
                 </div>
             </div >

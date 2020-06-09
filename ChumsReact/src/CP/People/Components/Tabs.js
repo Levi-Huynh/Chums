@@ -44,7 +44,7 @@ class Tabs extends React.Component {
 
         switch (this.state.selectedTab) {
             case 'notes': currentTab = <Notes contentType="person" contentId={this.state.personId} />; break;
-            default: currentTab = null; break;
+            default: currentTab = <div>Not implemented</div>; break;
         }
 
         return (
