@@ -6,116 +6,81 @@ import { Redirect } from 'react-router-dom';
 import ApiHelper from '../Utils/ApiHelper';
 import UserHelper from '../Utils/UserHelper';
 
-class Login extends React.Component {
-    static contextType = UserContext
+const Login = (props) => {
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [errors, setErrors] = React.useState([]);
 
-    constructor(props) {
-        super(props);
-        this.state = { email: '', password: '', errors: [] };
-        this.onChange = this.onChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    componentDidMount() {
-        //const user = this.context
-        //console.log(user)
-        var apiKey = this.getCookieValue('apiKey');
-        if (apiKey !== '') {
-            const requestOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ resetGuid: apiKey })
-            };
-            fetch('https://mus2ockmn2.execute-api.us-east-2.amazonaws.com/Stage/users/login', requestOptions)
-                .then(response => response.json())
-                .then(data => {
-                    ApiHelper.apiKey = data.apiToken;
-                    UserHelper.populate(data.mappings).then(data => {
-                        const newUser = { apiKey: data.apiToken, name: data.name }
-                        this.context.setUser(newUser)
-                    });
-                    document.cookie = "apiKey=" + data.apiToken;
-                })
-                .catch(error => {
-                    document.cookie = "";
-                });
-        }
-    }
-
-
-    onChange = e => this.setState({ [e.target.name]: e.target.value })
-
-    handleSubmit(event) {
-        event.preventDefault();
-
-
-
-        if (this.validate()) {
-            const requestOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ Email: this.state.email, Password: this.state.password })
-            };
-            fetch('https://mus2ockmn2.execute-api.us-east-2.amazonaws.com/Stage/users/login', requestOptions)
-                .then(response => response.json())
-                .then(data => {
-                    ApiHelper.apiKey = data.apiToken;
-                    UserHelper.populate(data.mappings).then(data => {
-                        const newUser = { apiKey: data.apiToken, name: data.name }
-                        this.context.setUser(newUser)
-                    });
-                    document.cookie = "apiKey=" + data.apiToken;
-                })
-                .catch(error => {
-                    var errors = [];
-                    errors.push(error.message);
-                    this.setState({ errors: errors });
-                });
-        }
-    }
-
-    getCookieValue(a) {
-        var b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)');
-        return b ? b.pop() : '';
-    }
-
-    validate() {
+    const getCookieValue = a => { var b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)'); return b ? b.pop() : ''; }
+    const validate = () => {
         var errors = [];
-        if (this.state.email === '') errors.push('Please enter your email address.');
-        if (this.state.password === '') errors.push('Please enter your password.');
-        this.setState({ errors: errors });
-        return this.state.errors.length === 0;
+        if (email === '') errors.push('Please enter your email address.');
+        if (password === '') errors.push('Please enter your password.');
+        setErrors(errors);
+        return errors.length === 0;
     }
 
-    render() {
-        const user = this.context.user
-        if (user.apiKey === '') {
-            return (
-                <form onSubmit={this.handleSubmit}>
+    const handleSubmit = e => {
+        e.preventDefault();
+        if (validate()) {
+            const requestOptions = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ Email: email, Password: password }) };
+            fetch('https://mus2ockmn2.execute-api.us-east-2.amazonaws.com/Stage/users/login', requestOptions)
+                .then(response => response.json())
+                .then(data => {
+                    ApiHelper.apiKey = data.apiToken;
+                    UserHelper.populate(data.mappings).then(data => {
+                        const newUser = { apiKey: data.apiToken, name: data.name }
+                        context.setUser(newUser)
+                    });
+                    document.cookie = "apiKey=" + data.apiToken;
+                })
+                .catch(error => setErrors([error.message]));
+        }
+    }
 
-                    <div>{user.apiKey}</div>
-                    <div className="smallCenterBlock">
+    const init = () => {
+        var apiKey = getCookieValue('apiKey');
+        if (apiKey !== '') {
+            const requestOptions = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ resetGuid: apiKey }) };
+            fetch('https://mus2ockmn2.execute-api.us-east-2.amazonaws.com/Stage/users/login', requestOptions)
+                .then(response => response.json())
+                .then(data => {
+                    ApiHelper.apiKey = data.apiToken;
+                    UserHelper.populate(data.mappings).then(data => {
+                        const newUser = { apiKey: data.apiToken, name: data.name }
+                        context.setUser(newUser)
+                    });
+                    document.cookie = "apiKey=" + data.apiToken;
+                })
+                .catch(error => document.cookie = '');
+        }
+    }
 
-                        <ErrorMessages errors={this.state.errors} />
-                        <div id="loginBox">
-                            <h2>Please sign in</h2>
-                            <input name="email" type="text" className="form-control" value={this.state.email} onChange={this.onChange} placeholder="Email address" />
-                            <input name="password" type="password" className="form-control" placeholder="Password" value={this.state.password} onChange={this.onChange} />
-                            <input type="submit" value="Sign in" className="btn btn-lg btn-primary btn-block" />
-                            <br />
-                            <div className="text-right">
-                                <a href="/#register">Register</a> &nbsp; | &nbsp;
-                                <a href="/cp/forgotpassword.aspx">Forgot Password</a>
-                                &nbsp;
-                            </div>
+    const context = React.useContext(UserContext)
+    React.useEffect(() => init(), []);
+
+    if (context.user.apiKey === '') {
+        return (
+            <form onSubmit={handleSubmit}>
+                <div className="smallCenterBlock">
+                    <ErrorMessages errors={errors} />
+                    <div id="loginBox">
+                        <h2>Please sign in</h2>
+                        <input name="email" type="text" className="form-control" value={email} onChange={e => { e.preventDefault(); setEmail(e.target.value) }} placeholder="Email address" />
+                        <input name="password" type="password" className="form-control" placeholder="Password" value={password} onChange={e => { e.preventDefault(); setPassword(e.target.value) }} />
+                        <input type="submit" value="Sign in" className="btn btn-lg btn-primary btn-block" />
+                        <br />
+                        <div className="text-right">
+                            <a href="/#register">Register</a> &nbsp; | &nbsp;
+                            <a href="/cp/forgotpassword.aspx">Forgot Password</a>
+                            &nbsp;
                         </div>
                     </div>
-                </form>
-            );
-        } else {
-            return <Redirect to="/cp" user ></Redirect>
-        }
-    }
+                </div>
+            </form>
+        );
+    } else return <Redirect to="/cp" />
+
 }
 
 export default Login;

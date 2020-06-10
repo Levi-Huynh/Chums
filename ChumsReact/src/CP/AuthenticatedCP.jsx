@@ -8,11 +8,8 @@ import PersonPage from './People/PersonPage'
 
 function AuthenticatedCP(props) {
     const user = React.useContext(UserContext).user;
-
-
-    //*** warning on hreef=javascript:sidebarToggle().  Not sure how to include a js file and call from react.
     return (
-        <Fragment>
+        <>
             <link rel="stylesheet" href="/css/cp.css" />
             <Header></Header>
             <div className="container-fluid">
@@ -25,21 +22,14 @@ function AuthenticatedCP(props) {
                             <Route path="/cp/groups">Groups</Route>
                             <Route path="/cp/people/:id" component={PersonPage}></Route>
                             <Route path="/cp/people"><PeoplePage /></Route>
-                            <Route path="/cp">
-                                <div>
-                                    Control Panel
-                                        {user.apiKey}
-                                </div>
-                            </Route>
+                            <Route path="/cp"><div>Control Panel</div></Route>
                         </Switch>
                     </main>
                 </div>
             </div>
-
-
-
             <script src="/js/cp.js"></script>
-        </Fragment>
+        </>
     );
 }
+
 export default AuthenticatedCP;

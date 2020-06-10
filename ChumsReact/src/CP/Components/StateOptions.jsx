@@ -1,8 +1,8 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 function StateOptions() {
     return (
-        <Fragment>
+        <>
             <option value="AL">AL</option>
             <option value="AK">AK</option>
             <option value="AR">AR</option>
@@ -54,7 +54,7 @@ function StateOptions() {
             <option value="WI">WI</option>
             <option value="WV">WV</option>
             <option value="WY">WY</option>
-        </Fragment>
+        </>
     );
 }
 

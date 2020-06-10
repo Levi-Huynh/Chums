@@ -2,92 +2,62 @@ import React, { Fragment } from 'react';
 import ApiHelper from '../../../Utils/ApiHelper';
 
 
+const AddForm = (props) => {
+    const [forms, setForms] = React.useState(null);
+    const [unsubmittedForms, setUnsubmittedForms] = React.useState([]);
+    const [person, setPerson] = React.useState(props.person);
+    const [clicked, setClicked] = React.useState(false);
+    const [selectedFormId, setSelectedFormId] = React.useState(0);
 
+    React.useEffect(() => { ApiHelper.apiGet('/forms?contentType=person').then(data => setForms(data)); }, []);
+    React.useEffect(() => determineUnsubmitted(), [forms]);
+    const handleClick = (e) => { e.preventDefault(); setClicked(true); };
+    const handleChange = (e) => { e.preventDefault(); setSelectedFormId(e.target.value); };
+    const handleAdd = (e) => { e.preventDefault(); props.addFormFunction(selectedFormId); };
 
-class AddForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { forms: null, submittedForms: null, person: this.props.person, clicked: false, unsubmittedForms: [] };
-        this.handleClick = this.handleClick.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleAdd = this.handleAdd.bind(this);
-    }
-
-    componentDidMount() {
-        ApiHelper.apiGet('/forms?contentType=person').then(data => {
-            this.setState({ forms: data });
-            this.determineUnsubmitted();
-        });
-    }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.person !== this.props.person) {
-            this.setState({ person: this.props.person });
-            this.determineUnsubmitted();
-        }
-    }
-
-    handleClick(e) {
-        e.preventDefault();
-        this.setState({ clicked: true });
-    }
-
-    handleChange(e) {
-        e.preventDefault();
-        this.setState({ selectedFormId: e.target.value });
-    }
-
-    handleAdd(e) {
-        e.preventDefault();
-        this.props.addFormFunction(this.state.selectedFormId)
-    }
-
-    determineUnsubmitted() {
-        var unsubmittedForms = [];
-        if (this.state.forms !== undefined && this.state.forms !== null && this.state.person !== null) {
-            var sf = this.state.person.formSubmissions;
+    const determineUnsubmitted = () => {
+        var unsubmitted = [];
+        if (forms !== undefined && forms !== null && person !== null) {
+            var sf = person.formSubmissions;
             if (sf !== undefined && sf !== null) {
-                for (var i = 0; i < this.state.forms.length; i++) {
+                for (var i = 0; i < forms.length; i++) {
                     var exists = false;
-                    for (var j = 0; j < sf.length; j++) if (sf[j].formId === this.state.forms[i].id) exists = true;
-                    if (!exists) unsubmittedForms.push(this.state.forms[i]);
+                    for (var j = 0; j < sf.length; j++) if (sf[j].formId === forms[i].id) exists = true;
+                    if (!exists) unsubmitted.push(forms[i]);
                 }
-            } else unsubmittedForms = this.state.forms;
+            } else unsubmitted = forms;
         }
-        var selectedFormId = (unsubmittedForms.length === 0) ? 0 : unsubmittedForms[0].id;
-        this.setState({ unsubmittedForms: unsubmittedForms, selectedFormId: selectedFormId });
+        setSelectedFormId((unsubmitted.length === 0) ? 0 : unsubmitted[0].id);
+        setUnsubmittedForms(unsubmitted);
     }
 
-    render() {
-        if (this.state.unsubmittedForms.length === 0) return null;
-        else if (!this.state.clicked) return (<Fragment><hr /><a href="#" onClick={this.handleClick}>Add a form</a></Fragment>);
-        else {
-            var options = [];
-            for (var i = 0; i < this.state.unsubmittedForms.length; i++) {
-                var uf = this.state.unsubmittedForms[i];
-                options.push(<option value={uf.id}>{uf.name}</option>);
-            }
-            return (
-                <Fragment>
-                    <b>Add a form</b>
-                    <div className="row">
-                        <div className="col-lg-6">
-                            <div className="input-group input-group-sm">
-                                <select className="form-control form-control-sm" onChange={this.handleChange} >{options}</select>
-                                <div className="input-group-append">
-                                    <input type="submit" value="Add" className="btn btn-success btn-sm" onClick={this.handleAdd} />
-                                </div>
+    if (unsubmittedForms.length === 0) return null;
+    else if (!clicked) return (<><hr /><a href="#" onClick={handleClick}>Add a form</a></>);
+    else {
+        var options = [];
+        for (var i = 0; i < unsubmittedForms.length; i++) {
+            var uf = unsubmittedForms[i];
+            options.push(<option value={uf.id} key={uf.id}>{uf.name}</option>);
+        }
+        return (
+            <>
+                <b>Add a form</b>
+                <div className="row">
+                    <div className="col-lg-6">
+                        <div className="input-group input-group-sm">
+                            <select className="form-control form-control-sm" onChange={handleChange} >{options}</select>
+                            <div className="input-group-append">
+                                <input type="submit" value="Add" className="btn btn-success btn-sm" onClick={handleAdd} />
                             </div>
                         </div>
                     </div>
-                </Fragment>
-            );
-        }
-
-
-        return null;
+                </div>
+            </>
+        );
     }
+
 }
+
 
 export default AddForm;
 

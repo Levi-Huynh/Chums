@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import UserContext from '../UserContext'
 
 function Header(props) {
     const user = React.useContext(UserContext).user;
     return (
-        <Fragment>
+        <>
             <nav className="navbar navbar-expand navbar-dark fixed-top bg-dark">
                 <a className="navbar-brand" href="/"><img src="/images/logo.png" alt="logo" /></a>
                 <div className="collapse navbar-collapse" id="navbar">
@@ -15,7 +15,7 @@ function Header(props) {
             </nav>
             <div id="userMenu"></div>
             <div id="navSpacer" ></div>
-        </Fragment>
+        </>
     );
 }
 

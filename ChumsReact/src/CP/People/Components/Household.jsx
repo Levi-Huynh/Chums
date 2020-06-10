@@ -5,73 +5,39 @@ import ApiHelper from '../../../Utils/ApiHelper';
 import { Link } from 'react-router-dom';
 import HouseholdEdit from './HouseholdEdit';
 
-class Household extends React.Component {
+const Household = (props) => {
+    const [household, setHousehold] = React.useState(null);
+    const [members, setMembers] = React.useState(null);
+    const [mode, setMode] = React.useState('display');
 
-    constructor(props) {
-        super(props);
-        this.state = { mode: 'display', household: null };
+    const handleEdit = e => { e.preventDefault(); setMode('edit'); }
+    const handleUpdate = () => { loadData(); loadMembers(); setMode('display'); }
+    const loadData = () => { if (props.personId > 0) ApiHelper.apiGet('/households?personId=' + props.personId).then(data => setHousehold(data[0])); }
+    const loadMembers = () => { if (household != null) ApiHelper.apiGet('/householdmembers?householdId=' + household.id).then(data => setMembers(data)); }
 
-        this.loadData = this.loadData.bind(this);
-        this.handleEdit = this.handleEdit.bind(this);
-        this.handleUpdate = this.handleUpdate.bind(this);
-    }
+    React.useEffect(() => loadData(), [props.personId]);
+    React.useEffect(() => loadMembers(), [household?.id]);
 
-    componentDidMount() {
-        this.loadData();
-    }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.personId !== this.props.personId) {
-            this.loadData();
-        }
-    }
-
-    loadData() {
-        if (this.props.personId > 0) {
-            //**TODO: Combine as many requests as possible into the initial person request on the parent page.
-            ApiHelper.apiGet('/households?personId=' + this.props.personId).then(data => {
-                this.setState({ household: data[0] });
-                ApiHelper.apiGet('/householdmembers?householdId=' + this.state.household.id).then(d => {
-                    this.setState({ members: d });
-                });
-            });
-        }
-    }
-    handleEdit(e) {
-        e.preventDefault();
-        this.setState({ mode: 'edit' });
-    }
-
-    handleUpdate(person, e) {
-        if (e !== undefined) e.preventDefault();
-        this.loadData();
-        this.setState({ mode: 'display' });
-        //if (person !== null) this.setState({ person: person });
-    }
-
-    render() {
-        var rows = [];
-
-        if (this.state.mode === 'display') {
-            if (this.state.members !== undefined) {
-                for (var i = 0; i < this.state.members.length; i++) {
-                    var m = this.state.members[i];
-                    rows.push(
-                        <tr key={m.id}>
-                            <td><img src={PersonHelper.getPhotoUrl(m.personId, m.person.photoUpdated)} alt="avatar" /></td>
-                            <td><Link to={"/cp/people/" + m.personId}>{m.person.displayName}</Link><div>{m.role}</div></td>
-                        </tr>
-                    );
-                }
+    var rows = [];
+    if (mode === 'display') {
+        if (members !== null) {
+            for (var i = 0; i < members.length; i++) {
+                var m = members[i];
+                rows.push(
+                    <tr key={m.id}>
+                        <td><img src={PersonHelper.getPhotoUrl(m.personId, m.person.photoUpdated)} alt="avatar" /></td>
+                        <td><Link to={"/cp/people/" + m.personId}>{m.person.displayName}</Link><div>{m.role}</div></td>
+                    </tr>
+                );
             }
-            return (
-                <DisplayBox headerIcon="fas fa-users" headerText={(this.state.household?.name || '') + " Household"} editFunction={this.handleEdit} >
-                    <table id="household" className="table table-sm"><tbody>{rows}</tbody></table>
-                </DisplayBox>
-            );
         }
-        else return <HouseholdEdit household={this.state.household} members={this.state.members} updatedFunction={this.handleUpdate} />
+        return (
+            <DisplayBox headerIcon="fas fa-users" headerText={(household?.name || '') + " Household"} editFunction={handleEdit} >
+                <table id="household" className="table table-sm"><tbody>{rows}</tbody></table>
+            </DisplayBox>
+        );
     }
+    else return <HouseholdEdit household={household} members={members} updatedFunction={handleUpdate} />
 }
 
 export default Household;

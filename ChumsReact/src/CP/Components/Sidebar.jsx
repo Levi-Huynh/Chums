@@ -2,7 +2,9 @@ import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 function Sidebar(props) {
-    function getClass(sectionName) {
+
+    const getClass = sectionName => {
+        //not implimented yet.
         return 'nav-link';
     }
 

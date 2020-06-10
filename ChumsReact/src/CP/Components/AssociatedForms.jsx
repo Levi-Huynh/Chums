@@ -2,59 +2,44 @@ import React from 'react';
 import FormSubmission from './FormSubmission';
 import FormSubmissionEdit from "./FormSubmissionEdit";
 
-class AssociatedForms extends React.Component {
+const AssociatedForms = (props) => {
+    const [mode, setMode] = React.useState('display');
+    const [addFormId, setAddFormId] = React.useState(0);
+    const [contentId, setContentId] = React.useState(props.contentId);
+    const [contentType, setContentType] = React.useState(props.contentType);
+    const [editFormSubmissionId, setEditFormSubmissionId] = React.useState(0);
+    const [formSubmissions, setFormSubmissions] = React.useState(props.formSubmissions);
 
-    constructor(props) {
-        super(props);
-        this.state = { formSubmissions: this.props.formSubmissions, contentType: this.props.contentType, contentId: this.props.contentId, mode: 'display', editFormSubmissionId: 0, addFormId: this.props.addFormId };
-        this.handleEdit = this.handleEdit.bind(this);
-        this.handleUpdate = this.handleUpdate.bind(this);
-    }
+    const handleEdit = formSubmissionId => { setMode('edit'); setEditFormSubmissionId(formSubmissionId); }
+    const handleUpdate = formId => { setMode('display'); setAddFormId(formId); }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.contentType !== this.props.contentType || prevProps.contentId !== this.props.contentId || prevProps.formSubmissions !== this.props.formSubmissions || prevProps.addFormId !== this.props.addFormId) {
-            this.setState({ contentType: this.props.contentType, contentId: this.props.contentId, formSubmissions: this.props.formSubmissions, addFormId: this.props.addFormId });
-        }
-    }
+    React.useEffect(() => setAddFormId(props.addFormId), [props.addFormId]);
+    React.useEffect(() => setContentId(props.contentId), [props.contentId]);
+    React.useEffect(() => setContentType(props.contentType), [props.contentType]);
+    React.useEffect(() => setFormSubmissions(props.formSubmissions), [props.formSubmissions]);
 
-    handleEdit(formSubmissionId) {
-        this.setState({ mode: 'edit', editFormSubmissionId: formSubmissionId });
-    }
 
-    handleUpdate(person, e) {
-        if (e !== undefined) e.preventDefault();
-        this.setState({ mode: 'display', addFormId: 0 });
-    }
-
-    render() {
-        if (this.state.mode === 'edit' || this.state.addFormId > 0) {
-            return <FormSubmissionEdit formSubmissionId={this.state.editFormSubmissionId} updatedFunction={this.handleUpdate} addFormId={this.state.addFormId} contentType={this.state.contentType} contentId={this.state.contentId} />
-        } else {
-            if (this.state.formSubmissions !== undefined) {
-
-                var cards = [];
-                for (var i = 0; i < this.state.formSubmissions.length; i++) {
-                    var fs = this.state.formSubmissions[i];
-                    cards.push(
-                        <div key={fs.id} className="card">
-                            <div className="card-header" id={"heading" + fs.id}>
-                                <h2>
-                                    <button className="btn btn-link" type="button" data-toggle="collapse" data-target={"#collapse" + fs.id} aria-controls={"collapse" + fs.id}>{fs.form.name}</button>
-                                </h2>
-                            </div>
-                            <div id={"collapse" + fs.id} className="collapse" aria-labelledby={"heading" + fs.id} data-parent="#formSubmissionsAccordion">
-                                <div className="card-body"><FormSubmission formSubmissionId={fs.id} editFunction={this.handleEdit} /> </div>
-                            </div>
+    if (mode === 'edit' || addFormId > 0) return <FormSubmissionEdit formSubmissionId={editFormSubmissionId} updatedFunction={handleUpdate} addFormId={addFormId} contentType={contentType} contentId={contentId} />
+    else {
+        if (formSubmissions !== undefined) {
+            var cards = [];
+            for (var i = 0; i < formSubmissions.length; i++) {
+                var fs = formSubmissions[i];
+                cards.push(
+                    <div key={fs.id} className="card">
+                        <div className="card-header" id={"heading" + fs.id}>
+                            <h2>
+                                <button className="btn btn-link" type="button" data-toggle="collapse" data-target={"#collapse" + fs.id} aria-controls={"collapse" + fs.id}>{fs.form.name}</button>
+                            </h2>
                         </div>
-                    );
-                }
+                        <div id={"collapse" + fs.id} className="collapse" aria-labelledby={"heading" + fs.id} data-parent="#formSubmissionsAccordion">
+                            <div className="card-body"><FormSubmission formSubmissionId={fs.id} editFunction={handleEdit} /> </div>
+                        </div>
+                    </div>
+                );
             }
-            return (
-                <div className="accordion" id="formSubmissionsAccordion">
-                    {cards}
-                </div>
-            );
         }
+        return <div className="accordion" id="formSubmissionsAccordion">{cards}</div>;
     }
 }
 

@@ -1,63 +1,40 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import ApiHelper from '../../Utils/ApiHelper';
 import Question from "./Question";
 
-class FormSubmission extends React.Component {
+const FormSubmission = (props) => {
+    const [formSubmission, setFormSubmission] = React.useState(null);
 
-    constructor(props) {
-        super(props);
-        this.state = { formSubmission: null, formSubmissionId: this.props.formSubmissionId };
-        this.handleEdit = this.handleEdit.bind(this);
-    }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.formSubmissionId !== this.props.formSubmissionId) {
-            this.setState({ formSubmissionId: this.props.formSubmissionId });
-            this.loadData();
-        }
-    }
-
-    componentDidMount() { this.loadData(); }
-
-    loadData() {
-        if (this.state.formSubmissionId > 0) ApiHelper.apiGet('/formsubmissions/' + this.state.formSubmissionId + '/?include=questions,answers').then(data => this.setState({ formSubmission: data }));
-    }
-
-    getAnswer(questionId) {
-        var answers = this.state.formSubmission.answers;
+    const handleEdit = e => { e.preventDefault(); props.editFunction(props.formSubmissionId); }
+    const loadData = () => { if (props.formSubmissionId > 0) ApiHelper.apiGet('/formsubmissions/' + props.formSubmissionId + '/?include=questions,answers').then(data => setFormSubmission(data)); }
+    const getAnswer = questionId => {
+        var answers = formSubmission.answers;
         for (var i = 0; i < answers.length; i++) if (answers[i].questionId === questionId) return answers[i];
         return null;
     }
+    React.useEffect(() => loadData(), [props.formSubmissionId]);
 
-    handleEdit(e) {
-        e.preventDefault();
-        this.props.editFunction(this.state.formSubmissionId);
+    var firstHalf = [];
+    var secondHalf = [];
+    if (formSubmission != null) {
+        var questions = formSubmission.questions;
+        var halfWay = Math.round(questions.length / 2);
+        for (var i = 0; i < halfWay; i++) firstHalf.push(<Question key={i} question={questions[i]} answer={getAnswer(questions[i].id)} />);
+        for (var j = halfWay; j < questions.length; j++) secondHalf.push(<Question key={j} question={questions[j]} answer={getAnswer(questions[j].id)} />);
     }
 
-    render() {
-        var firstHalf = [];
-        var secondHalf = [];
-        if (this.state.formSubmission != null) {
-            var questions = this.state.formSubmission.questions;
-            var halfWay = Math.round(questions.length / 2);
-            for (var i = 0; i < halfWay; i++) firstHalf.push(<Question key={i} question={questions[i]} answer={this.getAnswer(questions[i].id)} />);
-            for (var j = halfWay; j < questions.length; j++) secondHalf.push(<Question key={j} question={questions[j]} answer={this.getAnswer(questions[j].id)} />);
-        }
-
-
-        return (
-            <Fragment>
-                <a href="#" className="fa-pull-right" onClick={this.handleEdit}><i className="fas fa-pencil-alt"></i></a>
-                <div className="content">
-                    <div className="row">
-                        <div className="col-lg-6">{firstHalf}</div>
-                        <div className="col-lg-6">{secondHalf}</div>
-                    </div>
+    return (
+        <>
+            <a href="#" className="fa-pull-right" onClick={handleEdit}><i className="fas fa-pencil-alt"></i></a>
+            <div className="content">
+                <div className="row">
+                    <div className="col-lg-6">{firstHalf}</div>
+                    <div className="col-lg-6">{secondHalf}</div>
                 </div>
-            </Fragment>
-        );
-    }
+            </div>
+        </>
+    );
 }
 
-export default FormSubmission;
 
+export default FormSubmission;

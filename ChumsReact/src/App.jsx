@@ -8,8 +8,6 @@ import { UserProvider } from './UserContext'
 function App() {
   const user = { apiKey: 'notSet', name: 'notSet' }
 
-  //const user = useContext(UserContext)
-
   return (
     <UserProvider value={user}>
       <Router>
