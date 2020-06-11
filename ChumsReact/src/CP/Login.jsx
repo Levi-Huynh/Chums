@@ -1,12 +1,12 @@
 import React from 'react';
 import './Login.css';
-import ErrorMessages from './Components/ErrorMessages';
+import { ErrorMessages } from './Components/ErrorMessages';
 import UserContext from '../UserContext'
 import { Redirect } from 'react-router-dom';
-import ApiHelper from '../Utils/ApiHelper';
-import UserHelper from '../Utils/UserHelper';
+import { ApiHelper } from '../Utils/ApiHelper';
+import { UserHelper } from '../Utils/UserHelper';
 
-const Login = (props) => {
+export const Login = (props) => {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [errors, setErrors] = React.useState([]);
@@ -82,5 +82,3 @@ const Login = (props) => {
     } else return <Redirect to="/cp" />
 
 }
-
-export default Login;

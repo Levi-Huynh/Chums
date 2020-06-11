@@ -1,10 +1,12 @@
 import React from 'react';
 import UserContext from '../UserContext'
-import AuthenticatedCP from './AuthenticatedCP'
-import Login from './Login'
+import { AuthenticatedCP } from './AuthenticatedCP'
+import { Login } from './Login'
+import { ApiHelper } from '../Utils/ApiHelper';
 
-function ControlPanel(props) {
+export const ControlPanel = props => {
+    //***couldn't figure out how to convert UserContext to typescript
+
     const user = React.useContext(UserContext).user;
-    return (user.apiKey === '') ? <Login /> : <AuthenticatedCP />
+    return (ApiHelper.apiKey === '') ? <Login /> : <AuthenticatedCP />
 }
-export default ControlPanel;
