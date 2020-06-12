@@ -4,13 +4,25 @@ import { Header, Sidebar } from './Components'
 import { PeoplePage } from './People/PeoplePage'
 import { PersonPage } from './People/PersonPage'
 
+
 export const AuthenticatedCP = () => {
+
+    const sidebarToggle = () => {
+        var sidebar = document.getElementById('sidebar');
+        if (sidebar.className.indexOf('d-none') > -1) {
+            sidebar.className = sidebar.className.replace('d-none', '').trim();
+        } else {
+            sidebar.className = (sidebar.className + ' d-none').trim();
+        }
+    }
+
+
     return (
         <>
             <link rel="stylesheet" href="/css/cp.css" />
             <Header></Header>
             <div className="container-fluid">
-                <a href="javascript:sidebarToggle()" className="d-md-none" id="sidebarToggle"><i className="fas fa-bars"></i></a>
+                <a href="#" onClick={sidebarToggle} className="d-md-none" id="sidebarToggle"><i className="fas fa-bars"></i></a>
                 <div className="row">
                     <Sidebar />
                     <main role="main" className="col-sm-12 ml-sm-auto col-md-10 pt-3">

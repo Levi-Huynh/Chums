@@ -13,6 +13,7 @@ h1 { border-bottom:1px solid #CCC; padding-bottom:10px; margin-bottom:25px; }
 #navSpacer {height:66px;}
 
 
+
 .inputBox {border:1px solid #E7E7E7;margin-bottom:30px;}
 .inputBox .header {border-top:4px solid #03a9f4; background-color:#FFF; font-weight:bold; font-size:16px; padding:10px; color:#333; border-bottom:1px solid #DDD; }
 .inputBox .header i {margin-right:5px;}
@@ -36,3 +37,8 @@ h1 { border-bottom:1px solid #CCC; padding-bottom:10px; margin-bottom:25px; }
 
 .btn-primary { background-color:#77cc00; border-color:#70db86; }
 .btn-primary:hover { background-color:#55aa00; border-color:#55aa00; }
+
+@media (max-width: 600px) {
+    #sidebar {margin-top:170px;}
+    #sidebar.d-none {margin-top:0px;}
+}

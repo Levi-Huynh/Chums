@@ -20,10 +20,13 @@ export const PeoplePage = () => {
                     <div className="inputBox">
                         <div className="header"><i className="fas fa-user"></i> Search</div>
                         <div className="content">
-                            <div className="row">
-                                <div className="col-10"><input name="searchText" type="text" placeholder="Name" className="form-control" value={searchText} onChange={handleChange} /></div>
-                                <div className="col-2"><input type="submit" className="btn btn-primary" value="Search" /></div>
+                            <div className="input-group">
+                                <input name="searchText" type="text" placeholder="Name" className="form-control" value={searchText} onChange={handleChange} />
+                                <div className="input-group-append">
+                                    <input type="submit" className="btn btn-primary" value="Search" />
+                                </div>
                             </div>
+
                             <br />
                             <PeopleSearchResults people={searchResults} />
                         </div>
