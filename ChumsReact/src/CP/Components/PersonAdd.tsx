@@ -1,6 +1,5 @@
 import React from 'react';
-import { ApiHelper, PersonInterface } from '../../Utils/ApiHelper';
-import { PersonHelper } from "../../Utils/PersonHelper";
+import { ApiHelper, PersonInterface, PersonHelper } from './';
 
 interface Props {
     addFunction: (person: PersonInterface) => void

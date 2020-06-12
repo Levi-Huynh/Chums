@@ -1,5 +1,5 @@
-import React, { Fragment, ChangeEvent } from 'react';
-import { ApiHelper, PersonInterface } from '../../../Utils/ApiHelper';
+import React, { ChangeEvent } from 'react';
+import { ApiHelper, PersonInterface } from './';
 
 interface Props {
     person: PersonInterface,

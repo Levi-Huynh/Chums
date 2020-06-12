@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
-import { UserHelper } from '../../../Utils/UserHelper';
-import { Notes } from '../../Components/Notes'
+import { UserHelper, Notes } from './';
 
 interface Props {
     personId: number

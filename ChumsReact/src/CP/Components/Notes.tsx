@@ -1,10 +1,5 @@
 import React, { ReactNodeArray } from 'react';
-import { ApiHelper } from '../../Utils/ApiHelper';
-import { Note } from './Note'
-import { DisplayBox } from './DisplayBox'
-import { InputBox } from './InputBox'
-import { UserHelper } from '../../Utils/UserHelper';
-
+import { ApiHelper, Note, DisplayBox, InputBox, UserHelper } from './';
 
 interface Props {
     contentId: number,

@@ -1,7 +1,5 @@
 import React from 'react';
-import { InputBox } from "./InputBox";
-import { ApiHelper, FormSubmissionInterface } from '../../Utils/ApiHelper';
-import { QuestionEdit } from "./QuestionEdit";
+import { InputBox, QuestionEdit, ApiHelper, FormSubmissionInterface } from "./";
 
 interface Props {
     addFormId: number,

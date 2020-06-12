@@ -1,6 +1,5 @@
 import React from 'react';
-import { DisplayBox } from '../../Components/DisplayBox'
-import { ApiHelper } from '../../../Utils/ApiHelper';
+import { DisplayBox, ApiHelper } from './'
 import { Link } from 'react-router-dom';
 
 interface Props {

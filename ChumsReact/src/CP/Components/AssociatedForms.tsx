@@ -1,7 +1,5 @@
 import React from 'react';
-import { FormSubmission } from './FormSubmission';
-import { FormSubmissionEdit } from "./FormSubmissionEdit";
-import { FormSubmissionInterface } from '../../Utils/ApiHelper';
+import { FormSubmission, FormSubmissionEdit, FormSubmissionInterface } from './';
 
 interface Props {
     addFormId: number,

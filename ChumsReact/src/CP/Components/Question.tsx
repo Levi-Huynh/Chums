@@ -1,6 +1,5 @@
 import React from 'react';
-import { Helper } from '../../Utils/Helper';
-import { QuestionInterface, AnswerInterface, FormSubmissionInterface } from '../../Utils/ApiHelper';
+import { Helper, QuestionInterface, AnswerInterface, FormSubmissionInterface } from './';
 
 interface Props {
     question: QuestionInterface,

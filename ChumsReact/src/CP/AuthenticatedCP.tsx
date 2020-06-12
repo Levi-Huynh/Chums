@@ -1,7 +1,6 @@
 import React from 'react';
 import { Switch, Route, Redirect } from "react-router-dom";
-import { Header } from '../Components/Header'
-import { Sidebar } from './Components/Sidebar'
+import { Header, Sidebar } from './Components'
 import { PeoplePage } from './People/PeoplePage'
 import { PersonPage } from './People/PersonPage'
 

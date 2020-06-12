@@ -10,8 +10,7 @@ export interface PersonInterface { id?: number, firstName?: string, middleName?:
 export interface QuestionInterface { id?: number, title?: string, fieldType?: string, placeholder?: string, description?: string, choices?: [{ value?: string, text?: string }] }
 export interface UserMappingInterface { church?: ChurchInterface, personId?: number }
 export interface UserInterface { apiKey: string, name: string }
-
-
+//*** I can't figure out how to daisy chain export these interfaces
 
 
 

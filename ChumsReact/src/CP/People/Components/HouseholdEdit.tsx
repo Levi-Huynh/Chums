@@ -1,8 +1,6 @@
 import React, { ChangeEvent } from 'react';
-import { InputBox } from '../../Components/InputBox';
-import { PersonAdd } from '../../Components/PersonAdd';
-import { PersonHelper } from '../../../Utils/PersonHelper';
-import { ApiHelper, HouseholdInterface, HouseholdMemberInterface, PersonInterface } from '../../../Utils/ApiHelper';
+import { InputBox, PersonAdd, PersonHelper, ApiHelper, HouseholdInterface, HouseholdMemberInterface, PersonInterface } from './';
+
 
 interface Props {
     updatedFunction: () => void,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserHelper } from '../Utils/UserHelper';
+import { UserHelper } from './';
 
 export const Header: React.FC = () => {
     return (

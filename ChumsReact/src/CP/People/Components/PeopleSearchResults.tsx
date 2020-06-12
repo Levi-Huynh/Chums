@@ -1,9 +1,6 @@
-import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
-import { PersonHelper } from '../../../Utils/PersonHelper';
-import { ErrorMessages } from "../../Components/ErrorMessages";
-import { ApiHelper, PersonInterface, HouseholdInterface } from '../../../Utils/ApiHelper';
-import { Redirect } from 'react-router-dom';
+import React from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import { PersonHelper, ErrorMessages, ApiHelper, PersonInterface, HouseholdInterface } from '.';
 
 interface Props {
     people: PersonInterface[]
@@ -42,7 +39,7 @@ export const PeopleSearchResults: React.FC<Props> = (props) => {
     }
 
     if (redirectUrl !== '') return <Redirect to={redirectUrl}></Redirect>;
-    else if (props.people === undefined || props.people == null || props.people.length === 0) return <Fragment></Fragment>
+    else if (props.people === undefined || props.people == null || props.people.length === 0) return <></>
     else {
         const items = [];
         for (var i = 0; i < props.people.length; i++) {

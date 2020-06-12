@@ -1,11 +1,6 @@
 import React from 'react';
-import { PersonHelper } from '../../../Utils/PersonHelper'
-import { Helper } from '../../../Utils/Helper'
-import { StateOptions } from '../../Components/StateOptions';
-import { InputBox } from '../../Components/InputBox';
-import { ApiHelper, PersonInterface } from '../../../Utils/ApiHelper';
+import { PersonHelper, Helper, StateOptions, InputBox, ApiHelper, PersonInterface, AddForm } from './'
 import { Redirect } from 'react-router-dom';
-import { AddForm } from './AddForm';
 
 interface Props {
     updatedFunction: (person: PersonInterface) => void,

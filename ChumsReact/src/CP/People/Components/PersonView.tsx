@@ -1,7 +1,5 @@
 import React from 'react';
-import { PersonHelper } from '../../../Utils/PersonHelper'
-import { AssociatedForms } from '../../Components/AssociatedForms';
-import { PersonInterface, FormInterface } from '../../../Utils/ApiHelper';
+import { PersonHelper, AssociatedForms, PersonInterface } from './'
 
 interface Props {
     person: PersonInterface
@@ -70,7 +68,5 @@ export const PersonView: React.FC<Props> = (props) => {
             </div>
             <AssociatedForms contentType="person" contentId={props.person?.id} formSubmissions={props.person?.formSubmissions} addFormId={props.addFormId} />
         </div>
-
-
     )
 }

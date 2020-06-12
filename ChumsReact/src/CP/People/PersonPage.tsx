@@ -1,26 +1,20 @@
 import React from 'react';
-import { Person } from './Components/Person'
-import { Groups } from './Components/Groups'
+import { Person, Groups, Tabs, Household } from './Components'
 import { ApiHelper } from '../../Utils/ApiHelper';
-import { Tabs } from './Components/Tabs';
-import { Household } from './Components/Household';
-import { match } from "react-router-dom";
 
-interface Identifiable { id: string; }
 
-interface Props {
-    matchedRoute: match<Identifiable>
-}
+import { RouteComponentProps } from "react-router-dom";
 
-export const PersonPage: React.FC<Props> = (props) => {
-    return null;
-    /*
+type TParams = { id?: string };
+
+export const PersonPage = ({ match }: RouteComponentProps<TParams>) => {
+
     const [person, setPerson] = React.useState(null);
 
-    React.useEffect(() => loadData(), [props.matchedRoute.params.id]);
+    React.useEffect(() => loadData(), [match.params.id]);
 
     const loadData = () => {
-        ApiHelper.apiGet('/people/' + props.matchedRoute.params.id)
+        ApiHelper.apiGet('/people/' + match.params.id)
             .then(data => setPerson(data));
     }
 
@@ -35,6 +29,6 @@ export const PersonPage: React.FC<Props> = (props) => {
                 <Groups personId={person?.id} />
             </div>
         </div >
-    )*/
+    )
 
 }

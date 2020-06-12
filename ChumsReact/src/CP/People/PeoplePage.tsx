@@ -1,7 +1,5 @@
 import React from 'react';
-import { PeopleSearchResults } from './Components/PeopleSearchResults';
-import { ApiHelper } from '../../Utils/ApiHelper';
-
+import { PeopleSearchResults, ApiHelper } from './Components';
 
 export const PeoplePage = () => {
     const [searchText, setSearchText] = React.useState('');

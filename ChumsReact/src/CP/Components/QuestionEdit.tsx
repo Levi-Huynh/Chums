@@ -1,5 +1,5 @@
 import React from 'react';
-import { AnswerInterface, QuestionInterface } from '../../Utils/ApiHelper';
+import { AnswerInterface, QuestionInterface } from './';
 
 interface Props {
     answer: AnswerInterface

@@ -2,7 +2,7 @@ import React from 'react';
 import UserContext from '../UserContext'
 import { AuthenticatedCP } from './AuthenticatedCP'
 import { Login } from './Login'
-import { ApiHelper } from '../Utils/ApiHelper';
+import { ApiHelper } from './Components';
 
 export const ControlPanel = props => {
     //***couldn't figure out how to convert UserContext to typescript

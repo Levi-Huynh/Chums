@@ -1,9 +1,7 @@
 import React from 'react';
-import { DisplayBox } from '../../Components/DisplayBox';
-import { PersonHelper } from '../../../Utils/PersonHelper';
-import { ApiHelper } from '../../../Utils/ApiHelper';
+import { DisplayBox, PersonHelper, ApiHelper, HouseholdEdit } from './';
 import { Link } from 'react-router-dom';
-import { HouseholdEdit } from './HouseholdEdit';
+
 
 interface Props {
     personId: number

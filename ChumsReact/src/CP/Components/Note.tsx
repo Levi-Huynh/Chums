@@ -1,7 +1,6 @@
 import React from 'react';
-import { PersonHelper } from '../../Utils/PersonHelper'
-import { Helper } from '../../Utils/Helper'
-import { NoteInterface } from '../../Utils/ApiHelper'
+import { PersonHelper, Helper, NoteInterface } from './'
+
 
 interface Props { note: NoteInterface }
 

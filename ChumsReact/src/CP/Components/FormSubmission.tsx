@@ -1,6 +1,5 @@
 import React from 'react';
-import { ApiHelper } from '../../Utils/ApiHelper';
-import { Question } from "./Question";
+import { Question, ApiHelper, FormSubmissionInterface } from './';
 
 interface Props {
     formSubmissionId: number,
@@ -12,7 +11,7 @@ export const FormSubmission: React.FC<Props> = (props) => {
     const [formSubmission, setFormSubmission] = React.useState(null);
 
     const handleEdit = (e: React.MouseEvent<HTMLAnchorElement>) => { e.preventDefault(); props.editFunction(props.formSubmissionId); }
-    const loadData = () => { if (props.formSubmissionId > 0) ApiHelper.apiGet('/formsubmissions/' + props.formSubmissionId + '/?include=questions,answers').then(data => setFormSubmission(data)); }
+    const loadData = () => { if (props.formSubmissionId > 0) ApiHelper.apiGet('/formsubmissions/' + props.formSubmissionId + '/?include=questions,answers').then((data: FormSubmissionInterface) => setFormSubmission(data)); }
     const getAnswer = (questionId: number) => {
         var answers = formSubmission.answers;
         for (var i = 0; i < answers.length; i++) if (answers[i].questionId === questionId) return answers[i];

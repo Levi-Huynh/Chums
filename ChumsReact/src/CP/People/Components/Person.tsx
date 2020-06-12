@@ -1,7 +1,5 @@
 import React from 'react';
-import { PersonView } from './PersonView'
-import { PersonEdit } from './PersonEdit'
-import { PersonInterface } from '../../../Utils/ApiHelper';
+import { PersonView, PersonEdit, PersonInterface } from './'
 
 interface Props {
     person: PersonInterface
