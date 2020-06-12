@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">Chums Checkin</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+
+
+
+    <string name="share_intent">Share Intent</string>
+    <string name="intent_api">Intent Api</string>
+    <string name="printing_sdk">Printing SDK</string>
+    <string name="share_image_view">Share image with ACTION_VIEW</string>
+    <string name="share_image_send">Share image with ACTION_SEND</string>
+    <string name="share_image_multiple">Share multiple images</string>
+    <string name="share_image_return">Share image with return</string>
+    <string name="share_file">Share file</string>
+    <string name="share_web_page_uri">Share web page as uri</string>
+    <string name="share_web_page_string">Share web page as string</string>
+    <string name="share_activate_license">Activate license</string>
+    <string name="share_activate_license_return">Activate license with return</string>
+    <string name="setup_printer">Setup printer</string>
+    <string name="check_premium">Check Premium</string>
+    <string name="activate_online">Activate online</string>
+    <string name="change_options">Change options</string>
+    <string name="get_current_printer">Get current printer</string>
+    <string name="print_image">Print image</string>
+    <string name="print_file">Print file</string>
+    <string name="show_file_preview">Show file preview</string>
+    <string name="print_with_your_rendering">Print with your rendering</string>
+    <string name="print_with_your_rendering_without_ui">Print with your rendering without PrintHand UI</string>
+    <string name="print_image_with_print_hand_rendering_without_ui">Print image with PrintHand rendering without PrintHand UI</string>
+    <string name="print_file_with_print_hand_rendering_without_ui">Print file with PrintHand rendering without PrintHand UI</string>
+    <string name="print_protected_file_with_print_hand_rendering_without_ui">Print protected file with PrintHand rendering without PrintHand UI</string>
+    <string name="change_image_options">Change image options</string>
+    <string name="change_files_options">Change files options</string>
+    <string name="set_license">Set license</string>
+    <string name="init_current_and_recent_printers">Init current and recent printers</string>
+    <string name="get_recent_printers">Get recent printers</string>
+    <string name="discover_wifi">Discover WiFi</string>
+    <string name="discover_bluetooth">Discover Bluetooth</string>
+    <string name="discover_google_cloud">Discover Google Cloud</string>
+    <string name="discover_smb">Discover SMB</string>
+    <string name="discover_usb">Discover USB</string>
+    <string name="get_drivers">Get drivers</string>
+    <string name="find_driver">Find driver</string>
+    <string name="setup_recent_printer">Setup recent printer</string>
+    <string name="setup_discovered_printer">Setup discovered printer</string>
+    <string name="error">Error</string>
+    <string name="success">Success</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="message_error_start_intent">Oops! This Intent can not be handled.\n\nCheck that <b>PrintHand</b> or  <b>PrintHand Premium</b> application installed on your device</string>
+    <string name="message_error_license_activation">License activation failed</string>
+    <string name="message_success_license_activation">License activation success</string>
+    <string name="message_share_image_cancelled">Share image cancelled</string>
+    <string name="message_error_open_file">Open file failed</string>
+    <string name="ok">OK</string>
+
+</resources>

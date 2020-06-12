@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" android:id="@+id/fullscreen_content">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="TextView"
+        android:textSize="64dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/label"
+        />
+
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="244dp"
+        android:background="@color/buttonBackground"
+        android:text="1"
+        android:textColor="@color/input"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="244dp"
+        android:layout_marginEnd="32dp"
+        android:background="@color/buttonBackground"
+        android:text="2"
+        android:textColor="@color/input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="244dp"
+        android:layout_marginEnd="32dp"
+        android:background="@color/buttonBackground"
+        android:text="2"
+        android:textColor="@color/input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="96dp"
+        android:background="@color/buttonBackground"
+        android:text="4"
+        android:textColor="@color/input"
+        app:layout_constraintStart_toStartOf="@id/button1"
+        app:layout_constraintTop_toTopOf="@+id/button1" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="96dp"
+        android:background="@color/buttonBackground"
+        android:text="5"
+        android:textColor="@color/input"
+        app:layout_constraintStart_toStartOf="@id/button2"
+        app:layout_constraintTop_toTopOf="@+id/button2" />
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="96dp"
+        android:background="@color/buttonBackground"
+        android:text="6"
+        android:textColor="@color/input"
+        app:layout_constraintStart_toStartOf="@id/button3"
+        app:layout_constraintTop_toTopOf="@+id/button3" />
+
+
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="96dp"
+        android:background="@color/buttonBackground"
+        android:text="7"
+        android:textColor="@color/input"
+        app:layout_constraintStart_toStartOf="@id/button4"
+        app:layout_constraintTop_toTopOf="@+id/button4" />
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="96dp"
+        android:background="@color/buttonBackground"
+        android:text="8"
+        android:textColor="@color/input"
+        app:layout_constraintStart_toStartOf="@id/button5"
+        app:layout_constraintTop_toTopOf="@+id/button5" />
+    <Button
+        android:id="@+id/button9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="96dp"
+        android:background="@color/buttonBackground"
+        android:text="9"
+        android:textColor="@color/input"
+        app:layout_constraintStart_toStartOf="@id/button6"
+        app:layout_constraintTop_toTopOf="@+id/button6" />
+    <Button
+        android:id="@+id/button0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="96dp"
+        android:background="@color/buttonBackground"
+        android:text="0"
+        android:textColor="@color/input"
+        app:layout_constraintStart_toStartOf="@id/button8"
+        app:layout_constraintTop_toTopOf="@+id/button8" />
+
+    <Button
+        android:id="@+id/buttonBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="96dp"
+        android:background="@color/buttonBackground"
+        android:text="Back"
+        android:textColor="@color/input"
+        app:layout_constraintStart_toStartOf="@id/button9"
+        app:layout_constraintTop_toTopOf="@+id/button9" />
+
+
+    <Button
+        android:id="@+id/sendButton"
+        android:layout_width="392dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/passwordText"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="64dp"
+        android:background="@color/buttonBackground"
+        android:text="Go"
+        android:textColor="@color/input"
+
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+
+</android.support.constraint.ConstraintLayout>
