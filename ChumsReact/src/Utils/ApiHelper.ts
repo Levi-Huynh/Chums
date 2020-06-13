@@ -1,3 +1,4 @@
+//*** Is this a good way to define data returned by the API?
 export interface AnswerInterface { id?: number, value?: string }
 export interface ChurchInterface { id?: number }
 export interface FormInterface { id?: number, name?: string }
