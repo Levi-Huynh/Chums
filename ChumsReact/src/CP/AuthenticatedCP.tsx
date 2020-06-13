@@ -3,6 +3,8 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { Header, Sidebar } from './Components'
 import { PeoplePage } from './People/PeoplePage'
 import { PersonPage } from './People/PersonPage'
+import { GroupsPage } from './Groups/GroupsPage'
+import { GroupPage } from './Groups/GroupPage'
 
 
 export const AuthenticatedCP = () => {
@@ -28,9 +30,10 @@ export const AuthenticatedCP = () => {
                     <main role="main" className="col-sm-12 ml-sm-auto col-md-10 pt-3">
                         <Switch>
                             <Route path="/cp/login"  ><Redirect to="/cp/people" /></Route>
-                            <Route path="/cp/groups">Groups</Route>
                             <Route path="/cp/people/:id" component={PersonPage}></Route>
                             <Route path="/cp/people"><PeoplePage /></Route>
+                            <Route path="/cp/groups/:id" component={GroupPage}></Route>
+                            <Route path="/cp/groups"><GroupsPage /></Route>
                             <Route path="/cp"><div>Control Panel</div></Route>
                         </Switch>
                     </main>

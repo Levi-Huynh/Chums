@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface Props {
-    children: JSX.Element
+    children: JSX.Element | JSX.Element[]
     headerIcon: string,
     headerText: string,
     editFunction?: () => void
@@ -9,7 +9,7 @@ interface Props {
 
 export const DisplayBox: React.FC<Props> = (props) => {
     var editLink = <></>;
-    if (props.editFunction !== undefined) editLink = <a className="fa-pull-right" onClick={props.editFunction} href="#" ><i className="fas fa-pencil-alt"></i></a>;
+    if (props.editFunction !== undefined) editLink = <a className="fa-pull-right" onClick={e => { e.preventDefault(); props.editFunction(); }} href="#" ><i className="fas fa-pencil-alt"></i></a>;
     return (
         <div className="inputBox">
             <div className="header">{editLink}<i className={props.headerIcon}></i> {props.headerText}</div>

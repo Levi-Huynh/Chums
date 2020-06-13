@@ -11,10 +11,10 @@ export const Person: React.FC<Props> = (props) => {
     const [addFormId, setAddFormId] = React.useState(0);
     const handleEdit = () => { setMode('edit'); }
     const handleAddForm = (formId: number) => { setMode('display'); setAddFormId(formId); }
-    const handleUpdate = (p: PersonInterface) => { setMode('display'); setPerson(p); }
+    const handleUpdated = (p: PersonInterface) => { setMode('display'); setPerson(p); }
 
     React.useEffect(() => setPerson(props.person), [props.person]);
 
     if (mode === 'display') return <PersonView person={person} editFunction={handleEdit} addFormId={addFormId} />
-    else return <PersonEdit person={person} updatedFunction={handleUpdate} addFormFunction={handleAddForm} />
+    else return <PersonEdit person={person} updatedFunction={handleUpdated} addFormFunction={handleAddForm} />
 }

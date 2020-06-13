@@ -2,6 +2,8 @@ export interface AnswerInterface { id?: number, value?: string }
 export interface ChurchInterface { id?: number }
 export interface FormInterface { id?: number, name?: string }
 export interface FormSubmissionInterface { id?: number, formId?: number, contentType?: string, contentId?: number, form?: FormInterface, answers?: AnswerInterface[], questions?: QuestionInterface[] }
+export interface GroupInterface { id?: number, name?: string, categoryName: string, memberCount: number, trackAttendance: boolean }
+export interface GroupMemberInterface { id?: number, personId: number, person?: PersonInterface, group?: GroupInterface }
 export interface HouseholdInterface { id?: number, name?: string }
 export interface HouseholdMemberInterface { id?: number, householdId?: number, household?: HouseholdInterface, personId?: number, person?: PersonInterface, role?: string }
 export interface NoteInterface { dateAdded?: string, person?: PersonInterface }
@@ -10,10 +12,6 @@ export interface PersonInterface { id?: number, firstName?: string, middleName?:
 export interface QuestionInterface { id?: number, title?: string, fieldType?: string, placeholder?: string, description?: string, choices?: [{ value?: string, text?: string }] }
 export interface UserMappingInterface { church?: ChurchInterface, personId?: number }
 export interface UserInterface { apiKey: string, name: string }
-//*** I can't figure out how to daisy chain export these interfaces
-
-
-
 
 export class ApiHelper {
     static baseUrl = 'https://mus2ockmn2.execute-api.us-east-2.amazonaws.com/Stage';

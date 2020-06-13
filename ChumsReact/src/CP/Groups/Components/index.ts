@@ -1,0 +1,5 @@
+export * from '../../Components'
+export { GroupDetails } from './GroupDetails'
+export { GroupDetailsEdit } from './GroupDetailsEdit'
+export { GroupMembers } from './GroupMembers'
+export { Tabs } from './Tabs'
