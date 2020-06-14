@@ -5,6 +5,7 @@ import { PeoplePage } from './People/PeoplePage'
 import { PersonPage } from './People/PersonPage'
 import { GroupsPage } from './Groups/GroupsPage'
 import { GroupPage } from './Groups/GroupPage'
+import { AttendancePage } from './Attendance/AttendancePage'
 
 
 export const AuthenticatedCP = () => {
@@ -34,6 +35,7 @@ export const AuthenticatedCP = () => {
                             <Route path="/cp/people"><PeoplePage /></Route>
                             <Route path="/cp/groups/:id" component={GroupPage}></Route>
                             <Route path="/cp/groups"><GroupsPage /></Route>
+                            <Route path="/cp/attendance"><AttendancePage /></Route>
                             <Route path="/cp"><div>Control Panel</div></Route>
                         </Switch>
                     </main>
