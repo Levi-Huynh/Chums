@@ -1,13 +1,20 @@
 import React from 'react';
-import { ApiHelper, DisplayBox, GroupInterface } from './Components';
+import { ApiHelper, DisplayBox, GroupInterface, GroupAdd } from './Components';
 import { Link } from 'react-router-dom';
 
 export const GroupsPage = () => {
 
     const [groups, setGroups] = React.useState<GroupInterface[]>([]);
+    const [showAdd, setShowAdd] = React.useState(false);
 
     const handleAdd = (e: React.MouseEvent) => {
         e.preventDefault();
+        setShowAdd(true);
+    }
+
+    const handleAddUpdated = () => {
+        setShowAdd(false);
+        loadData();
     }
 
     const loadData = () => {
@@ -37,6 +44,7 @@ export const GroupsPage = () => {
 
 
 
+    var addBox = (showAdd) ? <GroupAdd updatedFunction={handleAddUpdated} /> : <></>
 
     return (
         <form method="post">
@@ -52,6 +60,9 @@ export const GroupsPage = () => {
                             </tbody>
                         </table>
                     </DisplayBox>
+                </div>
+                <div className="col-lg-4">
+                    {addBox}
                 </div>
             </div>
         </form >
