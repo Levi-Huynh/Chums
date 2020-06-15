@@ -4,13 +4,17 @@ import { ErrorMessages, ApiHelper, UserHelper } from './Components';
 import UserContext from '../UserContext'
 import { Redirect } from 'react-router-dom';
 
+interface LoginResponse {
+    apiToken: string,
+    name: string
+}
 
-export const Login = (props) => {
+export const Login = () => {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [errors, setErrors] = React.useState([]);
 
-    const getCookieValue = a => { var b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)'); return b ? b.pop() : ''; }
+    const getCookieValue = (a: string) => { var b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)'); return b ? b.pop() : ''; }
     const validate = () => {
         var errors = [];
         if (email === '') errors.push('Please enter your email address.');
@@ -19,46 +23,32 @@ export const Login = (props) => {
         return errors.length === 0;
     }
 
-    const handleSubmit = e => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (validate()) {
-            const requestOptions = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ Email: email, Password: password }) };
-            fetch('https://mus2ockmn2.execute-api.us-east-2.amazonaws.com/Stage/users/login', requestOptions)
-                .then(response => response.json())
-                .then(data => {
-                    ApiHelper.apiKey = data.apiToken;
-                    UserHelper.populate(data.mappings).then(data => {
-                        const newUser = { apiKey: data.apiToken, name: data.name }
-                        context.setUser(newUser)
-                    });
-                    document.cookie = "apiKey=" + data.apiToken;
-                })
-                .catch(error => setErrors([error.message]));
-        }
+        if (validate()) login({ Email: email, Password: password });
     }
 
     const init = () => {
         var apiKey = getCookieValue('apiKey');
-        if (apiKey !== '') {
-            const requestOptions = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ resetGuid: apiKey }) };
-            fetch('https://mus2ockmn2.execute-api.us-east-2.amazonaws.com/Stage/users/login', requestOptions)
-                .then(response => response.json())
-                .then(data => {
-                    ApiHelper.apiKey = data.apiToken;
-                    UserHelper.populate(data.mappings).then(data => {
-                        const newUser = { apiKey: data.apiToken, name: data.name }
-                        context.setUser(newUser)
-                    });
-                    document.cookie = "apiKey=" + data.apiToken;
-                })
-                .catch(error => document.cookie = '');
-        }
+        if (apiKey !== '') login({ resetGuid: apiKey });
+    }
+
+    const login = (data: {}) => {
+        const requestOptions = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) };
+        fetch('https://mus2ockmn2.execute-api.us-east-2.amazonaws.com/Stage/users/login', requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                ApiHelper.apiKey = data.apiToken;
+                UserHelper.populate(data.mappings).then(d => { ApiHelper.apiKey = data.apiToken; context.setUserName(data.name); });
+                document.cookie = "apiKey=" + data.apiToken;
+            })
+            .catch(error => document.cookie = '');
     }
 
     const context = React.useContext(UserContext)
     React.useEffect(() => init(), []);
 
-    if (context.user.apiKey === '') {
+    if (context.userName === '' || ApiHelper.apiKey === '') {
         return (
             <form onSubmit={handleSubmit}>
                 <div className="smallCenterBlock">
