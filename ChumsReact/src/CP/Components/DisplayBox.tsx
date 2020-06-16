@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface Props {
-    children: JSX.Element | JSX.Element[]
+    children: React.ReactNode,
     headerIcon: string,
     headerText: string,
     editFunction?: () => void

@@ -19,7 +19,6 @@ export const PersonEdit: React.FC<Props> = (props) => {
         var p = { ...person };
         const key = e.currentTarget.name;
         const val = e.currentTarget.value;
-        //***is there a way to do this generically to avoid the switch?  --  p[key] = val;
         switch (key) {
             case 'firstName': p.firstName = val; break;
             case 'middleName': p.middleName = val; break;
@@ -43,11 +42,6 @@ export const PersonEdit: React.FC<Props> = (props) => {
             case 'workPhone': p.workPhone = val; break;
             case 'mobilePhone': p.mobilePhone = val; break;
             case 'email': p.email = val; break;
-
-
-            //gender, birthdate, maritalstatus, anniversary, address1, address2, city, state, zip
-
-
         }
         setPerson(p);
     }

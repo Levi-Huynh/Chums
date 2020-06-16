@@ -18,7 +18,7 @@ export const GroupMembers: React.FC<Props> = (props) => {
         e.preventDefault();
         var anchor = e.target as HTMLAnchorElement;
         var idx = parseInt(anchor.getAttribute('data-index'));
-        var members = [].concat(groupMembers);
+        var members = [...groupMembers];
         var member = members.splice(idx, 1)[0];
         setGroupMembers(members);
         ApiHelper.apiDelete('/groupmembers/' + member.id);
@@ -35,7 +35,7 @@ export const GroupMembers: React.FC<Props> = (props) => {
         if (getMemberByPersonId(props.addedPerson.id) !== null) {
             var gm = { groupId: props.group.id, personId: props.addedPerson.id, person: props.addedPerson } as GroupMemberInterface
             ApiHelper.apiPost('/groupmembers', [gm]);
-            var members = [].concat(groupMembers);
+            var members = [...groupMembers];
             members.push(gm);
             setGroupMembers(members);
         }

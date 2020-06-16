@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface Props {
-    children: any,  //***what's the correct type?
+    children?: React.ReactNode,
     headerIcon: string,
     headerText: string,
     saveText?: string,

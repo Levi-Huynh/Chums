@@ -26,7 +26,7 @@ export const HouseholdEdit: React.FC<Props> = (props) => {
         var target = e.target as HTMLElement;
         var row = target.parentNode.parentNode as HTMLElement;
         var idx = parseInt(row.getAttribute('data-index'));
-        var m = [].concat(members);
+        var m = [...members];
         m.splice(idx, 1);
         setMembers(m);
     }
@@ -34,14 +34,14 @@ export const HouseholdEdit: React.FC<Props> = (props) => {
     const handleChangeRole = (e: ChangeEvent<HTMLSelectElement>) => {
         var row = e.target.parentNode.parentNode as HTMLElement;
         var idx = parseInt(row.getAttribute('data-index'));
-        var m = [].concat(members); //***Is this the best way to handle cloning
+        var m = [...members];
         m[idx].role = e.target.value;
         setMembers(m);
     }
 
     const handlePersonAdd = (person: PersonInterface) => {
         var member = { householdId: household.id, personId: person.id, person: person, role: 'Other' };
-        var m = [].concat(members);
+        var m = [...members];
         m.push(member);
         setMembers(m);
     }

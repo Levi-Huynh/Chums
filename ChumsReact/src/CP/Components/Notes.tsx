@@ -1,29 +1,21 @@
 import React, { ReactNodeArray } from 'react';
 import { ApiHelper, Note, DisplayBox, InputBox, UserHelper } from './';
 
-interface Props {
-    contentId: number,
-    contentType: string,
-
-
-}
+interface Props { contentId: number, contentType: string }
 
 export const Notes: React.FC<Props> = (props) => {
     const [notes, setNotes] = React.useState([]);
     const [noteText, setNoteText] = React.useState('');
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setNoteText(e.target.value);
-    const loadNotes = () => {
-        if (props.contentId > 0) ApiHelper.apiGet('/notes/' + props.contentType + '/' + props.contentId).then(data => setNotes(data));
-    }
+    const loadNotes = () => { if (props.contentId > 0) ApiHelper.apiGet('/notes/' + props.contentType + '/' + props.contentId).then(data => setNotes(data)); }
     const handleSave = () => {
         var n = { contentId: props.contentId, contentType: props.contentType, contents: noteText }
         ApiHelper.apiPost('/notes', [n]).then(() => { loadNotes(); setNoteText(''); });
     }
     React.useEffect(() => loadNotes(), [props.contentId]);
 
-    //*** What's the correct type?
-    var noteArray: any = [];
+    var noteArray: React.ReactNode[] = [];
     for (var i = 0; i < notes.length; i++) noteArray.push(<Note note={notes[i]} key={notes[i].id} />);
 
     var canEdit = UserHelper.checkAccess('People', 'Edit Notes')
@@ -38,7 +30,5 @@ export const Notes: React.FC<Props> = (props) => {
         </InputBox>
 
     )
-
-
 }
 
