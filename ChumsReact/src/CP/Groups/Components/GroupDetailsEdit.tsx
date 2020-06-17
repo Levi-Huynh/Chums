@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, GroupInterface, InputBox, ErrorMessages } from './';
+import { ApiHelper, GroupInterface, InputBox, ErrorMessages, ServiceTimesEdit } from './';
 import { Redirect } from 'react-router-dom';
 
 interface Props {
@@ -84,6 +84,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                     </div>
                 </div>
             </div>
+            <ServiceTimesEdit group={group} />
 
         </InputBox>
     );

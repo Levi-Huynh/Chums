@@ -1,5 +1,5 @@
 import React from 'react';
-import { Question, ApiHelper, GroupInterface, DisplayBox, GroupDetailsEdit } from './';
+import { GroupInterface, DisplayBox, GroupDetailsEdit, ServiceTimes } from './';
 
 
 interface Props {
@@ -28,6 +28,7 @@ export const GroupDetails: React.FC<Props> = (props) => {
             <div className="row">
                 <div className="col-lg-6"><div><label>Track Attendance:</label> {(group.trackAttendance?.toString().replace('false', 'No').replace('true', 'Yes') || '')}</div></div>
             </div>
+            <ServiceTimes group={group} />
         </DisplayBox>
     );
 }
