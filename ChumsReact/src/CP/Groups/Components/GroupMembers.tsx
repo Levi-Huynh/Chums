@@ -6,7 +6,8 @@ import { PersonInterface } from '../../../Utils';
 
 interface Props {
     group: GroupInterface,
-    addedPerson?: PersonInterface
+    addedPerson?: PersonInterface,
+    addedCallback?: () => void
 }
 
 export const GroupMembers: React.FC<Props> = (props) => {
@@ -32,12 +33,13 @@ export const GroupMembers: React.FC<Props> = (props) => {
     }
 
     const handleAdd = () => {
-        if (getMemberByPersonId(props.addedPerson.id) !== null) {
+        if (getMemberByPersonId(props.addedPerson.id) === null) {
             var gm = { groupId: props.group.id, personId: props.addedPerson.id, person: props.addedPerson } as GroupMemberInterface
             ApiHelper.apiPost('/groupmembers', [gm]);
             var members = [...groupMembers];
             members.push(gm);
             setGroupMembers(members);
+            props.addedCallback();
         }
     }
 
@@ -60,7 +62,7 @@ export const GroupMembers: React.FC<Props> = (props) => {
 
 
     React.useEffect(() => { if (props.group.id !== undefined) loadData() }, [props.group]);
-    React.useEffect(() => { if (props.addedPerson.id !== undefined) handleAdd() }, [props.addedPerson]);
+    React.useEffect(() => { if (props.addedPerson?.id !== undefined) handleAdd() }, [props.addedPerson]);
 
     return (
         <DisplayBox headerText="Group Members" headerIcon="fas fa-users" >

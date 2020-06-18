@@ -15,8 +15,11 @@ export interface PersonInterface { id?: number, firstName?: string, middleName?:
 export interface QuestionInterface { id?: number, title?: string, fieldType?: string, placeholder?: string, description?: string, choices?: [{ value?: string, text?: string }] }
 export interface ServiceInterface { id: number, campusId: number, name: string }
 export interface ServiceTimeInterface { id: number, name: string, longName?: string, serviceId: number }
+export interface SessionInterface { id: number, groupId: number, serviceTimeId: number, sessionDate: Date, displayName: string }
 export interface UserMappingInterface { church?: ChurchInterface, personId?: number }
 export interface UserInterface { apiKey: string, name: string }
+export interface VisitInterface { id?: number, personId?: number, serviceId?: number, groupId?: number, visitDate?: Date, visitSessions?: VisitSessionInterface[], person?: PersonInterface }
+export interface VisitSessionInterface { id?: number, visitId?: number, sessionId?: number, visit?: VisitInterface, session?: SessionInterface }
 
 export class ApiHelper {
     static baseUrl = 'https://mus2ockmn2.execute-api.us-east-2.amazonaws.com/Stage';
@@ -28,7 +31,7 @@ export class ApiHelper {
         return fetch(this.baseUrl + path, requestOptions).then(response => response.json())
     }
 
-    static async apiPost(path: string, data: any[]) {
+    static async apiPost(path: string, data: any[] | {}) {
         const requestOptions = {
             method: 'POST',
             headers: { 'Authorization': 'Bearer ' + this.apiKey, 'Content-Type': 'application/json' },
