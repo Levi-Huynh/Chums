@@ -1,5 +1,6 @@
 export interface AnswerInterface { id?: number, value?: string }
 export interface AttendanceInterface { campus: CampusInterface, service: ServiceInterface, serviceTime: ServiceTimeInterface, group: GroupInterface }
+export interface AttendanceRecordInterface { group: GroupInterface, serviceTime: ServiceTimeInterface, service: ServiceInterface, campus: CampusInterface, week: number, count: number }
 export interface CampusInterface { id?: number, name?: string }
 export interface ChurchInterface { id?: number }
 export interface FormInterface { id?: number, name?: string }

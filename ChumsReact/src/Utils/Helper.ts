@@ -1,4 +1,20 @@
 export class Helper {
+
+    static loadExternalScript(url: string, callback: () => void) {
+        const script = document.createElement("script");
+        script.src = url;
+        script.async = true;
+        script.onload = callback;
+        document.body.appendChild(script);
+    }
+
+    static getWeekSunday(year: number, week: number) {
+        var result = new Date(year, 0, 1);
+        while (result.getDay() !== 0) result.setDate(result.getDate() + 1);
+        result.setDate(result.getDate() + ((week - 1) * 7));
+        return result;
+    }
+
     static formatHtml5Date(date: Date): string {
         if (date === undefined || date === null) return '';
         else return new Date(date).toISOString().split('T')[0];

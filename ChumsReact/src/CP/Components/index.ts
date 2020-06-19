@@ -1,5 +1,6 @@
 export * from '../../Components'
 export { AssociatedForms } from './AssociatedForms'
+export { Attendance } from './Attendance'
 export { DisplayBox } from './DisplayBox'
 export { ErrorMessages } from './ErrorMessages'
 export { FormSubmission } from './FormSubmission'
