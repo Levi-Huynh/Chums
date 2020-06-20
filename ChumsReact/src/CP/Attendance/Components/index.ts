@@ -1,5 +1,7 @@
 export * from '../../Components'
 export { AttendanceFilter } from './AttendanceFilter'
 export { CampusEdit } from './CampusEdit'
+export { Individuals } from './Individuals'
 export { ServiceEdit } from './ServiceEdit'
 export { ServiceTimeEdit } from './ServiceTimeEdit'
+export { Tabs } from './Tabs'

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, Attendance, AttendanceHelper, AttendanceFilter, DisplayBox, AttendanceInterface, CampusInterface, CampusEdit, ServiceEdit, ServiceInterface, ServiceTimeEdit, ServiceTimeInterface, AttendanceFilterInterface } from './Components';
+import { ApiHelper, Tabs, AttendanceHelper, AttendanceFilter, DisplayBox, AttendanceInterface, CampusInterface, CampusEdit, ServiceEdit, ServiceInterface, ServiceTimeEdit, ServiceTimeInterface, AttendanceFilterInterface } from './Components';
 import { Link } from 'react-router-dom';
 
 export const AttendancePage = () => {
@@ -91,7 +91,7 @@ export const AttendancePage = () => {
 
             <div className="row">
                 <div className="col-lg-8">
-                    <Attendance filter={filter} />
+                    <Tabs filter={filter} />
                 </div>
                 <div className="col-lg-4">
                     <AttendanceFilter filter={filter} updatedFunction={handleFilterUpdated} />

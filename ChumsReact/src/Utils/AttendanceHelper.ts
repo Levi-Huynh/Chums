@@ -38,6 +38,20 @@ export class AttendanceHelper {
     }
 
 
+    static loadIndividuals(filter: AttendanceFilterInterface): Promise<any> {
+        var url = '/people/attendance'
+            + '?campusId=' + filter.campusId
+            + '&serviceId=' + filter.serviceId
+            + '&serviceTimeId=' + filter.serviceTimeId
+            + '&categoryName=' + filter.categoryName
+            + '&groupId=' + filter.groupId
+            + '&startDate=' + Helper.formatHtml5Date(filter.startDate)
+            + '&endDate=' + Helper.formatHtml5Date(filter.endDate)
+            + '&groupBy=' + filter.groupBy
+            + '&trend=' + filter.trend;
+        return ApiHelper.apiGet(url);
+    }
+
     static loadData(filter: AttendanceFilterInterface): Promise<any> {
         var url = '/attendancerecords'
             + '?campusId=' + filter.campusId
