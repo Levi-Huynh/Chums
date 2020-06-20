@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { UserHelper, GroupInterface, GroupMembers, GroupSessions, SessionInterface, Attendance, PersonInterface } from './';
+import { AttendanceHelper, UserHelper, GroupInterface, GroupMembers, GroupSessions, SessionInterface, Attendance, PersonInterface } from './';
 
 interface Props {
     group: GroupInterface
@@ -30,11 +30,15 @@ export const Tabs: React.FC<Props> = (props) => {
     }
 
     const getCurrentTab = () => {
+
+        var filter = AttendanceHelper.createFilter();
+        filter.groupId = props.group.id;
+
         var currentTab = null;
         switch (selectedTab) {
             case 'members': currentTab = <GroupMembers group={props.group} addedPerson={props.addedPerson} addedCallback={props.addedCallback} />; break;
             case 'sessions': currentTab = <GroupSessions group={props.group} sidebarVisibilityFunction={props.sidebarVisibilityFunction} addedSession={props.addedSession} addedPerson={props.addedPerson} addedCallback={props.addedCallback} />; break;
-            case 'trends': currentTab = <Attendance />; break;
+            case 'trends': currentTab = <Attendance filter={filter} />; break;
             default: currentTab = <div>Not implemented</div>; break;
         }
         return currentTab

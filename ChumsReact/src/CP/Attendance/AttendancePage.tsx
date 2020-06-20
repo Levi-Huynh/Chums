@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, DisplayBox, AttendanceInterface, CampusInterface, CampusEdit, ServiceEdit, ServiceInterface, ServiceTimeEdit, ServiceTimeInterface } from './Components';
+import { ApiHelper, Attendance, AttendanceHelper, AttendanceFilter, DisplayBox, AttendanceInterface, CampusInterface, CampusEdit, ServiceEdit, ServiceInterface, ServiceTimeEdit, ServiceTimeInterface, AttendanceFilterInterface } from './Components';
 import { Link } from 'react-router-dom';
 
 export const AttendancePage = () => {
@@ -7,6 +7,8 @@ export const AttendancePage = () => {
     const [selectedCampus, setSelectedCampus] = React.useState<CampusInterface>(null);
     const [selectedService, setSelectedService] = React.useState<ServiceInterface>(null);
     const [selectedServiceTime, setSelectedServiceTime] = React.useState<ServiceTimeInterface>(null);
+    const [filter, setFilter] = React.useState<AttendanceFilterInterface>(AttendanceHelper.createFilter());
+
 
     const handleUpdated = () => { removeEditors(); loadData(); }
     const selectCampus = (campus: CampusInterface) => { removeEditors(); if (campus.name !== 'Undefined') setSelectedCampus(campus); }
@@ -60,6 +62,10 @@ export const AttendancePage = () => {
         );
     }
 
+    const handleFilterUpdated = (f: AttendanceFilterInterface) => {
+        setFilter({ ...f });
+    }
+
 
 
 
@@ -81,6 +87,16 @@ export const AttendancePage = () => {
                     <ServiceTimeEdit serviceTime={selectedServiceTime} updatedFunction={handleUpdated} />
                 </div>
             </div >
+
+
+            <div className="row">
+                <div className="col-lg-8">
+                    <Attendance filter={filter} />;
+                </div>
+                <div className="col-lg-4">
+                    <AttendanceFilter filter={filter} updatedFunction={handleFilterUpdated} />
+                </div>
+            </div>
         </form >
     );
 }

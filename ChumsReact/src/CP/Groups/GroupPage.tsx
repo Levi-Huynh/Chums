@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, DisplayBox, GroupInterface, GroupDetails, PersonAdd, PersonInterface, Tabs, SessionAdd, SessionInterface } from './Components';
+import { ApiHelper, AttendanceFilterInterface, DisplayBox, GroupInterface, GroupDetails, PersonAdd, PersonInterface, Tabs, SessionAdd, SessionInterface } from './Components';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { MembersAdd } from './Components/MembersAdd';
 

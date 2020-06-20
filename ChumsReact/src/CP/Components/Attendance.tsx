@@ -2,33 +2,15 @@ import React, { ReactNodeArray } from 'react';
 import { ApiHelper, Note, DisplayBox, InputBox, UserHelper, AttendanceRecordInterface } from './';
 import { Helper } from '../../Utils';
 import { Chart } from 'react-google-charts';
-import { AttendanceHelper, AttendanceFilterInterface } from '../../Utils/AttendanceHelper';
+import { AttendanceHelper, AttendanceFilterInterface } from './';
 
-interface Props { contentId?: number, contentType?: string }
+interface Props { filter: AttendanceFilterInterface }
 
 
 export const Attendance: React.FC<Props> = (props) => {
 
-    const [filter, setFilter] = React.useState<AttendanceFilterInterface>({});
+    const [filter, setFilter] = React.useState<AttendanceFilterInterface>(props.filter);
     const [records, setRecords] = React.useState<AttendanceRecordInterface[]>([]);
-
-    /*
-    const [notes, setNotes] = React.useState([]);
-    const [noteText, setNoteText] = React.useState('');
-
-    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setNoteText(e.target.value);
-    const loadNotes = () => { if (props.contentId > 0) ApiHelper.apiGet('/notes/' + props.contentType + '/' + props.contentId).then(data => setNotes(data)); }
-    const handleSave = () => {
-        var n = { contentId: props.contentId, contentType: props.contentType, contents: noteText }
-        ApiHelper.apiPost('/notes', [n]).then(() => { loadNotes(); setNoteText(''); });
-    }
-    
-
-    var noteArray: React.ReactNode[] = [];
-    for (var i = 0; i < notes.length; i++) noteArray.push(<Note note={notes[i]} key={notes[i].id} />);
-*/
-
-
 
     const loadData = () => {
         AttendanceHelper.loadData(filter).then((data: AttendanceRecordInterface[]) => setRecords(data))
@@ -83,7 +65,7 @@ export const Attendance: React.FC<Props> = (props) => {
 
 
     React.useEffect(loadData, [filter]);
-    //React.useEffect(drawChart, [records]);
+    React.useEffect(() => { setFilter(props.filter) }, [props.filter]);
 
     return (
         <DisplayBox headerIcon="far fa-calendar-alt" headerText="Attendance History" >
