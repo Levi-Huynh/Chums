@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { UserHelper, Notes } from './';
+import { UserHelper, Notes, PersonAttendance } from './';
 
 interface Props {
     personId: number
@@ -27,6 +27,7 @@ export const Tabs: React.FC<Props> = (props) => {
 
     switch (selectedTab) {
         case 'notes': currentTab = <Notes contentType="person" contentId={personId} />; break;
+        case 'attendance': currentTab = <PersonAttendance personId={personId} />; break;
         default: currentTab = <div>Not implemented</div>; break;
     }
 
