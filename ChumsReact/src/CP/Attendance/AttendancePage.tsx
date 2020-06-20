@@ -91,7 +91,7 @@ export const AttendancePage = () => {
 
             <div className="row">
                 <div className="col-lg-8">
-                    <Attendance filter={filter} />;
+                    <Attendance filter={filter} />
                 </div>
                 <div className="col-lg-4">
                     <AttendanceFilter filter={filter} updatedFunction={handleFilterUpdated} />

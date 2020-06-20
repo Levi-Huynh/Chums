@@ -23,6 +23,19 @@ export class AttendanceHelper {
         return filter;
     }
 
+    static getGroupingName(groupBy: string) {
+        var result = 'Grouping'
+        switch (groupBy) {
+            case 'CampusName': result = 'Campus'; break;
+            case 'ServiceName': result = 'Service'; break;
+            case 'ServiceTimeName': result = 'Service Time'; break;
+            case 'CategoryName': result = 'Category'; break;
+            case 'GroupName': result = 'Group'; break;
+            case 'Gender': result = 'Gender'; break;
+            default: result = 'Grouping'; break;
+        }
+        return result;
+    }
 
 
     static loadData(filter: AttendanceFilterInterface): Promise<any> {

@@ -27,6 +27,23 @@ export const Attendance: React.FC<Props> = (props) => {
         return null;
     }
 
+    const getRows = () => {
+        var totals: any = {};
+        var displayNames: string[] = [];
+        for (let i = 0; i < records.length; i++) {
+            var name = AttendanceHelper.getDisplayName(records[i]);
+            var count = records[i].count;
+            if (displayNames.indexOf(name) == -1) {
+                displayNames.push(name);
+                totals[name] = count;
+            }
+        }
+
+        var rows: JSX.Element[] = [];
+        for (let i = 0; i < displayNames.length; i++) rows.push(<tr><td>{displayNames[i]}</td><td>{totals[displayNames[i]]}</td></tr>);
+        return rows;
+    }
+
     const getChartRows = () => {
         var displayNames: string[] = [];
         var weeks: number[] = [];
@@ -45,7 +62,7 @@ export const Attendance: React.FC<Props> = (props) => {
 
         for (let i = 0; i < weeks.length; i++) {
             var weekRecords: AttendanceRecordInterface[] = getWeekRecords(weeks[i]);
-            var weekName = Helper.formatHtml5Date(Helper.getWeekSunday(new Date().getFullYear(), weeks[i]));
+            var weekName = (filter.trend) ? Helper.formatHtml5Date(Helper.getWeekSunday(new Date().getFullYear(), weeks[i])) : 'Total';
             var row: any[] = [weekName];
             for (let j = 0; j < displayNames.length; j++) {
                 var nameRecord: AttendanceRecordInterface = getNameRecord(weekRecords, displayNames[j]);
@@ -67,7 +84,8 @@ export const Attendance: React.FC<Props> = (props) => {
     React.useEffect(loadData, [filter]);
     React.useEffect(() => { setFilter(props.filter) }, [props.filter]);
 
-    return (
+    if (records.length == 0) return (<DisplayBox headerIcon="far fa-calendar-alt" headerText="Attendance History" ><p>No records found.</p></DisplayBox>);
+    else return (
         <DisplayBox headerIcon="far fa-calendar-alt" headerText="Attendance History" >
             <div className="row">
                 <div className="col-lg-6 offset-lg-6">
@@ -91,6 +109,14 @@ export const Attendance: React.FC<Props> = (props) => {
                 height="400px"
                 options={{ height: 400, legend: { position: 'top', maxLines: 3 }, bar: { groupWidth: '75%' }, isStacked: true }}
             />
+
+            <hr />
+            <table className="table">
+                <tbody>
+                    <tr><th>{AttendanceHelper.getGroupingName(filter.groupBy)}</th><th>Attendance</th></tr>
+                    {getRows()}
+                </tbody>
+            </table>
         </DisplayBox>
     )
 }
