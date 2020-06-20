@@ -15,7 +15,7 @@ export interface AttendanceFilterInterface {
 export class AttendanceHelper {
 
     static createFilter() {
-        var filter: AttendanceFilterInterface = { campusId: 0, serviceId: 0, serviceTimeId: 0, categoryName: '', groupId: 0, startDate: new Date(2000, 1, 1), endDate: new Date(), groupBy: 'CampusName', trend: true };
+        var filter: AttendanceFilterInterface = { campusId: 0, serviceId: 0, serviceTimeId: 0, categoryName: '', groupId: 0, startDate: new Date(2000, 1, 1), endDate: new Date(), groupBy: 'CampusName', trend: false };
         filter.startDate = Helper.getLastSunday();
         var endDate = Helper.getLastSunday();
         endDate.setDate(endDate.getDate() + 7);

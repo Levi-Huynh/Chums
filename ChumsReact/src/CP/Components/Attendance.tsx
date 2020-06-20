@@ -85,7 +85,7 @@ export const Attendance: React.FC<Props> = (props) => {
                 </div>
             </div>
             <Chart
-                chartType="Bar"
+                chartType="ColumnChart"
                 data={getChartRows()}
                 width="100%"
                 height="400px"

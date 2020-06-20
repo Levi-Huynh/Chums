@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { AttendanceHelper, UserHelper, GroupInterface, GroupMembers, GroupSessions, SessionInterface, Attendance, PersonInterface } from './';
+import { AttendanceHelper, Helper, UserHelper, GroupInterface, GroupMembers, GroupSessions, SessionInterface, Attendance, PersonInterface } from './';
 
 interface Props {
     group: GroupInterface
@@ -33,6 +33,9 @@ export const Tabs: React.FC<Props> = (props) => {
 
         var filter = AttendanceHelper.createFilter();
         filter.groupId = props.group.id;
+        filter.startDate = Helper.getWeekSunday(new Date().getFullYear(), 1);
+        filter.endDate = new Date();
+        filter.trend = true;
 
         var currentTab = null;
         switch (selectedTab) {
