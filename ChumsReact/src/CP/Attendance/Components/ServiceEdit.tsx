@@ -32,9 +32,9 @@ export const ServiceEdit: React.FC<Props> = (props) => {
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         e.preventDefault();
         var s = { ...service };
-        switch (e.target.name) {
-            case 'serviceName': s.name = e.target.value; break;
-            case 'campus': s.campusId = parseInt(e.target.value); break;
+        switch (e.currentTarget.name) {
+            case 'serviceName': s.name = e.currentTarget.value; break;
+            case 'campus': s.campusId = parseInt(e.currentTarget.value); break;
         }
         setService(s);
     }

@@ -17,7 +17,7 @@ export const AddForm: React.FC<Props> = (props) => {
     React.useEffect(() => { ApiHelper.apiGet('/forms?contentType=person').then(data => setForms(data)); }, []);
     React.useEffect(() => determineUnsubmitted(), [forms]);
     const handleClick = (e: React.MouseEvent) => { e.preventDefault(); setClicked(true); };
-    const handleChange = (e: ChangeEvent<HTMLSelectElement>) => { e.preventDefault(); setSelectedFormId(parseInt(e.target.value)); };
+    const handleChange = (e: ChangeEvent<HTMLSelectElement>) => { e.preventDefault(); setSelectedFormId(parseInt(e.currentTarget.value)); };
     const handleAdd = (e: React.MouseEvent) => { e.preventDefault(); props.addFormFunction(selectedFormId); };
 
     const determineUnsubmitted = () => {

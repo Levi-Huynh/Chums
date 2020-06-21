@@ -15,8 +15,8 @@ export const QuestionEdit: React.FC<Props> = (props) => {
     React.useEffect(() => setAnswerValue(props.answer.value), [props.answer]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        setAnswerValue(e.target.value);
-        props.changeFunction(props.question.id, e.target.value);
+        setAnswerValue(e.currentTarget.value);
+        props.changeFunction(props.question.id, e.currentTarget.value);
     }
 
     var q = props.question;

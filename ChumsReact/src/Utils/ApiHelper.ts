@@ -3,8 +3,12 @@ export interface AttendanceInterface { campus: CampusInterface, service: Service
 export interface AttendanceRecordInterface { group: GroupInterface, serviceTime: ServiceTimeInterface, service: ServiceInterface, campus: CampusInterface, week: number, count: number, visitDate: Date }
 export interface CampusInterface { id?: number, name?: string }
 export interface ChurchInterface { id?: number }
+export interface DonationBatchInterface { id?: number, name?: string, batchDate?: Date, donationCount?: number, totalAmount?: number }
+export interface DonationInterface { id?: number, batchId?: number, personId?: number, donationDate?: Date, amount?: number, method?: string, methodDetails?: string, notes?: string, person?: PersonInterface, fund?: FundInterface }
 export interface FormInterface { id?: number, name?: string }
 export interface FormSubmissionInterface { id?: number, formId?: number, contentType?: string, contentId?: number, form?: FormInterface, answers?: AnswerInterface[], questions?: QuestionInterface[] }
+export interface FundInterface { id: number, name: string }
+export interface FundDonationInterface { id?: number, donationId?: number, fundId?: number, amount?: number, donation?: DonationInterface }
 export interface GroupInterface { id?: number, name?: string, categoryName: string, memberCount: number, trackAttendance: boolean }
 export interface GroupMemberInterface { id?: number, personId: number, person?: PersonInterface, group?: GroupInterface }
 export interface GroupServiceTimeInterface { id: number, groupId: number, serviceTimeId: number, serviceTime?: ServiceTimeInterface }

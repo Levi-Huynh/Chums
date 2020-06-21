@@ -55,8 +55,8 @@ export const Login = () => {
                     <ErrorMessages errors={errors} />
                     <div id="loginBox">
                         <h2>Please sign in</h2>
-                        <input name="email" type="text" className="form-control" value={email} onChange={e => { e.preventDefault(); setEmail(e.target.value) }} placeholder="Email address" />
-                        <input name="password" type="password" className="form-control" placeholder="Password" value={password} onChange={e => { e.preventDefault(); setPassword(e.target.value) }} />
+                        <input name="email" type="text" className="form-control" value={email} onChange={e => { e.preventDefault(); setEmail(e.currentTarget.value) }} placeholder="Email address" />
+                        <input name="password" type="password" className="form-control" placeholder="Password" value={password} onChange={e => { e.preventDefault(); setPassword(e.currentTarget.value) }} />
                         <input type="submit" value="Sign in" className="btn btn-lg btn-primary btn-block" />
                         <br />
                         <div className="text-right">

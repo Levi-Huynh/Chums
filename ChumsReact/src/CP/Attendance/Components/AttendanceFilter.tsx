@@ -46,17 +46,17 @@ export const AttendanceFilter: React.FC<Props> = (props) => {
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         e.preventDefault();
         var f = { ...filter };
-        switch (e.target.name) {
+        switch (e.currentTarget.name) {
             case 'week':
-                f.startDate = new Date(e.target.value);
-                f.endDate = new Date(e.target.value)
+                f.startDate = new Date(e.currentTarget.value);
+                f.endDate = new Date(e.currentTarget.value)
                 f.endDate.setDate(f.endDate.getDate() + 7);
                 break;
-            case 'campus': f.campusId = parseInt(e.target.value); break;
-            case 'service': f.serviceId = parseInt(e.target.value); break;
-            case 'serviceTime': f.serviceTimeId = parseInt(e.target.value); break;
-            case 'category': f.categoryName = e.target.value; break;
-            case 'group': f.groupId = parseInt(e.target.value); break;
+            case 'campus': f.campusId = parseInt(e.currentTarget.value); break;
+            case 'service': f.serviceId = parseInt(e.currentTarget.value); break;
+            case 'serviceTime': f.serviceTimeId = parseInt(e.currentTarget.value); break;
+            case 'category': f.categoryName = e.currentTarget.value; break;
+            case 'group': f.groupId = parseInt(e.currentTarget.value); break;
         }
         setFilter(f);
     }

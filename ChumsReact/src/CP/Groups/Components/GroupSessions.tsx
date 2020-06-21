@@ -23,7 +23,7 @@ export const GroupSessions: React.FC<Props> = (props) => {
 
     const handleRemove = (e: React.MouseEvent) => {
         e.preventDefault();
-        var anchor = e.target as HTMLAnchorElement;
+        var anchor = e.currentTarget as HTMLAnchorElement;
         var personId = parseInt(anchor.getAttribute('data-personid'));
         ApiHelper.apiDelete('/visitsessions?sessionId=' + session.id + '&personId=' + personId).then(loadAttendance);
     }
@@ -46,7 +46,7 @@ export const GroupSessions: React.FC<Props> = (props) => {
 
 
     const selectSession = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        for (let i = 0; i < sessions.length; i++) if (sessions[i].id == parseInt(e.target.value)) setSession(sessions[i]);
+        for (let i = 0; i < sessions.length; i++) if (sessions[i].id == parseInt(e.currentTarget.value)) setSession(sessions[i]);
     }
 
     const getSessionOptions = () => {

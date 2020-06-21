@@ -61,8 +61,8 @@ export const PeopleSearchResults: React.FC<Props> = (props) => {
                 <ErrorMessages errors={errors} />
                 <b>Add a New Person</b>
                 <div className="row">
-                    <div className="col"><input type="text" className="form-control" placeholder="First Name" name="firstName" value={firstName} onChange={e => setFirstName(e.target.value)} /></div>
-                    <div className="col"><input type="text" className="form-control" placeholder="Last Name" name="lastName" value={lastName} onChange={e => setLastName(e.target.value)} /></div>
+                    <div className="col"><input type="text" className="form-control" placeholder="First Name" name="firstName" value={firstName} onChange={e => setFirstName(e.currentTarget.value)} /></div>
+                    <div className="col"><input type="text" className="form-control" placeholder="Last Name" name="lastName" value={lastName} onChange={e => setLastName(e.currentTarget.value)} /></div>
                     <div className="col"><input type="submit" className="btn btn-primary" value="Add" onClick={handleAdd} /></div>
                 </div>
             </>;

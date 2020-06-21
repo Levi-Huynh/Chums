@@ -17,7 +17,7 @@ export const GroupMembers: React.FC<Props> = (props) => {
     const loadData = () => ApiHelper.apiGet('/groupmembers?groupId=' + props.group.id).then(data => setGroupMembers(data));
     const handleRemove = (e: React.MouseEvent) => {
         e.preventDefault();
-        var anchor = e.target as HTMLAnchorElement;
+        var anchor = e.currentTarget as HTMLAnchorElement;
         var idx = parseInt(anchor.getAttribute('data-index'));
         var members = [...groupMembers];
         var member = members.splice(idx, 1)[0];

@@ -10,7 +10,7 @@ export const PeoplePage = () => {
         ApiHelper.apiGet('/people/search?term=' + escape(searchText)).then(data => setSearchResults(data));
     }
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setSearchText(e.target.value);
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setSearchText(e.currentTarget.value);
 
     return (
         <form method="post" onSubmit={handleSubmit}>

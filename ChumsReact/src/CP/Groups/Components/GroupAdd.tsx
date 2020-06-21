@@ -22,11 +22,11 @@ export const GroupAdd: React.FC<Props> = (props) => {
         <InputBox headerText="Group Members" headerIcon="fas fa-users" cancelFunction={handleCancel} saveFunction={handleAdd} saveText="Add Group" >
             <div className="form-group">
                 <label>Category Name</label>
-                <input type="text" className="form-control" value={categoryName} onChange={(e) => { setCategoryName(e.target.value) }} />
+                <input type="text" className="form-control" value={categoryName} onChange={(e) => { setCategoryName(e.currentTarget.value) }} />
             </div>
             <div className="form-group">
                 <label>Group Name</label>
-                <input type="text" className="form-control" value={groupName} onChange={(e) => { setGroupName(e.target.value) }} />
+                <input type="text" className="form-control" value={groupName} onChange={(e) => { setGroupName(e.currentTarget.value) }} />
             </div>
         </InputBox>
     );

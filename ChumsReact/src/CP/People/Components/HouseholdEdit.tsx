@@ -17,13 +17,13 @@ export const HouseholdEdit: React.FC<Props> = (props) => {
     const [dummy, setDummy] = React.useState(null);
 
     //***I'm cloning the object because otherwise setHoushold won't trigger a re-render.  Is there a better way?
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => { let h = { ...household }; h.name = e.target.value; setHousehold(h); }
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => { let h = { ...household }; h.name = e.currentTarget.value; setHousehold(h); }
     const handleCancel = () => { props.updatedFunction(); }
     const handleAdd = () => { setShowAdd(true); }
 
     const handleRemove = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
-        var target = e.target as HTMLElement;
+        var target = e.currentTarget as HTMLElement;
         var row = target.parentNode.parentNode as HTMLElement;
         var idx = parseInt(row.getAttribute('data-index'));
         var m = [...members];
@@ -32,10 +32,10 @@ export const HouseholdEdit: React.FC<Props> = (props) => {
     }
 
     const handleChangeRole = (e: ChangeEvent<HTMLSelectElement>) => {
-        var row = e.target.parentNode.parentNode as HTMLElement;
+        var row = e.currentTarget.parentNode.parentNode as HTMLElement;
         var idx = parseInt(row.getAttribute('data-index'));
         var m = [...members];
-        m[idx].role = e.target.value;
+        m[idx].role = e.currentTarget.value;
         setMembers(m);
     }
 

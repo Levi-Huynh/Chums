@@ -76,7 +76,7 @@ export const Attendance: React.FC<Props> = (props) => {
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         var f = { ...filter } as AttendanceFilterInterface;
-        f.groupBy = e.target.value;
+        f.groupBy = e.currentTarget.value;
         setFilter(f);
     }
 

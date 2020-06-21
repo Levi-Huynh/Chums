@@ -32,9 +32,9 @@ export const ServiceTimeEdit: React.FC<Props> = (props) => {
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         e.preventDefault();
         var st = { ...serviceTime };
-        switch (e.target.name) {
-            case 'serviceTimeName': st.name = e.target.value; break;
-            case 'campus': st.serviceId = parseInt(e.target.value); break;
+        switch (e.currentTarget.name) {
+            case 'serviceTimeName': st.name = e.currentTarget.value; break;
+            case 'campus': st.serviceId = parseInt(e.currentTarget.value); break;
         }
         setServiceTime(st);
     }

@@ -12,7 +12,7 @@ export const MembersAdd: React.FC<Props> = (props) => {
     const addMember = (e: React.MouseEvent) => {
 
         e.preventDefault();
-        var anchor = e.target as HTMLAnchorElement;
+        var anchor = e.currentTarget as HTMLAnchorElement;
         var idx = parseInt(anchor.getAttribute('data-index'));
         var gm = groupMembers;
         var person = gm.splice(idx, 1)[0].person;

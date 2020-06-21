@@ -44,12 +44,12 @@ export const ServiceTimesEdit: React.FC<Props> = (props) => {
 
     const handleRemove = (e: React.MouseEvent) => {
         e.preventDefault();
-        var anchor = e.target as HTMLAnchorElement;
+        var anchor = e.currentTarget as HTMLAnchorElement;
         var id = parseInt(anchor.getAttribute('data-id'));
         ApiHelper.apiDelete('/groupservicetimes/' + id.toString()).then(() => loadData());
     }
 
-    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => setAddServiceTimeId(parseInt(e.target.value));
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => setAddServiceTimeId(parseInt(e.currentTarget.value));
 
     React.useEffect(() => { if (props.group.id !== undefined) loadData() }, [props.group]);
 

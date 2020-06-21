@@ -10,11 +10,11 @@ export const PersonAdd: React.FC<Props> = (props) => {
     const [searchResults, setSearchResults] = React.useState(null);
     const [searchText, setSearchText] = React.useState('');
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => { e.preventDefault(); setSearchText(e.target.value); }
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => { e.preventDefault(); setSearchText(e.currentTarget.value); }
     const handleSearch = (e: React.MouseEvent) => { e.preventDefault(); ApiHelper.apiGet('/people/search?term=' + escape(searchText)).then(data => setSearchResults(data)); }
     const handleAdd = (e: React.MouseEvent) => {
         e.preventDefault();
-        var anchor = e.target as HTMLAnchorElement;
+        var anchor = e.currentTarget as HTMLAnchorElement;
         var idx = anchor.getAttribute('data-index');
         var sr = searchResults;
         var person = sr.splice(idx, 1)[0];

@@ -23,7 +23,7 @@ export const CampusEdit: React.FC<Props> = (props) => {
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         var c = { ...campus };
-        c.name = e.target.value;
+        c.name = e.currentTarget.value;
         setCampus(c);
     }
 

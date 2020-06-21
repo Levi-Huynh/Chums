@@ -5,7 +5,7 @@ interface Props {
     headerIcon: string,
     headerText: string,
     editFunction?: () => void
-    editContent?: JSX.Element;
+    editContent?: React.ReactNode;
 }
 
 export const DisplayBox: React.FC<Props> = (props) => {

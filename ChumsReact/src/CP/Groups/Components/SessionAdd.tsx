@@ -50,7 +50,7 @@ export const SessionAdd: React.FC<Props> = (props) => {
             return (
                 <div className="form-group">
                     <label>Service Time</label>
-                    <select className="form-control" value={serviceTimeId} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => { setServiceTimeId(parseInt(e.target.value)) }} >{options}</select>
+                    <select className="form-control" value={serviceTimeId} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => { setServiceTimeId(parseInt(e.currentTarget.value)) }} >{options}</select>
                 </div>);
         }
     }
@@ -82,7 +82,7 @@ export const SessionAdd: React.FC<Props> = (props) => {
 
             <div className="form-group">
                 <label>Session Date</label>
-                <input type="date" className="form-control" value={Helper.formatHtml5Date(sessionDate)} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSessionDate(new Date(e.target.value))} />
+                <input type="date" className="form-control" value={Helper.formatHtml5Date(sessionDate)} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSessionDate(new Date(e.currentTarget.value))} />
             </div>
         </InputBox>
 

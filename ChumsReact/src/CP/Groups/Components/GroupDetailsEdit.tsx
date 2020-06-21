@@ -18,10 +18,10 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         e.preventDefault();
         var g = { ...group };
-        switch (e.target.name) {
-            case 'categoryName': g.categoryName = e.target.value; break;
-            case 'name': g.name = e.target.value; break;
-            case 'trackAttendance': g.trackAttendance = (e.target.value === 'true'); break;
+        switch (e.currentTarget.name) {
+            case 'categoryName': g.categoryName = e.currentTarget.value; break;
+            case 'name': g.name = e.currentTarget.value; break;
+            case 'trackAttendance': g.trackAttendance = (e.currentTarget.value === 'true'); break;
         }
         setGroup(g);
     }

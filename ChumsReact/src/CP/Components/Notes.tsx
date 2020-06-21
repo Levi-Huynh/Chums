@@ -7,7 +7,7 @@ export const Notes: React.FC<Props> = (props) => {
     const [notes, setNotes] = React.useState([]);
     const [noteText, setNoteText] = React.useState('');
 
-    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setNoteText(e.target.value);
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setNoteText(e.currentTarget.value);
     const loadNotes = () => { if (props.contentId > 0) ApiHelper.apiGet('/notes/' + props.contentType + '/' + props.contentId).then(data => setNotes(data)); }
     const handleSave = () => {
         var n = { contentId: props.contentId, contentType: props.contentType, contents: noteText }
