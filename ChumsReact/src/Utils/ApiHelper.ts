@@ -19,6 +19,9 @@ export interface NoteInterface { dateAdded?: string, person?: PersonInterface }
 export interface PermissionInterface { contentType?: string, action?: string }
 export interface PersonInterface { id?: number, firstName?: string, middleName?: string, lastName?: string, nickName?: string, displayName?: string, membershipStatus?: string, gender?: string, birthDate?: Date, maritalStatus?: string, anniversary?: Date, address1?: string, address2?: string, city?: string, state?: string, zip?: string, homePhone?: string, mobilePhone?: string, workPhone?: string, email?: string, formSubmissions?: [FormSubmissionInterface], photoUpdated?: Date }
 export interface QuestionInterface { id?: number, title?: string, fieldType?: string, placeholder?: string, description?: string, choices?: [{ value?: string, text?: string }] }
+export interface RoleInterface { id: number, name: string }
+export interface RoleMemberInterface { id?: number, roleId: number, personId: number, person?: PersonInterface, role?: RoleInterface }
+export interface RolePermissionInterface { id?: number, roleId: number, contentType: string, action: string }
 export interface ServiceInterface { id: number, campusId: number, name: string }
 export interface ServiceTimeInterface { id: number, name: string, longName?: string, serviceId: number }
 export interface SessionInterface { id: number, groupId: number, serviceTimeId: number, sessionDate: Date, displayName: string }

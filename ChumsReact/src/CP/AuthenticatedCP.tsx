@@ -9,6 +9,8 @@ import { AttendancePage } from './Attendance/AttendancePage'
 import { DonationsPage } from './Donations/DonationsPage'
 import { DonationBatchPage } from './Donations/DonationBatchPage'
 import { FundPage } from './Donations/FundPage'
+import { RolesPage } from './Settings/RolesPage'
+import { RolePage } from './Settings/RolePage'
 
 
 export const AuthenticatedCP = () => {
@@ -42,6 +44,8 @@ export const AuthenticatedCP = () => {
                             <Route path="/cp/donations/funds/:id" component={FundPage}></Route>
                             <Route path="/cp/donations/:id" component={DonationBatchPage}></Route>
                             <Route path="/cp/donations"><DonationsPage /></Route>
+                            <Route path="/cp/settings/roles/:id" component={RolePage}></Route>
+                            <Route path="/cp/settings"><RolesPage /></Route>
                             <Route path="/cp"><div>Control Panel</div></Route>
                         </Switch>
                     </main>
