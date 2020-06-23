@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, DisplayBox, BatchEdit, DonationBatchInterface, Helper } from './Components';
+import { ApiHelper, DisplayBox, BatchEdit, DonationBatchInterface, Helper, Funds, DonationChart } from './Components';
 import { Link } from 'react-router-dom';
 
 export const DonationsPage = () => {
@@ -20,6 +20,7 @@ export const DonationsPage = () => {
     const getSidebarModules = () => {
         var result = [];
         if (editBatchId > -1) result.push(<BatchEdit batchId={editBatchId} updatedFunction={batchUpdated} />)
+        result.push(<Funds />);
         return result;
     }
 
@@ -49,7 +50,7 @@ export const DonationsPage = () => {
             <h1><i className="fas fa-hand-holding-usd"></i> Donations</h1>
             <div className="row">
                 <div className="col-lg-8">
-                    Donation Chart here.
+                    <DonationChart />
                     <DisplayBox headerIcon="fas fa-hand-holding-usd" headerText="Batches" editContent={getEditContent()}  >
                         <table className="table">
                             <tbody>

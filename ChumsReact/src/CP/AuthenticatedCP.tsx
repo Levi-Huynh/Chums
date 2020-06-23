@@ -8,6 +8,7 @@ import { GroupPage } from './Groups/GroupPage'
 import { AttendancePage } from './Attendance/AttendancePage'
 import { DonationsPage } from './Donations/DonationsPage'
 import { DonationBatchPage } from './Donations/DonationBatchPage'
+import { FundPage } from './Donations/FundPage'
 
 
 export const AuthenticatedCP = () => {
@@ -38,6 +39,7 @@ export const AuthenticatedCP = () => {
                             <Route path="/cp/groups/:id" component={GroupPage}></Route>
                             <Route path="/cp/groups"><GroupsPage /></Route>
                             <Route path="/cp/attendance"><AttendancePage /></Route>
+                            <Route path="/cp/donations/funds/:id" component={FundPage}></Route>
                             <Route path="/cp/donations/:id" component={DonationBatchPage}></Route>
                             <Route path="/cp/donations"><DonationsPage /></Route>
                             <Route path="/cp"><div>Control Panel</div></Route>

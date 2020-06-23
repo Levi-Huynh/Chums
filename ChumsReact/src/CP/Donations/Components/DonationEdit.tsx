@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Helper, PersonInterface } from '../../../Utils';
 import { FundDonations } from './FundDonations';
 
-interface Props { donationId: number, funds: FundInterface[], updatedFunction: () => void }
+interface Props { donationId: number, batchId: number, funds: FundInterface[], updatedFunction: () => void }
 
 export const DonationEdit: React.FC<Props> = (props) => {
 
@@ -28,11 +28,29 @@ export const DonationEdit: React.FC<Props> = (props) => {
 
     const handleCancel = () => { props.updatedFunction(); }
     const handleDelete = () => { props.updatedFunction(); }
-    const handleSave = () => ApiHelper.apiPost('/donations', [donation]).then(() => props.updatedFunction());
     const getDeleteFunction = () => { return (props.donationId > 0) ? handleDelete : undefined; }
+
+    const handleSave = () => {
+        ApiHelper.apiPost('/donations', [donation]).then(data => {
+            var id = parseInt(data[0]);
+            var promises = [];
+            var fDonations = [...fundDonations];
+            for (let i = fDonations.length - 1; i >= 0; i--) {
+                var fd = fundDonations[i];
+                if (fd.amount === undefined || fd.amount === 0) {
+                    if (fd.id > 0) promises.push(ApiHelper.apiDelete('/funddonations/' + fd.id));
+                    fDonations.splice(i, 1);
+                } else (fd.donationId = id)
+            }
+            if (fDonations.length > 0) promises.push(ApiHelper.apiPost('/funddonations', fDonations));
+            Promise.all(promises).then(() => props.updatedFunction());
+        });
+    }
+
     const loadData = () => {
         if (props.donationId === 0) {
-            setDonation({ donationDate: new Date() });
+            setDonation({ donationDate: new Date(), batchId: props.batchId, amount: 0 });
+            var fd: FundDonationInterface = { amount: 0, fundId: props.funds[0].id };
             setFundDonations([{}]);
         }
         else {
@@ -61,6 +79,17 @@ export const DonationEdit: React.FC<Props> = (props) => {
         }
         setDonation(d);
         setShowSelectPerson(false);
+    }
+
+    const handleFundDonationsChange = (fd: FundDonationInterface[]) => {
+        setFundDonations(fd);
+        var totalAmount = 0;
+        for (let i = 0; i < fundDonations.length; i++) totalAmount += fd[i].amount;
+        if (totalAmount !== donation.amount) {
+            var d = { ...donation };
+            d.amount = totalAmount;
+            setDonation(d);
+        }
     }
 
     const getPersonSection = () => {
@@ -99,7 +128,7 @@ export const DonationEdit: React.FC<Props> = (props) => {
                 </select>
             </div>
             {getMethodDetails()}
-            <FundDonations fundDonations={fundDonations} funds={props.funds} />
+            <FundDonations fundDonations={fundDonations} funds={props.funds} updatedFunction={handleFundDonationsChange} />
             <div className="form-group">
                 <label>Notes</label>
                 <textarea className="form-control" name="notes" value={donation.methodDetails} onChange={handleChange}></textarea>

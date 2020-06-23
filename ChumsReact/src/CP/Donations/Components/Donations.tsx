@@ -5,7 +5,7 @@ import { Helper } from '../../../Utils';
 import { DisplayBox } from '../../Components';
 import { queryHelpers } from '@testing-library/react';
 
-interface Props { batchId: number, addFunction: () => void }
+interface Props { batchId: number, addFunction: () => void, editFunction: (id: number) => void }
 
 export const Donations: React.FC<Props> = (props) => {
 
@@ -13,14 +13,20 @@ export const Donations: React.FC<Props> = (props) => {
 
     const loadData = () => ApiHelper.apiGet('/donations?batchId=' + props.batchId).then(data => setDonations(data));
     const showAddDonation = (e: React.MouseEvent) => { e.preventDefault(); props.addFunction() }
+    const showEditDonation = (e: React.MouseEvent) => {
+        e.preventDefault();
+        var anchor = e.currentTarget as HTMLAnchorElement;
+        var id = parseInt(anchor.getAttribute('data-id'));
+        props.editFunction(id);
+    }
     const getEditContent = () => { return (<a href="#" onClick={showAddDonation} ><i className="fas fa-plus"></i></a>); }
     const getRows = () => {
         var rows: React.ReactNode[] = [];
         for (let i = 0; i < donations.length; i++) {
             var d = donations[i];
             rows.push(<tr>
-                <td><a href="#">{d.id}</a></td>
-                <td>{d.person.displayName}</td>
+                <td><a href="#" onClick={showEditDonation} data-id={d.id}>{d.id}</a></td>
+                <td>{d.person?.displayName || 'Anonymous'}</td>
                 <td>{Helper.formatHtml5Date(d.donationDate)}</td>
                 <td>{Helper.formatCurrency(d.amount)}</td>
             </tr>);

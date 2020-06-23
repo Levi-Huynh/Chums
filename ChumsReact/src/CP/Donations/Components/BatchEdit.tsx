@@ -21,7 +21,11 @@ export const BatchEdit: React.FC<Props> = (props) => {
     }
 
     const handleCancel = () => { props.updatedFunction(); }
-    const handleDelete = () => { props.updatedFunction(); }
+    const handleDelete = () => {
+        if (window.confirm('Are you sure you wish to permanently delete this batch?')) {
+            ApiHelper.apiDelete('/donationbatches/' + batch.id).then(() => props.updatedFunction());
+        }
+    }
     const handleSave = () => ApiHelper.apiPost('/donationbatches', [batch]).then(() => props.updatedFunction());
     const getDeleteFunction = () => { return (props.batchId > 0) ? handleDelete : undefined; }
     const loadData = () => {

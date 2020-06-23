@@ -3,11 +3,12 @@ import { ApiHelper, InputBox, FundDonationInterface, FundDonation, FundInterface
 import { Link } from 'react-router-dom';
 
 
-interface Props { fundDonations: FundDonationInterface[], funds: FundInterface[], updatedFunction?: () => void }
+interface Props { fundDonations: FundDonationInterface[], funds: FundInterface[], updatedFunction: (fundDonations: FundDonationInterface[]) => void }
 
 export const FundDonations: React.FC<Props> = (props) => {
 
-    //const [fundDonations, setFundDonations] = React.useState<FundDonationInterface[]>([]);
+
+
 
     /*
         const [donation, setDonation] = React.useState<DonationInterface>({});
@@ -73,14 +74,27 @@ export const FundDonations: React.FC<Props> = (props) => {
             }
         }
     
-        React.useEffect(loadData, [props.donationId]);
+        
     */
+
+    const handleUpdated = (fundDonation: FundDonationInterface, index: number) => {
+        var fundDonations = [...props.fundDonations];
+        fundDonations[index] = fundDonation;
+        props.updatedFunction(fundDonations);
+    }
+
+    const addRow = () => {
+        var fundDonations = [...props.fundDonations];
+        var fd = { fundId: props.funds[0].id } as FundDonationInterface;
+        fundDonations.push(fd);
+        props.updatedFunction(fundDonations);
+    }
 
     const getRows = () => {
         var result = [];
         for (let i = 0; i < props.fundDonations.length; i++) {
             var fd = props.fundDonations[i];
-            result.push(<FundDonation fundDonation={fd} funds={props.funds} />)
+            result.push(<FundDonation fundDonation={fd} funds={props.funds} updatedFunction={handleUpdated} key={i} index={i} />)
         }
 
         return result;
@@ -89,7 +103,7 @@ export const FundDonations: React.FC<Props> = (props) => {
     return (
         <>
             {getRows()}
-            <a href="#">Add row</a>
+            <a href="#" style={{ display: 'block', marginTop: '-15px', marginBottom: '15px' }} onClick={addRow}>Add more</a>
         </>
     );
 }
