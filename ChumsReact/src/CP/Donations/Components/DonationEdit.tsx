@@ -20,8 +20,8 @@ export const DonationEdit: React.FC<Props> = (props) => {
         switch (e.currentTarget.name) {
             case 'notes': d.notes = value; break;
             case 'date': d.donationDate = new Date(value); break;
-            case 'method': d.method = value;
-            case 'methodDetails': d.methodDetails = value;
+            case 'method': d.method = value; break;
+            case 'methodDetails': d.methodDetails = value; break;
         }
         setDonation(d);
     }
@@ -49,12 +49,12 @@ export const DonationEdit: React.FC<Props> = (props) => {
 
     const loadData = () => {
         if (props.donationId === 0) {
-            setDonation({ donationDate: new Date(), batchId: props.batchId, amount: 0 });
+            setDonation({ donationDate: new Date(), batchId: props.batchId, amount: 0, method: 'Cash' });
             var fd: FundDonationInterface = { amount: 0, fundId: props.funds[0].id };
             setFundDonations([{}]);
         }
         else {
-            ApiHelper.apiGet('/donations/' + props.donationId).then(data => setDonation(data));
+            ApiHelper.apiGet('/donations/' + props.donationId + '?include=person').then(data => setDonation(data));
             ApiHelper.apiGet('/funddonations?donationId=' + props.donationId).then(data => setFundDonations(data));
         }
     }
@@ -96,11 +96,11 @@ export const DonationEdit: React.FC<Props> = (props) => {
         if (showSelectPerson) return (<>
             <PersonAdd addFunction={handlePersonAdd} />
             <hr />
-            <a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); handlePersonAdd(null); }}>None</a>
+            <a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); handlePersonAdd(null); }}>Anonymous</a>
         </>
         );
         else {
-            var personText = (donation.person === undefined || donation.person === null) ? ('None') : donation.person.displayName;
+            var personText = (donation.person === undefined || donation.person === null) ? ('Anonymous') : donation.person.displayName;
             return (<div>
                 <a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setShowSelectPerson(true); }}>{personText}</a>
             </div>);
@@ -131,7 +131,7 @@ export const DonationEdit: React.FC<Props> = (props) => {
             <FundDonations fundDonations={fundDonations} funds={props.funds} updatedFunction={handleFundDonationsChange} />
             <div className="form-group">
                 <label>Notes</label>
-                <textarea className="form-control" name="notes" value={donation.methodDetails} onChange={handleChange}></textarea>
+                <textarea className="form-control" name="notes" value={donation.notes} onChange={handleChange}></textarea>
             </div>
         </InputBox >
     );
