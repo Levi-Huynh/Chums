@@ -9,10 +9,6 @@ export const RolePage = ({ match }: RouteComponentProps<TParams>) => {
     const [role, setRole] = React.useState<RoleInterface>({} as RoleInterface);
 
     const loadData = () => { ApiHelper.apiGet('/roles/' + match.params.id).then(data => setRole(data)); }
-    const getSidebar = () => {
-        //if (selectedRoleId === -1) return <></>
-        //else return (<RoleEdit roleId={selectedRoleId} updatedFunction={handleUpdate} ></RoleEdit>)
-    }
     const addPerson = (p: PersonInterface) => {
         var rm: RoleMemberInterface = { roleId: role.id, personId: p.id };
         ApiHelper.apiPost('/rolemembers', [rm]).then(loadData);

@@ -8,6 +8,7 @@ export const RolesPage = () => {
     const [selectedRoleId, setSelectedRoleId] = React.useState(-1);
 
     const loadData = () => { ApiHelper.apiGet('/roles').then(data => setRoles(data)); }
+    const getEditContent = () => { return (<a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setSelectedRoleId(0); }} ><i className="fas fa-plus"></i></a>); }
 
     const getRows = () => {
         var result = [];
@@ -37,11 +38,10 @@ export const RolesPage = () => {
             <h1><i className="fas fa-lock"></i> Roles</h1>
             <div className="row">
                 <div className="col-lg-8">
-                    <DisplayBox headerText="Roles" headerIcon="fas fa-lock" >
+                    <DisplayBox headerText="Roles" headerIcon="fas fa-lock" editContent={getEditContent()} >
                         <table className="table" id="roleMemberTable">
                             <tr><th>Name</th></tr>
                             {getRows()}
-                            <tr><td colSpan={2}><a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setSelectedRoleId(0); }} className="text-success"><i className="fas fa-lock"></i> Add Role</a></td></tr>
                         </table>
                     </DisplayBox>
                 </div>

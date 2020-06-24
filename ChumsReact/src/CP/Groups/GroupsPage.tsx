@@ -7,10 +7,7 @@ export const GroupsPage = () => {
     const [groups, setGroups] = React.useState<GroupInterface[]>([]);
     const [showAdd, setShowAdd] = React.useState(false);
 
-    const handleAdd = (e: React.MouseEvent) => {
-        e.preventDefault();
-        setShowAdd(true);
-    }
+    const getEditContent = () => { return (<a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setShowAdd(true); }} ><i className="fas fa-plus"></i></a>); }
 
     const handleAddUpdated = () => {
         setShowAdd(false);
@@ -51,12 +48,11 @@ export const GroupsPage = () => {
             <h1><i className="fas fa-list"></i> Groups</h1>
             <div className="row">
                 <div className="col-lg-8">
-                    <DisplayBox headerIcon="fas fa-list" headerText="Groups">
+                    <DisplayBox headerIcon="fas fa-list" headerText="Groups" editContent={getEditContent()}>
                         <table className="table">
                             <tbody>
                                 <tr><th>Category</th><th>Name</th><th>People</th></tr>
                                 {getRows()}
-                                <tr><td><a href="#" onClick={handleAdd} className="text-success" ><i className="fas fa-list"></i> Add Group</a></td><td></td><td></td></tr>
                             </tbody>
                         </table>
                     </DisplayBox>

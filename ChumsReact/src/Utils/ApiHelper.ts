@@ -6,7 +6,7 @@ export interface ChurchInterface { id?: number }
 export interface DonationBatchInterface { id?: number, name?: string, batchDate?: Date, donationCount?: number, totalAmount?: number }
 export interface DonationInterface { id?: number, batchId?: number, personId?: number, donationDate?: Date, amount?: number, method?: string, methodDetails?: string, notes?: string, person?: PersonInterface, fund?: FundInterface }
 export interface DonationSummaryInterface { week?: number, totalAmount?: number, fund: FundInterface }
-export interface FormInterface { id?: number, name?: string }
+export interface FormInterface { id?: number, name?: string, contentType?: string }
 export interface FormSubmissionInterface { id?: number, formId?: number, contentType?: string, contentId?: number, form?: FormInterface, answers?: AnswerInterface[], questions?: QuestionInterface[] }
 export interface FundInterface { id: number, name: string }
 export interface FundDonationInterface { id?: number, donationId?: number, fundId?: number, amount?: number, donation?: DonationInterface }
