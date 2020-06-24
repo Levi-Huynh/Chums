@@ -17,7 +17,7 @@ export const Groups: React.FC<Props> = (props) => {
     if (groupMembers !== null) {
         for (var i = 0; i < groupMembers.length; i++) {
             var gm = groupMembers[i];
-            items.push(<tr key={gm.id}><td><i className="fas fa-list"></i> <Link to={"/cp/groups/group/" + gm.groupId}>{gm.group.name}</Link></td></tr>);
+            items.push(<tr key={gm.id}><td><i className="fas fa-list"></i> <Link to={"/cp/groups/" + gm.groupId}>{gm.group.name}</Link></td></tr>);
         }
     }
 

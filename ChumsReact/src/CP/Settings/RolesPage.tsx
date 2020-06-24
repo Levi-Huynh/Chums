@@ -40,7 +40,7 @@ export const RolesPage = () => {
                 <div className="col-lg-8">
                     <DisplayBox headerText="Roles" headerIcon="fas fa-lock" editContent={getEditContent()} >
                         <table className="table" id="roleMemberTable">
-                            <tr><th>Name</th></tr>
+                            <tr><th>Name</th><th></th></tr>
                             {getRows()}
                         </table>
                     </DisplayBox>
