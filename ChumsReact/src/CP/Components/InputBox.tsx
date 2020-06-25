@@ -5,6 +5,7 @@ interface Props {
     headerIcon: string,
     headerText: string,
     saveText?: string,
+    headerActionContent?: React.ReactNode;
     cancelFunction?: () => void
     deleteFunction?: () => void
     saveFunction: () => void
@@ -21,7 +22,12 @@ export const InputBox: React.FC<Props> = (props) => {
     return (
         <form method="post">
             <div className="inputBox">
-                <div className="header"><i className={props.headerIcon}></i> {props.headerText}</div>
+                <div className="header">
+                    <div className="row">
+                        <div className="col-8"><i className={props.headerIcon}></i> {props.headerText}</div>
+                        <div className="col-4" style={{ textAlign: 'right' }} >{props.headerActionContent}</div>
+                    </div>
+                </div>
                 <div className="content">
                     {props.children}
                 </div>

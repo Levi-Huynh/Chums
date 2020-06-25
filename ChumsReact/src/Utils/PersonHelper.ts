@@ -2,8 +2,12 @@ import { UserHelper } from './UserHelper';
 
 export class PersonHelper {
     static getPhotoUrl(personId: number, photoUpdated: Date): string {
-        if (photoUpdated == null || photoUpdated < new Date(2000, 1, 1)) return "https://chums.org/images/sample-profile.png";
-        else return "https://chums.org/content/c/" + UserHelper.church.id + "/p/" + personId + ".png?dt=" + escape(photoUpdated.toString());
+        return 'https://chums-web.s3.us-east-2.amazonaws.com' + this.getPhotoPath(personId, photoUpdated);
+    }
+
+    static getPhotoPath(personId: number, photoUpdated: Date): string {
+        if (photoUpdated == null || photoUpdated < new Date(2000, 1, 1)) return "/images/sample-profile.png";
+        else return "/content/c/" + UserHelper.church.id + "/p/" + personId + ".png?dt=" + escape(photoUpdated.toString());
     }
 
     static getAge(birthdate: Date): string {

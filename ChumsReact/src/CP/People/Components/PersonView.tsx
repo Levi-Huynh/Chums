@@ -1,20 +1,23 @@
 import React from 'react';
 import { PersonHelper, AssociatedForms, PersonInterface } from './'
+import { DisplayBox } from '../../Components';
 
 interface Props {
     person: PersonInterface
-    editFunction: () => void,
+    editFunction: (e: React.MouseEvent) => void,
     addFormId: number,
+    photoUrl: string
 }
 
 export const PersonView: React.FC<Props> = (props) => {
 
     const getPhoto = () => {
         if (props.person) {
-            var url = PersonHelper.getPhotoUrl(props.person.id, props.person.photoUpdated)
+            var url = (props.photoUrl === null) ? PersonHelper.getPhotoUrl(props.person.id, props.person.photoUpdated) : props.photoUrl;
             return <img src={url} className="img-fluid profilePic" id="imgPreview" alt="avatar" />
         } else return;
     }
+
 
     var leftAttributes = [];
     var contactMethods = [];
@@ -43,7 +46,6 @@ export const PersonView: React.FC<Props> = (props) => {
     }
 
     return (
-
         <div className="inputBox">
             <div className="header"><a className="fa-pull-right" onClick={props.editFunction} href="#"><i className="fas fa-pencil-alt"></i></a> <i className="fas fa-user"></i> Personal Details</div>
             <div className="content">

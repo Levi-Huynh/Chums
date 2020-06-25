@@ -5,15 +5,14 @@ import { Redirect } from 'react-router-dom';
 interface Props {
     updatedFunction: (person: PersonInterface) => void,
     addFormFunction: (formId: number) => void
-    person: PersonInterface
-
+    togglePhotoEditor: (show: boolean) => void,
+    person: PersonInterface,
+    photoUrl: string,
 }
 
 export const PersonEdit: React.FC<Props> = (props) => {
     const [person, setPerson] = React.useState<PersonInterface>({} as PersonInterface);
     const [redirect, setRedirect] = React.useState('');
-
-    const handleCancel = () => props.updatedFunction(person);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         var p = { ...person };
@@ -46,6 +45,8 @@ export const PersonEdit: React.FC<Props> = (props) => {
         setPerson(p);
     }
 
+    const handleCancel = () => props.updatedFunction(person);
+
     const handleDelete = () => {
         if (window.confirm('Are you sure you wish to permanently delete this person record?'))
             ApiHelper.apiDelete('/people/' + person.id.toString()).then(() => setRedirect('/cp/people'));
@@ -62,10 +63,13 @@ export const PersonEdit: React.FC<Props> = (props) => {
             });
     }
 
+
     const getPhoto = () => {
         if (props.person) {
-            var url = PersonHelper.getPhotoUrl(props.person.id, props.person.photoUpdated)
-            return <img src={url} className="img-fluid profilePic" id="imgPreview" alt="avatar" />
+            var url = (props.photoUrl === null) ? PersonHelper.getPhotoUrl(props.person.id, props.person.photoUpdated) : props.photoUrl;
+            return (<a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); props.togglePhotoEditor(true) }}>
+                <img src={url} className="img-fluid profilePic" id="imgPreview" alt="avatar" />
+            </a>);
         } else return;
     }
 
