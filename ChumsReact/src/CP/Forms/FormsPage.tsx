@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, DisplayBox, FormInterface, FormEdit } from './Components'
+import { ApiHelper, DisplayBox, FormInterface, FormEdit, UserHelper } from './Components'
 import { Link } from 'react-router-dom'
 
 export const FormsPage = () => {
@@ -10,30 +10,33 @@ export const FormsPage = () => {
 
     const getRows = () => {
         var result = [];
+        const canEdit = UserHelper.checkAccess('Forms', 'Edit')
         for (let i = 0; i < forms.length; i++) {
+            const editLink = (canEdit) ? (<a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setSelectedFormId(forms[i].id); }}><i className="fas fa-pencil-alt"></i></a>) : null;
             result.push(<tr>
                 <td><i className="fas fa-align-left" /> <Link to={"/cp/forms/" + forms[i].id}>{forms[i].name}</Link></td>
-                <td><a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setSelectedFormId(forms[i].id); }}><i className="fas fa-pencil-alt"></i></a></td>
+                <td>{editLink}</td>
             </tr>);
         }
         return result;
     }
 
-    const handleUpdate = () => {
-        loadData();
-        setSelectedFormId(-1);
-    }
+    const handleUpdate = () => { loadData(); setSelectedFormId(-1); }
 
     const getSidebar = () => {
         if (selectedFormId === -1) return <></>
         else return (<FormEdit formId={selectedFormId} updatedFunction={handleUpdate} ></FormEdit>)
     }
 
-    const getEditContent = () => { return (<a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setSelectedFormId(0); }} ><i className="fas fa-plus"></i></a>); }
+    const getEditContent = () => {
+        if (!UserHelper.checkAccess('Forms', 'Edit')) return null;
+        else return (<a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setSelectedFormId(0); }} ><i className="fas fa-plus"></i></a>);
+    }
 
     React.useEffect(loadData, []);
 
-    return (
+    if (!UserHelper.checkAccess('Forms', 'View')) return (<></>);
+    else return (
         <>
             <h1><i className="fas fa-align-left"></i> Forms</h1>
             <div className="row">

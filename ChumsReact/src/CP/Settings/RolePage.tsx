@@ -1,6 +1,6 @@
 import React from 'react';
-import { ApiHelper, DisplayBox, RoleInterface, PersonAdd, PersonInterface, RoleMemberInterface } from './Components';
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { ApiHelper, DisplayBox, RoleInterface, PersonAdd, PersonInterface, RoleMemberInterface, UserHelper } from './Components';
+import { RouteComponentProps } from 'react-router-dom'
 import { RoleMembers } from './Components/RoleMembers';
 import { RolePermissions } from './Components/RolePermissions';
 
@@ -13,24 +13,31 @@ export const RolePage = ({ match }: RouteComponentProps<TParams>) => {
         var rm: RoleMemberInterface = { roleId: role.id, personId: p.id };
         ApiHelper.apiPost('/rolemembers', [rm]).then(loadData);
     }
+    const getSidebar = () => {
+        if (!UserHelper.checkAccess('Roles', 'Edit')) return (null);
+        else return (<>
+            <DisplayBox headerIcon="fas fa-user" headerText="Add Person"><PersonAdd addFunction={addPerson} /></DisplayBox>
+            <RolePermissions role={role} />
+        </>);
+    }
 
     React.useEffect(loadData, []);
 
-    return (
-        <>
-            <h1><i className="fas fa-lock"></i> {role.name}</h1>
-            <div className="row">
-                <div className="col-lg-8">
-                    <RoleMembers role={role} />
+    if (!UserHelper.checkAccess('Roles', 'View')) return (<></>);
+    else {
+        return (
+            <>
+                <h1><i className="fas fa-lock"></i> {role.name}</h1>
+                <div className="row">
+                    <div className="col-lg-8">
+                        <RoleMembers role={role} />
+                    </div>
+                    <div className="col-lg-4">
+                        {getSidebar()}
+                    </div>
                 </div>
-                <div className="col-lg-4">
-                    <DisplayBox headerIcon="fas fa-user" headerText="Add Person">
-                        <PersonAdd addFunction={addPerson} />
-                    </DisplayBox>
-                    <RolePermissions role={role} />
-                </div>
-            </div>
-        </>
-    );
+            </>
+        );
+    }
 }
 

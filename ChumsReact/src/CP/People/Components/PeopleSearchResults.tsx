@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { PersonHelper, ErrorMessages, ApiHelper, PersonInterface, HouseholdInterface } from '.';
+import { UserHelper } from '../../../Utils';
 
 interface Props {
     people: PersonInterface[]
@@ -38,25 +39,21 @@ export const PeopleSearchResults: React.FC<Props> = (props) => {
         return errors.length == 0;
     }
 
-    if (redirectUrl !== '') return <Redirect to={redirectUrl}></Redirect>;
-    else if (props.people === undefined || props.people == null || props.people.length === 0) return <></>
-    else {
-        const items = [];
+    const getRows = () => {
+        var result = [];
         for (var i = 0; i < props.people.length; i++) {
             var p = props.people[i];
-            items.push(<tr key={p.id}>
+            result.push(<tr key={p.id}>
                 <td><img src={PersonHelper.getPhotoUrl(p.id, p.photoUpdated)} alt="avatar" /></td>
                 <td><Link to={"/cp/people/" + p.id.toString()}>{p.displayName}</Link></td>
             </tr>);
         }
-        var result =
+        return result;
+    }
+    const getAddPerson = () => {
+        if (!UserHelper.checkAccess('People', 'Edit')) return (<></>);
+        else return (
             <>
-                <table className="table" id="peopleTable">
-                    <tbody>
-                        <tr><th></th><th>Name</th></tr>
-                        {items}
-                    </tbody>
-                </table>
                 <hr />
                 <ErrorMessages errors={errors} />
                 <b>Add a New Person</b>
@@ -65,6 +62,22 @@ export const PeopleSearchResults: React.FC<Props> = (props) => {
                     <div className="col"><input type="text" className="form-control" placeholder="Last Name" name="lastName" value={lastName} onChange={e => setLastName(e.currentTarget.value)} /></div>
                     <div className="col"><input type="submit" className="btn btn-primary" value="Add" onClick={handleAdd} /></div>
                 </div>
+            </>);
+    }
+
+
+    if (redirectUrl !== '') return <Redirect to={redirectUrl}></Redirect>;
+    else if (props.people === undefined || props.people == null || props.people.length === 0) return <></>
+    else {
+        var result =
+            <>
+                <table className="table" id="peopleTable">
+                    <tbody>
+                        <tr><th></th><th>Name</th></tr>
+                        {getRows()}
+                    </tbody>
+                </table>
+                {getAddPerson()}
             </>;
         return result;
     }

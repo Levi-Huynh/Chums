@@ -1,6 +1,6 @@
 import React from 'react';
 import { ApiHelper, GroupInterface, GroupAdd, DisplayBox, SessionInterface, VisitSessionInterface, PersonInterface, PersonHelper } from './';
-import { VisitInterface } from '../../../Utils';
+import { VisitInterface, UserHelper } from '../../../Utils';
 
 interface Props {
     group: GroupInterface,
@@ -30,14 +30,16 @@ export const GroupSessions: React.FC<Props> = (props) => {
     const handleAdd = (e: React.MouseEvent) => { e.preventDefault(); props.sidebarVisibilityFunction('addSession', true); }
 
     const getRows = () => {
+        var canEdit = UserHelper.checkAccess('Attendance', 'Edit');
         var result: JSX.Element[] = [];
         for (let i = 0; i < visitSessions.length; i++) {
             var vs = visitSessions[i];
+            var editLink = (canEdit) ? (<a href="#" onClick={handleRemove} className="text-danger" data-personid={vs.visit.personId} ><i className="fas fa-user-times"></i> Remove</a>) : null;
             result.push(
                 <tr>
                     <td><img className="personPhoto" src={PersonHelper.getPhotoUrl(vs.visit.personId, vs.visit.person.photoUpdated)} /></td>
                     <td><a className="personName" href={"/cp/people/person.aspx?id=" + vs.visit.personId}>{vs.visit.person.displayName}</a></td>
-                    <td><a href="#" onClick={handleRemove} className="text-danger" data-personid={vs.visit.personId} ><i className="fas fa-user-times"></i> Remove</a></td >
+                    <td>{editLink}</td>
                 </tr >
             );
         }
@@ -56,7 +58,8 @@ export const GroupSessions: React.FC<Props> = (props) => {
     }
 
     const getHeaderSection = () => {
-        return (
+        if (!UserHelper.checkAccess('Attendance', 'Edit')) return null;
+        else return (
             <div className="input-group">
                 <select className="form-control" value={session?.id} onChange={selectSession} >{getSessionOptions()}</select>
                 <div className="input-group-append">
@@ -92,7 +95,7 @@ export const GroupSessions: React.FC<Props> = (props) => {
     else content = (<>
         <b>Attendance for {props.group.name}</b>
         <table className="table" id="groupMemberTable">
-            <tr><th></th><th>Name</th><th>Remove</th></tr>
+            <tr><th></th><th>Name</th><th></th></tr>
             {getRows()}
         </table>
     </>);

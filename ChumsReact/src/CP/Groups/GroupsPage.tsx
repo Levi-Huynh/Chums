@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, DisplayBox, GroupInterface, GroupAdd } from './Components';
+import { ApiHelper, DisplayBox, GroupInterface, GroupAdd, UserHelper } from './Components';
 import { Link } from 'react-router-dom';
 
 export const GroupsPage = () => {
@@ -7,7 +7,10 @@ export const GroupsPage = () => {
     const [groups, setGroups] = React.useState<GroupInterface[]>([]);
     const [showAdd, setShowAdd] = React.useState(false);
 
-    const getEditContent = () => { return (<a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setShowAdd(true); }} ><i className="fas fa-plus"></i></a>); }
+    const getEditContent = () => {
+        if (!UserHelper.checkAccess('Groups', 'Edit')) return null;
+        else return (<a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setShowAdd(true); }} ><i className="fas fa-plus"></i></a>);
+    }
 
     const handleAddUpdated = () => {
         setShowAdd(false);
@@ -43,8 +46,9 @@ export const GroupsPage = () => {
 
     var addBox = (showAdd) ? <GroupAdd updatedFunction={handleAddUpdated} /> : <></>
 
-    return (
-        <form method="post">
+    if (!UserHelper.checkAccess('Groups', 'View')) return (<></>);
+    else return (
+        <>
             <h1><i className="fas fa-list"></i> Groups</h1>
             <div className="row">
                 <div className="col-lg-8">
@@ -61,6 +65,6 @@ export const GroupsPage = () => {
                     {addBox}
                 </div>
             </div>
-        </form >
+        </>
     );
 }

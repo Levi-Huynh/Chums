@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, DisplayBox, BatchEdit, DonationBatchInterface, Helper, Funds, DonationChart } from './Components';
+import { ApiHelper, DisplayBox, BatchEdit, DonationBatchInterface, Helper, Funds, DonationChart, UserHelper } from './Components';
 import { Link } from 'react-router-dom';
 
 export const DonationsPage = () => {
@@ -15,7 +15,7 @@ export const DonationsPage = () => {
     }
     const batchUpdated = () => { setEditBatchId(-1); loadData(); }
     const loadData = () => { ApiHelper.apiGet('/donationbatches').then(data => setBatches(data)); }
-    const getEditContent = () => { return (<a href="#" onClick={showAddBatch} ><i className="fas fa-plus"></i></a>); }
+    const getEditContent = () => { return (UserHelper.checkAccess('Donations', 'Edit')) ? (<a href="#" onClick={showAddBatch} ><i className="fas fa-plus"></i></a>) : null; }
 
     const getSidebarModules = () => {
         var result = [];
@@ -26,17 +26,19 @@ export const DonationsPage = () => {
 
     const getRows = () => {
         var result: React.ReactNode[] = [];
+        var canEdit = UserHelper.checkAccess('Donations', 'Edit');
+        var canViewBatcht = UserHelper.checkAccess('Donations', 'View');
         for (let i = 0; i < batches.length; i++) {
             var b = batches[i];
+            const editLink = (canEdit) ? (<a href="#" data-id={b.id} onClick={showEditBatch}><i className="fas fa-pencil-alt" /></a>) : null;
+            const batchLink = (canViewBatcht) ? (<Link to={"/cp/donations/" + b.id}>{b.id}</Link>) : <>{b.id}</>;
             result.push(<tr>
-                <td><Link to={"/cp/donations/" + b.id}>{b.id}</Link></td>
+                <td>{batchLink}</td>
                 <td>{b.name}</td>
                 <td>{Helper.formatHtml5Date(b.batchDate)}</td>
                 <td>{b.donationCount}</td>
                 <td>{Helper.formatCurrency(b.totalAmount)}</td>
-                <td><a href="#" data-id={b.id} onClick={showEditBatch} >
-                    <i className="fas fa-pencil-alt" />
-                </a></td>
+                <td>{editLink}</td>
             </tr>);
         }
         return result;
@@ -45,7 +47,8 @@ export const DonationsPage = () => {
 
     React.useEffect(() => loadData(), []);
 
-    return (
+    if (!UserHelper.checkAccess('Donations', 'View Summary')) return (<></>);
+    else return (
         <form method="post">
             <h1><i className="fas fa-hand-holding-usd"></i> Donations</h1>
             <div className="row">

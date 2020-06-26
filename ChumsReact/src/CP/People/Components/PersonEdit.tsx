@@ -1,5 +1,5 @@
 import React from 'react';
-import { PersonHelper, Helper, StateOptions, InputBox, ApiHelper, PersonInterface, AddForm } from './'
+import { PersonHelper, Helper, StateOptions, InputBox, ApiHelper, PersonInterface, AddForm, UserHelper } from './'
 import { Redirect } from 'react-router-dom';
 
 interface Props {
@@ -72,6 +72,8 @@ export const PersonEdit: React.FC<Props> = (props) => {
             </a>);
         } else return;
     }
+
+    const getAddForm = () => { return (UserHelper.checkAccess('Forms', 'Edit')) ? (<AddForm person={person} addFormFunction={props.addFormFunction} />) : null; }
 
     React.useEffect(() => setPerson(props.person), [props.person]);
 
@@ -219,9 +221,7 @@ export const PersonEdit: React.FC<Props> = (props) => {
                         </div>
                     </div>
                 </div>
-
-                <AddForm person={person} addFormFunction={props.addFormFunction} />
-
+                {getAddForm()}
             </InputBox>
         )
     }

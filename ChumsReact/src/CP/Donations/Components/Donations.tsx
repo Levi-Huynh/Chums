@@ -1,9 +1,7 @@
 import React from 'react';
-import { ApiHelper, InputBox, ErrorMessages, DonationInterface } from './';
-import { Link } from 'react-router-dom';
+import { ApiHelper, UserHelper, DonationInterface } from './';
 import { Helper } from '../../../Utils';
 import { DisplayBox } from '../../Components';
-import { queryHelpers } from '@testing-library/react';
 
 interface Props { batchId: number, addFunction: () => void, editFunction: (id: number) => void }
 
@@ -19,13 +17,15 @@ export const Donations: React.FC<Props> = (props) => {
         var id = parseInt(anchor.getAttribute('data-id'));
         props.editFunction(id);
     }
-    const getEditContent = () => { return (<a href="#" onClick={showAddDonation} ><i className="fas fa-plus"></i></a>); }
+    const getEditContent = () => { return (UserHelper.checkAccess('Donations', 'Edit')) ? (<a href="#" onClick={showAddDonation} ><i className="fas fa-plus"></i></a>) : null; }
     const getRows = () => {
         var rows: React.ReactNode[] = [];
+        var canEdit = UserHelper.checkAccess('Donations', 'Edit');
         for (let i = 0; i < donations.length; i++) {
             var d = donations[i];
+            const editLink = (canEdit) ? (<a href="#" onClick={showEditDonation} data-id={d.id}>{d.id}</a>) : (<>{d.id}</>);
             rows.push(<tr>
-                <td><a href="#" onClick={showEditDonation} data-id={d.id}>{d.id}</a></td>
+                <td>{editLink}</td>
                 <td>{d.person?.displayName || 'Anonymous'}</td>
                 <td>{Helper.formatHtml5Date(d.donationDate)}</td>
                 <td>{Helper.formatCurrency(d.amount)}</td>

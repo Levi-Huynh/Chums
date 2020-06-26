@@ -1,10 +1,7 @@
 import React from 'react';
-import { GroupInterface, DisplayBox, GroupDetailsEdit, ServiceTimes } from './';
+import { GroupInterface, DisplayBox, GroupDetailsEdit, ServiceTimes, UserHelper } from './';
 
-
-interface Props {
-    group: GroupInterface,
-}
+interface Props { group: GroupInterface }
 
 export const GroupDetails: React.FC<Props> = (props) => {
 
@@ -13,14 +10,13 @@ export const GroupDetails: React.FC<Props> = (props) => {
 
     const handleEdit = () => setMode('edit');
     const handleUpdated = (g: GroupInterface) => { setMode('display'); setGroup(g); }
+    const getEditFunction = () => { return (UserHelper.checkAccess('Groups', 'Edit')) ? handleEdit : null }
 
     React.useEffect(() => { setGroup(props.group) }, [props.group]);
 
-
-
     if (mode === 'edit') return <GroupDetailsEdit group={group} updatedFunction={handleUpdated} />
     else return (
-        <DisplayBox headerText="Group Details" headerIcon="fas fa-list" editFunction={handleEdit} >
+        <DisplayBox headerText="Group Details" headerIcon="fas fa-list" editFunction={getEditFunction()} >
             <div className="row">
                 <div className="col"><div><label>Category:</label> {group.categoryName}</div></div>
                 <div className="col"><div><label>Name:</label> {group.name}</div></div>

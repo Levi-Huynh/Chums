@@ -1,7 +1,6 @@
 import React from 'react';
-import { ApiHelper, AttendanceFilterInterface, DisplayBox, GroupInterface, GroupDetails, PersonAdd, PersonInterface, Tabs, SessionAdd, SessionInterface } from './Components';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { MembersAdd } from './Components/MembersAdd';
+import { ApiHelper, UserHelper, MembersAdd, DisplayBox, GroupInterface, GroupDetails, PersonAdd, PersonInterface, Tabs, SessionAdd, SessionInterface } from './Components';
+import { RouteComponentProps } from 'react-router-dom';
 
 type TParams = { id?: string };
 
@@ -42,9 +41,9 @@ export const GroupPage = ({ match }: RouteComponentProps<TParams>) => {
     }
 
 
-
-    return (
-        <form method="post">
+    if (!UserHelper.checkAccess('Groups', 'View')) return (<></>);
+    else return (
+        <>
             <h1><i className="fas fa-list"></i> {group.name}</h1>
             <div className="row">
                 <div className="col-lg-8">
@@ -55,6 +54,6 @@ export const GroupPage = ({ match }: RouteComponentProps<TParams>) => {
                     {getSidebarModules()}
                 </div>
             </div>
-        </form >
+        </>
     );
 }

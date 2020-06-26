@@ -22,8 +22,8 @@ export const Tabs: React.FC<Props> = (props) => {
         props.sidebarVisibilityFunction('addSession', false);
         props.sidebarVisibilityFunction('addMember', false);
 
-        if (selectedTab == 'members') props.sidebarVisibilityFunction('addPerson', true);
-        if (selectedTab == 'sessions') {
+        if (selectedTab == 'members' && UserHelper.checkAccess('Group Members', 'Edit')) props.sidebarVisibilityFunction('addPerson', true);
+        if (selectedTab == 'sessions' && UserHelper.checkAccess('Attendance', 'Edit')) {
             props.sidebarVisibilityFunction('addPerson', true);
             props.sidebarVisibilityFunction('addMember', true);
         }

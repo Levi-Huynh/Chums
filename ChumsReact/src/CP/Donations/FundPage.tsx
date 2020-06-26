@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, DisplayBox, InputBox, DonationBatchInterface, Helper, Donations, FundInterface, DonationFilter, FundDonationInterface } from './Components';
+import { ApiHelper, DisplayBox, InputBox, DonationBatchInterface, Helper, UserHelper, FundDonationInterface } from './Components';
 import { RouteComponentProps, Link } from 'react-router-dom';
 
 
@@ -32,7 +32,6 @@ export const FundPage = ({ match }: RouteComponentProps<TParams>) => {
             case "endDate":
                 setEndDate(new Date(e.target.value));
                 break;
-
         }
     }
 
@@ -56,8 +55,9 @@ export const FundPage = ({ match }: RouteComponentProps<TParams>) => {
 
     React.useEffect(loadData, [match.params.id]);
 
-    return (
-        <form method="post">
+    if (!UserHelper.checkAccess('Donations', 'View')) return (<></>);
+    else return (
+        <>
             <h1><i className="fas fa-hand-holding-usd"></i> {fund.name} Donations</h1>
             <div className="row">
                 <div className="col-lg-8">
@@ -83,7 +83,7 @@ export const FundPage = ({ match }: RouteComponentProps<TParams>) => {
                 </div>
             </div >
 
-        </form >
+        </>
     );
 }
 

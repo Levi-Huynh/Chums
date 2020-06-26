@@ -1,7 +1,6 @@
 import React from 'react';
-import { ApiHelper, DisplayBox, DonationEdit, DonationBatchInterface, Helper, Donations, FundInterface } from './Components';
+import { ApiHelper, DisplayBox, DonationEdit, DonationBatchInterface, UserHelper, Donations, FundInterface } from './Components';
 import { RouteComponentProps } from 'react-router-dom';
-import { chartDefaultProps } from 'react-google-charts/dist/default-props';
 
 type TParams = { id?: string };
 
@@ -26,8 +25,9 @@ export const DonationBatchPage = ({ match }: RouteComponentProps<TParams>) => {
 
     React.useEffect(() => loadData(), [match.params.id]);
 
+    if (!UserHelper.checkAccess('Donations', 'View')) return (<></>);
     return (
-        <form method="post">
+        <>
             <h1><i className="fas fa-hand-holding-usd"></i> Batch #{batch.id}</h1>
             <div className="row">
                 <div className="col-lg-8">
@@ -38,7 +38,7 @@ export const DonationBatchPage = ({ match }: RouteComponentProps<TParams>) => {
                 </div>
             </div >
 
-        </form >
+        </>
     );
 }
 

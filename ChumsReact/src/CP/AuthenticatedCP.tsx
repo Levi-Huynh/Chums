@@ -50,7 +50,7 @@ export const AuthenticatedCP = () => {
                             <Route path="/cp/forms"><FormsPage /></Route>
                             <Route path="/cp/settings/roles/:id" component={RolePage}></Route>
                             <Route path="/cp/settings"><RolesPage /></Route>
-                            <Route path="/cp"><div>Control Panel</div></Route>
+                            <Route path="/cp"><Redirect to="/cp/people" /></Route>
                         </Switch>
                     </main>
                 </div>

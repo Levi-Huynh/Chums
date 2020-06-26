@@ -1,7 +1,6 @@
 import React from 'react';
-import { ApiHelper, DisplayBox, RoleInterface, PersonAdd, PersonInterface, RoleMemberInterface, FormInterface, QuestionInterface, FormQuestionEdit } from './Components';
-import { Link, RouteComponentProps } from 'react-router-dom'
-
+import { ApiHelper, DisplayBox, UserHelper, FormInterface, QuestionInterface, FormQuestionEdit } from './Components';
+import { RouteComponentProps } from 'react-router-dom'
 
 type TParams = { id?: string };
 export const FormPage = ({ match }: RouteComponentProps<TParams>) => {
@@ -71,8 +70,8 @@ export const FormPage = ({ match }: RouteComponentProps<TParams>) => {
     React.useEffect(loadData, []);
 
 
-
-    return (
+    if (!UserHelper.checkAccess('Forms', 'Edit')) return (<></>);
+    else return (
         <>
             <h1><i className="fas fa-align-left"></i> {form.name}</h1>
             <div className="row">
@@ -93,4 +92,3 @@ export const FormPage = ({ match }: RouteComponentProps<TParams>) => {
         </>
     );
 }
-

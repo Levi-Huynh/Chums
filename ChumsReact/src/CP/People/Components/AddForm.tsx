@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react';
-import { ApiHelper, PersonInterface } from './';
+import { ApiHelper, PersonInterface, UserHelper } from './';
 
 interface Props {
     person: PersonInterface,

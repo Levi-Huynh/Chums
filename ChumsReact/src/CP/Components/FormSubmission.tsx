@@ -1,5 +1,5 @@
 import React from 'react';
-import { Question, ApiHelper, FormSubmissionInterface } from './';
+import { Question, ApiHelper, FormSubmissionInterface, UserHelper } from './';
 
 interface Props {
     formSubmissionId: number,
@@ -11,6 +11,10 @@ export const FormSubmission: React.FC<Props> = (props) => {
     const [formSubmission, setFormSubmission] = React.useState(null);
 
     const handleEdit = (e: React.MouseEvent<HTMLAnchorElement>) => { e.preventDefault(); props.editFunction(props.formSubmissionId); }
+    const getEditLink = () => {
+        if (!UserHelper.checkAccess('Forms', 'Edit')) return null;
+        else return (<a href="#" className="fa-pull-right" onClick={handleEdit}><i className="fas fa-pencil-alt"></i></a>);
+    }
     const loadData = () => { if (props.formSubmissionId > 0) ApiHelper.apiGet('/formsubmissions/' + props.formSubmissionId + '/?include=questions,answers').then((data: FormSubmissionInterface) => setFormSubmission(data)); }
     const getAnswer = (questionId: number) => {
         var answers = formSubmission.answers;
@@ -30,7 +34,7 @@ export const FormSubmission: React.FC<Props> = (props) => {
 
     return (
         <>
-            <a href="#" className="fa-pull-right" onClick={handleEdit}><i className="fas fa-pencil-alt"></i></a>
+            {getEditLink()}
             <div className="content">
                 <div className="row">
                     <div className="col-lg-6">{firstHalf}</div>

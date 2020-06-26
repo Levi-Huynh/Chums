@@ -62,6 +62,7 @@ export const RolePermissions: React.FC<Props> = (props) => {
                     <RoleCheck roleId={props.role.id} rolePermissions={rolePermissions} contentType="Roles" action="Edit" label="Edit" />
                 </div>
             </div>
+            <hr />
             <div className="row">
                 <div className="col-xl-6">
                     <div><b>Services:</b></div>

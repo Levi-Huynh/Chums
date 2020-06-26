@@ -1,5 +1,6 @@
 import React from 'react';
 import { PersonView, PersonEdit, PersonInterface } from './'
+import { UserHelper } from '../../../Utils';
 
 interface Props {
     person: PersonInterface,
@@ -14,9 +15,10 @@ export const Person: React.FC<Props> = (props) => {
     const handleEdit = (e: React.MouseEvent) => { e.preventDefault(); setMode('edit'); }
     const handleAddForm = (formId: number) => { setMode('display'); setAddFormId(formId); }
     const handleUpdated = (p: PersonInterface) => { setMode('display'); setPerson(p); }
+    const getEditFunction = () => { return (UserHelper.checkAccess('People', 'Edit')) ? handleEdit : null; }
 
     React.useEffect(() => setPerson(props.person), [props.person]);
 
-    if (mode === 'display') return <PersonView person={person} editFunction={handleEdit} addFormId={addFormId} photoUrl={props.photoUrl} />
+    if (mode === 'display') return <PersonView person={person} editFunction={getEditFunction()} addFormId={addFormId} photoUrl={props.photoUrl} />
     else return <PersonEdit person={person} updatedFunction={handleUpdated} addFormFunction={handleAddForm} photoUrl={props.photoUrl} togglePhotoEditor={props.togglePhotoEditor} />
 }

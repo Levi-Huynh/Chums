@@ -1,5 +1,5 @@
 import React from 'react';
-import { Person, Groups, Tabs, Household, ImageEditor, PersonHelper } from './Components'
+import { Person, Groups, Tabs, Household, ImageEditor, PersonHelper, UserHelper } from './Components'
 import { ApiHelper } from '../../Utils/ApiHelper';
 
 
@@ -19,6 +19,7 @@ export const PersonPage = ({ match }: RouteComponentProps<TParams>) => {
     const handlePhotoDone = () => setEditPhotoUrl(null);
     const getImageEditor = () => { return (editPhotoUrl === null) ? null : <ImageEditor updatedFunction={handlePhotoUpdated} doneFunction={handlePhotoDone} person={person} /> }
     const togglePhotoEditor = (show: boolean) => { setEditPhotoUrl((show) ? PersonHelper.getPhotoUrl(person.Id, person.photoUpdated) : null); }
+    const getGroups = () => { return (UserHelper.checkAccess('Group Members', 'View')) ? <Groups personId={person?.id} /> : null }
 
     React.useEffect(() => loadData(), [match.params.id]);
 
@@ -31,7 +32,7 @@ export const PersonPage = ({ match }: RouteComponentProps<TParams>) => {
             <div className="col-md-4">
                 {getImageEditor()}
                 <Household personId={person?.id} />
-                <Groups personId={person?.id} />
+                {getGroups()}
             </div>
         </div >
     )

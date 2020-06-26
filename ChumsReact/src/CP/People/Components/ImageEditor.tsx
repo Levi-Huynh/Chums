@@ -41,8 +41,9 @@ export const ImageEditor: React.FC<Props> = (props) => {
 
     const cropCallback = () => {
         if (cropper.current !== null) {
-            setDataUrl(cropper.current.getCroppedCanvas().toDataURL());
-            props.updatedFunction(dataUrl);
+            var url = cropper.current.getCroppedCanvas().toDataURL();
+            setDataUrl(url);
+            props.updatedFunction(url);
         }
     }
 

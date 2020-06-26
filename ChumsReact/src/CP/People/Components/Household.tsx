@@ -1,6 +1,7 @@
 import React from 'react';
 import { DisplayBox, PersonHelper, ApiHelper, HouseholdEdit } from './';
 import { Link } from 'react-router-dom';
+import { UserHelper } from '../../../Utils';
 
 
 interface Props {
@@ -16,6 +17,7 @@ export const Household: React.FC<Props> = (props) => {
     const handleUpdate = () => { loadData(); loadMembers(); setMode('display'); }
     const loadData = () => { if (props.personId > 0) ApiHelper.apiGet('/households?personId=' + props.personId).then(data => setHousehold(data[0])); }
     const loadMembers = () => { if (household != null) ApiHelper.apiGet('/householdmembers?householdId=' + household.id).then(data => setMembers(data)); }
+    const getEditFunction = () => { return (UserHelper.checkAccess('Households', 'Edit')) ? handleEdit : null }
 
     React.useEffect(() => loadData(), [props.personId]);
     React.useEffect(() => loadMembers(), [household?.id]);
@@ -34,7 +36,7 @@ export const Household: React.FC<Props> = (props) => {
             }
         }
         return (
-            <DisplayBox headerIcon="fas fa-users" headerText={(household?.name || '') + " Household"} editFunction={handleEdit} >
+            <DisplayBox headerIcon="fas fa-users" headerText={(household?.name || '') + " Household"} editFunction={getEditFunction()} >
                 <table id="household" className="table table-sm"><tbody>{rows}</tbody></table>
             </DisplayBox>
         );

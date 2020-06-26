@@ -1,21 +1,25 @@
 import React from 'react';
-import { ApiHelper, DisplayBox, RoleInterface, RoleEdit } from './Components';
+import { ApiHelper, DisplayBox, RoleInterface, RoleEdit, UserHelper } from './Components';
 import { Link } from 'react-router-dom'
 
 export const RolesPage = () => {
-    //const [searchText, setSearchText] = React.useState('');
     const [roles, setRoles] = React.useState<RoleInterface[]>([]);
     const [selectedRoleId, setSelectedRoleId] = React.useState(-1);
 
     const loadData = () => { ApiHelper.apiGet('/roles').then(data => setRoles(data)); }
-    const getEditContent = () => { return (<a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setSelectedRoleId(0); }} ><i className="fas fa-plus"></i></a>); }
+    const getEditContent = () => {
+        if (!UserHelper.checkAccess('Roles', 'Edit')) return null;
+        else return (<a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setSelectedRoleId(0); }} ><i className="fas fa-plus"></i></a>);
+    }
 
     const getRows = () => {
         var result = [];
+        const canEdit = UserHelper.checkAccess('Roles', 'Edit');
         for (let i = 0; i < roles.length; i++) {
+            const editLink = (canEdit) ? (<a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setSelectedRoleId(roles[i].id); }}><i className="fas fa-pencil-alt"></i></a>) : null;
             result.push(<tr>
                 <td><i className="fas fa-lock" /> <Link to={"/cp/settings/roles/" + roles[i].id}>{roles[i].name}</Link></td>
-                <td><a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setSelectedRoleId(roles[i].id); }}><i className="fas fa-pencil-alt"></i></a></td>
+                <td>{editLink}</td>
             </tr>);
         }
         return result;
@@ -33,6 +37,7 @@ export const RolesPage = () => {
 
     React.useEffect(loadData, []);
 
+    if (!UserHelper.checkAccess('Roles', 'View')) return (<></>);
     return (
         <>
             <h1><i className="fas fa-lock"></i> Roles</h1>

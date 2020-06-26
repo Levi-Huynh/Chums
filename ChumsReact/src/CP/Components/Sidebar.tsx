@@ -1,4 +1,5 @@
 import React from 'react';
+import { UserHelper } from './'
 import { Link, NavLink } from 'react-router-dom';
 
 export const Sidebar = () => {
@@ -8,16 +9,26 @@ export const Sidebar = () => {
         else return 'nav-link';
     }
 
+    const getTab = (key: string, url: string, icon: string, label: string) => {
+        return (<li className="nav-item"><Link className={getClass(key)} to={url}><i className={icon}></i> {label}</Link></li>);
+    }
+
+    const getTabs = () => {
+        var tabs = [];
+        tabs.push(getTab('people', '/cp/people', 'fas fa-user', 'People'));
+        if (UserHelper.checkAccess('Groups', 'View')) tabs.push(getTab('groups', '/cp/groups', 'fas fa-list-ul', 'Groups'));
+        if (UserHelper.checkAccess('Attendance', 'View Summary')) tabs.push(getTab('attendance', '/cp/attendance', 'far fa-calendar-alt', 'Attendance'));
+        if (UserHelper.checkAccess('Donations', 'View Summary')) tabs.push(getTab('donations', '/cp/donations', 'fas fa-hand-holding-usd', 'Donations'));
+        if (UserHelper.checkAccess('Forms', 'View')) tabs.push(getTab('forms', '/cp/forms', 'fas fa-align-left', 'Forms'));
+        //if (UserHelper.checkAccess('Tasks', 'View')) tabs.push(getTab('forms', '/cp/tasks', 'fas fa-tasks', 'Tasks'));
+        if (UserHelper.checkAccess('Roles', 'View')) tabs.push(getTab('settings', '/cp/settings', 'fas fa-cog', 'Settings'));
+        return tabs;
+    }
+
     return (
         <nav className="col-sm-3 col-md-2 d-none d-md-block bg-dark sidebar" id="sidebar">
             <ul className="nav flex-column">
-                <li className="nav-item"><NavLink className={getClass('people')} to="/cp/people"><i className="fas fa-user"></i> People</NavLink></li>
-                <li className="nav-item"><NavLink className={getClass('groups')} to="/cp/groups"><i className="fas fa-list-ul"></i> Groups</NavLink></li>
-                <li className="nav-item"><Link className={getClass('attendance')} to="/cp/attendance/"><i className="far fa-calendar-alt"></i> Attendance</Link></li>
-                <li className="nav-item"><Link className={getClass('donations')} to="/cp/donations/"><i className="fas fa-hand-holding-usd"></i> Donations</Link></li>
-                <li className="nav-item"><Link className={getClass('forms')} to="/cp/forms/"><i className="fas fa-align-left"></i> Forms</Link></li>
-                <li className="nav-item"><Link className={getClass('tasks')} to="/cp/tasks/"><i className="fas fa-tasks"></i> Tasks</Link></li>
-                <li className="nav-item"><Link className={getClass('settings')} to="/cp/settings/"><i className="fas fa-cog"></i> Settings</Link></li>
+                {getTabs()}
             </ul>
         </nav>
     );

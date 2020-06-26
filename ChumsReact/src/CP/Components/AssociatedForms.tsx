@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormSubmission, FormSubmissionEdit, FormSubmissionInterface } from './';
+import { UserHelper } from '../../Utils';
 
 interface Props {
     addFormId: number,
@@ -25,7 +26,7 @@ export const AssociatedForms: React.FC<Props> = (props) => {
     React.useEffect(() => setContentType(props.contentType), [props.contentType]);
     React.useEffect(() => setFormSubmissions(props.formSubmissions), [props.formSubmissions]);
 
-
+    if (!UserHelper.checkAccess('Forms', 'View')) return <></>
     if (mode === 'edit' || addFormId > 0) return <FormSubmissionEdit formSubmissionId={editFormSubmissionId} updatedFunction={handleUpdate} addFormId={addFormId} contentType={contentType} contentId={contentId} />
     else {
         if (formSubmissions !== undefined) {
