@@ -47,7 +47,7 @@ export const PersonView: React.FC<Props> = (props) => {
 
     return (
         <div className="inputBox">
-            <div className="header"><a className="fa-pull-right" onClick={props.editFunction} href="#"><i className="fas fa-pencil-alt"></i></a> <i className="fas fa-user"></i> Personal Details</div>
+            <div className="header"><a className="fa-pull-right" onClick={props.editFunction} href="about:blank"><i className="fas fa-pencil-alt"></i></a> <i className="fas fa-user"></i> Personal Details</div>
             <div className="content">
                 <div className="row">
                     <div className="col-3">{getPhoto()}</div>

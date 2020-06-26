@@ -17,13 +17,13 @@ export const Donations: React.FC<Props> = (props) => {
         var id = parseInt(anchor.getAttribute('data-id'));
         props.editFunction(id);
     }
-    const getEditContent = () => { return (UserHelper.checkAccess('Donations', 'Edit')) ? (<a href="#" onClick={showAddDonation} ><i className="fas fa-plus"></i></a>) : null; }
+    const getEditContent = () => { return (UserHelper.checkAccess('Donations', 'Edit')) ? (<a href="about:blank" onClick={showAddDonation} ><i className="fas fa-plus"></i></a>) : null; }
     const getRows = () => {
         var rows: React.ReactNode[] = [];
         var canEdit = UserHelper.checkAccess('Donations', 'Edit');
         for (let i = 0; i < donations.length; i++) {
             var d = donations[i];
-            const editLink = (canEdit) ? (<a href="#" onClick={showEditDonation} data-id={d.id}>{d.id}</a>) : (<>{d.id}</>);
+            const editLink = (canEdit) ? (<a href="about:blank" onClick={showEditDonation} data-id={d.id}>{d.id}</a>) : (<>{d.id}</>);
             rows.push(<tr>
                 <td>{editLink}</td>
                 <td>{d.person?.displayName || 'Anonymous'}</td>

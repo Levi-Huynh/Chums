@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { AttendanceHelper, Helper, UserHelper, GroupInterface, GroupMembers, GroupSessions, SessionInterface, Attendance, PersonInterface } from './';
 
 interface Props {
@@ -14,7 +14,7 @@ export const Tabs: React.FC<Props> = (props) => {
 
     const getTab = (keyName: string, icon: string, text: string) => {
         var className = (keyName === selectedTab) ? 'nav-link active' : 'nav-link';
-        return <li className="nav-item" key={keyName}><a href="#" onClick={e => { e.preventDefault(); setSelectedTab(keyName) }} className={className}><i className={icon}></i> {text}</a></li>
+        return <li className="nav-item" key={keyName}><a href="about:blank" onClick={e => { e.preventDefault(); setSelectedTab(keyName) }} className={className}><i className={icon}></i> {text}</a></li>
     }
 
     const setVisibilityState = () => {
@@ -22,8 +22,8 @@ export const Tabs: React.FC<Props> = (props) => {
         props.sidebarVisibilityFunction('addSession', false);
         props.sidebarVisibilityFunction('addMember', false);
 
-        if (selectedTab == 'members' && UserHelper.checkAccess('Group Members', 'Edit')) props.sidebarVisibilityFunction('addPerson', true);
-        if (selectedTab == 'sessions' && UserHelper.checkAccess('Attendance', 'Edit')) {
+        if (selectedTab === 'members' && UserHelper.checkAccess('Group Members', 'Edit')) props.sidebarVisibilityFunction('addPerson', true);
+        if (selectedTab === 'sessions' && UserHelper.checkAccess('Attendance', 'Edit')) {
             props.sidebarVisibilityFunction('addPerson', true);
             props.sidebarVisibilityFunction('addMember', true);
         }

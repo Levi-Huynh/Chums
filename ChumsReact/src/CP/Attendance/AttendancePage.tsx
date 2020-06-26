@@ -17,7 +17,7 @@ export const AttendancePage = () => {
     const loadData = () => { ApiHelper.apiGet('/attendancerecords/groups').then(data => setAttendance(data)); }
     const removeEditors = () => { setSelectedCampus(null); setSelectedService(null); setSelectedServiceTime(null); }
 
-    React.useEffect(() => loadData(), []);
+    React.useEffect(loadData, []);
 
     const getRows = () => {
         var rows = [];
@@ -28,9 +28,9 @@ export const AttendancePage = () => {
 
         for (var i = 0; i < attendance.length; i++) {
             const a = attendance[i];
-            var campus = (a.campus === undefined || a.campus?.name === lastCampus) ? <></> : <><i className="fas fa-church"></i><a href="#" onClick={(e) => { e.preventDefault(); selectCampus(a.campus); }}>{a.campus.name}</a></>
-            var service = (a.service === undefined || a.service?.name === lastService) ? <></> : <><i className="far fa-calendar-alt"></i><a href="#" onClick={(e) => { e.preventDefault(); selectService(a.service); }}>{a.service.name}</a></>
-            var serviceTime = (a.serviceTime === undefined || a.serviceTime?.name === lastServiceTime) ? <></> : <><i className="far fa-clock"></i><a href="#" onClick={(e) => { e.preventDefault(); selectServiceTime(a.serviceTime); }}>{a.serviceTime.name}</a></>
+            var campus = (a.campus === undefined || a.campus?.name === lastCampus) ? <></> : <><i className="fas fa-church"></i><a href="about:blank" onClick={(e) => { e.preventDefault(); selectCampus(a.campus); }}>{a.campus.name}</a></>
+            var service = (a.service === undefined || a.service?.name === lastService) ? <></> : <><i className="far fa-calendar-alt"></i><a href="about:blank" onClick={(e) => { e.preventDefault(); selectService(a.service); }}>{a.service.name}</a></>
+            var serviceTime = (a.serviceTime === undefined || a.serviceTime?.name === lastServiceTime) ? <></> : <><i className="far fa-clock"></i><a href="about:blank" onClick={(e) => { e.preventDefault(); selectServiceTime(a.serviceTime); }}>{a.serviceTime.name}</a></>
             var category = (a.group === undefined || a.group?.categoryName === lastCategory) ? <></> : <><i className="far fa-folder"></i>{a.group.categoryName}</>
             var group = (a.group === undefined) ? <></> : <><i className="fas fa-list"></i><Link to={"/cp/groups/" + a.group.id}>{a.group.name}</Link></>
 
@@ -52,11 +52,11 @@ export const AttendancePage = () => {
     const getEditLinks = () => {
         return (
             <>
-                <a id="addBtnGroup" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" ><i className="fas fa-plus"></i></a>
+                <a id="addBtnGroup" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="about:blank" ><i className="fas fa-plus"></i></a>
                 <div className="dropdown-menu" aria-labelledby="addBtnGroup">
-                    <a className="dropdown-item" href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); selectCampus({ id: 0, name: 'New Campus' }); }} ><i className="fas fa-church"></i> Add Campus</a>
-                    <a className="dropdown-item" href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); selectService({ id: 0, campusId: 0, name: 'New Service' }); }} ><i className="fas fa-calendar-alt"></i> Add Service</a>
-                    <a className="dropdown-item" href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); selectServiceTime({ id: 0, serviceId: 0, name: 'New Service Time' }); }} ><i className="far fa-clock"></i> Add Service Time</a>
+                    <a className="dropdown-item" href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); selectCampus({ id: 0, name: 'New Campus' }); }} ><i className="fas fa-church"></i> Add Campus</a>
+                    <a className="dropdown-item" href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); selectService({ id: 0, campusId: 0, name: 'New Service' }); }} ><i className="fas fa-calendar-alt"></i> Add Service</a>
+                    <a className="dropdown-item" href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); selectServiceTime({ id: 0, serviceId: 0, name: 'New Service Time' }); }} ><i className="far fa-clock"></i> Add Service Time</a>
                 </div>
             </>
         );

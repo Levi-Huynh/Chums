@@ -1,4 +1,4 @@
-import React, { SelectHTMLAttributes } from 'react';
+import React from 'react';
 import { ApiHelper, GroupInterface, GroupServiceTimeInterface } from './';
 import { InputBox, ErrorMessages, SessionInterface, Helper } from '../../Components';
 
@@ -10,14 +10,12 @@ export const SessionAdd: React.FC<Props> = (props) => {
     const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
     const [serviceTimeId, setServiceTimeId] = React.useState(0);
 
-
-
     const handleCancel = () => { props.updatedFunction(null); }
+
     const loadData = () => ApiHelper.apiGet('/groupservicetimes?groupId=' + props.group.id).then(data => {
         setGroupServiceTimes(data);
         if (data.length > 0) setServiceTimeId(data[0].serviceTimeId);
     });
-
 
     const handleSave = () => {
         if (validate()) {
@@ -30,16 +28,15 @@ export const SessionAdd: React.FC<Props> = (props) => {
         }
     }
 
-
     const validate = () => {
         var errors: string[] = [];
         if (sessionDate === null || sessionDate < new Date(2000, 1, 1)) errors.push("Invalid date");
         setErrors(errors);
-        return errors.length == 0;
+        return errors.length === 0;
     }
 
     const getServiceTimes = () => {
-        if (groupServiceTimes.length == 0) return <></>
+        if (groupServiceTimes.length === 0) return <></>
         else {
             var options = [];
             for (var i = 0; i < groupServiceTimes.length; i++) {
@@ -55,26 +52,8 @@ export const SessionAdd: React.FC<Props> = (props) => {
         }
     }
 
-
     React.useEffect(() => { if (props.group !== null) loadData() }, [props.group]);
 
-
-    /*
-        const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
-    
-        const loadData = () => ApiHelper.apiGet('/groupservicetimes?groupId=' + props.group.id).then(data => setGroupServiceTimes(data));
-    
-        const getRows = () => {
-            var result: JSX.Element[] = [];
-            for (let i = 0; i < groupServiceTimes.length; i++) {
-                var gst = groupServiceTimes[i];
-                result.push(<div key={gst.id}> {gst.serviceTime.name}</div>);
-            }
-            return result;
-        }
-    
-        React.useEffect(() => { if (props.group.id !== undefined) loadData() }, [props.group]);
-    */
     return (
         <InputBox headerIcon="far fa-calendar-alt" headerText="Add a Session" saveFunction={handleSave} cancelFunction={handleCancel}>
             <ErrorMessages errors={errors} />

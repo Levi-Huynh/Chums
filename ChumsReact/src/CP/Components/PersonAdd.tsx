@@ -30,7 +30,7 @@ export const PersonAdd: React.FC<Props> = (props) => {
                 <tr key={sr.id}>
                     <td><img src={PersonHelper.getPhotoUrl(sr.d, sr.photoUpdated)} alt="avatar" /></td>
                     <td>{sr.displayName}</td>
-                    <td><a href="#" className="text-success" data-index={i} onClick={handleAdd}><i className="fas fa-user"></i> Add</a></td>
+                    <td><a href="about:blank" className="text-success" data-index={i} onClick={handleAdd}><i className="fas fa-user"></i> Add</a></td>
                 </tr>
             );
         }
@@ -40,7 +40,7 @@ export const PersonAdd: React.FC<Props> = (props) => {
         <>
             <div className="input-group">
                 <input type="text" className="form-control" value={searchText} onChange={handleChange} />
-                <div className="input-group-append"><a href="#" className="btn btn-primary" onClick={handleSearch} ><i className="fas fa-search"></i> Search</a></div>
+                <div className="input-group-append"><a href="about:blank" className="btn btn-primary" onClick={handleSearch} ><i className="fas fa-search"></i> Search</a></div>
             </div>
             <table className="table table-sm" id="householdMemberAddTable">
                 <tbody>{rows}</tbody>

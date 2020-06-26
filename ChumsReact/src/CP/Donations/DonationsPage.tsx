@@ -15,7 +15,7 @@ export const DonationsPage = () => {
     }
     const batchUpdated = () => { setEditBatchId(-1); loadData(); }
     const loadData = () => { ApiHelper.apiGet('/donationbatches').then(data => setBatches(data)); }
-    const getEditContent = () => { return (UserHelper.checkAccess('Donations', 'Edit')) ? (<a href="#" onClick={showAddBatch} ><i className="fas fa-plus"></i></a>) : null; }
+    const getEditContent = () => { return (UserHelper.checkAccess('Donations', 'Edit')) ? (<a href="about:blank" onClick={showAddBatch} ><i className="fas fa-plus"></i></a>) : null; }
 
     const getSidebarModules = () => {
         var result = [];
@@ -30,7 +30,7 @@ export const DonationsPage = () => {
         var canViewBatcht = UserHelper.checkAccess('Donations', 'View');
         for (let i = 0; i < batches.length; i++) {
             var b = batches[i];
-            const editLink = (canEdit) ? (<a href="#" data-id={b.id} onClick={showEditBatch}><i className="fas fa-pencil-alt" /></a>) : null;
+            const editLink = (canEdit) ? (<a href="about:blank" data-id={b.id} onClick={showEditBatch}><i className="fas fa-pencil-alt" /></a>) : null;
             const batchLink = (canViewBatcht) ? (<Link to={"/cp/donations/" + b.id}>{b.id}</Link>) : <>{b.id}</>;
             result.push(<tr>
                 <td>{batchLink}</td>
@@ -45,7 +45,7 @@ export const DonationsPage = () => {
     }
 
 
-    React.useEffect(() => loadData(), []);
+    React.useEffect(loadData, []);
 
     if (!UserHelper.checkAccess('Donations', 'View Summary')) return (<></>);
     else return (

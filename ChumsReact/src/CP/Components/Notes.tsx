@@ -1,4 +1,4 @@
-import React, { ReactNodeArray } from 'react';
+import React from 'react';
 import { ApiHelper, Note, DisplayBox, InputBox, UserHelper } from './';
 
 interface Props { contentId: number, contentType: string }
@@ -13,7 +13,7 @@ export const Notes: React.FC<Props> = (props) => {
         var n = { contentId: props.contentId, contentType: props.contentType, contents: noteText }
         ApiHelper.apiPost('/notes', [n]).then(() => { loadNotes(); setNoteText(''); });
     }
-    React.useEffect(() => loadNotes(), [props.contentId]);
+    React.useEffect(loadNotes, [props.contentId]);
 
     var noteArray: React.ReactNode[] = [];
     for (var i = 0; i < notes.length; i++) noteArray.push(<Note note={notes[i]} key={notes[i].id} />);
@@ -28,7 +28,5 @@ export const Notes: React.FC<Props> = (props) => {
                 <textarea className="form-control" name="contents" onChange={handleChange} value={noteText} />
             </div>
         </InputBox>
-
     )
 }
-

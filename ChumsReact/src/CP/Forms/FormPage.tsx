@@ -11,7 +11,7 @@ export const FormPage = ({ match }: RouteComponentProps<TParams>) => {
     const questionUpdated = () => { loadQuestions(); setEditQuestionId(-1); }
     const loadData = () => { ApiHelper.apiGet('/forms/' + match.params.id).then(data => setForm(data)); loadQuestions(); }
     const loadQuestions = () => ApiHelper.apiGet('/questions?formId=' + match.params.id).then(data => setQuestions(data));
-    const getEditContent = () => { return (<a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setEditQuestionId(0); }} ><i className="fas fa-plus"></i></a>); }
+    const getEditContent = () => { return (<a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); setEditQuestionId(0); }} ><i className="fas fa-plus"></i></a>); }
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
         var anchor = e.currentTarget as HTMLAnchorElement;
@@ -48,11 +48,11 @@ export const FormPage = ({ match }: RouteComponentProps<TParams>) => {
     const getRows = () => {
         var rows = [];
         for (let i = 0; i < questions.length; i++) {
-            var upArrow = (i == 0) ? <span style={{ display: 'inline-block', width: 20 }} /> : <><a href="#" onClick={moveUp}><i className="fas fa-arrow-up" /></a> </>
-            var downArrow = (i == questions.length - 1) ? <></> : <> &nbsp; <a href="#" onClick={moveDown}><i className="fas fa-arrow-down" /></a></>
+            var upArrow = (i === 0) ? <span style={{ display: 'inline-block', width: 20 }} /> : <><a href="about:blank" onClick={moveUp}><i className="fas fa-arrow-up" /></a> </>
+            var downArrow = (i === questions.length - 1) ? <></> : <> &nbsp; <a href="about:blank" onClick={moveDown}><i className="fas fa-arrow-down" /></a></>
             rows.push(
                 <tr key={i} data-index={i} >
-                    <td><a href="#" onClick={handleClick} >{questions[i].title}</a></td>
+                    <td><a href="about:blank" onClick={handleClick} >{questions[i].title}</a></td>
                     <td>{questions[i].fieldType}</td>
                     <td style={{ textAlign: 'left' }}>{upArrow}{downArrow}</td>
                 </tr>

@@ -25,7 +25,7 @@ export const ServiceTimesEdit: React.FC<Props> = (props) => {
         var result: JSX.Element[] = [];
         for (let i = 0; i < groupServiceTimes.length; i++) {
             var gst = groupServiceTimes[i];
-            result.push(<tr key={gst.id}><td><i className="far fa-clock"></i> {gst.serviceTime.name}</td><td><a href="#" className="text-danger" data-id={gst.id} onClick={handleRemove}><i className="fas fa-user-times"></i> Remove</a></td></tr>);
+            result.push(<tr key={gst.id}><td><i className="far fa-clock"></i> {gst.serviceTime.name}</td><td><a href="about:blank" className="text-danger" data-id={gst.id} onClick={handleRemove}><i className="fas fa-user-times"></i> Remove</a></td></tr>);
         }
         return result;
     }
@@ -39,14 +39,14 @@ export const ServiceTimesEdit: React.FC<Props> = (props) => {
     const handleAdd = (e: React.MouseEvent) => {
         e.preventDefault();
         var gst = { groupId: props.group.id, serviceTimeId: addServiceTimeId } as GroupServiceTimeInterface;
-        ApiHelper.apiPost('/groupservicetimes', [gst]).then(() => loadData());
+        ApiHelper.apiPost('/groupservicetimes', [gst]).then(loadData);
     }
 
     const handleRemove = (e: React.MouseEvent) => {
         e.preventDefault();
         var anchor = e.currentTarget as HTMLAnchorElement;
         var id = parseInt(anchor.getAttribute('data-id'));
-        ApiHelper.apiDelete('/groupservicetimes/' + id.toString()).then(() => loadData());
+        ApiHelper.apiDelete('/groupservicetimes/' + id.toString()).then(loadData);
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => setAddServiceTimeId(parseInt(e.currentTarget.value));
@@ -67,7 +67,7 @@ export const ServiceTimesEdit: React.FC<Props> = (props) => {
                     {getOptions()}
                 </select>
                 <div className="input-group-append">
-                    <a className="btn btn-primary" href="#" onClick={handleAdd} ><i className="fas fa-plus"></i> Add</a>
+                    <a className="btn btn-primary" href="about:blank" onClick={handleAdd} ><i className="fas fa-plus"></i> Add</a>
                 </div>
             </div>
         </div>

@@ -9,7 +9,7 @@ export const BatchEdit: React.FC<Props> = (props) => {
 
     const [batch, setBatch] = React.useState<DonationBatchInterface>({ batchDate: new Date(), name: '' });
 
-    //const getEditContent = () => { return (<a href="#"><i className="fas fa-plus"></i></a>); }
+    //const getEditContent = () => { return (<a href="about:blank"><i className="fas fa-plus"></i></a>); }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         var b = { ...batch } as DonationBatchInterface;

@@ -48,7 +48,7 @@ export const GroupMembers: React.FC<Props> = (props) => {
         var rows = [];
         for (let i = 0; i < groupMembers.length; i++) {
             var gm = groupMembers[i];
-            var editLink = (canEdit) ? <a href="#" onClick={handleRemove} data-index={i} className="text-danger" ><i className="fas fa-user-times"></i> Remove</a> : <></>
+            var editLink = (canEdit) ? <a href="about:blank" onClick={handleRemove} data-index={i} className="text-danger" ><i className="fas fa-user-times"></i> Remove</a> : <></>
             rows.push(
                 <tr key={i}>
                     <td><img src={PersonHelper.getPhotoUrl(gm.personId, gm.person.photoUpdated)} /></td>

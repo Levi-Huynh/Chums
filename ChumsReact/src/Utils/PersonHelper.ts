@@ -6,7 +6,7 @@ export class PersonHelper {
     }
 
     static getPhotoPath(personId: number, photoUpdated: Date): string {
-        if (photoUpdated == null || photoUpdated < new Date(2000, 1, 1)) return "/images/sample-profile.png";
+        if (photoUpdated === undefined || photoUpdated === null || photoUpdated < new Date(2000, 1, 1)) return "/images/sample-profile.png";
         else return "/content/c/" + UserHelper.church.id + "/p/" + personId + ".png?dt=" + escape(photoUpdated.toString());
     }
 

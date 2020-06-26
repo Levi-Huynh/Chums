@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, GroupInterface, DisplayBox, RoleInterface, RolePermissionInterface } from './';
+import { ApiHelper, RolePermissionInterface } from './';
 
 interface Props {
     contentType: string,
@@ -19,7 +19,6 @@ export const RoleCheck: React.FC<Props> = (props) => {
         }
     }
 
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.checked) {
             var rp: RolePermissionInterface = { roleId: props.roleId, contentType: props.contentType, action: props.action }
@@ -34,7 +33,7 @@ export const RoleCheck: React.FC<Props> = (props) => {
         }
     }
 
-    React.useEffect(() => { init() }, [props.rolePermissions]);
+    React.useEffect(init, [props.rolePermissions]);
 
     return (
         <div className="form-check">

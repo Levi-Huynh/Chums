@@ -39,7 +39,7 @@ export const FundPage = ({ match }: RouteComponentProps<TParams>) => {
         var result = [];
         for (let i = 0; i < fundDonations.length; i++) {
             var fd = fundDonations[i];
-            var personCol = (fd.donation?.personId == 0) ? (<td>Anonymous</td>)
+            var personCol = (fd.donation?.personId === 0) ? (<td>Anonymous</td>)
                 : (<td><Link to={"/cp/people/" + fd.donation?.personId}>{fd.donation.person?.displayName || 'Anonymous'}</Link></td>);
             result.push(<tr>
                 <td>{Helper.formatHtml5Date(fd.donation.donationDate)}</td>

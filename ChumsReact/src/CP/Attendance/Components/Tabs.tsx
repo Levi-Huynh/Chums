@@ -3,18 +3,15 @@ import { UserHelper } from './';
 import { AttendanceFilterInterface } from '../../../Utils';
 import { Individuals, Attendance } from './';
 
-interface Props {
-    filter: AttendanceFilterInterface
-}
+interface Props { filter: AttendanceFilterInterface }
 
 export const Tabs: React.FC<Props> = (props) => {
     const [selectedTab, setSelectedTab] = React.useState('');
 
     const getTab = (keyName: string, icon: string, text: string) => {
         var className = (keyName === selectedTab) ? 'nav-link active' : 'nav-link';
-        return <li className="nav-item" key={keyName}><a href="#" onClick={e => { e.preventDefault(); setSelectedTab(keyName) }} className={className}><i className={icon}></i> {text}</a></li>
+        return <li className="nav-item" key={keyName}><a href="about:blank" onClick={e => { e.preventDefault(); setSelectedTab(keyName) }} className={className}><i className={icon}></i> {text}</a></li>
     }
-
 
     var tabs = [];
     var defaultTab = '';

@@ -19,8 +19,8 @@ export const Household: React.FC<Props> = (props) => {
     const loadMembers = () => { if (household != null) ApiHelper.apiGet('/householdmembers?householdId=' + household.id).then(data => setMembers(data)); }
     const getEditFunction = () => { return (UserHelper.checkAccess('Households', 'Edit')) ? handleEdit : null }
 
-    React.useEffect(() => loadData(), [props.personId]);
-    React.useEffect(() => loadMembers(), [household?.id]);
+    React.useEffect(loadData, [props.personId]);
+    React.useEffect(loadMembers, [household?.id]);
 
     var rows = [];
     if (mode === 'display') {

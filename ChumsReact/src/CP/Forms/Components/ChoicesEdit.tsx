@@ -1,15 +1,9 @@
 import React from 'react';
-import { InputBox, QuestionInterface } from '.';
-import { Question } from '../../Components';
+import { QuestionInterface } from '.';
 
-interface Props {
-    question: QuestionInterface,
-    updatedFunction: (question: QuestionInterface) => void
-}
-
+interface Props { question: QuestionInterface, updatedFunction: (question: QuestionInterface) => void }
 
 export const ChoicesEdit: React.FC<Props> = (props) => {
-
     const [choiceValue, setChoiceValue] = React.useState('');
     const [choiceText, setChoiceText] = React.useState('');
 
@@ -47,13 +41,12 @@ export const ChoicesEdit: React.FC<Props> = (props) => {
                 result.push(<tr key={i}>
                     <td>{c.value}</td>
                     <td>{c.text}</td>
-                    <td><a href="#" className="btn btn-danger btn-sm" onClick={handleRemove} data-index={i}>Remove</a></td>
+                    <td><a href="about:blank" className="btn btn-danger btn-sm" onClick={handleRemove} data-index={i}>Remove</a></td>
                 </tr>);
             }
         }
         return result;
     }
-
 
     return (
         <div className="form-group">
@@ -65,7 +58,7 @@ export const ChoicesEdit: React.FC<Props> = (props) => {
                     <tr>
                         <td><input type="text" className="form-control form-control-sm" name="choiceValue" value={choiceValue} onChange={handleChange} /></td>
                         <td><input type="text" className="form-control form-control-sm" name="choiceText" value={choiceText} onChange={handleChange} /></td>
-                        <td><a href="#" className="btn btn-success btn-sm" onClick={handleAdd}>Add</a></td>
+                        <td><a href="about:blank" className="btn btn-success btn-sm" onClick={handleAdd}>Add</a></td>
                     </tr>
                 </tbody>
             </table>

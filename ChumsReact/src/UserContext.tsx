@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 interface UserContextInterface { userName: string, setUserName: (userName: string) => void }
 const UserContext = React.createContext<UserContextInterface | undefined>(undefined);

@@ -1,16 +1,10 @@
 import React from 'react';
-import { ApiHelper, InputBox, FundDonationInterface, FundInterface, DonationSummaryInterface, Helper } from './';
+import { ApiHelper, DonationSummaryInterface, Helper } from './';
 import { DisplayBox } from './';
 import { Chart } from 'react-google-charts';
 
-
-interface Props {
-
-}
-
-export const DonationChart: React.FC<Props> = (props) => {
+export const DonationChart: React.FC = () => {
     const [records, setRecords] = React.useState<DonationSummaryInterface[]>([]);
-
 
     const loadData = () => { ApiHelper.apiGet('/donationsummaries').then(data => setRecords(data)); }
 
@@ -30,17 +24,14 @@ export const DonationChart: React.FC<Props> = (props) => {
         var weeks: number[] = [];
         for (let i = 0; i < records.length; i++) {
             var displayName = records[i].fund.name;
-            if (fundNames.indexOf(displayName) == -1) fundNames.push(displayName);
-            if (weeks.indexOf(records[i].week) == -1) weeks.push(records[i].week);
+            if (fundNames.indexOf(displayName) === -1) fundNames.push(displayName);
+            if (weeks.indexOf(records[i].week) === -1) weeks.push(records[i].week);
         }
-
         var rows = [];
-
         var header: any[] = ['Grouping'];
         for (let i = 0; i < fundNames.length; i++) header.push(fundNames[i]);
         header.push({ role: 'annotation' });
         rows.push(header);
-
         for (let i = 0; i < weeks.length; i++) {
             var weekRecords: DonationSummaryInterface[] = getWeekRecords(weeks[i]);
             var weekName = Helper.formatHtml5Date(Helper.getWeekSunday(new Date().getFullYear(), weeks[i]));
@@ -67,7 +58,6 @@ export const DonationChart: React.FC<Props> = (props) => {
                 options={{ height: 400, legend: { position: 'top', maxLines: 3 }, bar: { groupWidth: '75%' }, isStacked: true }}
             />
         </DisplayBox>
-
     );
 }
 

@@ -26,7 +26,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
         var errors = [];
         if (service.name === '') errors.push("Service name cannot be blank.");
         setErrors(errors);
-        return errors.length == 0;
+        return errors.length === 0;
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

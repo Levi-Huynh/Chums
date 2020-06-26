@@ -9,7 +9,7 @@ export const GroupsPage = () => {
 
     const getEditContent = () => {
         if (!UserHelper.checkAccess('Groups', 'Edit')) return null;
-        else return (<a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setShowAdd(true); }} ><i className="fas fa-plus"></i></a>);
+        else return (<a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); setShowAdd(true); }} ><i className="fas fa-plus"></i></a>);
     }
 
     const handleAddUpdated = () => {
@@ -23,7 +23,7 @@ export const GroupsPage = () => {
         });
     }
 
-    React.useEffect(() => loadData(), []);
+    React.useEffect(loadData, []);
 
     const getRows = () => {
         var rows = [];
@@ -31,7 +31,7 @@ export const GroupsPage = () => {
         for (var i = 0; i < groups.length; i++) {
             var g = groups[i];
             var cat = (g.categoryName != lastCat) ? <><i className="far fa-folder"></i> {g.categoryName}</> : <></>;
-            var memberCount = (g.memberCount == 1) ? '1 person' : g.memberCount.toString() + ' people';
+            var memberCount = (g.memberCount === 1) ? '1 person' : g.memberCount.toString() + ' people';
             rows.push(<tr key={g.id}>
                 <td>{cat}</td>
                 <td><i className="fas fa-list"></i> <Link to={"/cp/groups/" + g.id.toString()}>{g.name}</Link></td>

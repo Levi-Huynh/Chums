@@ -1,8 +1,5 @@
 import React from 'react';
-import { ApiHelper, InputBox, FundDonationInterface, FundInterface } from './';
-import { Link } from 'react-router-dom';
-import { Helper } from '../../../Utils';
-
+import { FundDonationInterface, FundInterface } from './';
 
 interface Props {
     fundDonation: FundDonationInterface,
@@ -12,7 +9,6 @@ interface Props {
 }
 
 export const FundDonation: React.FC<Props> = (props) => {
-    //const [fundDonation, setFundDonation] = React.useState<FundDonationInterface>({});
 
     const getOptions = () => {
         var result = [];

@@ -25,7 +25,7 @@ export const PersonDonations: React.FC<Props> = (props) => {
         return rows;
     }
 
-    React.useEffect(() => loadData(), [props.personId]);
+    React.useEffect(loadData, [props.personId]);
 
     return (
         <DisplayBox headerIcon="fas fa-hand-holding-usd" headerText="Donations" >

@@ -2,15 +2,10 @@ import React from 'react';
 import { ApiHelper, GroupInterface, InputBox, ErrorMessages, ServiceTimesEdit } from './';
 import { Redirect } from 'react-router-dom';
 
-interface Props {
-    group: GroupInterface,
-    updatedFunction: (group: GroupInterface) => void
-}
+interface Props { group: GroupInterface, updatedFunction: (group: GroupInterface) => void }
 
 export const GroupDetailsEdit: React.FC<Props> = (props) => {
-
     const [group, setGroup] = React.useState<GroupInterface>({} as GroupInterface);
-    const [mode, setMode] = React.useState("display");
     const [errors, setErrors] = React.useState([]);
     const [redirect, setRedirect] = React.useState('');
 

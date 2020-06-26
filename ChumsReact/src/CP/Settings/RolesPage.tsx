@@ -9,14 +9,14 @@ export const RolesPage = () => {
     const loadData = () => { ApiHelper.apiGet('/roles').then(data => setRoles(data)); }
     const getEditContent = () => {
         if (!UserHelper.checkAccess('Roles', 'Edit')) return null;
-        else return (<a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setSelectedRoleId(0); }} ><i className="fas fa-plus"></i></a>);
+        else return (<a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); setSelectedRoleId(0); }} ><i className="fas fa-plus"></i></a>);
     }
 
     const getRows = () => {
         var result = [];
         const canEdit = UserHelper.checkAccess('Roles', 'Edit');
         for (let i = 0; i < roles.length; i++) {
-            const editLink = (canEdit) ? (<a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setSelectedRoleId(roles[i].id); }}><i className="fas fa-pencil-alt"></i></a>) : null;
+            const editLink = (canEdit) ? (<a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); setSelectedRoleId(roles[i].id); }}><i className="fas fa-pencil-alt"></i></a>) : null;
             result.push(<tr>
                 <td><i className="fas fa-lock" /> <Link to={"/cp/settings/roles/" + roles[i].id}>{roles[i].name}</Link></td>
                 <td>{editLink}</td>

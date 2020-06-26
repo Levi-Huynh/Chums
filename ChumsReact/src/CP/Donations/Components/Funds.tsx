@@ -1,9 +1,7 @@
 import React from 'react';
-import { ApiHelper, InputBox, FundDonationInterface, FundInterface, FundEdit } from './';
+import { ApiHelper, FundInterface, FundEdit } from './';
 import { Link } from 'react-router-dom';
 import { DisplayBox, UserHelper } from '../../Components';
-
-
 
 export const Funds: React.FC = () => {
     const [funds, setFunds] = React.useState<FundInterface[]>([]);
@@ -11,7 +9,7 @@ export const Funds: React.FC = () => {
 
     const loadData = () => ApiHelper.apiGet('/funds').then(data => setFunds(data));
     const handleFundUpdated = () => { loadData(); setEditFund(null); }
-    const getEditSection = () => { return (UserHelper.checkAccess('Donations', 'Edit')) ? (<a href="#" onClick={() => setEditFund({ id: 0, name: '' })}><i className="fas fa-plus"></i></a>) : null; }
+    const getEditSection = () => { return (UserHelper.checkAccess('Donations', 'Edit')) ? (<a href="about:blank" onClick={() => setEditFund({ id: 0, name: '' })}><i className="fas fa-plus"></i></a>) : null; }
 
     const handleEdit = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -26,7 +24,7 @@ export const Funds: React.FC = () => {
         var canViewIndividual = UserHelper.checkAccess('Donations', 'View');
         for (let i = 0; i < funds.length; i++) {
             var f = funds[i];
-            const editLink = (canEdit) ? (<a href="#" onClick={handleEdit} data-index={i}><i className="fas fa-pencil-alt"></i></a>) : null;
+            const editLink = (canEdit) ? (<a href="about:blank" onClick={handleEdit} data-index={i}><i className="fas fa-pencil-alt"></i></a>) : null;
             const viewLink = (canViewIndividual) ? (<Link to={"/cp/donations/funds/" + f.id}>{f.name}</Link>) : (<>{f.name}</>);
             result.push(<tr>
                 <td>{viewLink}</td>

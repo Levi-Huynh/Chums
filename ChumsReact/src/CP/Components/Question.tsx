@@ -1,17 +1,9 @@
 import React from 'react';
-import { Helper, QuestionInterface, AnswerInterface, FormSubmissionInterface } from './';
+import { Helper, QuestionInterface, AnswerInterface } from './';
 
-interface Props {
-    question: QuestionInterface,
-    answer: AnswerInterface
-    formSubmissions?: FormSubmissionInterface[]
-}
+interface Props { question: QuestionInterface, answer: AnswerInterface }
 
 export const Question: React.FC<Props> = (props) => {
-    const [formSubmissions, setFormSubmissions] = React.useState(props.formSubmissions);
-
-    React.useEffect(() => setFormSubmissions(props.formSubmissions), [props.formSubmissions]);
-
     var q = props.question;
     var a = props.answer;
     if (a === null) return null;

@@ -21,7 +21,7 @@ export const PersonPage = ({ match }: RouteComponentProps<TParams>) => {
     const togglePhotoEditor = (show: boolean) => { setEditPhotoUrl((show) ? PersonHelper.getPhotoUrl(person.Id, person.photoUpdated) : null); }
     const getGroups = () => { return (UserHelper.checkAccess('Group Members', 'View')) ? <Groups personId={person?.id} /> : null }
 
-    React.useEffect(() => loadData(), [match.params.id]);
+    React.useEffect(loadData, [match.params.id]);
 
     return (
         <div className="row">

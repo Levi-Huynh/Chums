@@ -10,7 +10,7 @@ export const Sidebar = () => {
     }
 
     const getTab = (key: string, url: string, icon: string, label: string) => {
-        return (<li className="nav-item"><Link className={getClass(key)} to={url}><i className={icon}></i> {label}</Link></li>);
+        return (<li key={key} className="nav-item"><Link className={getClass(key)} to={url}><i className={icon}></i> {label}</Link></li>);
     }
 
     const getTabs = () => {

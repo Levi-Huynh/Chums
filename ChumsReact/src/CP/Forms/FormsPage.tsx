@@ -12,7 +12,7 @@ export const FormsPage = () => {
         var result = [];
         const canEdit = UserHelper.checkAccess('Forms', 'Edit')
         for (let i = 0; i < forms.length; i++) {
-            const editLink = (canEdit) ? (<a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setSelectedFormId(forms[i].id); }}><i className="fas fa-pencil-alt"></i></a>) : null;
+            const editLink = (canEdit) ? (<a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); setSelectedFormId(forms[i].id); }}><i className="fas fa-pencil-alt"></i></a>) : null;
             result.push(<tr>
                 <td><i className="fas fa-align-left" /> <Link to={"/cp/forms/" + forms[i].id}>{forms[i].name}</Link></td>
                 <td>{editLink}</td>
@@ -30,7 +30,7 @@ export const FormsPage = () => {
 
     const getEditContent = () => {
         if (!UserHelper.checkAccess('Forms', 'Edit')) return null;
-        else return (<a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setSelectedFormId(0); }} ><i className="fas fa-plus"></i></a>);
+        else return (<a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); setSelectedFormId(0); }} ><i className="fas fa-plus"></i></a>);
     }
 
     React.useEffect(loadData, []);

@@ -32,7 +32,7 @@ export const AuthenticatedCP = () => {
             <link rel="stylesheet" href="/css/cp.css" />
             <Header></Header>
             <div className="container-fluid">
-                <a href="#" onClick={sidebarToggle} className="d-md-none" id="sidebarToggle"><i className="fas fa-bars"></i></a>
+                <a href="about:blank" onClick={sidebarToggle} className="d-md-none" id="sidebarToggle"><i className="fas fa-bars"></i></a>
                 <div className="row">
                     <Sidebar />
                     <main role="main" className="col-sm-12 ml-sm-auto col-md-10 pt-3">

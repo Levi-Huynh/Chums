@@ -10,7 +10,7 @@ interface Props {
 
 export const DisplayBox: React.FC<Props> = (props) => {
     var editContent = <></>;
-    if (props.editFunction !== undefined) editContent = <a onClick={e => { e.preventDefault(); props.editFunction(); }} href="#" ><i className="fas fa-pencil-alt"></i></a>;
+    if (props.editFunction !== undefined) editContent = <a onClick={e => { e.preventDefault(); props.editFunction(); }} href="about:blank" ><i className="fas fa-pencil-alt"></i></a>;
     else if (props.editContent !== undefined) editContent = <div>{props.editContent}</div>;
     return (
         <div className="inputBox">

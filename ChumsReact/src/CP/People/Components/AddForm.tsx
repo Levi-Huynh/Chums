@@ -37,7 +37,7 @@ export const AddForm: React.FC<Props> = (props) => {
     }
 
     if (unsubmittedForms.length === 0) return null;
-    else if (!clicked) return (<><hr /><a href="#" onClick={handleClick}>Add a form</a></>);
+    else if (!clicked) return (<><hr /><a href="about:blank" onClick={handleClick}>Add a form</a></>);
     else {
         var options = [];
         for (var i = 0; i < unsubmittedForms.length; i++) {

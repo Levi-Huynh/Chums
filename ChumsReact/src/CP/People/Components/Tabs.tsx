@@ -1,9 +1,7 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { UserHelper, Notes, PersonAttendance, PersonDonations } from './';
 
-interface Props {
-    personId: number
-}
+interface Props { personId: number }
 
 export const Tabs: React.FC<Props> = (props) => {
     const [personId, setPersonId] = React.useState(props.personId);
@@ -11,7 +9,7 @@ export const Tabs: React.FC<Props> = (props) => {
 
     const getTab = (keyName: string, icon: string, text: string) => {
         var className = (keyName === selectedTab) ? 'nav-link active' : 'nav-link';
-        return <li className="nav-item" key={keyName}><a href="#" onClick={e => { e.preventDefault(); setSelectedTab(keyName) }} className={className}><i className={icon}></i> {text}</a></li>
+        return <li className="nav-item" key={keyName}><a href="about:blank" onClick={e => { e.preventDefault(); setSelectedTab(keyName) }} className={className}><i className={icon}></i> {text}</a></li>
     }
 
     React.useEffect(() => setPersonId(props.personId), [props.personId]);

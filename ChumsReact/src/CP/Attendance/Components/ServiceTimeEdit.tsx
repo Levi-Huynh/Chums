@@ -26,7 +26,7 @@ export const ServiceTimeEdit: React.FC<Props> = (props) => {
         var errors = [];
         if (serviceTime.name === '') errors.push("Service time name cannot be blank.");
         setErrors(errors);
-        return errors.length == 0;
+        return errors.length === 0;
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

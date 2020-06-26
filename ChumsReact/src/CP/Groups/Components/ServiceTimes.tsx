@@ -17,7 +17,7 @@ export const ServiceTimes: React.FC<Props> = (props) => {
         }
         return result;
     }
-
+    //*** Why does this throw the error 'React Hook React.useEffect has a missing dependency: 'loadData'. Either include it or remove the dependency array  react-hooks/exhaustive-deps'
     React.useEffect(() => { if (props.group.id !== undefined) loadData() }, [props.group]);
 
     return (

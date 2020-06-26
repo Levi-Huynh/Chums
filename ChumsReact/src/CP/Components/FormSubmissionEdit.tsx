@@ -59,7 +59,7 @@ export const FormSubmissionEdit: React.FC<Props> = (props) => {
     }
 
 
-    React.useEffect(() => loadData(), [props.formSubmissionId]);
+    React.useEffect(loadData, [props.formSubmissionId]);
     React.useEffect(() => { setAddFormId(props.addFormId); loadData(); }, [props.addFormId]);
 
     var questionList = [];

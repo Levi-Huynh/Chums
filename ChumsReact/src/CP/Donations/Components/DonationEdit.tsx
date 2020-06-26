@@ -12,7 +12,7 @@ export const DonationEdit: React.FC<Props> = (props) => {
     const [fundDonations, setFundDonations] = React.useState<FundDonationInterface[]>([]);
     const [showSelectPerson, setShowSelectPerson] = React.useState(false);
 
-    //const getEditContent = () => { return (<a href="#"><i className="fas fa-plus"></i></a>); }
+    //const getEditContent = () => { return (<a href="about:blank"><i className="fas fa-plus"></i></a>); }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         var d = { ...donation } as DonationInterface;
@@ -70,7 +70,7 @@ export const DonationEdit: React.FC<Props> = (props) => {
 
     const handlePersonAdd = (p: PersonInterface) => {
         var d = { ...donation } as DonationInterface;
-        if (p == null) {
+        if (p === null) {
             d.person = null;
             d.personId = 0;
         } else {
@@ -96,13 +96,13 @@ export const DonationEdit: React.FC<Props> = (props) => {
         if (showSelectPerson) return (<>
             <PersonAdd addFunction={handlePersonAdd} />
             <hr />
-            <a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); handlePersonAdd(null); }}>Anonymous</a>
+            <a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); handlePersonAdd(null); }}>Anonymous</a>
         </>
         );
         else {
             var personText = (donation.person === undefined || donation.person === null) ? ('Anonymous') : donation.person.displayName;
             return (<div>
-                <a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); setShowSelectPerson(true); }}>{personText}</a>
+                <a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); setShowSelectPerson(true); }}>{personText}</a>
             </div>);
         }
     }

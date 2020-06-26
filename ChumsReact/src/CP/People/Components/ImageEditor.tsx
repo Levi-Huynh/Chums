@@ -1,8 +1,7 @@
-import React, { LegacyRef } from 'react';
-import { InputBox, PersonHelper, ApiHelper, HouseholdEdit } from './';
+import React from 'react';
+import { InputBox, PersonHelper, ApiHelper, PersonInterface } from './';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
-import { PersonInterface } from '../../../Utils';
 
 
 interface Props {
@@ -33,7 +32,7 @@ export const ImageEditor: React.FC<Props> = (props) => {
     const getHeaderButton = () => {
         return (<div>
             <input type="file" onChange={handleUpload} id="fileUpload" accept="image/*" style={{ display: 'none' }} />
-            <a href="#" className="btn btn-sm btn-info" onClick={(e: React.MouseEvent) => { e.preventDefault(); document.getElementById('fileUpload').click(); }} >Upload</a>
+            <a href="about:blank" className="btn btn-sm btn-info" onClick={(e: React.MouseEvent) => { e.preventDefault(); document.getElementById('fileUpload').click(); }} >Upload</a>
         </div>);
     }
 

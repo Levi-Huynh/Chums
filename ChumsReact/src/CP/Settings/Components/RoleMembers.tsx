@@ -1,14 +1,8 @@
 import React from 'react';
-import { ApiHelper, GroupInterface, DisplayBox, UserHelper, RoleMemberInterface, PersonHelper, PersonInterface, RoleInterface } from './';
+import { ApiHelper, DisplayBox, UserHelper, RoleMemberInterface, PersonHelper, PersonInterface, RoleInterface } from './';
 import { Link } from 'react-router-dom';
 
-
-
-interface Props {
-    role: RoleInterface,
-    addedPerson?: PersonInterface,
-    addedCallback?: () => void
-}
+interface Props { role: RoleInterface, addedPerson?: PersonInterface, addedCallback?: () => void }
 
 export const RoleMembers: React.FC<Props> = (props) => {
 
@@ -47,10 +41,10 @@ export const RoleMembers: React.FC<Props> = (props) => {
         var rows = [];
         for (let i = 0; i < roleMembers.length; i++) {
             var rm = roleMembers[i];
-            var editLink = (canEdit) ? <a href="#" onClick={handleRemove} data-index={i} className="text-danger" ><i className="fas fa-user-times"></i> Remove</a> : <></>
+            var editLink = (canEdit) ? <a href="about:blank" onClick={handleRemove} data-index={i} className="text-danger" ><i className="fas fa-user-times"></i> Remove</a> : <></>
             rows.push(
                 <tr key={i}>
-                    <td><img src={PersonHelper.getPhotoUrl(rm.personId, rm.person.photoUpdated)} /></td>
+                    <td><img src={PersonHelper.getPhotoUrl(rm.personId, rm.person.photoUpdated)} alt="avatar" /></td>
                     <td><Link to={"/cp/people/" + rm.personId}>{rm.person.displayName}</Link></td>
                     <td>{editLink}</td>
                 </tr>

@@ -26,11 +26,11 @@ export const PersonEdit: React.FC<Props> = (props) => {
             case 'membershipStatus': p.membershipStatus = val; break;
             case 'gender': p.gender = val; break;
             case 'birthDate':
-                if (val == '') p.birthDate = null; else p.birthDate = new Date(val);
+                if (val === '') p.birthDate = null; else p.birthDate = new Date(val);
                 break;
             case 'maritalStatus': p.maritalStatus = val; break;
             case 'anniversary':
-                if (val == '') p.anniversary = null; else p.anniversary = new Date(val);
+                if (val === '') p.anniversary = null; else p.anniversary = new Date(val);
                 break;
             case 'address1': p.address1 = val; break;
             case 'address2': p.address2 = val; break;
@@ -67,7 +67,7 @@ export const PersonEdit: React.FC<Props> = (props) => {
     const getPhoto = () => {
         if (props.person) {
             var url = (props.photoUrl === null) ? PersonHelper.getPhotoUrl(props.person.id, props.person.photoUpdated) : props.photoUrl;
-            return (<a href="#" onClick={(e: React.MouseEvent) => { e.preventDefault(); props.togglePhotoEditor(true) }}>
+            return (<a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); props.togglePhotoEditor(true) }}>
                 <img src={url} className="img-fluid profilePic" id="imgPreview" alt="avatar" />
             </a>);
         } else return;

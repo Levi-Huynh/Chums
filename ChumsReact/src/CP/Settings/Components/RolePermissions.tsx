@@ -1,19 +1,11 @@
 import React from 'react';
-import { ApiHelper, GroupInterface, DisplayBox, RoleInterface, RolePermissionInterface, RoleCheck } from './';
-import { Link } from 'react-router-dom';
+import { ApiHelper, DisplayBox, RoleInterface, RolePermissionInterface, RoleCheck } from './';
 
-
-
-interface Props {
-    role: RoleInterface
-}
+interface Props { role: RoleInterface }
 
 export const RolePermissions: React.FC<Props> = (props) => {
-
     const [rolePermissions, setRolePermissions] = React.useState<RolePermissionInterface[]>([]);
-
     const loadData = () => ApiHelper.apiGet('/rolepermissions?roleId=' + props.role.id).then(data => setRolePermissions(data));
-
     React.useEffect(() => { if (props.role.id !== undefined) loadData() }, [props.role]);
 
     return (

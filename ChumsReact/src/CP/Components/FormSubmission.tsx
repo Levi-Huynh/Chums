@@ -13,7 +13,7 @@ export const FormSubmission: React.FC<Props> = (props) => {
     const handleEdit = (e: React.MouseEvent<HTMLAnchorElement>) => { e.preventDefault(); props.editFunction(props.formSubmissionId); }
     const getEditLink = () => {
         if (!UserHelper.checkAccess('Forms', 'Edit')) return null;
-        else return (<a href="#" className="fa-pull-right" onClick={handleEdit}><i className="fas fa-pencil-alt"></i></a>);
+        else return (<a href="about:blank" className="fa-pull-right" onClick={handleEdit}><i className="fas fa-pencil-alt"></i></a>);
     }
     const loadData = () => { if (props.formSubmissionId > 0) ApiHelper.apiGet('/formsubmissions/' + props.formSubmissionId + '/?include=questions,answers').then((data: FormSubmissionInterface) => setFormSubmission(data)); }
     const getAnswer = (questionId: number) => {
@@ -21,7 +21,7 @@ export const FormSubmission: React.FC<Props> = (props) => {
         for (var i = 0; i < answers.length; i++) if (answers[i].questionId === questionId) return answers[i];
         return null;
     }
-    React.useEffect(() => loadData(), [props.formSubmissionId]);
+    React.useEffect(loadData, [props.formSubmissionId]);
 
     var firstHalf = [];
     var secondHalf = [];

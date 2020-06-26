@@ -33,7 +33,7 @@ export const AttendanceFilter: React.FC<Props> = (props) => {
             var groups: GroupInterface[] = [];
             for (let i = 0; i < data.length; i++) {
                 var g = data[i] as GroupInterface;
-                if (cats.indexOf(g.categoryName) == -1) cats.push(g.categoryName);
+                if (cats.indexOf(g.categoryName) === -1) cats.push(g.categoryName);
                 if (filter.categoryName === '' || filter.categoryName === g.categoryName) groups.push(g);
             }
             setCategories(cats);

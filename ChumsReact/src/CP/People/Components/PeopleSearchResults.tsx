@@ -36,7 +36,7 @@ export const PeopleSearchResults: React.FC<Props> = (props) => {
         if (firstName.trim() === '') errors.push('First name cannot be blank.');
         if (lastName.trim() === '') errors.push('Last name cannot be blank.');
         setErrors(errors);
-        return errors.length == 0;
+        return errors.length === 0;
     }
 
     const getRows = () => {
@@ -67,7 +67,7 @@ export const PeopleSearchResults: React.FC<Props> = (props) => {
 
 
     if (redirectUrl !== '') return <Redirect to={redirectUrl}></Redirect>;
-    else if (props.people === undefined || props.people == null || props.people.length === 0) return <></>
+    else if (props.people === undefined || props.people === null || props.people.length === 0) return <></>
     else {
         var result =
             <>

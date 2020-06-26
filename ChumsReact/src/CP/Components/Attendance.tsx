@@ -1,11 +1,10 @@
-import React, { ReactNodeArray } from 'react';
-import { ApiHelper, Note, DisplayBox, InputBox, UserHelper, AttendanceRecordInterface } from './';
+import React from 'react';
+import { DisplayBox, AttendanceRecordInterface } from './';
 import { Helper } from '../../Utils';
 import { Chart } from 'react-google-charts';
 import { AttendanceHelper, AttendanceFilterInterface } from './';
 
 interface Props { filter: AttendanceFilterInterface }
-
 
 export const Attendance: React.FC<Props> = (props) => {
 
@@ -33,7 +32,7 @@ export const Attendance: React.FC<Props> = (props) => {
         for (let i = 0; i < records.length; i++) {
             var name = AttendanceHelper.getDisplayName(records[i]);
             var count = records[i].count;
-            if (displayNames.indexOf(name) == -1) {
+            if (displayNames.indexOf(name) === -1) {
                 displayNames.push(name);
                 totals[name] = count;
             }
@@ -49,8 +48,8 @@ export const Attendance: React.FC<Props> = (props) => {
         var weeks: number[] = [];
         for (let i = 0; i < records.length; i++) {
             var displayName = AttendanceHelper.getDisplayName(records[i]);
-            if (displayNames.indexOf(displayName) == -1) displayNames.push(displayName);
-            if (weeks.indexOf(records[i].week) == -1) weeks.push(records[i].week);
+            if (displayNames.indexOf(displayName) === -1) displayNames.push(displayName);
+            if (weeks.indexOf(records[i].week) === -1) weeks.push(records[i].week);
         }
 
         var rows = [];
@@ -84,7 +83,7 @@ export const Attendance: React.FC<Props> = (props) => {
     React.useEffect(loadData, [filter]);
     React.useEffect(() => { setFilter(props.filter) }, [props.filter]);
 
-    if (records.length == 0) return (<DisplayBox headerIcon="far fa-calendar-alt" headerText="Attendance History" ><p>No records found.</p></DisplayBox>);
+    if (records.length === 0) return (<DisplayBox headerIcon="far fa-calendar-alt" headerText="Attendance History" ><p>No records found.</p></DisplayBox>);
     else return (
         <DisplayBox headerIcon="far fa-calendar-alt" headerText="Attendance History" >
             <div className="row">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { DisplayBox, ApiHelper, AttendanceRecordInterface, Helper } from './';
+import { DisplayBox } from './';
 import { PersonInterface, AttendanceHelper, AttendanceFilterInterface, PersonHelper } from '../../../Utils';
 
 interface Props { filter: AttendanceFilterInterface }
@@ -9,8 +9,6 @@ export const Individuals: React.FC<Props> = (props) => {
     const [people, setPeople] = React.useState<PersonInterface[]>([]);
 
     const loadData = () => { AttendanceHelper.loadIndividuals(props.filter).then(data => setPeople(data)); }
-
-    React.useEffect(() => loadData(), [props.filter]);
 
     const getRows = () => {
         var rows: JSX.Element[] = [];
@@ -25,6 +23,7 @@ export const Individuals: React.FC<Props> = (props) => {
         return rows;
     }
 
+    React.useEffect(loadData, [props.filter]);
 
     return (
         <DisplayBox headerIcon="fas fa-user" headerText="People" >

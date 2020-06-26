@@ -29,7 +29,7 @@ export const MembersAdd: React.FC<Props> = (props) => {
                 <tr key={i}>
                     <td><img src={PersonHelper.getPhotoUrl(gm.personId, gm.person.photoUpdated)} /></td>
                     <td><Link to={"/cp/people/" + gm.personId}>{gm.person.displayName}</Link></td>
-                    <td><a href="#" className="text-success" onClick={addMember} data-index={i}><i className="fas fa-user"></i> Add</a></td>
+                    <td><a href="about:blank" className="text-success" onClick={addMember} data-index={i}><i className="fas fa-user"></i> Add</a></td>
                 </tr>
             );
         }

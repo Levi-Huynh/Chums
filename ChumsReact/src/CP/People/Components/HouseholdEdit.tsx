@@ -1,20 +1,12 @@
 import React, { ChangeEvent } from 'react';
 import { InputBox, PersonAdd, PersonHelper, ApiHelper, HouseholdInterface, HouseholdMemberInterface, PersonInterface } from './';
 
-
-interface Props {
-    updatedFunction: () => void,
-    household: HouseholdInterface
-    members: [HouseholdMemberInterface]
-
-
-}
+interface Props { updatedFunction: () => void, household: HouseholdInterface, members: [HouseholdMemberInterface] }
 
 export const HouseholdEdit: React.FC<Props> = (props) => {
     const [household, setHousehold] = React.useState<HouseholdInterface>({} as HouseholdInterface);
     const [members, setMembers] = React.useState<HouseholdMemberInterface[]>([]);
     const [showAdd, setShowAdd] = React.useState(false);
-    const [dummy, setDummy] = React.useState(null);
 
     //***I'm cloning the object because otherwise setHoushold won't trigger a re-render.  Is there a better way?
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => { let h = { ...household }; h.name = e.currentTarget.value; setHousehold(h); }
@@ -72,7 +64,7 @@ export const HouseholdEdit: React.FC<Props> = (props) => {
                             <option value="Other">Other</option>
                         </select>
                     </td>
-                    <td><a href="#" onClick={handleRemove} className="text-danger"><i className="fas fa-user-times"></i> Remove</a></td>
+                    <td><a href="about:blank" onClick={handleRemove} className="text-danger"><i className="fas fa-user-times"></i> Remove</a></td>
                 </tr>
             );
         }
@@ -90,7 +82,7 @@ export const HouseholdEdit: React.FC<Props> = (props) => {
                 <tr>
                     <td></td>
                     <td></td>
-                    <td><a href="#" className="text-success" onClick={handleAdd}> <i className="fas fa-user"></i> Add</a></td>
+                    <td><a href="about:blank" className="text-success" onClick={handleAdd}> <i className="fas fa-user"></i> Add</a></td>
                 </tr>
             </tbody></table>
             {personAdd}

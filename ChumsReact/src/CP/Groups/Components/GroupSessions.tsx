@@ -34,7 +34,7 @@ export const GroupSessions: React.FC<Props> = (props) => {
         var result: JSX.Element[] = [];
         for (let i = 0; i < visitSessions.length; i++) {
             var vs = visitSessions[i];
-            var editLink = (canEdit) ? (<a href="#" onClick={handleRemove} className="text-danger" data-personid={vs.visit.personId} ><i className="fas fa-user-times"></i> Remove</a>) : null;
+            var editLink = (canEdit) ? (<a href="about:blank" onClick={handleRemove} className="text-danger" data-personid={vs.visit.personId} ><i className="fas fa-user-times"></i> Remove</a>) : null;
             result.push(
                 <tr>
                     <td><img className="personPhoto" src={PersonHelper.getPhotoUrl(vs.visit.personId, vs.visit.person.photoUpdated)} /></td>
@@ -48,7 +48,7 @@ export const GroupSessions: React.FC<Props> = (props) => {
 
 
     const selectSession = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        for (let i = 0; i < sessions.length; i++) if (sessions[i].id == parseInt(e.currentTarget.value)) setSession(sessions[i]);
+        for (let i = 0; i < sessions.length; i++) if (sessions[i].id === parseInt(e.currentTarget.value)) setSession(sessions[i]);
     }
 
     const getSessionOptions = () => {
@@ -63,7 +63,7 @@ export const GroupSessions: React.FC<Props> = (props) => {
             <div className="input-group">
                 <select className="form-control" value={session?.id} onChange={selectSession} >{getSessionOptions()}</select>
                 <div className="input-group-append">
-                    <a href="#" className="btn btn-primary" onClick={handleAdd} ><i className="far fa-calendar-alt"></i> New</a>
+                    <a href="about:blank" className="btn btn-primary" onClick={handleAdd} ><i className="far fa-calendar-alt"></i> New</a>
                 </div>
             </div>
         );
@@ -91,7 +91,7 @@ export const GroupSessions: React.FC<Props> = (props) => {
 
 
     var content = <></>;
-    if (sessions.length == 0) content = <div className="alert alert-warning" role="alert"><b>There are no sessions.</b>  Please add a new session to continue.</div>
+    if (sessions.length === 0) content = <div className="alert alert-warning" role="alert"><b>There are no sessions.</b>  Please add a new session to continue.</div>
     else content = (<>
         <b>Attendance for {props.group.name}</b>
         <table className="table" id="groupMemberTable">

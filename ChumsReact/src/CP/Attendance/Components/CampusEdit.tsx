@@ -1,10 +1,7 @@
-import React, { Fragment, ChangeEvent } from 'react';
+import React, { ChangeEvent } from 'react';
 import { CampusInterface, InputBox, ErrorMessages, ApiHelper } from './';
 
-interface Props {
-    campus: CampusInterface,
-    updatedFunction: () => void
-}
+interface Props { campus: CampusInterface, updatedFunction: () => void }
 
 export const CampusEdit: React.FC<Props> = (props) => {
     const [campus, setCampus] = React.useState({} as CampusInterface);
@@ -17,7 +14,7 @@ export const CampusEdit: React.FC<Props> = (props) => {
         var errors = [];
         if (campus.name === '') errors.push("Campus name cannot be blank.");
         setErrors(errors);
-        return errors.length == 0;
+        return errors.length === 0;
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
