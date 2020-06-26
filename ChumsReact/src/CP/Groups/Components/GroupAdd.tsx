@@ -1,15 +1,9 @@
 import React from 'react';
-import { ApiHelper, GroupInterface, DisplayBox, UserHelper, GroupMemberInterface, PersonHelper } from './';
-import { Link } from 'react-router-dom';
-import { PersonInterface } from '../../../Utils';
-import { InputBox } from '../../Components';
+import { ApiHelper, GroupInterface, InputBox } from './';
 
-interface Props {
-    updatedFunction: () => void
-}
+interface Props { updatedFunction: () => void }
 
 export const GroupAdd: React.FC<Props> = (props) => {
-
     const [categoryName, setCategoryName] = React.useState('');
     const [groupName, setGroupName] = React.useState('');
     const handleCancel = () => { props.updatedFunction(); };

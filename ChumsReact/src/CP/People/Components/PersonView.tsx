@@ -1,6 +1,5 @@
 import React from 'react';
 import { PersonHelper, AssociatedForms, PersonInterface } from './'
-import { DisplayBox } from '../../Components';
 
 interface Props {
     person: PersonInterface

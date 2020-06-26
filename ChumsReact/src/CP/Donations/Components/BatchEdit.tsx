@@ -1,15 +1,20 @@
 import React from 'react';
-import { ApiHelper, InputBox, ErrorMessages, DonationBatchInterface } from './';
-import { Link } from 'react-router-dom';
-import { Helper } from '../../../Utils';
+import { ApiHelper, InputBox, Helper, DonationBatchInterface } from './';
 
 interface Props { batchId: number, updatedFunction: () => void }
 
 export const BatchEdit: React.FC<Props> = (props) => {
-
     const [batch, setBatch] = React.useState<DonationBatchInterface>({ batchDate: new Date(), name: '' });
 
-    //const getEditContent = () => { return (<a href="about:blank"><i className="fas fa-plus"></i></a>); }
+    const handleCancel = () => { props.updatedFunction(); }
+    const handleSave = () => ApiHelper.apiPost('/donationbatches', [batch]).then(() => props.updatedFunction());
+    const getDeleteFunction = () => { return (props.batchId > 0) ? handleDelete : undefined; }
+
+    const handleDelete = () => {
+        if (window.confirm('Are you sure you wish to permanently delete this batch?')) {
+            ApiHelper.apiDelete('/donationbatches/' + batch.id).then(() => props.updatedFunction());
+        }
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         var b = { ...batch } as DonationBatchInterface;
@@ -20,14 +25,6 @@ export const BatchEdit: React.FC<Props> = (props) => {
         setBatch(b);
     }
 
-    const handleCancel = () => { props.updatedFunction(); }
-    const handleDelete = () => {
-        if (window.confirm('Are you sure you wish to permanently delete this batch?')) {
-            ApiHelper.apiDelete('/donationbatches/' + batch.id).then(() => props.updatedFunction());
-        }
-    }
-    const handleSave = () => ApiHelper.apiPost('/donationbatches', [batch]).then(() => props.updatedFunction());
-    const getDeleteFunction = () => { return (props.batchId > 0) ? handleDelete : undefined; }
     const loadData = () => {
         if (props.batchId === 0) setBatch({ batchDate: new Date(), name: '' });
         else ApiHelper.apiGet('/donationbatches/' + props.batchId).then(data => setBatch(data));

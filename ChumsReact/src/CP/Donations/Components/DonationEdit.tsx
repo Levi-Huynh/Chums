@@ -1,6 +1,5 @@
 import React from 'react';
 import { ApiHelper, InputBox, DonationInterface, FundDonationInterface, PersonAdd, FundInterface } from './';
-import { Link } from 'react-router-dom';
 import { Helper, PersonInterface } from '../../../Utils';
 import { FundDonations } from './FundDonations';
 
@@ -51,7 +50,7 @@ export const DonationEdit: React.FC<Props> = (props) => {
         if (props.donationId === 0) {
             setDonation({ donationDate: new Date(), batchId: props.batchId, amount: 0, method: 'Cash' });
             var fd: FundDonationInterface = { amount: 0, fundId: props.funds[0].id };
-            setFundDonations([{}]);
+            setFundDonations([fd]);
         }
         else {
             ApiHelper.apiGet('/donations/' + props.donationId + '?include=person').then(data => setDonation(data));

@@ -1,11 +1,7 @@
 import React, { ChangeEvent } from 'react';
-import { ApiHelper, PersonInterface, UserHelper } from './';
+import { ApiHelper, PersonInterface } from './';
 
-interface Props {
-    person: PersonInterface,
-    addFormFunction: (selectedFormId: number) => void
-
-}
+interface Props { person: PersonInterface, addFormFunction: (selectedFormId: number) => void }
 
 export const AddForm: React.FC<Props> = (props) => {
     const [forms, setForms] = React.useState(null);
@@ -13,9 +9,6 @@ export const AddForm: React.FC<Props> = (props) => {
     const [person, setPerson] = React.useState(props.person);
     const [clicked, setClicked] = React.useState(false);
     const [selectedFormId, setSelectedFormId] = React.useState(0);
-
-    React.useEffect(() => { ApiHelper.apiGet('/forms?contentType=person').then(data => setForms(data)); }, []);
-    React.useEffect(() => determineUnsubmitted(), [forms]);
     const handleClick = (e: React.MouseEvent) => { e.preventDefault(); setClicked(true); };
     const handleChange = (e: ChangeEvent<HTMLSelectElement>) => { e.preventDefault(); setSelectedFormId(parseInt(e.currentTarget.value)); };
     const handleAdd = (e: React.MouseEvent) => { e.preventDefault(); props.addFormFunction(selectedFormId); };
@@ -35,6 +28,9 @@ export const AddForm: React.FC<Props> = (props) => {
         setSelectedFormId((unsubmitted.length === 0) ? 0 : unsubmitted[0].id);
         setUnsubmittedForms(unsubmitted);
     }
+
+    React.useEffect(() => { ApiHelper.apiGet('/forms?contentType=person').then(data => setForms(data)); }, []);
+    React.useEffect(determineUnsubmitted, [forms]);
 
     if (unsubmittedForms.length === 0) return null;
     else if (!clicked) return (<><hr /><a href="about:blank" onClick={handleClick}>Add a form</a></>);

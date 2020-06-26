@@ -3,7 +3,6 @@ import { ApiHelper, DisplayBox, GroupInterface, GroupAdd, UserHelper } from './C
 import { Link } from 'react-router-dom';
 
 export const GroupsPage = () => {
-
     const [groups, setGroups] = React.useState<GroupInterface[]>([]);
     const [showAdd, setShowAdd] = React.useState(false);
 
@@ -12,16 +11,8 @@ export const GroupsPage = () => {
         else return (<a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); setShowAdd(true); }} ><i className="fas fa-plus"></i></a>);
     }
 
-    const handleAddUpdated = () => {
-        setShowAdd(false);
-        loadData();
-    }
-
-    const loadData = () => {
-        ApiHelper.apiGet('/groups').then(data => {
-            setGroups(data);
-        });
-    }
+    const handleAddUpdated = () => { setShowAdd(false); loadData(); }
+    const loadData = () => { ApiHelper.apiGet('/groups').then(data => { setGroups(data); }); }
 
     React.useEffect(loadData, []);
 
@@ -30,7 +21,7 @@ export const GroupsPage = () => {
         var lastCat = '';
         for (var i = 0; i < groups.length; i++) {
             var g = groups[i];
-            var cat = (g.categoryName != lastCat) ? <><i className="far fa-folder"></i> {g.categoryName}</> : <></>;
+            var cat = (g.categoryName !== lastCat) ? <><i className="far fa-folder"></i> {g.categoryName}</> : <></>;
             var memberCount = (g.memberCount === 1) ? '1 person' : g.memberCount.toString() + ' people';
             rows.push(<tr key={g.id}>
                 <td>{cat}</td>
@@ -41,8 +32,6 @@ export const GroupsPage = () => {
         }
         return rows
     }
-
-
 
     var addBox = (showAdd) ? <GroupAdd updatedFunction={handleAddUpdated} /> : <></>
 

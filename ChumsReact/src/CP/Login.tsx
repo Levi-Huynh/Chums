@@ -4,10 +4,7 @@ import { ErrorMessages, ApiHelper, UserHelper } from './Components';
 import UserContext from '../UserContext'
 import { Redirect } from 'react-router-dom';
 
-interface LoginResponse {
-    apiToken: string,
-    name: string
-}
+interface LoginResponse { apiToken: string, name: string }
 
 export const Login = () => {
     const [email, setEmail] = React.useState('');
@@ -46,7 +43,7 @@ export const Login = () => {
     }
 
     const context = React.useContext(UserContext)
-    React.useEffect(() => init(), []);
+    React.useEffect(init, []);
 
     if (context.userName === '' || ApiHelper.apiKey === '') {
         return (

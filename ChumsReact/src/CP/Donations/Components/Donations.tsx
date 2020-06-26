@@ -1,23 +1,21 @@
 import React from 'react';
-import { ApiHelper, UserHelper, DonationInterface } from './';
-import { Helper } from '../../../Utils';
-import { DisplayBox } from '../../Components';
+import { ApiHelper, UserHelper, DonationInterface, Helper, DisplayBox } from './';
 
 interface Props { batchId: number, addFunction: () => void, editFunction: (id: number) => void }
 
 export const Donations: React.FC<Props> = (props) => {
-
     const [donations, setDonations] = React.useState<DonationInterface[]>([]);
 
     const loadData = () => ApiHelper.apiGet('/donations?batchId=' + props.batchId).then(data => setDonations(data));
     const showAddDonation = (e: React.MouseEvent) => { e.preventDefault(); props.addFunction() }
+    const getEditContent = () => { return (UserHelper.checkAccess('Donations', 'Edit')) ? (<a href="about:blank" onClick={showAddDonation} ><i className="fas fa-plus"></i></a>) : null; }
     const showEditDonation = (e: React.MouseEvent) => {
         e.preventDefault();
         var anchor = e.currentTarget as HTMLAnchorElement;
         var id = parseInt(anchor.getAttribute('data-id'));
         props.editFunction(id);
     }
-    const getEditContent = () => { return (UserHelper.checkAccess('Donations', 'Edit')) ? (<a href="about:blank" onClick={showAddDonation} ><i className="fas fa-plus"></i></a>) : null; }
+
     const getRows = () => {
         var rows: React.ReactNode[] = [];
         var canEdit = UserHelper.checkAccess('Donations', 'Edit');

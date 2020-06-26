@@ -1,5 +1,5 @@
 import React from 'react';
-import { DisplayBox, ApiHelper, AttendanceRecordInterface, Helper, DonationInterface } from './';
+import { DisplayBox, ApiHelper, Helper, DonationInterface } from './';
 import { Link } from 'react-router-dom'
 
 interface Props { personId: number }

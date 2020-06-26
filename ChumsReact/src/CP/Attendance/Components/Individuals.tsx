@@ -5,18 +5,16 @@ import { PersonInterface, AttendanceHelper, AttendanceFilterInterface, PersonHel
 interface Props { filter: AttendanceFilterInterface }
 
 export const Individuals: React.FC<Props> = (props) => {
-
     const [people, setPeople] = React.useState<PersonInterface[]>([]);
 
     const loadData = () => { AttendanceHelper.loadIndividuals(props.filter).then(data => setPeople(data)); }
 
     const getRows = () => {
         var rows: JSX.Element[] = [];
-
         for (let i = 0; i < people.length; i++) {
             var p = people[i];
             rows.push(<tr>
-                <td><img src={PersonHelper.getPhotoUrl(p.id, p.photoUpdated)} /></td>
+                <td><img src={PersonHelper.getPhotoUrl(p.id, p.photoUpdated)} alt="avatar" /></td>
                 <td>{p.displayName}</td>
             </tr>);
         }

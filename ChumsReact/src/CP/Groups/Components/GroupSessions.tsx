@@ -1,6 +1,5 @@
 import React from 'react';
-import { ApiHelper, GroupInterface, GroupAdd, DisplayBox, SessionInterface, VisitSessionInterface, PersonInterface, PersonHelper } from './';
-import { VisitInterface, UserHelper } from '../../../Utils';
+import { ApiHelper, GroupInterface, DisplayBox, SessionInterface, VisitSessionInterface, PersonInterface, PersonHelper, VisitInterface, UserHelper } from './';
 
 interface Props {
     group: GroupInterface,
@@ -37,7 +36,7 @@ export const GroupSessions: React.FC<Props> = (props) => {
             var editLink = (canEdit) ? (<a href="about:blank" onClick={handleRemove} className="text-danger" data-personid={vs.visit.personId} ><i className="fas fa-user-times"></i> Remove</a>) : null;
             result.push(
                 <tr>
-                    <td><img className="personPhoto" src={PersonHelper.getPhotoUrl(vs.visit.personId, vs.visit.person.photoUpdated)} /></td>
+                    <td><img className="personPhoto" src={PersonHelper.getPhotoUrl(vs.visit.personId, vs.visit.person.photoUpdated)} alt="avatar" /></td>
                     <td><a className="personName" href={"/cp/people/person.aspx?id=" + vs.visit.personId}>{vs.visit.person.displayName}</a></td>
                     <td>{editLink}</td>
                 </tr >
@@ -89,7 +88,6 @@ export const GroupSessions: React.FC<Props> = (props) => {
     React.useEffect(() => { if (props.addedPerson?.id !== undefined) handlePersonAdd() }, [props.addedPerson]);
     React.useEffect(handleSessionSelected, [session]);
 
-
     var content = <></>;
     if (sessions.length === 0) content = <div className="alert alert-warning" role="alert"><b>There are no sessions.</b>  Please add a new session to continue.</div>
     else content = (<>
@@ -100,12 +98,6 @@ export const GroupSessions: React.FC<Props> = (props) => {
         </table>
     </>);
 
-    return (
-        <DisplayBox headerText="Sessions" headerIcon="far fa-calendar-alt" editContent={getHeaderSection()} >
-            {content}
-        </DisplayBox>
-
-
-    );
+    return (<DisplayBox headerText="Sessions" headerIcon="far fa-calendar-alt" editContent={getHeaderSection()} >{content}</DisplayBox>);
 }
 

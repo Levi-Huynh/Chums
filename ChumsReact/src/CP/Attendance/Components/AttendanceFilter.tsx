@@ -1,11 +1,8 @@
 import React, { ChangeEvent } from 'react';
-import { AttendanceFilterInterface, InputBox, ErrorMessages, ApiHelper, CampusInterface } from './';
+import { AttendanceFilterInterface, InputBox, ApiHelper, CampusInterface } from './';
 import { Helper, ServiceInterface, ServiceTimeInterface, GroupInterface } from '../../../Utils';
 
-interface Props {
-    filter: AttendanceFilterInterface,
-    updatedFunction: (filter: AttendanceFilterInterface) => void
-}
+interface Props { filter: AttendanceFilterInterface, updatedFunction: (filter: AttendanceFilterInterface) => void }
 
 export const AttendanceFilter: React.FC<Props> = (props) => {
     const [filter, setFilter] = React.useState(props.filter);
@@ -16,12 +13,8 @@ export const AttendanceFilter: React.FC<Props> = (props) => {
     const [groups, setGroups] = React.useState<GroupInterface[]>([]);
 
     const handleUpdate = () => { props.updatedFunction(filter); }
-
     const loadCampuses = () => ApiHelper.apiGet('/campuses').then(data => { setCampuses(data) });
-    const loadServices = () => {
-        var url = '/services/search?campusId=' + filter.campusId;
-        ApiHelper.apiGet(url).then(data => setServices(data));
-    }
+    const loadServices = () => { ApiHelper.apiGet('/services/search?campusId=' + filter.campusId).then(data => setServices(data)); }
     const loadServiceTimes = () => {
         var url = '/servicetimes/search?campusId=' + filter.campusId + '&serviceId=' + filter.serviceId;
         ApiHelper.apiGet(url).then(data => setServiceTimes(data));
@@ -40,8 +33,6 @@ export const AttendanceFilter: React.FC<Props> = (props) => {
             setGroups(groups);
         });
     }
-
-
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         e.preventDefault();
@@ -98,9 +89,9 @@ export const AttendanceFilter: React.FC<Props> = (props) => {
         loadGroups();
     }
 
-    React.useEffect(() => { loadData(); }, []);
-    React.useEffect(() => { loadServices(); }, [filter.campusId]);
-    React.useEffect(() => { loadGroups(); }, [filter.serviceTimeId, filter.categoryName]);
+    React.useEffect(loadData, []);
+    React.useEffect(loadServices, [filter.campusId]);
+    React.useEffect(loadGroups, [filter.serviceTimeId, filter.categoryName]);
 
     return (
         <InputBox saveFunction={handleUpdate} headerText="Attendance Filter" headerIcon="fas fa-filter" saveText="Filter" >
