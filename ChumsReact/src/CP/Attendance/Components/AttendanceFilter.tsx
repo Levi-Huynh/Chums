@@ -53,32 +53,32 @@ export const AttendanceFilter: React.FC<Props> = (props) => {
     }
 
     const getCampusOptions = () => {
-        var result = [<option value="0">All</option>];
-        for (let i = 0; i < campuses.length; i++) result.push(<option value={campuses[i].id}>{campuses[i].name}</option>);
+        var result = [<option key={0} value="0">All</option>];
+        for (let i = 0; i < campuses.length; i++) result.push(<option key={campuses[i].id} value={campuses[i].id}>{campuses[i].name}</option>);
         return result;
     }
 
     const getServiceOptions = () => {
-        var result = [<option value="0">All</option>];
-        for (let i = 0; i < services.length; i++) result.push(<option value={services[i].id}>{services[i].name}</option>);
+        var result = [<option key={0} value="0">All</option>];
+        for (let i = 0; i < services.length; i++) result.push(<option key={services[i].id} value={services[i].id}>{services[i].name}</option>);
         return result;
     }
 
     const getServiceTimeOptions = () => {
-        var result = [<option value="0">All</option>];
-        for (let i = 0; i < serviceTimes.length; i++) result.push(<option value={serviceTimes[i].id}>{serviceTimes[i].name}</option>);
+        var result = [<option key={0} value="0">All</option>];
+        for (let i = 0; i < serviceTimes.length; i++) result.push(<option key={serviceTimes[i].id} value={serviceTimes[i].id}>{serviceTimes[i].name}</option>);
         return result;
     }
 
     const getCategoryOptions = () => {
-        var result = [<option value="">All</option>];
-        for (let i = 0; i < categories.length; i++) result.push(<option value={categories[i]}>{categories[i]}</option>);
+        var result = [<option key="" value="">All</option>];
+        for (let i = 0; i < categories.length; i++) result.push(<option key={categories[i]} value={categories[i]}>{categories[i]}</option>);
         return result;
     }
 
     const getGroupOptions = () => {
-        var result = [<option value="">All</option>];
-        for (let i = 0; i < groups.length; i++) result.push(<option value={groups[i].id}>{groups[i].name}</option>);
+        var result = [<option key={0} value="">All</option>];
+        for (let i = 0; i < groups.length; i++) result.push(<option key={groups[i].id} value={groups[i].id}>{groups[i].name}</option>);
         return result;
     }
 
@@ -105,7 +105,7 @@ export const AttendanceFilter: React.FC<Props> = (props) => {
                 <div className="col">
                     <div className="form-group">
                         <label>Campus</label>
-                        <select name="campus" className="form-control form-control-sm" value={filter.campusId} onChange={handleChange}>{getCampusOptions()}</select>
+                        <select name="campus" data-testid="campus" className="form-control form-control-sm" value={filter.campusId} onChange={handleChange}>{getCampusOptions()}</select>
                     </div>
                 </div>
             </div>

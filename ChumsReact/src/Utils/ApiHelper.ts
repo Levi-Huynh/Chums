@@ -57,5 +57,12 @@ export class ApiHelper {
         return fetch(this.baseUrl + path, requestOptions);
     }
 
+    static async login(email: string, password: string) {
+        var data = { Email: email, Password: password };
+        const requestOptions = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) };
+        return fetch(this.baseUrl + '/Stage/users/login', requestOptions)
+            .then(response => response.json());
+    }
+
 }
 

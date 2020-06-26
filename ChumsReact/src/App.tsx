@@ -5,8 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ControlPanel } from './CP/ControlPanel';
 import { UserProvider } from './UserContext'
 
-export const App = () => {
-
+const App: React.FC = () => {
   return (
     <UserProvider>
       <Router>
@@ -18,5 +17,5 @@ export const App = () => {
     </UserProvider>
   );
 }
-
+export default App;
 

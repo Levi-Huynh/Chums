@@ -9,7 +9,7 @@ export const Header: React.FC = () => {
                 <div className="collapse navbar-collapse" id="navbar">
                     <ul className="navbar-nav mr-auto">
                     </ul>
-                    <div className="navbar-nav ml-auto">{UserHelper.person.displayName}</div>
+                    <div className="navbar-nav ml-auto" data-testid="displayName">{UserHelper.person.displayName}</div>
                 </div>
             </nav>
             <div id="userMenu"></div>
