@@ -8,8 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.chums.checkin.R;
-import org.chums.checkin.models.People;
-import org.chums.checkin.models.Person;
 import org.chums.checkin.models.Service;
 import org.chums.checkin.models.Services;
 
@@ -28,7 +26,7 @@ public class ServiceAdapter extends ArrayAdapter<Service> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_service, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.personName);
-        textView.setText(services.get(position).Name);
+        textView.setText(services.get(position).getCampus().getName() + " - " + services.get(position).getName());
         return rowView;
     }
 }

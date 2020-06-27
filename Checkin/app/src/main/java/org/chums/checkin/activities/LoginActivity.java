@@ -116,8 +116,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void run() {
                 User u = User.login(email, password);
-                CachedData.ApiKey = u.ApiToken;
-                nextScreen();
+                if (u.getApiToken()!=null) {
+                    CachedData.ApiKey = u.getApiToken();
+                    nextScreen();
+                }
             }
         });
         thread.start();

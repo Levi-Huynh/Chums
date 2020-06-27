@@ -1,7 +1,6 @@
 package org.chums.checkin.models;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import org.chums.checkin.helpers.CachedData;
 import org.chums.checkin.helpers.Json;
@@ -12,7 +11,7 @@ public class HouseholdMembers extends ArrayList<HouseholdMember> {
 
     public HouseholdMember getByPersonId(int personId)
     {
-        for (HouseholdMember hm : this) if (hm.Person.Id==personId) return hm;
+        for (HouseholdMember hm : this) if (hm.getPerson().getId() ==personId) return hm;
         return null;
     }
 

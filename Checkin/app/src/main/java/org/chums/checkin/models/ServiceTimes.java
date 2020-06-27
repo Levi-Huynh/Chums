@@ -30,7 +30,7 @@ public class ServiceTimes  extends ArrayList<ServiceTime> {
     public ServiceTime getById(int id)
     {
         ServiceTime result = null;
-        for (ServiceTime st : this) if (st.Id==id) result = st;
+        for (ServiceTime st : this) if (st.getId() ==id) result = st;
         return result;
     }
 

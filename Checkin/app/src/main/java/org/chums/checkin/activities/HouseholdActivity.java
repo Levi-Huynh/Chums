@@ -51,7 +51,7 @@ public class HouseholdActivity extends AppCompatActivity {
 
             @Override
             public void onGroupExpand(int groupPosition) {
-                CachedData.CheckinPersonId = CachedData.HouseholdMembers.get(groupPosition).Person.Id;
+                CachedData.CheckinPersonId = CachedData.HouseholdMembers.get(groupPosition).getPerson().getId();
                 if(groupPosition != previousGroup) memberList.collapseGroup(previousGroup);
                 previousGroup = groupPosition;
             }

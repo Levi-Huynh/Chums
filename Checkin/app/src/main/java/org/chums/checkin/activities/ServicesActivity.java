@@ -6,15 +6,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ExpandableListView;
 import android.widget.ListView;
 
 import org.chums.checkin.R;
-import org.chums.checkin.adapters.HouseholdMemberAdapter;
-import org.chums.checkin.adapters.PersonAdapter;
 import org.chums.checkin.helpers.CachedData;
-import org.chums.checkin.models.HouseholdMembers;
-import org.chums.checkin.models.People;
 import org.chums.checkin.models.ServiceTimes;
 import org.chums.checkin.models.Services;
 import org.chums.checkin.adapters.ServiceAdapter;
@@ -48,7 +43,7 @@ public class ServicesActivity extends AppCompatActivity {
         serviceList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CachedData.ServiceId = services.get(position).Id;
+                CachedData.ServiceId = services.get(position).getId();
                 loadServiceTimes();
                 nextScreen();
             }

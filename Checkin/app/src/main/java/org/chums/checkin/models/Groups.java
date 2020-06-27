@@ -2,9 +2,6 @@ package org.chums.checkin.models;
 
 import com.google.gson.Gson;
 
-import org.chums.checkin.helpers.CachedData;
-import org.chums.checkin.helpers.Json;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -20,7 +17,7 @@ public class Groups  extends ArrayList<Group> {
         ArrayList<String> result = new ArrayList<String>();
         for (Group g : this)
         {
-            if (!result.contains(g.CategoryName)) result.add(g.CategoryName);
+            if (!result.contains(g.getCategoryName())) result.add(g.getCategoryName());
         }
         Collections.sort(result);
         return result;
@@ -29,14 +26,14 @@ public class Groups  extends ArrayList<Group> {
     public Groups getByCategoryName(String categoryName)
     {
         Groups result = new Groups();
-        for (Group g : this) if (g.CategoryName==categoryName) result.add(g);
+        for (Group g : this) if (g.getCategoryName() ==categoryName) result.add(g);
         return result;
     }
 
     public Group getById(int id)
     {
         Group result = null;
-        for (Group g : this) if (g.Id==id) result = g;
+        for (Group g : this) if (g.getId() ==id) result = g;
         return result;
     }
 

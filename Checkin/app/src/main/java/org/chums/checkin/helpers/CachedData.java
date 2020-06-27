@@ -6,8 +6,8 @@ import org.chums.checkin.models.Visits;
 
 public class CachedData {
     public static String ApiKey;
-    public static String ApiRoot = "https://api.chums.org";
-    //public static String ApiRoot = "http://192.168.1.34:801";
+    //public static String ApiRoot = "https://api.chums.org";
+    public static String ApiRoot = "https://mus2ockmn2.execute-api.us-east-2.amazonaws.com/Stage";
     public static int SelectedPersonId;
     public static int ServiceId;
     public static int ServiceTimeId;

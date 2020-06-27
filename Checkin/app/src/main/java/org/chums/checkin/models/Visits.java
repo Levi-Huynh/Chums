@@ -12,14 +12,14 @@ public class Visits extends ArrayList<Visit> {
     public Visit getByPersonId(int personId)
     {
         Visit result = null;
-        for (Visit v : this) if (v.PersonId==personId) result=v;
+        for (Visit v : this) if (v.getPersonId() ==personId) result=v;
         return result;
     }
 
     public void checkin()
     {
         try {
-            String url = CachedData.ApiRoot + "/visits/checkin?serviceId=" + Integer.toString(CachedData.ServiceId) + "&householdId=" + Integer.toString(CachedData.HouseholdMembers.get(0).HouseholdId);
+            String url = CachedData.ApiRoot + "/visits/checkin?serviceId=" + Integer.toString(CachedData.ServiceId) + "&householdId=" + Integer.toString(CachedData.HouseholdMembers.get(0).getHouseholdId());
             String jsonBody = this.toJson();
             String jsonResponse = Json.post(url, jsonBody);
         } catch (Exception ex) {

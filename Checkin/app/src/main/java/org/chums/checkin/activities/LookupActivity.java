@@ -1,17 +1,12 @@
 package org.chums.checkin.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.constraint.solver.Cache;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.chums.checkin.R;
-import org.chums.checkin.adapters.HouseholdMemberAdapter;
 import org.chums.checkin.adapters.PersonAdapter;
 import org.chums.checkin.helpers.CachedData;
 import org.chums.checkin.models.HouseholdMembers;
@@ -87,7 +81,7 @@ public class LookupActivity  extends AppCompatActivity {
         peopleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CachedData.SelectedPersonId = people.get(position).Id;
+                CachedData.SelectedPersonId = people.get(position).getId();
                 CachedData.PendingVisits = new Visits();
 
                 Thread thread = new Thread(new Runnable() {
@@ -95,7 +89,7 @@ public class LookupActivity  extends AppCompatActivity {
                     public void run() {
                         CachedData.HouseholdMembers = HouseholdMembers.loadByPerson(CachedData.SelectedPersonId);
                         if (CachedData.HouseholdMembers.size()>0) {
-                            CachedData.LoadedVisits = Visits.loadForServiceHousehold(CachedData.ServiceId, CachedData.HouseholdMembers.get(0).HouseholdId);
+                            CachedData.LoadedVisits = Visits.loadForServiceHousehold(CachedData.ServiceId, CachedData.HouseholdMembers.get(0).getHouseholdId());
                             CachedData.PendingVisits = CachedData.LoadedVisits;
                         }
 

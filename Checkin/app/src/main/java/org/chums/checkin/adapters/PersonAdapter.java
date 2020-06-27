@@ -26,7 +26,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_person, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.personName);
-        textView.setText(people.get(position).DisplayName);
+        textView.setText(people.get(position).getDisplayName());
         return rowView;
     }
 }

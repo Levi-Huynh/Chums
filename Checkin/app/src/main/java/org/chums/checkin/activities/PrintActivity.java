@@ -12,13 +12,11 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.chums.checkin.R;
 import org.chums.checkin.helpers.CachedData;
 import org.chums.checkin.helpers.PrintHandHelper;
-import org.chums.checkin.models.HouseholdMember;
 import org.chums.checkin.models.Person;
 import org.chums.checkin.models.Visit;
 
@@ -166,12 +164,12 @@ public class PrintActivity extends AppCompatActivity {
     private String replaceValues(String html)
     {
         Visit v = CachedData.PendingVisits.get(visitIndex);
-        Person p = CachedData.HouseholdMembers.getByPersonId(v.PersonId).Person;
+        Person p = CachedData.HouseholdMembers.getByPersonId(v.getPersonId()).getPerson();
 
         String result = html;
 
-        result = result.replace("[Name]", p.DisplayName);
-        result = result.replace("[Sessions]", v.VisitSessions.getDisplayText());
+        result = result.replace("[Name]", p.getDisplayName());
+        result = result.replace("[Sessions]", v.getVisitSessions().getDisplayText());
 
         return result;
     }

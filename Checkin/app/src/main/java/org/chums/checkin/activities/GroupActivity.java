@@ -4,15 +4,12 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 
 import org.chums.checkin.R;
 import org.chums.checkin.adapters.GroupAdapter;
-import org.chums.checkin.adapters.HouseholdMemberAdapter;
 import org.chums.checkin.helpers.CachedData;
-import org.chums.checkin.models.HouseholdMembers;
 import org.chums.checkin.models.Visit;
 import org.chums.checkin.models.VisitSessions;
 
@@ -48,8 +45,8 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Visit visit = CachedData.PendingVisits.getByPersonId(CachedData.CheckinPersonId);
-                VisitSessions sessions = visit.VisitSessions.getByServiceTimeId(CachedData.ServiceTimeId);
-                if (sessions.size()>0) visit.VisitSessions.remove(sessions.get(0));
+                VisitSessions sessions = visit.getVisitSessions().getByServiceTimeId(CachedData.ServiceTimeId);
+                if (sessions.size()>0) visit.getVisitSessions().remove(sessions.get(0));
                 finish();
             }
         });
@@ -70,7 +67,7 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
 
-        List<String> categories = CachedData.ServiceTimes.getById(CachedData.ServiceTimeId).Groups.getCategories();
+        List<String> categories = CachedData.ServiceTimes.getById(CachedData.ServiceTimeId).getGroups().getCategories();
 
         final GroupAdapter adapter = new GroupAdapter(GroupActivity.this, categories);
         categoryList.setAdapter(adapter);
@@ -84,13 +81,13 @@ public class GroupActivity extends AppCompatActivity {
         Visit visit = CachedData.PendingVisits.getByPersonId(CachedData.CheckinPersonId);
         if (visit==null) {
             visit=new Visit();
-            visit.PersonId = CachedData.CheckinPersonId;
-            visit.ServiceId = CachedData.ServiceId;
-            visit.VisitSessions = new VisitSessions();
+            visit.setPersonId(CachedData.CheckinPersonId);
+            visit.setServiceId(CachedData.ServiceId);
+            visit.setVisitSessions(new VisitSessions());
             CachedData.PendingVisits.add(visit);
         }
 
-        visit.VisitSessions.setValue(CachedData.ServiceTimeId, groupId);
+        visit.getVisitSessions().setValue(CachedData.ServiceTimeId, groupId);
         finish();
 
 

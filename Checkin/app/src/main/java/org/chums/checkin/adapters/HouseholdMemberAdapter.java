@@ -1,6 +1,5 @@
 package org.chums.checkin.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -13,11 +12,9 @@ import android.widget.TextView;
 
 import org.chums.checkin.R;
 import org.chums.checkin.helpers.CachedData;
-import org.chums.checkin.models.HouseholdMember;
 import org.chums.checkin.models.HouseholdMembers;
 import org.chums.checkin.models.ServiceTime;
 import org.chums.checkin.models.Visit;
-import org.chums.checkin.models.VisitSession;
 import org.chums.checkin.models.VisitSessions;
 
 
@@ -50,25 +47,25 @@ public class HouseholdMemberAdapter extends BaseExpandableListAdapter {
         TextView serviceTimeName = (TextView) convertView.findViewById(R.id.serviceTimeName);
         Button groupButton = (Button) convertView.findViewById(R.id.groupButton);
 
-        Visit v = CachedData.PendingVisits.getByPersonId(members.get(groupPosition).Person.Id);
+        Visit v = CachedData.PendingVisits.getByPersonId(members.get(groupPosition).getPerson().getId());
         VisitSessions sessions = new VisitSessions();
-        if (v!=null) sessions = v.VisitSessions.getByServiceTimeId(serviceTime.Id);
+        if (v!=null) sessions = v.getVisitSessions().getByServiceTimeId(serviceTime.getId());
 
 
-        groupButton.setTag(serviceTime.Id);
-        convertView.setTag(members.get(groupPosition).Person.Id);
+        groupButton.setTag(serviceTime.getId());
+        convertView.setTag(members.get(groupPosition).getPerson().getId());
         groupButton.setBackgroundColor(context.getResources().getColor(R.color.buttonBackground));
 
-        serviceTimeName.setText(serviceTime.Name);
+        serviceTimeName.setText(serviceTime.getName());
         if (sessions.size()==0) groupButton.setText("None");
         else {
-            groupButton.setText(serviceTime.Groups.getById(sessions.get(0).Session.GroupId).Name);
+            groupButton.setText(serviceTime.getGroups().getById(sessions.get(0).getSession().getGroupId()).getName());
 
-            Visit existingVisit = CachedData.LoadedVisits.getByPersonId(v.PersonId);
+            Visit existingVisit = CachedData.LoadedVisits.getByPersonId(v.getPersonId());
             if (existingVisit!=null) {
-                VisitSessions existingSessions = existingVisit.VisitSessions.getByServiceTimeId(serviceTime.Id);
+                VisitSessions existingSessions = existingVisit.getVisitSessions().getByServiceTimeId(serviceTime.getId());
                 if (existingSessions.size() > 0) {
-                    if (existingSessions.get(0).Session.GroupId==sessions.get(0).Session.GroupId) groupButton.setBackgroundColor(context.getResources().getColor(R.color.green));
+                    if (existingSessions.get(0).getSession().getGroupId() == sessions.get(0).getSession().getGroupId()) groupButton.setBackgroundColor(context.getResources().getColor(R.color.green));
                 }
             }
 
@@ -109,9 +106,9 @@ public class HouseholdMemberAdapter extends BaseExpandableListAdapter {
         TextView selectedGroups = (TextView) rowView.findViewById(R.id.selectedGroups);
         ViewGroup.LayoutParams params = rowView.getLayoutParams();
 
-        if (CachedData.CheckinPersonId==members.get(position).Person.Id) ((ExpandableListView)parent).expandGroup(position);
+        if (CachedData.CheckinPersonId== members.get(position).getPerson().getId()) ((ExpandableListView)parent).expandGroup(position);
 
-        personName.setText(members.get(position).Person.DisplayName);
+        personName.setText(members.get(position).getPerson().getDisplayName());
         if (isExpanded)
         {
             selectedGroups.setVisibility(View.INVISIBLE);
@@ -128,15 +125,15 @@ public class HouseholdMemberAdapter extends BaseExpandableListAdapter {
 
 
 
-        Visit v = CachedData.PendingVisits.getByPersonId(members.get(position).Person.Id);
-        if (v!=null && v.VisitSessions.size()>0) {
-            String displayText = v.VisitSessions.getDisplayText();
+        Visit v = CachedData.PendingVisits.getByPersonId(members.get(position).getPerson().getId());
+        if (v!=null && v.getVisitSessions().size()>0) {
+            String displayText = v.getVisitSessions().getDisplayText();
             selectedGroups.setText(displayText);
 
-            Visit existingVisit = CachedData.LoadedVisits.getByPersonId(v.PersonId);
+            Visit existingVisit = CachedData.LoadedVisits.getByPersonId(v.getPersonId());
             if (existingVisit!=null)
             {
-                String existingText = existingVisit.VisitSessions.getDisplayText();
+                String existingText = existingVisit.getVisitSessions().getDisplayText();
                 if (displayText.equals(existingText)) selectedGroups.setTextColor(context.getResources().getColor(R.color.green));
             }
 

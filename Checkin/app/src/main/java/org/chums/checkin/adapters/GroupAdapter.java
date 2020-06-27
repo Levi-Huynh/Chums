@@ -1,8 +1,6 @@
 package org.chums.checkin.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +11,7 @@ import org.chums.checkin.R;
 import org.chums.checkin.helpers.CachedData;
 import org.chums.checkin.models.Group;
 import org.chums.checkin.models.Groups;
-import org.chums.checkin.models.HouseholdMember;
-import org.chums.checkin.models.HouseholdMembers;
-import org.chums.checkin.models.ServiceTime;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,7 +22,7 @@ public class GroupAdapter extends BaseExpandableListAdapter {
     private Groups getGroups(int categoryPosition)
     {
         String categoryName =  this.categories.get(categoryPosition);
-        return CachedData.ServiceTimes.getById(CachedData.ServiceTimeId).Groups.getByCategoryName(categoryName);
+        return CachedData.ServiceTimes.getById(CachedData.ServiceTimeId).getGroups().getByCategoryName(categoryName);
     }
 
     public GroupAdapter(Context context, List<String> categories) {
@@ -54,8 +48,8 @@ public class GroupAdapter extends BaseExpandableListAdapter {
         groupView = infalInflater.inflate(R.layout.list_group, null);
         final Group group = (Group) getChild(categoryPosition, groupPosition);
         TextView groupName = (TextView) groupView.findViewById(R.id.groupName);
-        groupName.setText(group.Name);
-        groupName.setTag(group.Id);
+        groupName.setText(group.getName());
+        groupName.setTag(group.getId());
 
         return groupView;
     }

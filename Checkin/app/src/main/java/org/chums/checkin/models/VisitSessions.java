@@ -11,14 +11,14 @@ public class VisitSessions extends ArrayList<VisitSession> {
         for (int i=this.size() - 1; i>=0; i--)
         {
             VisitSession vs = this.get(i);
-            if (vs.Session.ServiceTimeId==serviceTimeId) this.remove(vs);
+            if (vs.getSession().getServiceTimeId() ==serviceTimeId) this.remove(vs);
         }
 
         //set the new one;
         VisitSession vs = new VisitSession();
-        vs.Session = new Session();
-        vs.Session.ServiceTimeId=serviceTimeId;
-        vs.Session.GroupId=groupId;
+        vs.setSession(new Session());
+        vs.getSession().setServiceTimeId(serviceTimeId);
+        vs.getSession().setGroupId(groupId);
         this.add(vs);
     }
 
@@ -32,7 +32,7 @@ public class VisitSessions extends ArrayList<VisitSession> {
     public VisitSessions getByServiceTimeId(int serviceTimeId)
     {
         VisitSessions result = new VisitSessions();
-        for (VisitSession vs : this) if (vs.Session.ServiceTimeId==serviceTimeId) result.add(vs);
+        for (VisitSession vs : this) if (vs.getSession().getServiceTimeId() ==serviceTimeId) result.add(vs);
         return result;
     }
 

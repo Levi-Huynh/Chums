@@ -1,6 +1,8 @@
 package org.chums.checkin.models;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.chums.checkin.R;
 import org.chums.checkin.helpers.CachedData;
@@ -11,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    public String Email;
-    public String Password;
-    public String ApiToken;
+    private String email;
+    private String password;
+    private String apiToken;
 
 
     public static User login(String email, String password)
@@ -24,7 +26,9 @@ public class User {
         try {
             String jsonResponse = Json.post(url, jsonBody);
             result = inflate(jsonResponse);
-        } catch (Exception ex) { }
+        } catch (Exception ex) {
+            int a=0;
+        }
         return result;
     }
 
@@ -42,10 +46,32 @@ public class User {
     public User(){}
     public User(String email, String password)
     {
-        this.Email=email;
-        this.Password=password;
+        this.email=email;
+        this.password=password;
     }
 
 
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getApiToken() {
+        return apiToken;
+    }
+
+    public void setApiToken(String apiToken) {
+        this.apiToken = apiToken;
+    }
 }
