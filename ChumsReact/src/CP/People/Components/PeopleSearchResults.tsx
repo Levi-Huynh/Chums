@@ -44,7 +44,7 @@ export const PeopleSearchResults: React.FC<Props> = (props) => {
         for (var i = 0; i < props.people.length; i++) {
             var p = props.people[i];
             result.push(<tr key={p.id}>
-                <td><img src={PersonHelper.getPhotoUrl(p.id, p.photoUpdated)} alt="avatar" /></td>
+                <td><img src={PersonHelper.getPhotoUrl(p)} alt="avatar" /></td>
                 <td><Link to={"/cp/people/" + p.id.toString()}>{p.displayName}</Link></td>
             </tr>);
         }

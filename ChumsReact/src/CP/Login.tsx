@@ -32,7 +32,7 @@ export const Login = () => {
 
     const login = (data: {}) => {
         const requestOptions = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) };
-        fetch('https://mus2ockmn2.execute-api.us-east-2.amazonaws.com/Stage/users/login', requestOptions)
+        fetch(ApiHelper.baseUrl + '/users/login', requestOptions)
             .then(response => response.json())
             .then(data => {
                 ApiHelper.apiKey = data.apiToken;

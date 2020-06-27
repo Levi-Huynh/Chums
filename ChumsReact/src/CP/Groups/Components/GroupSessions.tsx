@@ -36,7 +36,7 @@ export const GroupSessions: React.FC<Props> = (props) => {
             var editLink = (canEdit) ? (<a href="about:blank" onClick={handleRemove} className="text-danger" data-personid={vs.visit.personId} ><i className="fas fa-user-times"></i> Remove</a>) : null;
             result.push(
                 <tr>
-                    <td><img className="personPhoto" src={PersonHelper.getPhotoUrl(vs.visit.personId, vs.visit.person.photoUpdated)} alt="avatar" /></td>
+                    <td><img className="personPhoto" src={PersonHelper.getPhotoUrl(vs.visit.person)} alt="avatar" /></td>
                     <td><a className="personName" href={"/cp/people/person.aspx?id=" + vs.visit.personId}>{vs.visit.person.displayName}</a></td>
                     <td>{editLink}</td>
                 </tr >

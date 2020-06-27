@@ -27,7 +27,7 @@ export const MembersAdd: React.FC<Props> = (props) => {
             var gm = groupMembers[i];
             rows.push(
                 <tr key={i}>
-                    <td><img src={PersonHelper.getPhotoUrl(gm.personId, gm.person.photoUpdated)} alt="avatar" /></td>
+                    <td><img src={PersonHelper.getPhotoUrl(gm.person)} alt="avatar" /></td>
                     <td><Link to={"/cp/people/" + gm.personId}>{gm.person.displayName}</Link></td>
                     <td><a href="about:blank" className="text-success" onClick={addMember} data-index={i}><i className="fas fa-user"></i> Add</a></td>
                 </tr>

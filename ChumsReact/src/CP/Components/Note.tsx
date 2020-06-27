@@ -10,7 +10,7 @@ export const Note: React.FC<Props> = (props) => {
     React.useEffect(() => setNote(props.note), [props.note]);
 
     if (note === null) return null;
-    const photoUrl = PersonHelper.getPhotoUrl(note.addedBy, note.person.photoUpdated);
+    const photoUrl = PersonHelper.getPhotoUrl(note.person);
     const displayDuration = Helper.getDisplayDuration(new Date(note.dateAdded + 'Z'));
 
     return (

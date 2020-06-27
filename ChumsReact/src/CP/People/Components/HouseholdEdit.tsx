@@ -53,7 +53,7 @@ export const HouseholdEdit: React.FC<Props> = (props) => {
             var m = members[i];
             rows.push(
                 <tr key={m.id} data-index={i} >
-                    <td><img src={PersonHelper.getPhotoUrl(m.personId, m.person.photoUpdated)} alt="avatar" /></td>
+                    <td><img src={PersonHelper.getPhotoUrl(m.person)} alt="avatar" /></td>
                     <td>
                         {m.person.displayName}
                         <select value={m.role} onChange={handleChangeRole} className="form-control form-control-sm">

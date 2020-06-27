@@ -51,7 +51,7 @@ export const GroupMembers: React.FC<Props> = (props) => {
             var editLink = (canEdit) ? <a href="about:blank" onClick={handleRemove} data-index={i} className="text-danger" ><i className="fas fa-user-times"></i> Remove</a> : <></>
             rows.push(
                 <tr key={i}>
-                    <td><img src={PersonHelper.getPhotoUrl(gm.personId, gm.person.photoUpdated)} /></td>
+                    <td><img src={PersonHelper.getPhotoUrl(gm.person)} /></td>
                     <td><Link to={"/cp/people/" + gm.personId}>{gm.person.displayName}</Link></td>
                     <td>{editLink}</td>
                 </tr>

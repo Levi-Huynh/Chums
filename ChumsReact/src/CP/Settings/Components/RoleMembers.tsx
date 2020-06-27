@@ -44,7 +44,7 @@ export const RoleMembers: React.FC<Props> = (props) => {
             var editLink = (canEdit) ? <a href="about:blank" onClick={handleRemove} data-index={i} className="text-danger" ><i className="fas fa-user-times"></i> Remove</a> : <></>
             rows.push(
                 <tr key={i}>
-                    <td><img src={PersonHelper.getPhotoUrl(rm.personId, rm.person.photoUpdated)} alt="avatar" /></td>
+                    <td><img src={PersonHelper.getPhotoUrl(rm.person)} alt="avatar" /></td>
                     <td><Link to={"/cp/people/" + rm.personId}>{rm.person.displayName}</Link></td>
                     <td>{editLink}</td>
                 </tr>

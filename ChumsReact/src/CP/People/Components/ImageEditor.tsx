@@ -61,7 +61,7 @@ export const ImageEditor: React.FC<Props> = (props) => {
     const handleCancel = () => { props.updatedFunction(originalUrl); props.doneFunction(); }
     const handleDelete = () => { ApiHelper.apiDelete('/people/photos/' + props.person.id).then(() => props.doneFunction()); props.updatedFunction('/images/sample-profile.png'); }
     const init = () => {
-        var startingUrl = PersonHelper.getPhotoUrl(props.person.id, props.person.photoUpdated)
+        var startingUrl = PersonHelper.getPhotoUrl(props.person)
         setOriginalUrl(startingUrl);
         setCurrentUrl(startingUrl);
     }

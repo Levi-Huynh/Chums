@@ -66,7 +66,7 @@ export const PersonEdit: React.FC<Props> = (props) => {
 
     const getPhoto = () => {
         if (props.person) {
-            var url = (props.photoUrl === null) ? PersonHelper.getPhotoUrl(props.person.id, props.person.photoUpdated) : props.photoUrl;
+            var url = (props.photoUrl === null) ? PersonHelper.getPhotoUrl(props.person) : props.photoUrl;
             return (<a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); props.togglePhotoEditor(true) }}>
                 <img src={url} className="img-fluid profilePic" id="imgPreview" alt="avatar" />
             </a>);

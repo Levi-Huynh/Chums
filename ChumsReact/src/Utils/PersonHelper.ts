@@ -1,15 +1,9 @@
 import { UserHelper } from './UserHelper';
+import { PersonInterface } from './ApiHelper';
 
 export class PersonHelper {
-    static getPhotoUrl(personId: number, photoUpdated: Date): string {
-        return 'https://chums-web.s3.us-east-2.amazonaws.com' + this.getPhotoPath(personId, photoUpdated);
-        //return this.getPhotoPath(personId, photoUpdated);
-        //*** is there a way to map /content/ to an external server with the local dev web server?
-    }
-
-    static getPhotoPath(personId: number, photoUpdated: Date): string {
-        if (photoUpdated === undefined || photoUpdated === null || photoUpdated < new Date(2000, 1, 1)) return "/images/sample-profile.png";
-        else return "/content/c/" + UserHelper.church.id + "/p/" + personId + ".png?dt=" + escape(photoUpdated.toString());
+    static getPhotoUrl(person: PersonInterface) {
+        return 'https://chums.org' + person.photo;
     }
 
     static getAge(birthdate: Date): string {
