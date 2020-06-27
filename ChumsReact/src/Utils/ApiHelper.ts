@@ -31,6 +31,7 @@ export interface VisitInterface { id?: number, personId?: number, serviceId?: nu
 export interface VisitSessionInterface { id?: number, visitId?: number, sessionId?: number, visit?: VisitInterface, session?: SessionInterface }
 
 export class ApiHelper {
+    //*** What's a good way to toggle this based on environment?
     static baseUrl = 'https://mus2ockmn2.execute-api.us-east-2.amazonaws.com/Stage';
     //static baseUrl = 'http://localhost:50494';
     static apiKey = '';

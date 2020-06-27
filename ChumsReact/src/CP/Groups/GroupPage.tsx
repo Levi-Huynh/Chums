@@ -13,7 +13,6 @@ export const GroupPage = ({ match }: RouteComponentProps<TParams>) => {
     const [addSessionVisible, setAddSessionVisible] = React.useState(false);
     const [addMemberVisible, setAddMemberVisible] = React.useState(false);
 
-    //*** Is there a better way to pass this data from PersonAdd to GroupMembers than PersonAdd -> PersonPage -> Tabs -> GroupMembers?
     const addPerson = (p: PersonInterface) => setAddedPerson(p);
     const loadData = () => { ApiHelper.apiGet('/groups/' + match.params.id).then(data => setGroup(data)); }
     const handleSessionAdd = (session: SessionInterface) => { setAddedSession(session); setAddSessionVisible(false); }

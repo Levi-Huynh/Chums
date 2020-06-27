@@ -8,7 +8,6 @@ export const HouseholdEdit: React.FC<Props> = (props) => {
     const [members, setMembers] = React.useState<HouseholdMemberInterface[]>([]);
     const [showAdd, setShowAdd] = React.useState(false);
 
-    //***I'm cloning the object because otherwise setHoushold won't trigger a re-render.  Is there a better way?
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => { let h = { ...household }; h.name = e.currentTarget.value; setHousehold(h); }
     const handleCancel = () => { props.updatedFunction(); }
     const handleAdd = () => { setShowAdd(true); }
