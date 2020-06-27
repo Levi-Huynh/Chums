@@ -2,8 +2,9 @@ import { UserHelper } from './UserHelper';
 
 export class PersonHelper {
     static getPhotoUrl(personId: number, photoUpdated: Date): string {
-        //return 'https://chums-web.s3.us-east-2.amazonaws.com' + this.getPhotoPath(personId, photoUpdated);
-        return this.getPhotoPath(personId, photoUpdated);
+        return 'https://chums-web.s3.us-east-2.amazonaws.com' + this.getPhotoPath(personId, photoUpdated);
+        //return this.getPhotoPath(personId, photoUpdated);
+        //*** is there a way to map /content/ to an external server with the local dev web server?
     }
 
     static getPhotoPath(personId: number, photoUpdated: Date): string {
