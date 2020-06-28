@@ -2,7 +2,7 @@ import React from 'react';
 import './Login.css';
 import { ErrorMessages, ApiHelper, UserHelper } from './Components';
 
-interface ForgotResponse { emailSent: boolean }
+interface ForgotResponse { emailed: boolean }
 
 export const Forgot = () => {
     const [email, setEmail] = React.useState('');
@@ -26,7 +26,7 @@ export const Forgot = () => {
         const requestOptions = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) };
         fetch(ApiHelper.baseUrl + '/users/forgot', requestOptions).then(response => response.json()).then(data => {
             var d = data as ForgotResponse;
-            if (d.emailSent) {
+            if (d.emailed) {
                 setErrors([]);
                 setSuccessMessage(<div className="alert alert-success" role="alert">Password reset email sent</div>);
             } else {

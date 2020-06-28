@@ -6,7 +6,8 @@ import { Redirect } from 'react-router-dom';
 
 interface LoginResponse { apiToken: string, name: string }
 
-export const Login = () => {
+
+export const Login: React.FC = (props: any) => {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [errors, setErrors] = React.useState([]);
@@ -26,7 +27,8 @@ export const Login = () => {
     }
 
     const init = () => {
-        var apiKey = getCookieValue('apiKey');
+        let search = new URLSearchParams(props.location.search);
+        var apiKey = search.get('guid') || getCookieValue('apiKey');
         if (apiKey !== '') login({ resetGuid: apiKey });
     }
 

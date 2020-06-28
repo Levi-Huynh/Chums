@@ -7,7 +7,7 @@ export const Unauthenticated = () => {
     return (
         <>
             <Switch>
-                <Route path="/cp/login"  ><Login /></Route>
+                <Route path="/cp/login" component={Login} ></Route>
                 <Route path="/cp/forgot"  ><Forgot /></Route>
                 <Route path="/cp/"  ><Redirect to="/cp/login" /></Route>
             </Switch>
