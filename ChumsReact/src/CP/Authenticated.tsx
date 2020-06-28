@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route, Redirect } from "react-router-dom";
-import { Header, Sidebar } from './Components'
+import { Header, Sidebar, ApiHelper } from './Components'
 import { PeoplePage } from './People/PeoplePage'
 import { PersonPage } from './People/PersonPage'
 import { GroupsPage } from './Groups/GroupsPage'
@@ -14,8 +14,7 @@ import { RolesPage } from './Settings/RolesPage'
 import { RolePage } from './Settings/RolePage'
 import { FormPage } from './Forms/FormPage';
 
-
-export const AuthenticatedCP = () => {
+export const Authenticated = () => {
 
     const sidebarToggle = () => {
         var sidebar = document.getElementById('sidebar');

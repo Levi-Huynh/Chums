@@ -58,7 +58,7 @@ export const Login = () => {
                         <br />
                         <div className="text-right">
                             <a href="/#register">Register</a> &nbsp; | &nbsp;
-                            <a href="/cp/forgotpassword.aspx">Forgot Password</a>
+                            <a href="/cp/forgot">Forgot Password</a>
                             &nbsp;
                         </div>
                     </div>
