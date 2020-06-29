@@ -1,5 +1,6 @@
 package org.chums.checkin.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -8,10 +9,12 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.chums.checkin.R;
 import org.chums.checkin.helpers.CachedData;
+import org.chums.checkin.helpers.PhotoHelper;
 import org.chums.checkin.models.HouseholdMembers;
 import org.chums.checkin.models.ServiceTime;
 import org.chums.checkin.models.Visit;
@@ -103,12 +106,16 @@ public class HouseholdMemberAdapter extends BaseExpandableListAdapter {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_householdmember, parent, false);
         TextView personName = (TextView) rowView.findViewById(R.id.personName);
+        ImageView imgView = (ImageView) rowView.findViewById(R.id.personPhoto);
         TextView selectedGroups = (TextView) rowView.findViewById(R.id.selectedGroups);
         ViewGroup.LayoutParams params = rowView.getLayoutParams();
 
         if (CachedData.CheckinPersonId== members.get(position).getPerson().getId()) ((ExpandableListView)parent).expandGroup(position);
 
         personName.setText(members.get(position).getPerson().getDisplayName());
+
+        PhotoHelper.populateImage((Activity)context, imgView, members.get(position).getPerson());
+
         if (isExpanded)
         {
             selectedGroups.setVisibility(View.INVISIBLE);
