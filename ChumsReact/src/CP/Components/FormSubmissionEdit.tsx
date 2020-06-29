@@ -13,7 +13,6 @@ interface Props {
 
 export const FormSubmissionEdit: React.FC<Props> = (props) => {
     const [formSubmission, setFormSubmission] = React.useState(null);
-    const [addFormId, setAddFormId] = React.useState(props.addFormId);
 
     const handleCancel = () => props.updatedFunction(0);
 
@@ -25,10 +24,10 @@ export const FormSubmissionEdit: React.FC<Props> = (props) => {
 
     const loadData = () => {
         if (props.formSubmissionId > 0) ApiHelper.apiGet('/formsubmissions/' + props.formSubmissionId + '/?include=questions,answers,form').then(data => setFormSubmission(data));
-        else if (addFormId > 0) {
-            ApiHelper.apiGet('/questions/?formId=' + addFormId).then(data => {
+        else if (props.addFormId > 0) {
+            ApiHelper.apiGet('/questions/?formId=' + props.addFormId).then(data => {
                 var fs: FormSubmissionInterface = {
-                    formId: addFormId, contentType: props.contentType, contentId: props.contentId, answers: []
+                    formId: props.addFormId, contentType: props.contentType, contentId: props.contentId, answers: []
                 };
                 fs.questions = data;
                 setFormSubmission(fs);
@@ -60,7 +59,7 @@ export const FormSubmissionEdit: React.FC<Props> = (props) => {
 
 
     React.useEffect(loadData, [props.formSubmissionId]);
-    React.useEffect(() => { setAddFormId(props.addFormId); loadData(); }, [props.addFormId]);
+    React.useEffect(() => { if (props.addFormId > 0) loadData(); }, [props.addFormId]);
 
     var questionList = [];
     if (formSubmission != null) {

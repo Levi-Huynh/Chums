@@ -6,6 +6,7 @@ interface Props {
     editFunction: (e: React.MouseEvent) => void,
     addFormId: number,
     photoUrl: string
+    setAddFormFunction: (formId: number) => void
 }
 
 export const PersonView: React.FC<Props> = (props) => {
@@ -39,7 +40,15 @@ export const PersonView: React.FC<Props> = (props) => {
             contactMethods.push(<tr key="homePhone"><td><label>{homeLabel}</label></td><td><i className="fas fa-phone"></i></td><td>{p.homePhone}</td></tr>);
             homeLabel = '';
         }
-        if (p.address1 !== undefined && p.address1 !== '') contactMethods.push(<tr key="address"><td><label>{homeLabel}</label></td><td><i className="fas fa-map-marker-alt"></i></td><td>{p.address1}<br />{p.address2}<br />{p.city}, {p.state} {p.zip}</td></tr>);
+
+        if (p.address1 !== undefined && p.address1 !== '') {
+            var lines = [];
+            lines.push(<div>{p.address1}</div>);
+            if (p.address2 !== '') lines.push(<div>{p.address2}</div>);
+            lines.push(<div>{p.city}, {p.state} {p.zip}</div>);
+
+            contactMethods.push(<tr key="address"><td><label>{homeLabel}</label></td><td><i className="fas fa-map-marker-alt"></i></td><td>{lines}</td></tr>);
+        }
         if (p.mobilePhone !== undefined && p.mobilePhone !== '') contactMethods.push(<tr key="mobilePHone"><td><label>Mobile</label></td><td><i className="fas fa-phone"></i></td><td>{p.mobilePhone}</td></tr>);
         if (p.workPhone !== undefined && p.workPhone !== '') contactMethods.push(<tr key="workPhone"><td><label>Mobile</label></td><td><i className="fas fa-phone"></i></td><td>{p.workPhone}</td></tr>);
     }
@@ -67,7 +76,7 @@ export const PersonView: React.FC<Props> = (props) => {
                     </div>
                 </div>
             </div>
-            <AssociatedForms contentType="person" contentId={props.person?.id} formSubmissions={props.person?.formSubmissions} addFormId={props.addFormId} />
+            <AssociatedForms contentType="person" contentId={props.person?.id} formSubmissions={props.person?.formSubmissions} addFormId={props.addFormId} setAddFormFunction={props.setAddFormFunction} />
         </div>
     )
 }

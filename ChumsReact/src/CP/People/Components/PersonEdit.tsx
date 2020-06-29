@@ -22,7 +22,7 @@ export const PersonEdit: React.FC<Props> = (props) => {
             case 'firstName': p.firstName = val; break;
             case 'middleName': p.middleName = val; break;
             case 'lastName': p.lastName = val; break;
-            case 'nickname': p.nickName = val; break;
+            case 'nickName': p.nickName = val; break;
             case 'membershipStatus': p.membershipStatus = val; break;
             case 'gender': p.gender = val; break;
             case 'birthDate':

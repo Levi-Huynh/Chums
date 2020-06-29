@@ -6,33 +6,21 @@ interface Props {
     addFormId: number,
     contentType: string,
     contentId: number,
-    formSubmissions: FormSubmissionInterface[]
-
+    formSubmissions: FormSubmissionInterface[],
+    setAddFormFunction: (formId: number) => void
 }
 
 export const AssociatedForms: React.FC<Props> = (props) => {
     const [mode, setMode] = React.useState('display');
-    const [addFormId, setAddFormId] = React.useState(0);
-    const [contentId, setContentId] = React.useState(props.contentId);
-    const [contentType, setContentType] = React.useState(props.contentType);
     const [editFormSubmissionId, setEditFormSubmissionId] = React.useState(0);
-    const [formSubmissions, setFormSubmissions] = React.useState(props.formSubmissions);
 
     const handleEdit = (formSubmissionId: number) => { setMode('edit'); setEditFormSubmissionId(formSubmissionId); }
-    const handleUpdate = (formId: number) => { setMode('display'); setAddFormId(formId); }
-
-    React.useEffect(() => setAddFormId(props.addFormId), [props.addFormId]);
-    React.useEffect(() => setContentId(props.contentId), [props.contentId]);
-    React.useEffect(() => setContentType(props.contentType), [props.contentType]);
-    React.useEffect(() => setFormSubmissions(props.formSubmissions), [props.formSubmissions]);
-
-    if (!UserHelper.checkAccess('Forms', 'View')) return <></>
-    if (mode === 'edit' || addFormId > 0) return <FormSubmissionEdit formSubmissionId={editFormSubmissionId} updatedFunction={handleUpdate} addFormId={addFormId} contentType={contentType} contentId={contentId} />
-    else {
-        if (formSubmissions !== undefined) {
-            var cards = [];
-            for (var i = 0; i < formSubmissions.length; i++) {
-                var fs = formSubmissions[i];
+    const handleUpdate = (formId: number) => { setMode('display'); props.setAddFormFunction(formId); }
+    const getCards = () => {
+        var cards = [];
+        if (props.formSubmissions !== undefined) {
+            for (var i = 0; i < props.formSubmissions.length; i++) {
+                var fs = props.formSubmissions[i];
                 cards.push(
                     <div key={fs.id} className="card">
                         <div className="card-header" id={"heading" + fs.id}>
@@ -47,6 +35,11 @@ export const AssociatedForms: React.FC<Props> = (props) => {
                 );
             }
         }
-        return <div className="accordion" id="formSubmissionsAccordion">{cards}</div>;
+        return cards;
     }
+
+
+    if (!UserHelper.checkAccess('Forms', 'View')) return <></>
+    if (mode === 'edit' || props.addFormId > 0) return <FormSubmissionEdit formSubmissionId={editFormSubmissionId} updatedFunction={handleUpdate} addFormId={props.addFormId} contentType={props.contentType} contentId={props.contentId} />
+    else return <div className="accordion" id="formSubmissionsAccordion">{getCards()}</div>;
 }
