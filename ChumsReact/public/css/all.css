@@ -2,9 +2,9 @@
 .table {color:#333;}
 a { color: #24b8ff; }
 
-h1 { border-bottom:1px solid #CCC; padding-bottom:10px; margin-bottom:25px; }
+h2 span {color:#24b8ff;}
 
-.navbar {background-color: #444 !important;}
+.navbar {background-color: #222 !important;}
 #navbar {color:#FFF;}
 #navbar a {color:#FFF;}
 .navbar-brand {padding-top:0px;padding-bottom:0px;}
@@ -12,6 +12,7 @@ h1 { border-bottom:1px solid #CCC; padding-bottom:10px; margin-bottom:25px; }
 #userMenu {display: none;}
 #navSpacer {height:66px;}
 
+.blue{color:#03a9f4;}
 
 
 .inputBox {border:1px solid #E7E7E7;margin-bottom:30px;}
@@ -38,7 +39,22 @@ h1 { border-bottom:1px solid #CCC; padding-bottom:10px; margin-bottom:25px; }
 .btn-primary { background-color:#77cc00; border-color:#70db86; }
 .btn-primary:hover { background-color:#55aa00; border-color:#55aa00; }
 
+.btn-info { background-color: #03a9f4; border-color: #03a9f4; }
+
 @media (max-width: 600px) {
     #sidebar {margin-top:170px;}
     #sidebar.d-none {margin-top:0px;}
 }
+
+#hero { background-color: #262624; background-image: url(/images/home/hero.jpg); background-size: cover; color: #FFF; padding-bottom: 140px; padding-top: 140px; } /*source - https://pixabay.com/photos/women-teamwork-team-business-1209678/*/
+#heroInfo {background-color:rgba(0, 0, 0, 0.5); padding:20px; border-radius: 10px;}
+#heroInfo h1 {font-size:28px;}
+.homeSection {padding-top:50px;padding-bottom: 50px;}
+.homeSectionAlt { color:#FFF; background-color: #333;}
+.homeSection h2 {margin-bottom: 30px; text-align: center; }
+#footer {background-color:#333; padding-top:40px; padding-bottom: 40px; color:#EEE;}
+#footer img {max-width:450px;margin-bottom: 20px;}
+#members {position: relative;}
+#members:after { content:''; background-position-y: center; background-image: url(/images/home/members.jpg); background-size: cover; opacity: 0.10; top: 0;left: 0;bottom: 0;right: 0;position: absolute; z-index: 1; } /*https://pixabay.com/photos/worship-praise-singer-black-africa-435108/*/
+#attendance {position: relative;}
+#attendance:after { content:''; background-position-y: center; background-image: url(/images/home/attendance.jpg); background-size: cover; opacity: 0.10; top: 0;left: 0;bottom: 0;right: 0;position: absolute; z-index: 1; } /*https://pixabay.com/photos/kindergarten-clown-garden-animator-2204239/*/

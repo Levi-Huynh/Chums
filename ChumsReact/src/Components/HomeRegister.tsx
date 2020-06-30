@@ -1,10 +1,11 @@
 import React from 'react';
-import { InputBox, ApiHelper, RegisterInterface, UserHelper } from './';
+import { InputBox, ApiHelper, RegisterInterface, UserHelper } from '.';
 import UserContext from '../UserContext'
 import { Redirect } from 'react-router-dom';
 import { ErrorMessages } from './ErrorMessages';
+import { Row, Col, Container } from 'react-bootstrap'
 
-export const Register: React.FC = () => {
+export const HomeRegister: React.FC = () => {
 
     const [register, setRegister] = React.useState<RegisterInterface>({ churchName: '', firstName: '', lastName: '', password: '', email: '' });
     const [processing, setProcessing] = React.useState(false);
@@ -66,29 +67,38 @@ export const Register: React.FC = () => {
 
     if (context.userName === '' || ApiHelper.apiKey === '') {
         return (
-            <InputBox headerIcon="" headerText="Register" saveFunction={handleSave} saveText="Register" >
-                {getProcessing()}
-                <ErrorMessages errors={errors} />
-                <div className="form-group">
-                    <input type="text" className="form-control" placeholder="Church Name" name="churchName" value={register.churchName} onChange={handleChange} />
-                </div>
-                <div className="row">
-                    <div className="col"><div className="form-group">
-                        <input type="text" className="form-control" placeholder="First Name" name="firstName" value={register.firstName} onChange={handleChange} />
-                    </div></div>
-                    <div className="col"><div className="form-group">
-                        <input type="text" className="form-control" placeholder="Last Name" name="lastName" value={register.lastName} onChange={handleChange} />
-                    </div></div>
-                </div>
-                <div className="row">
-                    <div className="col"><div className="form-group">
-                        <input type="text" className="form-control" placeholder="Email" name="email" value={register.email} onChange={handleChange} />
-                    </div></div>
-                    <div className="col"><div className="form-group">
-                        <input type="password" className="form-control" placeholder="Password" name="password" value={register.password} onChange={handleChange} />
-                    </div></div>
-                </div>
-            </InputBox>
+            <div className="homeSection">
+                <Container>
+                    <h2><span>Get Started</span> Now</h2>
+                    <Row>
+                        <Col md={{ offset: 6 }} >
+                            <InputBox headerIcon="" headerText="Register" saveFunction={handleSave} saveText="Register" >
+                                {getProcessing()}
+                                <ErrorMessages errors={errors} />
+                                <div className="form-group">
+                                    <input type="text" className="form-control" placeholder="Church Name" name="churchName" value={register.churchName} onChange={handleChange} />
+                                </div>
+                                <div className="row">
+                                    <div className="col"><div className="form-group">
+                                        <input type="text" className="form-control" placeholder="First Name" name="firstName" value={register.firstName} onChange={handleChange} />
+                                    </div></div>
+                                    <div className="col"><div className="form-group">
+                                        <input type="text" className="form-control" placeholder="Last Name" name="lastName" value={register.lastName} onChange={handleChange} />
+                                    </div></div>
+                                </div>
+                                <div className="row">
+                                    <div className="col"><div className="form-group">
+                                        <input type="text" className="form-control" placeholder="Email" name="email" value={register.email} onChange={handleChange} />
+                                    </div></div>
+                                    <div className="col"><div className="form-group">
+                                        <input type="password" className="form-control" placeholder="Password" name="password" value={register.password} onChange={handleChange} />
+                                    </div></div>
+                                </div>
+                            </InputBox>
+                        </Col>
+                    </Row>
+                </Container>
+            </div>
         );
     } else return <Redirect to="/cp" />
 }

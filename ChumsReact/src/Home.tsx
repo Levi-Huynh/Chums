@@ -1,22 +1,34 @@
 import React from 'react';
 import './Home.css';
-import { Link } from 'react-router-dom'
-import { Register } from './Components'
+import { Footer } from './Components'
+import { HomeRegister } from './Components/HomeRegister'
+import { HomeHero } from './Components/HomeHero'
+import { HomeAbout } from './Components/HomeAbout'
+import { Navbar, Nav } from 'react-bootstrap'
+import { HomeMembers } from './Components/HomeMembers';
+import { HomeGiving } from './Components/HomeGiving';
+import { HomeAttendance } from './Components/HomeAttendance';
 
 export const Home = () => {
     return (
         <>
-            <div className="container" style={{ marginTop: 200 }}>
-                <div className="row">
-                    <div className="col-6">
-                        <img src="/images/logo-home.png" alt="logo" /><br />
-                        <div style={{ textAlign: 'center', marginTop: 20, fontSize: 24 }}><Link to="/cp/">Login</Link></div>
-                    </div>
-                    <div className="col-6">
-                        <Register />
-                    </div>
-                </div>
-            </div>
+            <Navbar>
+                <Navbar.Brand href="/"><img src="/images/logo.png" alt="logo" /></Navbar.Brand>
+                <Navbar.Collapse id="navbar">
+                    <Nav className="mr-auto"></Nav>
+                    <Nav className="ml-auto"><Nav.Link href="/cp/">Login</Nav.Link></Nav>
+                </Navbar.Collapse>
+            </Navbar>
+
+            <HomeHero />
+            <HomeAbout />
+            <HomeMembers />
+            <HomeGiving />
+            <HomeAttendance />
+            <HomeRegister />
+            <Footer />
+
+
 
         </>
     );
