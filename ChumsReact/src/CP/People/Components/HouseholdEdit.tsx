@@ -10,7 +10,7 @@ export const HouseholdEdit: React.FC<Props> = (props) => {
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => { let h = { ...household }; h.name = e.currentTarget.value; setHousehold(h); }
     const handleCancel = () => { props.updatedFunction(); }
-    const handleAdd = () => { setShowAdd(true); }
+    const handleAdd = (e: React.MouseEvent) => { e.preventDefault(); setShowAdd(true); }
 
     const handleRemove = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();

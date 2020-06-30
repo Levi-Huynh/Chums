@@ -1,5 +1,6 @@
 import React from 'react';
 import { DisplayBox, ApiHelper, AttendanceRecordInterface, Helper } from './';
+import { Link } from 'react-router-dom'
 
 interface Props { personId: number }
 
@@ -38,7 +39,7 @@ export const PersonAttendance: React.FC<Props> = (props) => {
             }
             if (r.serviceTime === undefined) cols.push(<td></td>);
             else cols.push(<td><i className="far fa-clock"></i> {r.serviceTime?.name}</td>);
-            cols.push(<td><i className="fas fa-list"></i> <a href={"/cp/groups/" + r.group.id}>{r.group.name}</a></td>)
+            cols.push(<td><i className="fas fa-list"></i> <Link to={"/cp/groups/" + r.group.id}>{r.group.name}</Link></td>)
             rows.push(<tr>{cols}</tr>);
         }
         return rows;
