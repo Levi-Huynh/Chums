@@ -3,10 +3,11 @@ import { ApiHelper, DonationSummaryInterface, Helper } from './';
 import { DisplayBox } from './';
 import { Chart } from 'react-google-charts';
 
-export const DonationChart: React.FC = () => {
+interface Props { startDate: Date, endDate: Date }
+export const DonationChart: React.FC<Props> = (props) => {
     const [records, setRecords] = React.useState<DonationSummaryInterface[]>([]);
 
-    const loadData = () => { ApiHelper.apiGet('/donationsummaries').then(data => setRecords(data)); }
+    const loadData = () => { ApiHelper.apiGet('/donationsummaries?startDate=' + Helper.formatHtml5Date(props.startDate) + '&endDate=' + Helper.formatHtml5Date(props.endDate)).then(data => setRecords(data)); }
 
     const getWeekRecords = (weekNum: number) => {
         var result: DonationSummaryInterface[] = [];
@@ -34,7 +35,7 @@ export const DonationChart: React.FC = () => {
         rows.push(header);
         for (let i = 0; i < weeks.length; i++) {
             var weekRecords: DonationSummaryInterface[] = getWeekRecords(weeks[i]);
-            var weekName = Helper.formatHtml5Date(Helper.getWeekSunday(new Date().getFullYear(), weeks[i]));
+            var weekName = Helper.prettyDate(Helper.getWeekSunday(new Date().getFullYear(), weeks[i]));
             var row: any[] = [weekName];
             for (let j = 0; j < fundNames.length; j++) {
                 var nameRecord: DonationSummaryInterface = getNameRecord(weekRecords, fundNames[j]);
@@ -46,7 +47,7 @@ export const DonationChart: React.FC = () => {
         return rows;
     }
 
-    React.useEffect(loadData, []);
+    React.useEffect(loadData, [props.startDate, props.endDate]);
 
     return (
         <DisplayBox headerIcon="fas fa-hand-holding-usd" headerText="Donation History" >

@@ -9,7 +9,10 @@ export const Funds: React.FC = () => {
 
     const loadData = () => ApiHelper.apiGet('/funds').then(data => setFunds(data));
     const handleFundUpdated = () => { loadData(); setEditFund(null); }
-    const getEditSection = () => { return (UserHelper.checkAccess('Donations', 'Edit')) ? (<a href="about:blank" onClick={() => setEditFund({ id: 0, name: '' })}><i className="fas fa-plus"></i></a>) : null; }
+    const getEditSection = () => {
+        if (UserHelper.checkAccess('Donations', 'Edit')) return (<a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); setEditFund({ id: 0, name: '' }) }}><i className="fas fa-plus"></i></a>);
+        else return null;
+    }
 
     const handleEdit = (e: React.MouseEvent) => {
         e.preventDefault();

@@ -32,7 +32,7 @@ export const DonationBatchPage = ({ match }: RouteComponentProps<TParams>) => {
             <h1><i className="fas fa-hand-holding-usd"></i> Batch #{batch.id}</h1>
             <div className="row">
                 <div className="col-lg-8">
-                    <Donations batchId={parseInt(match.params.id)} addFunction={showAddDonation} editFunction={showEditDonation} />
+                    <Donations batch={batch} addFunction={showAddDonation} editFunction={showEditDonation} />
                 </div >
                 <div className="col-lg-4">
                     {getSidebarModules()}

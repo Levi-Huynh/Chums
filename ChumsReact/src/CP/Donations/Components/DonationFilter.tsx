@@ -1,25 +1,34 @@
 import React from 'react';
 import { InputBox, Helper } from './';
+import { set } from 'date-fns'
 
-export const DonationFilter: React.FC = () => {
+interface Props { startDate: Date, endDate: Date, updateFunction: (startDate: Date, endDate: Date) => void }
+
+export const DonationFilter: React.FC<Props> = (props) => {
     const [startDate, setStartDate] = React.useState<Date>(new Date());
     const [endDate, setEndDate] = React.useState<Date>(new Date());
-    const handleSave = () => { }
+    const handleFilter = () => { props.updateFunction(startDate, endDate) }
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        var date = new Date(e.currentTarget.value);
+        switch (e.currentTarget.name) {
+            case 'startDate': setStartDate(date); break;
+            case 'endDate': setEndDate(date); break;
+        }
+    }
 
     React.useEffect(() => {
-        var initialDate = new Date();
-        initialDate.setDate(initialDate.getDate() - 7);
-        setStartDate(initialDate);
-    }, []);
+        setStartDate(props.startDate);
+        setEndDate(props.endDate);
+    }, [props.startDate, props.endDate]);
 
-    return (<InputBox headerIcon="fas fa-filter" headerText="Donation Filter" saveFunction={handleSave} saveText="Filter" >
+    return (<InputBox headerIcon="fas fa-filter" headerText="Filter Donation Chart" saveFunction={handleFilter} saveText="Filter" >
         <div className="form-group">
             <label>Start Date</label>
-            <input type="date" className="form-control" value={Helper.formatHtml5Date(startDate)} />
+            <input type="date" className="form-control" name="startDate" value={Helper.formatHtml5Date(startDate)} onChange={handleChange} />
         </div>
         <div className="form-group">
             <label>End Date</label>
-            <input type="date" className="form-control" value={Helper.formatHtml5Date(endDate)} />
+            <input type="date" className="form-control" name="endDate" value={Helper.formatHtml5Date(endDate)} onChange={handleChange} />
         </div>
     </InputBox >);
 

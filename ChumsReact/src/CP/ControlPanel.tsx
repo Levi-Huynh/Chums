@@ -3,7 +3,7 @@ import UserContext from '../UserContext'
 import { Authenticated } from './Authenticated'
 import { Unauthenticated } from './Unauthenticated'
 import { ApiHelper } from './Components';
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import { Logout } from './Logout';
 
 export const ControlPanel = () => {

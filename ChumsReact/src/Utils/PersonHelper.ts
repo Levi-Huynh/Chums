@@ -1,4 +1,3 @@
-import { UserHelper } from './UserHelper';
 import { PersonInterface } from './ApiHelper';
 
 export class PersonHelper {

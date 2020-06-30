@@ -12,7 +12,8 @@ export const Register: React.FC = () => {
 
     const context = React.useContext(UserContext);
 
-    const validateEmail = (email: string) => { return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)); }
+    //const validateEmail = (email: string) => { return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)); }
+    const validateEmail = (email: string) => { return (/^\w+([\.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(email)); }
 
     const validate = () => {
         var errors: string[] = [];

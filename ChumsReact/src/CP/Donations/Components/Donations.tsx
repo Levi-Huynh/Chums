@@ -1,12 +1,12 @@
 import React from 'react';
-import { ApiHelper, UserHelper, DonationInterface, Helper, DisplayBox } from './';
+import { ApiHelper, UserHelper, DonationInterface, Helper, DisplayBox, DonationBatchInterface } from './';
 
-interface Props { batchId: number, addFunction: () => void, editFunction: (id: number) => void }
+interface Props { batch: DonationBatchInterface, addFunction: () => void, editFunction: (id: number) => void }
 
 export const Donations: React.FC<Props> = (props) => {
     const [donations, setDonations] = React.useState<DonationInterface[]>([]);
 
-    const loadData = () => ApiHelper.apiGet('/donations?batchId=' + props.batchId).then(data => setDonations(data));
+    const loadData = () => ApiHelper.apiGet('/donations?batchId=' + props.batch?.id).then(data => setDonations(data));
     const showAddDonation = (e: React.MouseEvent) => { e.preventDefault(); props.addFunction() }
     const getEditContent = () => { return (UserHelper.checkAccess('Donations', 'Edit')) ? (<a href="about:blank" onClick={showAddDonation} ><i className="fas fa-plus"></i></a>) : null; }
     const showEditDonation = (e: React.MouseEvent) => {
@@ -32,7 +32,7 @@ export const Donations: React.FC<Props> = (props) => {
         return rows;
     }
 
-    React.useEffect(() => { if (props.batchId > 0) loadData() }, [props.batchId]);
+    React.useEffect(() => { if (props.batch?.id > 0) loadData() }, [props.batch]);
 
     return (
         <DisplayBox headerIcon="fas fa-hand-holding-usd" headerText="Donations" editContent={getEditContent()} >

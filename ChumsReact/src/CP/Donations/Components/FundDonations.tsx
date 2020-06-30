@@ -10,7 +10,8 @@ export const FundDonations: React.FC<Props> = (props) => {
         props.updatedFunction(fundDonations);
     }
 
-    const addRow = () => {
+    const addRow = (e: React.MouseEvent) => {
+        e.preventDefault();
         var fundDonations = [...props.fundDonations];
         var fd = { fundId: props.funds[0].id } as FundDonationInterface;
         fundDonations.push(fd);

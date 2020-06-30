@@ -1,3 +1,5 @@
+import { format as dateFormat } from 'date-fns'
+
 export class Helper {
 
     static loadExternalScript(url: string, callback: () => void) {
@@ -6,6 +8,16 @@ export class Helper {
         script.async = true;
         script.onload = callback;
         document.body.appendChild(script);
+    }
+
+    static formatDate(date: Date, format: string) {
+        var cleanDate = new Date(new Date(date).toISOString().split('T')[0]); //truncate the time
+        return dateFormat(cleanDate, format);
+    }
+
+    static prettyDate(date: Date) {
+        if (date === undefined || date === null) return '';
+        return this.formatDate(date, 'MMM d, yyyy');
     }
 
     static formatCurrency(amount: number) {

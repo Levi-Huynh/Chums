@@ -1,6 +1,6 @@
 import React from 'react';
 import './Login.css';
-import { ErrorMessages, ApiHelper, UserHelper } from './Components';
+import { ErrorMessages, ApiHelper } from './Components';
 
 interface ForgotResponse { emailed: boolean }
 

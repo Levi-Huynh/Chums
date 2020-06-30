@@ -6,7 +6,6 @@ interface Props { person: PersonInterface, addFormFunction: (selectedFormId: num
 export const AddForm: React.FC<Props> = (props) => {
     const [forms, setForms] = React.useState(null);
     const [unsubmittedForms, setUnsubmittedForms] = React.useState([]);
-    const [person, setPerson] = React.useState(props.person);
     const [clicked, setClicked] = React.useState(false);
     const [selectedFormId, setSelectedFormId] = React.useState(0);
     const handleClick = (e: React.MouseEvent) => { e.preventDefault(); setClicked(true); };
@@ -15,8 +14,8 @@ export const AddForm: React.FC<Props> = (props) => {
 
     const determineUnsubmitted = () => {
         var unsubmitted = [];
-        if (forms !== undefined && forms !== null && person !== null) {
-            var sf = person.formSubmissions;
+        if (forms !== undefined && forms !== null && props.person !== null) {
+            var sf = props.person.formSubmissions;
             if (sf !== undefined && sf !== null) {
                 for (var i = 0; i < forms.length; i++) {
                     var exists = false;

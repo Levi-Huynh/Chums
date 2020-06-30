@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route, Redirect } from "react-router-dom";
-import { Header, Sidebar, ApiHelper } from './Components'
+import { Header, Sidebar } from './Components'
 import { PeoplePage } from './People/PeoplePage'
 import { PersonPage } from './People/PersonPage'
 import { GroupsPage } from './Groups/GroupsPage'
