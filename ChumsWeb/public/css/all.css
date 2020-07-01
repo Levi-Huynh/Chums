@@ -1,0 +1,60 @@
+﻿body {font-family:'Roboto', sans-serif; color:#333;}
+.table {color:#333;}
+a { color: #24b8ff; }
+
+h2 span {color:#24b8ff;}
+
+.navbar {background-color: #222 !important;}
+#navbar {color:#FFF;}
+#navbar a {color:#FFF;}
+.navbar-brand {padding-top:0px;padding-bottom:0px;}
+.navbar-brand img {height:35px;margin-top:5px;margin-bottom:5px;}
+#userMenu {display: none;}
+#navSpacer {height:66px;}
+
+.blue{color:#03a9f4;}
+
+
+.inputBox {border:1px solid #E7E7E7;margin-bottom:30px;}
+.inputBox .header {border-top:4px solid #03a9f4; background-color:#FFF; font-weight:bold; font-size:16px; padding:10px; color:#333; border-bottom:1px solid #DDD; }
+.inputBox .header i {margin-right:5px;}
+.inputBox .header .btn {margin-top:-2px;}
+.inputBox .subhead {background-color:#FFF; font-weight:600; font-size:16px; padding:10px; color:#333; border-bottom:1px solid #DDD; }
+.inputBox .content {padding:10px; background-color:#FFFFFF;}
+.inputBox .content p { color:#666; }
+.inputBox .footer .btn {border-radius:0px;}
+.inputBox .footer .col {padding-left:0px;padding-right:0px;}
+.inputBox .footer .col:first-child {padding-left:15px;}
+.inputBox .footer .col:first-child .btn {border-bottom-left-radius:5px;}
+.inputBox .footer .col:last-child {padding-right:15px;}
+.inputBox .footer .col:last-child .btn {border-bottom-right-radius:5px;}
+.inputBox .content label {color:#999;}
+.inputBox .section {font-weight:600; font-size:16px; padding:10px; color:#333; border-bottom:1px solid #DDD; }
+
+.inputBox .content ul {padding-left:0px;}
+.inputBox .content li {list-style-type:none;margin-bottom:10px;}
+.inputBox .content li i {margin-right:5px;}
+.inputBox .content td i {margin-right:5px;}
+
+.btn-primary { background-color:#77cc00; border-color:#70db86; }
+.btn-primary:hover { background-color:#55aa00; border-color:#55aa00; }
+
+.btn-info { background-color: #03a9f4; border-color: #03a9f4; }
+
+@media (max-width: 600px) {
+    #sidebar {margin-top:170px;}
+    #sidebar.d-none {margin-top:0px;}
+}
+
+#hero { background-color: #262624; background-image: url(/images/home/hero.jpg); background-size: cover; color: #FFF; padding-bottom: 140px; padding-top: 140px; } /*source - https://pixabay.com/photos/women-teamwork-team-business-1209678/*/
+#heroInfo {background-color:rgba(0, 0, 0, 0.5); padding:20px; border-radius: 10px;}
+#heroInfo h1 {font-size:28px;}
+.homeSection {padding-top:50px;padding-bottom: 50px;}
+.homeSectionAlt { color:#FFF; background-color: #333;}
+.homeSection h2 {margin-bottom: 30px; text-align: center; }
+#footer {background-color:#333; padding-top:40px; padding-bottom: 40px; color:#EEE;}
+#footer img {max-width:450px;margin-bottom: 20px;}
+#members {position: relative;}
+#members:after { content:''; background-position-y: center; background-image: url(/images/home/members.jpg); background-size: cover; opacity: 0.10; top: 0;left: 0;bottom: 0;right: 0;position: absolute; z-index: 1; } /*https://pixabay.com/photos/worship-praise-singer-black-africa-435108/*/
+#attendance {position: relative;}
+#attendance:after { content:''; background-position-y: center; background-image: url(/images/home/attendance.jpg); background-size: cover; opacity: 0.10; top: 0;left: 0;bottom: 0;right: 0;position: absolute; z-index: 1; } /*https://pixabay.com/photos/kindergarten-clown-garden-animator-2204239/*/
