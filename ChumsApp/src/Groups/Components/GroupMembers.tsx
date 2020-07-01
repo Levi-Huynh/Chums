@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, GroupInterface, DisplayBox, UserHelper, GroupMemberInterface, PersonHelper, PersonInterface } from './';
+import { ApiHelper, GroupInterface, DisplayBox, UserHelper, GroupMemberInterface, PersonHelper, PersonInterface, ExportLink } from './';
 import { Link } from 'react-router-dom';
 
 
@@ -59,12 +59,13 @@ export const GroupMembers: React.FC<Props> = (props) => {
         return rows;
     }
 
+    const getEditContent = () => { return (<ExportLink data={groupMembers} spaceAfter={true} />) }
 
     React.useEffect(() => { if (props.group.id !== undefined) loadData() }, [props.group]);
     React.useEffect(() => { if (props.addedPerson?.id !== undefined) handleAdd() }, [props.addedPerson]);
 
     return (
-        <DisplayBox headerText="Group Members" headerIcon="fas fa-users" >
+        <DisplayBox headerText="Group Members" headerIcon="fas fa-users" editContent={getEditContent()} >
             <table className="table" id="groupMemberTable">
                 <tbody>
                     <tr><th></th><th>Name</th><th>Action</th></tr>

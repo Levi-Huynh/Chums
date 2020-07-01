@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, GroupInterface, DisplayBox, SessionInterface, VisitSessionInterface, PersonInterface, PersonHelper, VisitInterface, UserHelper } from './';
+import { ApiHelper, GroupInterface, DisplayBox, SessionInterface, VisitSessionInterface, PersonInterface, PersonHelper, VisitInterface, UserHelper, ExportLink } from './';
 
 interface Props {
     group: GroupInterface,
@@ -91,6 +91,7 @@ export const GroupSessions: React.FC<Props> = (props) => {
     var content = <></>;
     if (sessions.length === 0) content = <div className="alert alert-warning" role="alert"><b>There are no sessions.</b>  Please add a new session to continue.</div>
     else content = (<>
+        <span className="float-right"><ExportLink data={visitSessions} spaceAfter={true} /></span>
         <b>Attendance for {props.group.name}</b>
         <table className="table" id="groupMemberTable">
             <tr><th></th><th>Name</th><th></th></tr>

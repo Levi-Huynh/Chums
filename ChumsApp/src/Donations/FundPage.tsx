@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, DisplayBox, InputBox, DonationBatchInterface, Helper, UserHelper, FundDonationInterface } from './Components';
+import { ApiHelper, DisplayBox, InputBox, DonationBatchInterface, Helper, UserHelper, FundDonationInterface, ExportLink } from './Components';
 import { RouteComponentProps, Link } from 'react-router-dom';
 
 
@@ -13,6 +13,8 @@ export const FundPage = ({ match }: RouteComponentProps<TParams>) => {
     const [fundDonations, setFundDonations] = React.useState<FundDonationInterface[]>([]);
     const [startDate, setStartDate] = React.useState<Date>(initialDate);
     const [endDate, setEndDate] = React.useState<Date>(new Date());
+
+    const getEditContent = () => { return (<ExportLink data={fundDonations} spaceAfter={true} />) }
 
     const loadData = () => {
         ApiHelper.apiGet('/funds/' + match.params.id).then(data => setFund(data));
@@ -61,7 +63,7 @@ export const FundPage = ({ match }: RouteComponentProps<TParams>) => {
             <h1><i className="fas fa-hand-holding-usd"></i> {fund.name} Donations</h1>
             <div className="row">
                 <div className="col-lg-8">
-                    <DisplayBox headerIcon="fas fa-hand-holding-usd" headerText="Donations">
+                    <DisplayBox headerIcon="fas fa-hand-holding-usd" headerText="Donations" editContent={getEditContent()}>
                         <table className="table">
                             <tr><th>Date</th><th>Batch</th><th>Donor</th><th>Amount</th></tr>
                             {getRows()}

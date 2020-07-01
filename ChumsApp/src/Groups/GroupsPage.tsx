@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, DisplayBox, GroupInterface, GroupAdd, UserHelper } from './Components';
+import { ApiHelper, DisplayBox, GroupInterface, GroupAdd, UserHelper, ExportLink } from './Components';
 import { Link } from 'react-router-dom';
 
 export const GroupsPage = () => {
@@ -8,7 +8,7 @@ export const GroupsPage = () => {
 
     const getEditContent = () => {
         if (!UserHelper.checkAccess('Groups', 'Edit')) return null;
-        else return (<a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); setShowAdd(true); }} ><i className="fas fa-plus"></i></a>);
+        else return (<><ExportLink data={groups} spaceAfter={true} /> <a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); setShowAdd(true); }} ><i className="fas fa-plus"></i></a></>);
     }
 
     const handleAddUpdated = () => { setShowAdd(false); loadData(); }

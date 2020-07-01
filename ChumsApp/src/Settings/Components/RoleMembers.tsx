@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, DisplayBox, UserHelper, RoleMemberInterface, PersonHelper, PersonInterface, RoleInterface } from './';
+import { ApiHelper, DisplayBox, UserHelper, RoleMemberInterface, PersonHelper, PersonInterface, RoleInterface, ExportLink } from './';
 import { Link } from 'react-router-dom';
 
 interface Props { role: RoleInterface, addedPerson?: PersonInterface, addedCallback?: () => void }
@@ -9,6 +9,7 @@ export const RoleMembers: React.FC<Props> = (props) => {
     const [roleMembers, setRoleMembers] = React.useState<RoleMemberInterface[]>([]);
 
     const loadData = () => ApiHelper.apiGet('/rolemembers?roleId=' + props.role.id).then(data => setRoleMembers(data));
+    const getEditContent = () => { return (<ExportLink data={roleMembers} spaceAfter={true} />) }
     const handleRemove = (e: React.MouseEvent) => {
         e.preventDefault();
         var anchor = e.currentTarget as HTMLAnchorElement;
@@ -58,7 +59,7 @@ export const RoleMembers: React.FC<Props> = (props) => {
     React.useEffect(() => { if (props.addedPerson?.id !== undefined) handleAdd() }, [props.addedPerson]);
 
     return (
-        <DisplayBox headerText="Members" headerIcon="fas fa-users" >
+        <DisplayBox headerText="Members" headerIcon="fas fa-users" editContent={getEditContent()} >
             <table className="table" id="roleMemberTable">
                 <tbody>
                     <tr><th></th><th>Name</th><th>Action</th></tr>

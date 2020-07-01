@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, DisplayBox, BatchEdit, DonationBatchInterface, Helper, Funds, DonationChart, UserHelper, DonationFilter } from './Components';
+import { ApiHelper, DisplayBox, BatchEdit, DonationBatchInterface, Helper, Funds, DonationChart, UserHelper, DonationFilter, ExportLink } from './Components';
 import { Link } from 'react-router-dom';
 import { set } from 'date-fns'
 
@@ -18,7 +18,9 @@ export const DonationsPage = () => {
     }
     const batchUpdated = () => { setEditBatchId(-1); loadData(); }
     const loadData = () => { ApiHelper.apiGet('/donationbatches').then(data => setBatches(data)); }
-    const getEditContent = () => { return (UserHelper.checkAccess('Donations', 'Edit')) ? (<a href="about:blank" onClick={showAddBatch} ><i className="fas fa-plus"></i></a>) : null; }
+    const getEditContent = () => {
+        return (UserHelper.checkAccess('Donations', 'Edit')) ? (<><ExportLink data={batches} spaceAfter={true} /><a href="about:blank" onClick={showAddBatch} ><i className="fas fa-plus"></i></a></>) : null;
+    }
     const handleFilterUpdate = (startDate: Date, endDate: Date) => { setStartDate(startDate); setEndDate(endDate); }
 
     const getSidebarModules = () => {

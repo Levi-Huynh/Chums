@@ -1,5 +1,5 @@
 import React from 'react';
-import { DisplayBox, PersonInterface, AttendanceHelper, AttendanceFilterInterface, PersonHelper } from './';
+import { DisplayBox, PersonInterface, AttendanceHelper, AttendanceFilterInterface, PersonHelper, ExportLink } from './';
 
 interface Props { filter: AttendanceFilterInterface }
 
@@ -20,10 +20,12 @@ export const Individuals: React.FC<Props> = (props) => {
         return rows;
     }
 
+    const getEditContent = () => { return (<ExportLink data={people} />) }
+
     React.useEffect(loadData, [props.filter]);
 
     return (
-        <DisplayBox headerIcon="fas fa-user" headerText="People" >
+        <DisplayBox headerIcon="fas fa-user" headerText="People" editContent={getEditContent()} >
             <p className="text-right">Total Attendance: {people.length}</p>
             <table className="table table-sm" id="peopleTable">
                 <tr><th></th><th>Name</th></tr>

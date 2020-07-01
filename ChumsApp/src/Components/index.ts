@@ -1,5 +1,6 @@
 export * from '../Utils'
 export { ErrorMessages } from './ErrorMessages'
+export { ExportLink } from './ExportLink'
 export { Header } from './Header'
 export { Footer } from './Footer'
 export { DisplayBox } from './DisplayBox'

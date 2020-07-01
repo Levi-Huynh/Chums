@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, UserHelper, DonationInterface, Helper, DisplayBox, DonationBatchInterface } from './';
+import { ApiHelper, UserHelper, DonationInterface, Helper, DisplayBox, DonationBatchInterface, ExportLink } from './';
 
 interface Props { batch: DonationBatchInterface, addFunction: () => void, editFunction: (id: number) => void }
 
@@ -8,7 +8,9 @@ export const Donations: React.FC<Props> = (props) => {
 
     const loadData = () => ApiHelper.apiGet('/donations?batchId=' + props.batch?.id).then(data => setDonations(data));
     const showAddDonation = (e: React.MouseEvent) => { e.preventDefault(); props.addFunction() }
-    const getEditContent = () => { return (UserHelper.checkAccess('Donations', 'Edit')) ? (<a href="about:blank" onClick={showAddDonation} ><i className="fas fa-plus"></i></a>) : null; }
+    const getEditContent = () => {
+        return (UserHelper.checkAccess('Donations', 'Edit')) ? (<><ExportLink data={donations} spaceAfter={true} /><a href="about:blank" onClick={showAddDonation} ><i className="fas fa-plus"></i></a></>) : null;
+    }
     const showEditDonation = (e: React.MouseEvent) => {
         e.preventDefault();
         var anchor = e.currentTarget as HTMLAnchorElement;
