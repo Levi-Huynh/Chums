@@ -16,10 +16,9 @@ export const Home = () => {
                 <Navbar.Brand href="/"><img src="/images/logo.png" alt="logo" /></Navbar.Brand>
                 <Navbar.Collapse id="navbar">
                     <Nav className="mr-auto"></Nav>
-                    <Nav className="ml-auto"><Nav.Link href="/cp/">Login</Nav.Link></Nav>
+                    <Nav className="ml-auto"><Nav.Link href="https://app.chums.org/">Login</Nav.Link></Nav>
                 </Navbar.Collapse>
             </Navbar>
-
             <HomeHero />
             <HomeAbout />
             <HomeMembers />
@@ -27,9 +26,6 @@ export const Home = () => {
             <HomeAttendance />
             <HomeRegister />
             <Footer />
-
-
-
         </>
     );
 }

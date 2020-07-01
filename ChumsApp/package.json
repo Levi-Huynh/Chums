@@ -25,7 +25,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "deploy": "aws s3 sync build/ s3://chums-web --profile LiveChurchSolutions",
+    "deploy": "aws s3 sync build/ s3://chums-app --profile LiveChurchSolutions",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

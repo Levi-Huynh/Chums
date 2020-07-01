@@ -1,7 +1,5 @@
 import React from 'react';
-import { InputBox, ApiHelper, RegisterInterface, UserHelper } from '.';
-import UserContext from '../UserContext'
-import { Redirect } from 'react-router-dom';
+import { InputBox, ApiHelper, RegisterInterface } from '.';
 import { ErrorMessages } from './ErrorMessages';
 import { Row, Col, Container } from 'react-bootstrap'
 
@@ -10,8 +8,7 @@ export const HomeRegister: React.FC = () => {
     const [register, setRegister] = React.useState<RegisterInterface>({ churchName: '', firstName: '', lastName: '', password: '', email: '' });
     const [processing, setProcessing] = React.useState(false);
     const [errors, setErrors] = React.useState<string[]>([]);
-
-    const context = React.useContext(UserContext);
+    const [redirectUrl, setRedirectUrl] = React.useState('');
 
     //const validateEmail = (email: string) => { return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)); }
     const validateEmail = (email: string) => { return (/^\w+([\.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(email)); }
@@ -35,9 +32,7 @@ export const HomeRegister: React.FC = () => {
                 setProcessing(true);
                 ApiHelper.apiPostAnonymous('/users/register', register)
                     .then((data) => {
-                        ApiHelper.apiKey = data.apiToken;
-                        UserHelper.populate(data.mappings).then(d => { ApiHelper.apiKey = data.apiToken; context.setUserName(data.name); });
-                        document.cookie = "apiKey=" + data.apiToken;
+                        setRedirectUrl('https://app.chums.org/login?guid=' + data.apiToken);
                         setProcessing(false);
                     }).catch(() => {
                         setErrors(['A user already exists with this email address.  Please log in instead.']);
@@ -65,7 +60,7 @@ export const HomeRegister: React.FC = () => {
         setRegister(r);
     }
 
-    if (context.userName === '' || ApiHelper.apiKey === '') {
+    if (redirectUrl === '') {
         return (
             <div className="homeSection">
                 <Container>
@@ -100,5 +95,8 @@ export const HomeRegister: React.FC = () => {
                 </Container>
             </div>
         );
-    } else return <Redirect to="/cp" />
+    } else {
+        window.location.href = redirectUrl;
+        return (<></>);
+    }
 }
