@@ -1,7 +1,7 @@
 import React from 'react';
 import { ApiHelper, Tabs, AttendanceHelper, AttendanceFilter, DisplayBox, AttendanceInterface, CampusInterface, CampusEdit, ServiceEdit, ServiceInterface, ServiceTimeEdit, ServiceTimeInterface, AttendanceFilterInterface } from './Components';
 import { Link } from 'react-router-dom';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Table } from 'react-bootstrap';
 
 export const AttendancePage = () => {
     const [attendance, setAttendance] = React.useState<AttendanceInterface[]>([]);
@@ -74,10 +74,10 @@ export const AttendancePage = () => {
             <Row>
                 <Col lg={8}>
                     <DisplayBox headerIcon="fas fa-list" headerText="Groups" editContent={getEditLinks()} >
-                        <table className="table table-sm table-borderless">
-                            <tr><th>Campus</th><th>Service</th><th>Time</th><th>Category</th><th>Group</th></tr>
-                            {getRows()}
-                        </table >
+                        <Table size="sm">
+                            <thead><tr><th>Campus</th><th>Service</th><th>Time</th><th>Category</th><th>Group</th></tr></thead>
+                            <tbody>{getRows()}</tbody>
+                        </Table >
                     </DisplayBox >
                 </Col>
                 <Col lg={4}>

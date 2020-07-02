@@ -1,5 +1,6 @@
 import React from 'react';
 import { DisplayBox, PersonInterface, AttendanceHelper, AttendanceFilterInterface, PersonHelper, ExportLink } from './';
+import { Table } from 'react-bootstrap'
 
 interface Props { filter: AttendanceFilterInterface }
 
@@ -27,10 +28,10 @@ export const Individuals: React.FC<Props> = (props) => {
     return (
         <DisplayBox headerIcon="fas fa-user" headerText="People" editContent={getEditContent()} >
             <p className="text-right">Total Attendance: {people.length}</p>
-            <table className="table table-sm" id="peopleTable">
-                <tr><th></th><th>Name</th></tr>
-                {getRows()}
-            </table>
+            <Table size="sm" id="peopleTable">
+                <thead><tr><th></th><th>Name</th></tr></thead>
+                <tbody>{getRows()}</tbody>
+            </Table>
         </DisplayBox>
     );
 }

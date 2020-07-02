@@ -1,5 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { InputBox, PersonAdd, PersonHelper, ApiHelper, HouseholdInterface, HouseholdMemberInterface, PersonInterface } from './';
+import { Table } from 'react-bootstrap';
 
 interface Props { updatedFunction: () => void, household: HouseholdInterface, members: [HouseholdMemberInterface] }
 
@@ -76,16 +77,13 @@ export const HouseholdEdit: React.FC<Props> = (props) => {
                 <label>Household Name</label>
                 <input type="text" className="form-control" value={household.name} onChange={handleChange} />
             </div>
-            <table className="table table-sm" id="householdMemberTable"><tbody>
-                {rows}
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td><a href="about:blank" className="text-success" onClick={handleAdd}> <i className="fas fa-user"></i> Add</a></td>
-                </tr>
-            </tbody></table>
+            <Table size="sm" id="householdMemberTable">
+                <tbody>
+                    {rows}
+                    <tr><td></td><td></td><td><a href="about:blank" className="text-success" onClick={handleAdd}> <i className="fas fa-user"></i> Add</a></td></tr>
+                </tbody>
+            </Table>
             {personAdd}
-
         </InputBox >
     );
 }

@@ -1,11 +1,9 @@
 import React from 'react';
 import { DisplayBox, PersonHelper, ApiHelper, HouseholdEdit, UserHelper } from './';
 import { Link } from 'react-router-dom';
+import { Table } from 'react-bootstrap';
 
-
-interface Props {
-    personId: number
-}
+interface Props { personId: number }
 
 export const Household: React.FC<Props> = (props) => {
     const [household, setHousehold] = React.useState(null);
@@ -36,7 +34,7 @@ export const Household: React.FC<Props> = (props) => {
         }
         return (
             <DisplayBox headerIcon="fas fa-users" headerText={(household?.name || '') + " Household"} editFunction={getEditFunction()} >
-                <table id="household" className="table table-sm"><tbody>{rows}</tbody></table>
+                <Table size="sm" id="household"><tbody>{rows}</tbody></Table>
             </DisplayBox>
         );
     }

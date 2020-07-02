@@ -1,6 +1,6 @@
 import React from 'react';
 import { PeopleSearchResults, ApiHelper, DisplayBox, ExportLink } from './Components';
-import { Row, Col, InputGroup, FormControl } from 'react-bootstrap';
+import { Row, Col, InputGroup, FormControl, Button } from 'react-bootstrap';
 
 export const PeoplePage = () => {
     const [searchText, setSearchText] = React.useState('');
@@ -25,7 +25,7 @@ export const PeoplePage = () => {
                     <DisplayBox headerIcon="fas fa-user" headerText="Search" editContent={getEditContent()} >
                         <InputGroup>
                             <FormControl name="searchText" type="text" placeholder="Name" value={searchText} onChange={handleChange} />
-                            <InputGroup.Append><input type="submit" className="btn btn-primary" value="Search" onClick={handleSubmit} /></InputGroup.Append>
+                            <InputGroup.Append><Button variant="primary" onClick={handleSubmit}>Search</Button></InputGroup.Append>
                         </InputGroup>
                         <br />
                         <PeopleSearchResults people={searchResults} />

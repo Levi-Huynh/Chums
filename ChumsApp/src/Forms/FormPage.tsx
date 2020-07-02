@@ -1,7 +1,7 @@
 import React from 'react';
 import { ApiHelper, DisplayBox, UserHelper, FormInterface, QuestionInterface, FormQuestionEdit } from './Components';
 import { RouteComponentProps } from 'react-router-dom'
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Table } from 'react-bootstrap';
 
 type TParams = { id?: string };
 export const FormPage = ({ match }: RouteComponentProps<TParams>) => {
@@ -78,12 +78,10 @@ export const FormPage = ({ match }: RouteComponentProps<TParams>) => {
             <Row>
                 <Col lg={8}>
                     <DisplayBox headerText="Questions" headerIcon="fas fa-question" editContent={getEditContent()} >
-                        <table className="table">
-                            <tbody>
-                                <tr><th>Question</th><th>Type</th><th>Action</th></tr>
-                                {getRows()}
-                            </tbody>
-                        </table>
+                        <Table>
+                            <thead><tr><th>Question</th><th>Type</th><th>Action</th></tr></thead>
+                            <tbody>{getRows()}</tbody>
+                        </Table>
                     </DisplayBox>
                 </Col>
                 <Col lg={4}>{getSidebarModules()}</Col>

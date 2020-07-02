@@ -1,6 +1,7 @@
 import React from 'react';
 import { ApiHelper, FundInterface, FundEdit, DisplayBox, UserHelper } from './';
 import { Link } from 'react-router-dom';
+import { Table } from 'react-bootstrap';
 
 export const Funds: React.FC = () => {
     const [funds, setFunds] = React.useState<FundInterface[]>([]);
@@ -40,9 +41,7 @@ export const Funds: React.FC = () => {
 
     if (editFund === null) return (
         <DisplayBox headerIcon="fas fa-hand-holding-usd" headerText="Funds" editContent={getEditSection()} >
-            <table className="table table-sm">
-                {getRows()}
-            </table >
+            <Table size="sm">{getRows()}</Table >
         </DisplayBox >
     );
     else return (<FundEdit fund={editFund} updatedFunction={handleFundUpdated} />);

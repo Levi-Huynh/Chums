@@ -1,7 +1,7 @@
 import React from 'react';
 import { ApiHelper, DisplayBox, InputBox, DonationBatchInterface, Helper, UserHelper, FundDonationInterface, ExportLink } from './Components';
 import { RouteComponentProps, Link } from 'react-router-dom';
-import { Row, Col, FormGroup, FormControl, FormLabel } from 'react-bootstrap';
+import { Row, Col, FormGroup, FormControl, FormLabel, Table } from 'react-bootstrap';
 
 type TParams = { id?: string };
 
@@ -64,10 +64,10 @@ export const FundPage = ({ match }: RouteComponentProps<TParams>) => {
             <Row>
                 <Col lg={8}>
                     <DisplayBox headerIcon="fas fa-hand-holding-usd" headerText="Donations" editContent={getEditContent()}>
-                        <table className="table">
-                            <tr><th>Date</th><th>Batch</th><th>Donor</th><th>Amount</th></tr>
-                            {getRows()}
-                        </table>
+                        <Table>
+                            <thead><tr><th>Date</th><th>Batch</th><th>Donor</th><th>Amount</th></tr></thead>
+                            <tbody>{getRows()}</tbody>
+                        </Table>
                     </DisplayBox>
                 </Col>
                 <Col lg={4}>

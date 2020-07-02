@@ -1,5 +1,6 @@
 import React from 'react';
 import { QuestionInterface } from '.';
+import { Table, Button, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
 
 interface Props { question: QuestionInterface, updatedFunction: (question: QuestionInterface) => void }
 
@@ -41,7 +42,7 @@ export const ChoicesEdit: React.FC<Props> = (props) => {
                 result.push(<tr key={i}>
                     <td>{c.value}</td>
                     <td>{c.text}</td>
-                    <td><a href="about:blank" className="btn btn-danger btn-sm" onClick={handleRemove} data-index={i}>Remove</a></td>
+                    <td><Button variant="danger" size="sm" onClick={handleRemove} data-index={i}>Remove</Button></td>
                 </tr>);
             }
         }
@@ -49,19 +50,19 @@ export const ChoicesEdit: React.FC<Props> = (props) => {
     }
 
     return (
-        <div className="form-group">
-            <label>Choices</label>
-            <table className="table table-sm">
+        <FormGroup>
+            <FormLabel>Choices</FormLabel>
+            <Table size="sm">
+                <thead><tr><th>Value</th><th>Text</th><th>Action</th></tr></thead>
                 <tbody>
-                    <tr><th>Value</th><th>Text</th><th>Action</th></tr>
                     {getRows()}
                     <tr>
-                        <td><input type="text" className="form-control form-control-sm" name="choiceValue" value={choiceValue} onChange={handleChange} /></td>
-                        <td><input type="text" className="form-control form-control-sm" name="choiceText" value={choiceText} onChange={handleChange} /></td>
-                        <td><a href="about:blank" className="btn btn-success btn-sm" onClick={handleAdd}>Add</a></td>
+                        <td><FormControl size="sm" name="choiceValue" value={choiceValue} onChange={handleChange} /></td>
+                        <td><FormControl size="sm" name="choiceText" value={choiceText} onChange={handleChange} /></td>
+                        <td><Button variant="success" size="sm" onClick={handleAdd}>Add</Button></td>
                     </tr>
                 </tbody>
-            </table>
-        </div>
+            </Table>
+        </FormGroup>
     );
 }

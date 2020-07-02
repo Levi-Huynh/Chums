@@ -1,10 +1,8 @@
 import React from 'react';
 import { ApiHelper, PersonInterface, PersonHelper } from './';
+import { Table, Button, FormControl, InputGroup } from 'react-bootstrap';
 
-interface Props {
-    addFunction: (person: PersonInterface) => void
-
-}
+interface Props { addFunction: (person: PersonInterface) => void }
 
 export const PersonAdd: React.FC<Props> = (props) => {
     const [searchResults, setSearchResults] = React.useState(null);
@@ -38,13 +36,11 @@ export const PersonAdd: React.FC<Props> = (props) => {
 
     return (
         <>
-            <div className="input-group">
-                <input type="text" className="form-control" value={searchText} onChange={handleChange} />
-                <div className="input-group-append"><a href="about:blank" className="btn btn-primary" onClick={handleSearch} ><i className="fas fa-search"></i> Search</a></div>
-            </div>
-            <table className="table table-sm" id="householdMemberAddTable">
-                <tbody>{rows}</tbody>
-            </table>
+            <InputGroup>
+                <FormControl value={searchText} onChange={handleChange} />
+                <div className="input-group-append"><Button variant="primary" onClick={handleSearch} ><i className="fas fa-search"></i> Search</Button></div>
+            </InputGroup>
+            <Table size="sm" id="householdMemberAddTable"><tbody>{rows}</tbody></Table>
         </>
     );
 }

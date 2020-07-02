@@ -1,7 +1,7 @@
 import React from 'react';
 import { ApiHelper, DisplayBox, FormInterface, FormEdit, UserHelper } from './Components'
 import { Link } from 'react-router-dom'
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Table } from 'react-bootstrap';
 
 export const FormsPage = () => {
     const [forms, setForms] = React.useState<FormInterface[]>([]);
@@ -43,10 +43,10 @@ export const FormsPage = () => {
             <Row>
                 <Col lg={8}>
                     <DisplayBox headerText="Forms" headerIcon="fas fa-align-left" editContent={getEditContent()} >
-                        <table className="table">
-                            <tr><th colSpan={2}>Name</th></tr>
-                            {getRows()}
-                        </table>
+                        <Table>
+                            <thead><tr><th colSpan={2}>Name</th></tr></thead>
+                            <tbody>{getRows()}</tbody>
+                        </Table>
                     </DisplayBox>
                 </Col>
                 <Col lg={4}>{getSidebar()}</Col>

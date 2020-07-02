@@ -1,10 +1,9 @@
 import React from 'react';
 import { DisplayBox, ApiHelper } from './'
 import { Link } from 'react-router-dom';
+import { Table } from 'react-bootstrap';
 
-interface Props {
-    personId: number
-}
+interface Props { personId: number }
 
 export const Groups: React.FC<Props> = (props) => {
     const [groupMembers, setGroupMembers] = React.useState(null);
@@ -21,5 +20,5 @@ export const Groups: React.FC<Props> = (props) => {
         }
     }
 
-    return <DisplayBox headerIcon="fas fa-list" headerText="Groups"><table className="table table-sm"><tbody>{items}</tbody></table></DisplayBox>
+    return <DisplayBox headerIcon="fas fa-list" headerText="Groups"><Table size="sm"><tbody>{items}</tbody></Table></DisplayBox>
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ApiHelper, GroupInterface, DisplayBox, GroupMemberInterface, PersonHelper, PersonInterface } from './';
+import { Table } from 'react-bootstrap';
 
 interface Props { group: GroupInterface, addFunction: (person: PersonInterface) => void }
 
@@ -39,14 +40,11 @@ export const MembersAdd: React.FC<Props> = (props) => {
 
     return (
         <DisplayBox headerIcon="fas fa-user" headerText="Available Group Members" >
-            <table className="table personSideTable">
-                <tbody>
-                    <tr><th></th><th>Name</th><th>Action</th></tr>
-                    {getRows()}
-                </tbody>
-            </table>
+            <Table className="personSideTable">
+                <thead><tr><th></th><th>Name</th><th>Action</th></tr></thead>
+                <tbody>{getRows()}</tbody>
+            </Table>
         </DisplayBox>
-
     );
 }
 

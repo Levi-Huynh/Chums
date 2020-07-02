@@ -1,6 +1,7 @@
 import React from 'react';
 import { DisplayBox, ApiHelper, AttendanceRecordInterface, Helper } from './';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { Table } from 'react-bootstrap';
 
 interface Props { personId: number }
 
@@ -49,7 +50,7 @@ export const PersonAttendance: React.FC<Props> = (props) => {
 
     return (
         <DisplayBox headerIcon="far fa-calendar-alt" headerText="Attendance" >
-            <table className="table"><tbody>{getRows()}</tbody></table>
+            <Table><tbody>{getRows()}</tbody></Table>
         </DisplayBox>
     );
 }

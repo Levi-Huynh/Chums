@@ -1,5 +1,6 @@
 import React from 'react';
 import { ApiHelper, GroupInterface, GroupServiceTimeInterface, ServiceTimeInterface } from './';
+import { Table, InputGroup, Button, FormControl } from 'react-bootstrap';
 
 interface Props {
     group: GroupInterface,
@@ -56,20 +57,13 @@ export const ServiceTimesEdit: React.FC<Props> = (props) => {
     return (
         <div>
             <label>Service Times (optional)</label>
-            <table className="table">
-                <tbody>
-                    {getRows()}
-                </tbody>
-            </table>
-
-            <div className="input-group">
-                <select className="form-control" value={addServiceTimeId} onChange={handleChange} >
-                    {getOptions()}
-                </select>
-                <div className="input-group-append">
-                    <a className="btn btn-primary" href="about:blank" onClick={handleAdd} ><i className="fas fa-plus"></i> Add</a>
-                </div>
-            </div>
+            <Table><tbody>{getRows()}</tbody></Table>
+            <InputGroup>
+                <FormControl as="select" value={addServiceTimeId} onChange={handleChange} >{getOptions()}</FormControl>
+                <InputGroup.Append>
+                    <Button variant="primary" onClick={handleAdd}><i className="fas fa-plus"></i> Add</Button>
+                </InputGroup.Append>
+            </InputGroup>
         </div>
 
     );

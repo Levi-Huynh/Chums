@@ -1,6 +1,7 @@
 import React from 'react';
 import { DisplayBox, ApiHelper, Helper, DonationInterface } from './';
 import { Link } from 'react-router-dom'
+import { Table } from 'react-bootstrap';
 
 interface Props { personId: number }
 
@@ -29,12 +30,10 @@ export const PersonDonations: React.FC<Props> = (props) => {
 
     return (
         <DisplayBox headerIcon="fas fa-hand-holding-usd" headerText="Donations" >
-            <table className="table">
-                <tbody>
-                    <tr><th>Batch</th><th>Date</th><th>Method</th><th>Fund</th><th>Amount</th></tr>
-                    {getRows()}
-                </tbody>
-            </table>
+            <Table>
+                <thead><tr><th>Batch</th><th>Date</th><th>Method</th><th>Fund</th><th>Amount</th></tr></thead>
+                <tbody>{getRows()}</tbody>
+            </Table>
         </DisplayBox>
     );
 }

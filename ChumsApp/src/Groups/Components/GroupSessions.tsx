@@ -1,5 +1,6 @@
 import React from 'react';
 import { ApiHelper, GroupInterface, DisplayBox, SessionInterface, VisitSessionInterface, PersonInterface, PersonHelper, VisitInterface, UserHelper, ExportLink } from './';
+import { Table, Button, InputGroup, FormControl } from 'react-bootstrap';
 
 interface Props {
     group: GroupInterface,
@@ -59,12 +60,10 @@ export const GroupSessions: React.FC<Props> = (props) => {
     const getHeaderSection = () => {
         if (!UserHelper.checkAccess('Attendance', 'Edit')) return null;
         else return (
-            <div className="input-group">
-                <select className="form-control" value={session?.id} onChange={selectSession} >{getSessionOptions()}</select>
-                <div className="input-group-append">
-                    <a href="about:blank" className="btn btn-primary" onClick={handleAdd} ><i className="far fa-calendar-alt"></i> New</a>
-                </div>
-            </div>
+            <InputGroup>
+                <FormControl as="select" value={session?.id} onChange={selectSession} >{getSessionOptions()}</FormControl>
+                <InputGroup.Append><Button variant="primary" onClick={handleAdd} ><i className="far fa-calendar-alt"></i> New</Button></InputGroup.Append>
+            </InputGroup>
         );
     }
 
@@ -93,10 +92,10 @@ export const GroupSessions: React.FC<Props> = (props) => {
     else content = (<>
         <span className="float-right"><ExportLink data={visitSessions} spaceAfter={true} /></span>
         <b>Attendance for {props.group.name}</b>
-        <table className="table" id="groupMemberTable">
-            <tr><th></th><th>Name</th><th></th></tr>
-            {getRows()}
-        </table>
+        <Table id="groupMemberTable">
+            <thead><tr><th></th><th>Name</th><th></th></tr></thead>
+            <tbody>{getRows()}</tbody>
+        </Table>
     </>);
 
     return (<DisplayBox headerText="Sessions" headerIcon="far fa-calendar-alt" editContent={getHeaderSection()} >{content}</DisplayBox>);

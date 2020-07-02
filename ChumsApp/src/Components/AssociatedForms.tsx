@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormSubmission, FormSubmissionEdit, FormSubmissionInterface, UserHelper } from './';
+import { Button } from 'react-bootstrap';
 
 interface Props {
     addFormId: number,
@@ -24,7 +25,7 @@ export const AssociatedForms: React.FC<Props> = (props) => {
                     <div key={fs.id} className="card">
                         <div className="card-header" id={"heading" + fs.id}>
                             <h2>
-                                <button className="btn btn-link" type="button" data-toggle="collapse" data-target={"#collapse" + fs.id} aria-controls={"collapse" + fs.id}>{fs.form.name}</button>
+                                <Button variant="link" data-toggle="collapse" data-target={"#collapse" + fs.id} aria-controls={"collapse" + fs.id}>{fs.form.name}</Button>
                             </h2>
                         </div>
                         <div id={"collapse" + fs.id} className="collapse" aria-labelledby={"heading" + fs.id} data-parent="#formSubmissionsAccordion">

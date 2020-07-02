@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { PersonHelper, ErrorMessages, ApiHelper, PersonInterface, HouseholdInterface, UserHelper } from '.';
-import { Row, Col, FormControl, Button } from 'react-bootstrap';
+import { Row, Col, FormControl, Button, Table } from 'react-bootstrap';
 
 interface Props {
     people: PersonInterface[]
@@ -71,12 +71,10 @@ export const PeopleSearchResults: React.FC<Props> = (props) => {
     else {
         var result =
             <>
-                <table className="table" id="peopleTable">
-                    <tbody>
-                        <tr><th></th><th>Name</th></tr>
-                        {getRows()}
-                    </tbody>
-                </table>
+                <Table id="peopleTable">
+                    <thead><tr><th></th><th>Name</th></tr></thead>
+                    <tbody>{getRows()}</tbody>
+                </Table>
                 {getAddPerson()}
             </>;
         return result;

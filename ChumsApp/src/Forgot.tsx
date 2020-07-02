@@ -1,6 +1,7 @@
 import React from 'react';
 import './Login.css';
 import { ErrorMessages, ApiHelper } from './Components';
+import { Button } from 'react-bootstrap';
 
 interface ForgotResponse { emailed: boolean }
 
@@ -16,7 +17,7 @@ export const Forgot = () => {
         return errors.length === 0;
     }
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.MouseEvent) => {
         e.preventDefault();
         if (validate()) reset(email);
     }
@@ -38,24 +39,18 @@ export const Forgot = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div className="smallCenterBlock">
-                <ErrorMessages errors={errors} />
-                {successMessage}
-                <div id="loginBox">
-                    <h2>Reset Password</h2>
-                    <p>Enter your email address to request a password reset.</p>
-                    <input name="email" type="text" className="form-control" value={email} onChange={e => { e.preventDefault(); setEmail(e.currentTarget.value) }} placeholder="Email address" />
-                    <input type="submit" value="Reset" className="btn btn-lg btn-primary btn-block" />
-                    <br />
-                    <div className="text-right">
-                        <a href="/#register">Register</a> &nbsp; | &nbsp;
-                            <a href="/login">Login</a>
-                            &nbsp;
-                        </div>
-                </div>
+        <div className="smallCenterBlock">
+            <ErrorMessages errors={errors} />
+            {successMessage}
+            <div id="loginBox">
+                <h2>Reset Password</h2>
+                <p>Enter your email address to request a password reset.</p>
+                <input name="email" type="text" className="form-control" value={email} onChange={e => { e.preventDefault(); setEmail(e.currentTarget.value) }} placeholder="Email address" />
+                <Button size="lg" variant="primary" block onClick={handleSubmit}>Reset</Button>
+                <br />
+                <div className="text-right"><a href="/#register">Register</a> &nbsp; | &nbsp;<a href="/login">Login</a>&nbsp;</div>
             </div>
-        </form>
+        </div>
     );
 
 

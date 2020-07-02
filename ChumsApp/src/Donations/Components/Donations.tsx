@@ -1,5 +1,6 @@
 import React from 'react';
 import { ApiHelper, UserHelper, DonationInterface, Helper, DisplayBox, DonationBatchInterface, ExportLink } from './';
+import { Table } from 'react-bootstrap';
 
 interface Props { batch: DonationBatchInterface, addFunction: () => void, editFunction: (id: number) => void }
 
@@ -38,13 +39,12 @@ export const Donations: React.FC<Props> = (props) => {
 
     return (
         <DisplayBox headerIcon="fas fa-hand-holding-usd" headerText="Donations" editContent={getEditContent()} >
-            <table className="table">
+            <Table>
                 <tbody>
                     <tr><th>Id</th><th>Name</th><th>Date</th><th>Amount</th></tr>
                     {getRows()}
                 </tbody>
-            </table>
-
+            </Table>
         </DisplayBox >
     );
 }

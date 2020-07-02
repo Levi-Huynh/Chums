@@ -1,6 +1,7 @@
 import React from 'react';
 import { ApiHelper, DisplayBox, UserHelper, RoleMemberInterface, PersonHelper, PersonInterface, RoleInterface, ExportLink } from './';
 import { Link } from 'react-router-dom';
+import { Table } from 'react-bootstrap';
 
 interface Props { role: RoleInterface, addedPerson?: PersonInterface, addedCallback?: () => void }
 
@@ -60,12 +61,10 @@ export const RoleMembers: React.FC<Props> = (props) => {
 
     return (
         <DisplayBox headerText="Members" headerIcon="fas fa-users" editContent={getEditContent()} >
-            <table className="table" id="roleMemberTable">
-                <tbody>
-                    <tr><th></th><th>Name</th><th>Action</th></tr>
-                    {getRows()}
-                </tbody>
-            </table>
+            <Table id="roleMemberTable">
+                <thead><tr><th></th><th>Name</th><th>Action</th></tr></thead>
+                <tbody>{getRows()}</tbody>
+            </Table>
         </DisplayBox>
     );
 }

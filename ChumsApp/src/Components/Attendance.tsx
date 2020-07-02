@@ -1,7 +1,7 @@
 import React from 'react';
 import { DisplayBox, AttendanceRecordInterface, Helper, AttendanceHelper, AttendanceFilterInterface } from './';
 import { Chart } from 'react-google-charts';
-import { Row, Col, FormGroup, FormControl, FormLabel } from 'react-bootstrap';
+import { Row, Col, FormGroup, FormControl, FormLabel, Table } from 'react-bootstrap';
 
 interface Props { filter: AttendanceFilterInterface }
 
@@ -109,12 +109,12 @@ export const Attendance: React.FC<Props> = (props) => {
             />
 
             <hr />
-            <table className="table">
+            <Table>
                 <tbody>
                     <tr><th>{AttendanceHelper.getGroupingName(filter.groupBy)}</th><th>Attendance</th></tr>
                     {getRows()}
                 </tbody>
-            </table>
+            </Table>
         </DisplayBox>
     )
 }
