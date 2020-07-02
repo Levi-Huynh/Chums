@@ -54,6 +54,7 @@ export const PersonEdit: React.FC<Props> = (props) => {
     }
 
     const handleSave = () => {
+        console.log([person]);
         ApiHelper.apiPost('/people/', [person])
             .then(data => {
                 var p = { ...person };

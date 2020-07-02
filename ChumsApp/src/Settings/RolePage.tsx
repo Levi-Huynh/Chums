@@ -31,7 +31,7 @@ export const RolePage = ({ match }: RouteComponentProps<TParams>) => {
                 <h1><i className="fas fa-lock"></i> {role.name}</h1>
                 <Row>
                     <Col lg={8}><RoleMembers role={role} /></Col>
-                    <Col lg={8}>{getSidebar()}</Col>
+                    <Col lg={4}>{getSidebar()}</Col>
                 </Row>
             </>
         );
