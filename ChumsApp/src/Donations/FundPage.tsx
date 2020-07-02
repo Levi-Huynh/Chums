@@ -14,7 +14,7 @@ export const FundPage = ({ match }: RouteComponentProps<TParams>) => {
     const [startDate, setStartDate] = React.useState<Date>(initialDate);
     const [endDate, setEndDate] = React.useState<Date>(new Date());
 
-    const getEditContent = () => { return (<ExportLink data={fundDonations} spaceAfter={true} />) }
+    const getEditContent = () => { return (<ExportLink data={fundDonations} spaceAfter={true} filename="funddonations.csv" />) }
 
     const loadData = () => {
         ApiHelper.apiGet('/funds/' + match.params.id).then(data => setFund(data));

@@ -10,7 +10,7 @@ export const Donations: React.FC<Props> = (props) => {
     const loadData = () => ApiHelper.apiGet('/donations?batchId=' + props.batch?.id).then(data => setDonations(data));
     const showAddDonation = (e: React.MouseEvent) => { e.preventDefault(); props.addFunction() }
     const getEditContent = () => {
-        return (UserHelper.checkAccess('Donations', 'Edit')) ? (<><ExportLink data={donations} spaceAfter={true} /><a href="about:blank" onClick={showAddDonation} ><i className="fas fa-plus"></i></a></>) : null;
+        return (UserHelper.checkAccess('Donations', 'Edit')) ? (<><ExportLink data={donations} spaceAfter={true} filename="donations.csv" /><a href="about:blank" onClick={showAddDonation} ><i className="fas fa-plus"></i></a></>) : null;
     }
     const showEditDonation = (e: React.MouseEvent) => {
         e.preventDefault();

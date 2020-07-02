@@ -10,7 +10,7 @@ export const RoleMembers: React.FC<Props> = (props) => {
     const [roleMembers, setRoleMembers] = React.useState<RoleMemberInterface[]>([]);
 
     const loadData = () => ApiHelper.apiGet('/rolemembers?roleId=' + props.role.id).then(data => setRoleMembers(data));
-    const getEditContent = () => { return (<ExportLink data={roleMembers} spaceAfter={true} />) }
+    const getEditContent = () => { return (<ExportLink data={roleMembers} spaceAfter={true} filename="rolemembers.csv" />) }
     const handleRemove = (e: React.MouseEvent) => {
         e.preventDefault();
         var anchor = e.currentTarget as HTMLAnchorElement;

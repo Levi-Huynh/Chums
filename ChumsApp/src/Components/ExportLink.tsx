@@ -4,7 +4,8 @@ import { CSVLink } from 'react-csv';
 interface Props {
     data: any[],
     spaceAfter?: boolean,
-    spaceBefore?: boolean
+    spaceBefore?: boolean,
+    filename?: string
 }
 
 export const ExportLink: React.FC<Props> = (props) => {
@@ -50,7 +51,7 @@ export const ExportLink: React.FC<Props> = (props) => {
     else {
         var items = [];
         if (props.spaceBefore) items.push(' ');
-        items.push(<CSVLink data={props.data} headers={getHeaders()} > <i className="fas fa-download" > </i></CSVLink >);
+        items.push(<CSVLink data={props.data} headers={getHeaders()} filename={props.filename || 'export.csv'} > <i className="fas fa-download" > </i></CSVLink >);
         if (props.spaceAfter) items.push(' ');
         return (<>{items}</>);
     }

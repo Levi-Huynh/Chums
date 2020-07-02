@@ -21,7 +21,7 @@ export const Individuals: React.FC<Props> = (props) => {
         return rows;
     }
 
-    const getEditContent = () => { return (<ExportLink data={people} />) }
+    const getEditContent = () => { return (<ExportLink data={people} filename="attendance.csv" />) }
 
     React.useEffect(loadData, [props.filter]);
 

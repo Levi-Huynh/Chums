@@ -13,9 +13,7 @@ export const PeoplePage = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setSearchText(e.currentTarget.value);
 
-    const getEditContent = () => {
-        return (<ExportLink data={searchResults} />);
-    }
+    const getEditContent = () => { return (<ExportLink data={searchResults} filename="people.csv" />); }
 
     return (
         <>

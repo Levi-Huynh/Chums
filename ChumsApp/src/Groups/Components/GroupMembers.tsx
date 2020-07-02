@@ -60,7 +60,7 @@ export const GroupMembers: React.FC<Props> = (props) => {
         return rows;
     }
 
-    const getEditContent = () => { return (<ExportLink data={groupMembers} spaceAfter={true} />) }
+    const getEditContent = () => { return (<ExportLink data={groupMembers} spaceAfter={true} filename="groupmembers.csv" />) }
 
     React.useEffect(() => { if (props.group.id !== undefined) loadData() }, [props.group]);
     React.useEffect(() => { if (props.addedPerson?.id !== undefined) handleAdd() }, [props.addedPerson]);

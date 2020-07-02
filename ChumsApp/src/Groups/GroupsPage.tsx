@@ -9,7 +9,7 @@ export const GroupsPage = () => {
 
     const getEditContent = () => {
         if (!UserHelper.checkAccess('Groups', 'Edit')) return null;
-        else return (<><ExportLink data={groups} spaceAfter={true} /> <a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); setShowAdd(true); }} ><i className="fas fa-plus"></i></a></>);
+        else return (<><ExportLink data={groups} spaceAfter={true} filename="groups.csv" /> <a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); setShowAdd(true); }} ><i className="fas fa-plus"></i></a></>);
     }
 
     const handleAddUpdated = () => { setShowAdd(false); loadData(); }
