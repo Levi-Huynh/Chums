@@ -2,7 +2,7 @@ import { PersonInterface } from './ApiHelper';
 
 export class PersonHelper {
     static getPhotoUrl(person: PersonInterface) {
-        return 'https://chums.org' + person.photo;
+        return 'https://app.chums.org' + person.photo;
     }
 
     static getAge(birthdate: Date): string {
