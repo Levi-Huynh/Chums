@@ -1,5 +1,6 @@
 import React from 'react';
 import { Question, ApiHelper, FormSubmissionInterface, UserHelper } from './';
+import { Row, Col } from 'react-bootstrap';
 
 interface Props {
     formSubmissionId: number,
@@ -36,10 +37,10 @@ export const FormSubmission: React.FC<Props> = (props) => {
         <>
             {getEditLink()}
             <div className="content">
-                <div className="row">
-                    <div className="col-lg-6">{firstHalf}</div>
-                    <div className="col-lg-6">{secondHalf}</div>
-                </div>
+                <Row>
+                    <Col lg={6}>{firstHalf}</Col>
+                    <Col lg={6}>{secondHalf}</Col>
+                </Row>
             </div>
         </>
     );

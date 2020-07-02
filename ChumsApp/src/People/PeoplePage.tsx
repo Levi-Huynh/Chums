@@ -1,6 +1,6 @@
 import React from 'react';
 import { PeopleSearchResults, ApiHelper, DisplayBox, ExportLink } from './Components';
-
+import { Row, Col, InputGroup, FormControl } from 'react-bootstrap';
 
 export const PeoplePage = () => {
     const [searchText, setSearchText] = React.useState('');
@@ -20,22 +20,18 @@ export const PeoplePage = () => {
     return (
         <>
             <h1><i className="fas fa-user"></i> People</h1>
-            <div className="row">
-                <div className="col-sm-6">
+            <Row>
+                <Col lg={6}>
                     <DisplayBox headerIcon="fas fa-user" headerText="Search" editContent={getEditContent()} >
-                        <div className="input-group">
-                            <input name="searchText" type="text" placeholder="Name" className="form-control" value={searchText} onChange={handleChange} />
-                            <div className="input-group-append">
-                                <input type="submit" className="btn btn-primary" value="Search" onClick={handleSubmit} />
-                            </div>
-                        </div>
-
+                        <InputGroup>
+                            <FormControl name="searchText" type="text" placeholder="Name" value={searchText} onChange={handleChange} />
+                            <InputGroup.Append><input type="submit" className="btn btn-primary" value="Search" onClick={handleSubmit} /></InputGroup.Append>
+                        </InputGroup>
                         <br />
                         <PeopleSearchResults people={searchResults} />
                     </DisplayBox>
-
-                </div>
-            </div>
+                </Col>
+            </Row>
         </>
     );
 }

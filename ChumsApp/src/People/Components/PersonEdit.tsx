@@ -1,6 +1,7 @@
 import React from 'react';
 import { PersonHelper, Helper, StateOptions, InputBox, ApiHelper, PersonInterface, AddForm, UserHelper } from './'
 import { Redirect } from 'react-router-dom';
+import { Row, Col, FormControl, FormGroup, FormLabel } from 'react-bootstrap';
 
 interface Props {
     updatedFunction: (person: PersonInterface) => void,
@@ -81,146 +82,144 @@ export const PersonEdit: React.FC<Props> = (props) => {
     else {
         return (
             <InputBox headerIcon="fas fa-user" headerText="Personal Details" cancelFunction={handleCancel} deleteFunction={handleDelete} saveFunction={handleSave} >
-                <div className="row">
-                    <div className="col-3">{getPhoto()}</div>
-                    <div className="col-9">
-
-                        <div className="row">
-                            <div className="col-md-4">
-                                <div className="form-group">
-                                    <label>First Name</label>
-                                    <input type="text" name="firstName" value={person?.firstName || ''} onChange={handleChange} className="form-control" />
-                                </div>
-                            </div>
-                            <div className="col-md-4">
-                                <div className="form-group">
-                                    <label>Middle Name</label>
-                                    <input type="text" name="middleName" value={person?.middleName || ''} onChange={handleChange} className="form-control" />
-                                </div>
-                            </div>
-                            <div className="col-md-4">
-                                <div className="form-group">
-                                    <label>Last Name</label>
-                                    <input type="text" name="lastName" value={person?.lastName || ''} onChange={handleChange} className="form-control" />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-4">
-                                <div className="form-group">
-                                    <label>Nickname</label>
-                                    <input type="text" name="nickName" value={person?.nickName || ''} onChange={handleChange} className="form-control" />
-                                </div>
-                            </div>
-                            <div className="col-md-4">
-                                <div className="form-group">
-                                    <label>Membership Status</label>
-                                    <select name="membershipStatus" value={person?.membershipStatus || ''} onChange={handleChange} className="form-control">
+                <Row>
+                    <Col xs={3}>{getPhoto()}</Col>
+                    <Col xs={9}>
+                        <Row>
+                            <Col lg={4}>
+                                <FormGroup>
+                                    <FormLabel>First Name</FormLabel>
+                                    <FormControl name="firstName" value={person?.firstName || ''} onChange={handleChange} />
+                                </FormGroup>
+                            </Col>
+                            <Col lg={4}>
+                                <FormGroup>
+                                    <FormLabel>Middle Name</FormLabel>
+                                    <FormControl name="middleName" value={person?.middleName || ''} onChange={handleChange} />
+                                </FormGroup>
+                            </Col>
+                            <Col lg={4}>
+                                <FormGroup>
+                                    <FormLabel>Last Name</FormLabel>
+                                    <FormControl name="lastName" value={person?.lastName || ''} onChange={handleChange} />
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col lg={4}>
+                                <FormGroup>
+                                    <FormLabel>Nickname</FormLabel>
+                                    <FormControl name="nickName" value={person?.nickName || ''} onChange={handleChange} />
+                                </FormGroup>
+                            </Col>
+                            <Col lg={4}>
+                                <FormGroup>
+                                    <FormLabel>Membership Status</FormLabel>
+                                    <FormControl as="select" name="membershipStatus" value={person?.membershipStatus || ''} onChange={handleChange}>
                                         <option value="Visitor">Visitor</option>
                                         <option value="Member">Member</option>
                                         <option value="Staff">Staff</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="col-md-4">
-                                <div className="form-group">
-                                    <label>Gender</label>
-                                    <select name="gender" value={person?.gender || ''} onChange={handleChange} className="form-control">
+                                    </FormControl>
+                                </FormGroup>
+                            </Col>
+                            <Col lg={4}>
+                                <FormGroup>
+                                    <FormLabel>Gender</FormLabel>
+                                    <FormControl as="select" name="gender" value={person?.gender || ''} onChange={handleChange}>
                                         <option value="Unspecified">Unspecified</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-4">
-                                <div className="form-group">
-                                    <label>Birthdate</label>
-                                    <input type="date" name="birthDate" value={Helper.formatHtml5Date(person?.birthDate)} onChange={handleChange} className="form-control" />
-                                </div>
-                            </div>
-                            <div className="col-md-4">
-                                <div className="form-group">
-                                    <label>Marital Status</label>
-                                    <select name="maritalStatus" value={person?.maritalStatus || ''} onChange={handleChange} className="form-control">
+                                    </FormControl>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col lg={4}>
+                                <FormGroup>
+                                    <FormLabel>Birthdate</FormLabel>
+                                    <FormControl type="date" name="birthDate" value={Helper.formatHtml5Date(person?.birthDate)} onChange={handleChange} />
+                                </FormGroup>
+                            </Col>
+                            <Col lg={4}>
+                                <FormGroup>
+                                    <FormLabel>Marital Status</FormLabel>
+                                    <FormControl as="select" name="maritalStatus" value={person?.maritalStatus || ''} onChange={handleChange}>
                                         <option value="Unknown">Visitor</option>
                                         <option value="Single">Single</option>
                                         <option value="Married">Married</option>
                                         <option value="Divorced">Divorced</option>
                                         <option value="Widowed">Widowed</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="col-md-4">
-                                <div className="form-group">
-                                    <label>Anniversary</label>
-                                    <input type="date" name="anniversary" value={Helper.formatHtml5Date(person?.anniversary)} onChange={handleChange} className="form-control" />
-                                </div>
-                            </div>
-                        </div>
+                                    </FormControl>
+                                </FormGroup>
+                            </Col>
+                            <Col lg={4}>
+                                <FormGroup>
+                                    <FormLabel>Anniversary</FormLabel>
+                                    <FormControl type="date" name="anniversary" value={Helper.formatHtml5Date(person?.anniversary)} onChange={handleChange} />
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
 
-                    </div>
-                </div>
 
-
-                <div className="row">
-                    <div className="col-6">
+                <Row>
+                    <Col xs={6}>
                         <div className="section">Address</div>
-                        <div className="form-group">
-                            <label>Line 1</label>
-                            <input type="text" name="address1" value={person?.address1 || ''} onChange={handleChange} className="form-control" />
-                        </div>
-                        <div className="form-group">
-                            <label>Line 2</label>
-                            <input type="text" name="address2" value={person?.address2 || ''} onChange={handleChange} className="form-control" />
-                        </div>
-                        <div className="row">
-                            <div className="col-6">
-                                <div className="form-group">
-                                    <label>City</label>
-                                    <input type="text" name="city" value={person?.city || ''} onChange={handleChange} className="form-control" />
-                                </div>
-                            </div>
-                            <div className="col-3">
-                                <div className="form-group">
-                                    <label>State</label>
-                                    <select name="state" value={person?.state || ''} onChange={handleChange} className="form-control">
+                        <FormGroup>
+                            <FormLabel>Line 1</FormLabel>
+                            <FormControl name="address1" value={person?.address1 || ''} onChange={handleChange} />
+                        </FormGroup>
+                        <FormGroup>
+                            <FormLabel>Line 2</FormLabel>
+                            <FormControl name="address2" value={person?.address2 || ''} onChange={handleChange} />
+                        </FormGroup>
+                        <Row>
+                            <Col xs={6}>
+                                <FormGroup>
+                                    <FormLabel>City</FormLabel>
+                                    <FormControl type="text" name="city" value={person?.city || ''} onChange={handleChange} />
+                                </FormGroup>
+                            </Col>
+                            <Col xs={3}>
+                                <FormGroup>
+                                    <FormLabel>State</FormLabel>
+                                    <FormControl as="select" name="state" value={person?.state || ''} onChange={handleChange}>
                                         <StateOptions />
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="col-3">
-                                <div className="form-group">
-                                    <label>Zip</label>
-                                    <input type="text" name="zip" value={person?.zip || ''} onChange={handleChange} className="form-control" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-3">
+                                    </FormControl>
+                                </FormGroup>
+                            </Col>
+                            <Col xs={3}>
+                                <FormGroup>
+                                    <FormLabel>Zip</FormLabel>
+                                    <FormControl type="text" name="zip" value={person?.zip || ''} onChange={handleChange} />
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col xs={3}>
                         <div className="section">Phone</div>
-                        <div className="form-group">
-                            <label>Home</label>
-                            <input type="text" name="homePhone" value={person?.homePhone || ''} onChange={handleChange} className="form-control" />
-                        </div>
-                        <div className="form-group">
-                            <label>Work</label>
-                            <input type="text" name="workPhone" value={person?.workPhone || ''} onChange={handleChange} className="form-control" />
-                        </div>
-                        <div className="form-group">
-                            <label>Mobile</label>
-                            <input type="text" name="mobilePhone" value={person?.mobilePhone || ''} onChange={handleChange} className="form-control" />
-                        </div>
-                    </div>
-                    <div className="col-3">
+                        <FormGroup>
+                            <FormLabel>Home</FormLabel>
+                            <FormControl type="text" name="homePhone" value={person?.homePhone || ''} onChange={handleChange} />
+                        </FormGroup>
+                        <FormGroup>
+                            <FormLabel>Work</FormLabel>
+                            <FormControl type="text" name="workPhone" value={person?.workPhone || ''} onChange={handleChange} />
+                        </FormGroup>
+                        <FormGroup>
+                            <FormLabel>Mobile</FormLabel>
+                            <FormControl type="text" name="mobilePhone" value={person?.mobilePhone || ''} onChange={handleChange} />
+                        </FormGroup>
+                    </Col>
+                    <Col xs={3}>
                         <div className="section">Email</div>
-                        <div className="form-group">
-                            <label>Email</label>
-                            <input type="text" name="email" value={person?.email || ''} onChange={handleChange} className="form-control" />
-                        </div>
-                    </div>
-                </div>
+                        <FormGroup>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl type="text" name="email" value={person?.email || ''} onChange={handleChange} />
+                        </FormGroup>
+                    </Col>
+                </Row>
                 {getAddForm()}
             </InputBox>
         )

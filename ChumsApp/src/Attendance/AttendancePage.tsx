@@ -1,6 +1,7 @@
 import React from 'react';
 import { ApiHelper, Tabs, AttendanceHelper, AttendanceFilter, DisplayBox, AttendanceInterface, CampusInterface, CampusEdit, ServiceEdit, ServiceInterface, ServiceTimeEdit, ServiceTimeInterface, AttendanceFilterInterface } from './Components';
 import { Link } from 'react-router-dom';
+import { Row, Col } from 'react-bootstrap';
 
 export const AttendancePage = () => {
     const [attendance, setAttendance] = React.useState<AttendanceInterface[]>([]);
@@ -67,36 +68,32 @@ export const AttendancePage = () => {
     }
 
 
-
-
     return (
         <form method="post">
             <h1><i className="far fa-calendar-alt"></i> Attendance</h1>
-            <div className="row">
-                <div className="col-lg-8">
+            <Row>
+                <Col lg={8}>
                     <DisplayBox headerIcon="fas fa-list" headerText="Groups" editContent={getEditLinks()} >
                         <table className="table table-sm table-borderless">
                             <tr><th>Campus</th><th>Service</th><th>Time</th><th>Category</th><th>Group</th></tr>
                             {getRows()}
                         </table >
                     </DisplayBox >
-                </div >
-                <div className="col-lg-4">
+                </Col>
+                <Col lg={4}>
                     <CampusEdit campus={selectedCampus} updatedFunction={handleUpdated} />
                     <ServiceEdit service={selectedService} updatedFunction={handleUpdated} />
                     <ServiceTimeEdit serviceTime={selectedServiceTime} updatedFunction={handleUpdated} />
-                </div>
-            </div >
-
-
-            <div className="row">
-                <div className="col-lg-8">
+                </Col>
+            </Row>
+            <Row>
+                <Col lg={8}>
                     <Tabs filter={filter} />
-                </div>
-                <div className="col-lg-4">
+                </Col>
+                <Col lg={4}>
                     <AttendanceFilter filter={filter} updatedFunction={handleFilterUpdated} />
-                </div>
-            </div>
+                </Col>
+            </Row>
         </form >
     );
 }

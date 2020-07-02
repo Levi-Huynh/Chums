@@ -1,5 +1,6 @@
 import React from 'react';
 import { PersonHelper, AssociatedForms, PersonInterface } from './'
+import { Row, Col } from 'react-bootstrap';
 
 interface Props {
     person: PersonInterface
@@ -57,24 +58,16 @@ export const PersonView: React.FC<Props> = (props) => {
         <div className="inputBox">
             <div className="header"><a className="fa-pull-right" onClick={props.editFunction} href="about:blank"><i className="fas fa-pencil-alt"></i></a> <i className="fas fa-user"></i> Personal Details</div>
             <div className="content">
-                <div className="row">
-                    <div className="col-3">{getPhoto()}</div>
-                    <div className="col-9">
+                <Row>
+                    <Col xs={3}>{getPhoto()}</Col>
+                    <Col xs={9}>
                         <h2>{props.person?.displayName}</h2>
-                        <div className="row">
-                            <div className="col-6">
-                                {leftAttributes}
-                            </div>
-                            <div className="col-6">
-                                <table className="contactTable">
-                                    <tbody>
-                                        {contactMethods}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                        <Row>
+                            <Col xs={6}>{leftAttributes}</Col>
+                            <Col xs={6}><table className="contactTable"><tbody>{contactMethods}</tbody></table></Col>
+                        </Row>
+                    </Col>
+                </Row>
             </div>
             <AssociatedForms contentType="person" contentId={props.person?.id} formSubmissions={props.person?.formSubmissions} addFormId={props.addFormId} setAddFormFunction={props.setAddFormFunction} />
         </div>

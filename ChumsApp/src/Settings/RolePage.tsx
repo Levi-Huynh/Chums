@@ -3,6 +3,7 @@ import { ApiHelper, DisplayBox, RoleInterface, PersonAdd, PersonInterface, RoleM
 import { RouteComponentProps } from 'react-router-dom'
 import { RoleMembers } from './Components/RoleMembers';
 import { RolePermissions } from './Components/RolePermissions';
+import { Row, Col } from 'react-bootstrap';
 
 type TParams = { id?: string };
 export const RolePage = ({ match }: RouteComponentProps<TParams>) => {
@@ -28,14 +29,10 @@ export const RolePage = ({ match }: RouteComponentProps<TParams>) => {
         return (
             <>
                 <h1><i className="fas fa-lock"></i> {role.name}</h1>
-                <div className="row">
-                    <div className="col-lg-8">
-                        <RoleMembers role={role} />
-                    </div>
-                    <div className="col-lg-4">
-                        {getSidebar()}
-                    </div>
-                </div>
+                <Row>
+                    <Col lg={8}><RoleMembers role={role} /></Col>
+                    <Col lg={8}>{getSidebar()}</Col>
+                </Row>
             </>
         );
     }

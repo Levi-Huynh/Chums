@@ -1,6 +1,7 @@
 import React from 'react';
 import { ApiHelper, DonationEdit, DonationBatchInterface, UserHelper, Donations, FundInterface } from './Components';
 import { RouteComponentProps } from 'react-router-dom';
+import { Row, Col } from 'react-bootstrap';
 
 type TParams = { id?: string };
 
@@ -30,15 +31,10 @@ export const DonationBatchPage = ({ match }: RouteComponentProps<TParams>) => {
     return (
         <>
             <h1><i className="fas fa-hand-holding-usd"></i> Batch #{batch.id}</h1>
-            <div className="row">
-                <div className="col-lg-8">
-                    <Donations batch={batch} addFunction={showAddDonation} editFunction={showEditDonation} />
-                </div >
-                <div className="col-lg-4">
-                    {getSidebarModules()}
-                </div>
-            </div >
-
+            <Row>
+                <Col lg={8}><Donations batch={batch} addFunction={showAddDonation} editFunction={showEditDonation} /></Col>
+                <Col lg={4}>{getSidebarModules()}</Col>
+            </Row>
         </>
     );
 }

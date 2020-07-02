@@ -1,6 +1,7 @@
 import React from 'react';
 import { ApiHelper, DisplayBox, GroupInterface, GroupAdd, UserHelper, ExportLink } from './Components';
 import { Link } from 'react-router-dom';
+import { Row, Col } from 'react-bootstrap';
 
 export const GroupsPage = () => {
     const [groups, setGroups] = React.useState<GroupInterface[]>([]);
@@ -39,8 +40,8 @@ export const GroupsPage = () => {
     else return (
         <>
             <h1><i className="fas fa-list"></i> Groups</h1>
-            <div className="row">
-                <div className="col-lg-8">
+            <Row>
+                <Col lg={8}>
                     <DisplayBox headerIcon="fas fa-list" headerText="Groups" editContent={getEditContent()}>
                         <table className="table">
                             <tbody>
@@ -49,11 +50,9 @@ export const GroupsPage = () => {
                             </tbody>
                         </table>
                     </DisplayBox>
-                </div>
-                <div className="col-lg-4">
-                    {addBox}
-                </div>
-            </div>
+                </Col>
+                <Col lg={4}>{addBox}</Col>
+            </Row>
         </>
     );
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { DisplayBox, AttendanceRecordInterface, Helper, AttendanceHelper, AttendanceFilterInterface } from './';
 import { Chart } from 'react-google-charts';
+import { Row, Col, FormGroup, FormControl, FormLabel } from 'react-bootstrap';
 
 interface Props { filter: AttendanceFilterInterface }
 
@@ -84,21 +85,21 @@ export const Attendance: React.FC<Props> = (props) => {
     if (records.length === 0) return (<DisplayBox headerIcon="far fa-calendar-alt" headerText="Attendance History" ><p>No records found.</p></DisplayBox>);
     else return (
         <DisplayBox headerIcon="far fa-calendar-alt" headerText="Attendance History" >
-            <div className="row">
-                <div className="col-lg-6 offset-lg-6">
-                    <div className="form-group">
-                        <label>Grouping</label>
-                        <select className="form-control" value={filter.groupBy} onChange={handleChange} >
+            <Row>
+                <Col lg={{ span: 6, offset: 6 }}>
+                    <FormGroup>
+                        <FormLabel>Grouping</FormLabel>
+                        <FormControl as="select" value={filter.groupBy} onChange={handleChange} >
                             <option value="CampusName">Campus</option>
                             <option value="ServiceName">Service</option>
                             <option value="ServiceTimeName">Service Time</option>
                             <option value="CategoryName">Category</option>
                             <option value="GroupName">Group</option>
                             <option value="Gender">Gender</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+                        </FormControl>
+                    </FormGroup>
+                </Col>
+            </Row>
             <Chart
                 chartType="ColumnChart"
                 data={getChartRows()}

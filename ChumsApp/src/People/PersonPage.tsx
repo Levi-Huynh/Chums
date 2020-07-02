@@ -1,7 +1,6 @@
 import React from 'react';
 import { Person, Groups, Tabs, Household, ImageEditor, PersonHelper, UserHelper, ApiHelper } from './Components'
-
-
+import { Row, Col } from 'react-bootstrap';
 import { RouteComponentProps } from "react-router-dom";
 
 type TParams = { id?: string };
@@ -23,17 +22,17 @@ export const PersonPage = ({ match }: RouteComponentProps<TParams>) => {
     React.useEffect(loadData, [match.params.id]);
 
     return (
-        <div className="row">
-            <div className="col-md-8">
+        <Row>
+            <Col lg={8}>
                 <Person person={person} photoUrl={photoUrl} togglePhotoEditor={togglePhotoEditor} />
                 <Tabs personId={person?.id} />
-            </div >
-            <div className="col-md-4">
+            </Col>
+            <Col lg={4}>
                 {getImageEditor()}
                 <Household personId={person?.id} />
                 {getGroups()}
-            </div>
-        </div >
+            </Col>
+        </Row >
     )
 
 }

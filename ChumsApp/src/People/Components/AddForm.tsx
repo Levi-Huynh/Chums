@@ -1,5 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { ApiHelper, PersonInterface } from './';
+import { Row, Col, InputGroup, FormControl, Button } from 'react-bootstrap';
 
 interface Props { person: PersonInterface, addFormFunction: (selectedFormId: number) => void }
 
@@ -42,16 +43,14 @@ export const AddForm: React.FC<Props> = (props) => {
         return (
             <>
                 <b>Add a form</b>
-                <div className="row">
-                    <div className="col-lg-6">
-                        <div className="input-group input-group-sm">
-                            <select className="form-control form-control-sm" onChange={handleChange} >{options}</select>
-                            <div className="input-group-append">
-                                <input type="submit" value="Add" className="btn btn-success btn-sm" onClick={handleAdd} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <Row>
+                    <Col lg={6}>
+                        <InputGroup size="sm">
+                            <FormControl as="select" size="sm" onChange={handleChange} >{options}</FormControl>
+                            <InputGroup.Append><Button variant="success" size="sm" onClick={handleAdd}>Add</Button></InputGroup.Append>
+                        </InputGroup>
+                    </Col>
+                </Row>
             </>
         );
     }

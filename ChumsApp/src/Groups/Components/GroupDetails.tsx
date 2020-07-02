@@ -1,5 +1,6 @@
 import React from 'react';
 import { GroupInterface, DisplayBox, GroupDetailsEdit, ServiceTimes, UserHelper } from './';
+import { Row, Col } from 'react-bootstrap';
 
 interface Props { group: GroupInterface }
 
@@ -17,13 +18,13 @@ export const GroupDetails: React.FC<Props> = (props) => {
     if (mode === 'edit') return <GroupDetailsEdit group={group} updatedFunction={handleUpdated} />
     else return (
         <DisplayBox headerText="Group Details" headerIcon="fas fa-list" editFunction={getEditFunction()} >
-            <div className="row">
-                <div className="col"><div><label>Category:</label> {group.categoryName}</div></div>
-                <div className="col"><div><label>Name:</label> {group.name}</div></div>
-            </div>
-            <div className="row">
-                <div className="col-lg-6"><div><label>Track Attendance:</label> {(group.trackAttendance?.toString().replace('false', 'No').replace('true', 'Yes') || '')}</div></div>
-            </div>
+            <Row>
+                <Col><label>Category:</label> {group.categoryName}</Col>
+                <Col><label>Name:</label> {group.name}</Col>
+            </Row>
+            <Row>
+                <Col lg={6}><label>Track Attendance:</label> {(group.trackAttendance?.toString().replace('false', 'No').replace('true', 'Yes') || '')}</Col>
+            </Row>
             <ServiceTimes group={group} />
         </DisplayBox>
     );

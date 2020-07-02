@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { PersonHelper, ErrorMessages, ApiHelper, PersonInterface, HouseholdInterface, UserHelper } from '.';
+import { Row, Col, FormControl, Button } from 'react-bootstrap';
 
 interface Props {
     people: PersonInterface[]
@@ -56,11 +57,11 @@ export const PeopleSearchResults: React.FC<Props> = (props) => {
                 <hr />
                 <ErrorMessages errors={errors} />
                 <b>Add a New Person</b>
-                <div className="row">
-                    <div className="col"><input type="text" className="form-control" placeholder="First Name" name="firstName" value={firstName} onChange={e => setFirstName(e.currentTarget.value)} /></div>
-                    <div className="col"><input type="text" className="form-control" placeholder="Last Name" name="lastName" value={lastName} onChange={e => setLastName(e.currentTarget.value)} /></div>
-                    <div className="col"><input type="submit" className="btn btn-primary" value="Add" onClick={handleAdd} /></div>
-                </div>
+                <Row>
+                    <Col><FormControl placeholder="First Name" name="firstName" value={firstName} onChange={e => setFirstName(e.currentTarget.value)} /></Col>
+                    <Col><FormControl placeholder="Last Name" name="lastName" value={lastName} onChange={e => setLastName(e.currentTarget.value)} /></Col>
+                    <Col><Button variant="primary" onClick={handleAdd} >Add</Button></Col>
+                </Row>
             </>);
     }
 

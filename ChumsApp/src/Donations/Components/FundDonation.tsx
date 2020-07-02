@@ -1,5 +1,6 @@
 import React from 'react';
 import { FundDonationInterface, FundInterface } from './';
+import { Row, Col, FormGroup, FormControl, FormLabel } from 'react-bootstrap';
 
 interface Props {
     fundDonation: FundDonationInterface,
@@ -30,22 +31,20 @@ export const FundDonation: React.FC<Props> = (props) => {
     }
 
     return (
-        <div className="row">
-            <div className="col">
-                <div className="form-group">
-                    <label>Amount</label>
-                    <input name="amount" type="number" lang="en-150" min="0.00" step="0.01" className="form-control" value={props.fundDonation.amount} onChange={handleChange} />
-                </div>
-            </div>
-            <div className="col">
-                <div className="form-group">
-                    <label>Fund</label>
-                    <select name='fund' className="form-control" value={props.fundDonation.fundId} onChange={handleChange}>
-                        {getOptions()}
-                    </select>
-                </div>
-            </div>
-        </div>
+        <Row>
+            <Col>
+                <FormGroup>
+                    <FormLabel>Amount</FormLabel>
+                    <FormControl name="amount" type="number" lang="en-150" min="0.00" step="0.01" value={props.fundDonation.amount} onChange={handleChange} />
+                </FormGroup>
+            </Col>
+            <Col>
+                <FormGroup>
+                    <FormLabel>Fund</FormLabel>
+                    <FormControl as="select" name='fund' value={props.fundDonation.fundId} onChange={handleChange}>{getOptions()}</FormControl>
+                </FormGroup>
+            </Col>
+        </Row>
     );
 }
 

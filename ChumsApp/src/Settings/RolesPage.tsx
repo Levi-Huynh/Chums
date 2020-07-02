@@ -1,6 +1,7 @@
 import React from 'react';
 import { ApiHelper, DisplayBox, RoleInterface, RoleEdit, UserHelper } from './Components';
 import { Link } from 'react-router-dom'
+import { Row, Col } from 'react-bootstrap';
 
 export const RolesPage = () => {
     const [roles, setRoles] = React.useState<RoleInterface[]>([]);
@@ -41,19 +42,17 @@ export const RolesPage = () => {
     return (
         <>
             <h1><i className="fas fa-lock"></i> Roles</h1>
-            <div className="row">
-                <div className="col-lg-8">
+            <Row>
+                <Col lg={8}>
                     <DisplayBox headerText="Roles" headerIcon="fas fa-lock" editContent={getEditContent()} >
                         <table className="table" id="roleMemberTable">
                             <tr><th>Name</th><th></th></tr>
                             {getRows()}
                         </table>
                     </DisplayBox>
-                </div>
-                <div className="col-lg-4">
-                    {getSidebar()}
-                </div>
-            </div>
+                </Col>
+                <Col lg={4}>{getSidebar()}</Col>
+            </Row>
         </>
     );
 }

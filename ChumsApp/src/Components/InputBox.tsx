@@ -1,4 +1,5 @@
 import React from 'react';
+import { Row, Col, Button } from 'react-bootstrap';
 
 interface Props {
     children?: React.ReactNode,
@@ -14,28 +15,26 @@ export const InputBox: React.FC<Props> = (props) => {
     var saveText = 'Save';
     if (props.saveText !== undefined) saveText = props.saveText;
 
+    const handleCancel = (e: React.MouseEvent) => { e.preventDefault(); props.cancelFunction(); }
+    const handleDelete = (e: React.MouseEvent) => { e.preventDefault(); props.deleteFunction(); }
+    const handleSave = (e: React.MouseEvent) => { e.preventDefault(); props.saveFunction(); }
+
     var buttons = [];
-    if (props.cancelFunction !== undefined) buttons.push(<div className="col" key="cancel"><input type="submit" value="Cancel" className="btn btn-warning btn-block" onClick={e => { e.preventDefault(); props.cancelFunction() }} /></div>);
-    if (props.deleteFunction !== undefined) buttons.push(<div className="col" key="delete"><input type="submit" value="Delete" className="btn btn-danger btn-block" onClick={e => { e.preventDefault(); props.deleteFunction() }} /></div>);
-    if (props.saveFunction !== undefined) buttons.push(<div className="col" key="save"><input type="submit" value={saveText} className="btn btn-success btn-block" onClick={e => { e.preventDefault(); props.saveFunction() }} /></div>);
+    if (props.cancelFunction !== undefined) buttons.push(<Col key="cancel"><Button variant="warning" block onClick={handleCancel} >Cancel</Button></Col >);
+    if (props.deleteFunction !== undefined) buttons.push(<Col key="delete"><Button variant="danger" block onClick={handleDelete} >Delete</Button></Col>);
+    if (props.saveFunction !== undefined) buttons.push(<Col key="save"><Button variant="success" block onClick={handleSave}>{saveText}</Button></Col>);
 
     return (
         <form method="post">
             <div className="inputBox">
                 <div className="header">
-                    <div className="row">
-                        <div className="col-8"><i className={props.headerIcon}></i> {props.headerText}</div>
-                        <div className="col-4" style={{ textAlign: 'right' }} >{props.headerActionContent}</div>
-                    </div>
+                    <Row>
+                        <Col xs={8}><i className={props.headerIcon}></i> {props.headerText}</Col>
+                        <Col xs={4} style={{ textAlign: 'right' }} >{props.headerActionContent}</Col>
+                    </Row>
                 </div>
-                <div className="content">
-                    {props.children}
-                </div>
-                <div className="footer">
-                    <div className="row">
-                        {buttons}
-                    </div>
-                </div>
+                <div className="content">{props.children}</div>
+                <div className="footer"><Row>{buttons}</Row></div>
             </div>
         </form>
     );

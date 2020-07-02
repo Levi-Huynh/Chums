@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { AttendanceFilterInterface, InputBox, ApiHelper, CampusInterface, Helper, ServiceInterface, ServiceTimeInterface, GroupInterface } from './';
-
+import { Row, Col, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
 
 interface Props { filter: AttendanceFilterInterface, updatedFunction: (filter: AttendanceFilterInterface) => void }
 
@@ -95,48 +95,48 @@ export const AttendanceFilter: React.FC<Props> = (props) => {
 
     return (
         <InputBox saveFunction={handleUpdate} headerText="Attendance Filter" headerIcon="fas fa-filter" saveText="Filter" >
-            <div className="row">
-                <div className="col">
-                    <div className="form-group">
-                        <label>Week</label>
-                        <input type="date" className="form-control form-control-sm" name="week" value={Helper.formatHtml5Date(filter.startDate)} onChange={handleChange} />
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="form-group">
-                        <label>Campus</label>
-                        <select name="campus" data-testid="campus" className="form-control form-control-sm" value={filter.campusId} onChange={handleChange}>{getCampusOptions()}</select>
-                    </div>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col">
-                    <div className="form-group">
-                        <label>Service</label>
-                        <select name="service" className="form-control form-control-sm" value={filter.serviceId} onChange={handleChange} >{getServiceOptions()}</select>
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="form-group">
-                        <label>Time</label>
-                        <select name="serviceTime" className="form-control form-control-sm" value={filter.serviceTimeId} onChange={handleChange} >{getServiceTimeOptions()}</select>
-                    </div>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col">
-                    <div className="form-group">
-                        <label>Category</label>
-                        <select name="category" className="form-control form-control-sm" value={filter.categoryName} onChange={handleChange} >{getCategoryOptions()}</select>
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="form-group">
-                        <label>Group</label>
-                        <select name="group" className="form-control form-control-sm" value={filter.groupId} onChange={handleChange} >{getGroupOptions()}</select>
-                    </div>
-                </div>
-            </div>
+            <Row>
+                <Col>
+                    <FormGroup>
+                        <FormLabel>Week</FormLabel>
+                        <FormControl size="sm" type="date" name="week" value={Helper.formatHtml5Date(filter.startDate)} onChange={handleChange} />
+                    </FormGroup>
+                </Col>
+                <Col>
+                    <FormGroup>
+                        <FormLabel>Campus</FormLabel>
+                        <FormControl as="select" name="campus" data-testid="campus" value={filter.campusId} onChange={handleChange}>{getCampusOptions()}</FormControl>
+                    </FormGroup>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <FormGroup>
+                        <FormLabel>Service</FormLabel>
+                        <FormControl as="select" name="service" value={filter.serviceId} onChange={handleChange} >{getServiceOptions()}</FormControl>
+                    </FormGroup>
+                </Col>
+                <Col>
+                    <FormGroup>
+                        <FormLabel>Time</FormLabel>
+                        <FormControl as="select" name="serviceTime" value={filter.serviceTimeId} onChange={handleChange} >{getServiceTimeOptions()}</FormControl>
+                    </FormGroup>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <FormGroup>
+                        <FormLabel>Category</FormLabel>
+                        <FormControl as="select" name="category" value={filter.categoryName} onChange={handleChange} >{getCategoryOptions()}</FormControl>
+                    </FormGroup>
+                </Col>
+                <Col>
+                    <FormGroup>
+                        <FormLabel>Group</FormLabel>
+                        <FormControl as="select" name="group" value={filter.groupId} onChange={handleChange} >{getGroupOptions()}</FormControl>
+                    </FormGroup>
+                </Col>
+            </Row>
         </InputBox>
     );
 }

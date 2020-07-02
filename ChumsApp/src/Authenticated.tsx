@@ -13,6 +13,7 @@ import { FormsPage } from './Forms/FormsPage'
 import { RolesPage } from './Settings/RolesPage'
 import { RolePage } from './Settings/RolePage'
 import { FormPage } from './Forms/FormPage';
+import { Row } from 'react-bootstrap';
 
 export const Authenticated = () => {
 
@@ -32,7 +33,7 @@ export const Authenticated = () => {
             <Header></Header>
             <div className="container-fluid">
                 <a href="about:blank" onClick={sidebarToggle} className="d-md-none" id="sidebarToggle"><i className="fas fa-bars"></i></a>
-                <div className="row">
+                <Row>
                     <Sidebar />
                     <main role="main" className="col-sm-12 ml-sm-auto col-md-10 pt-3">
                         <Switch>
@@ -52,7 +53,7 @@ export const Authenticated = () => {
                             <Route path="/cp"><Redirect to="/people" /></Route>
                         </Switch>
                     </main>
-                </div>
+                </Row>
             </div>
             <script src="/js/cp.js"></script>
         </>

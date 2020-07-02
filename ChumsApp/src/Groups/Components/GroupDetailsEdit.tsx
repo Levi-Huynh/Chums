@@ -1,6 +1,7 @@
 import React from 'react';
 import { ApiHelper, GroupInterface, InputBox, ErrorMessages, ServiceTimesEdit } from './';
 import { Redirect } from 'react-router-dom';
+import { Row, Col, FormGroup, FormControl, FormLabel } from 'react-bootstrap';
 
 interface Props { group: GroupInterface, updatedFunction: (group: GroupInterface) => void }
 
@@ -54,31 +55,31 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
     else return (
         <InputBox headerText="Group Details" headerIcon="fas fa-list" saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={handleDelete} >
             <ErrorMessages errors={errors} />
-            <div className="row">
-                <div className="col">
-                    <div className="form-group">
-                        <label>Category Name</label>
-                        <input type="text" className="form-control" name="categoryName" value={group.categoryName} onChange={handleChange} />
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="form-group">
-                        <label>Group Name</label>
-                        <input type="text" className="form-control" name="name" value={group.name} onChange={handleChange} />
-                    </div>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col">
-                    <div className="form-group">
-                        <label>Track Attendance</label>
-                        <select className="form-control" name="trackAttendance" value={group.trackAttendance?.toString() || 'false'} onChange={handleChange}>
+            <Row>
+                <Col>
+                    <FormGroup>
+                        <FormLabel>Category Name</FormLabel>
+                        <FormControl type="text" name="categoryName" value={group.categoryName} onChange={handleChange} />
+                    </FormGroup>
+                </Col>
+                <Col>
+                    <FormGroup>
+                        <FormLabel>Group Name</FormLabel>
+                        <FormControl type="text" name="name" value={group.name} onChange={handleChange} />
+                    </FormGroup>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <FormGroup>
+                        <FormLabel>Track Attendance</FormLabel>
+                        <FormControl as="select" name="trackAttendance" value={group.trackAttendance?.toString() || 'false'} onChange={handleChange}>
                             <option value="false">No</option>
                             <option value="true">Yes</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+                        </FormControl>
+                    </FormGroup>
+                </Col>
+            </Row>
             <ServiceTimesEdit group={group} />
 
         </InputBox>

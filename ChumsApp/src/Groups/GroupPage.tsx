@@ -1,6 +1,7 @@
 import React from 'react';
 import { ApiHelper, UserHelper, MembersAdd, DisplayBox, GroupInterface, GroupDetails, PersonAdd, PersonInterface, Tabs, SessionAdd, SessionInterface } from './Components';
 import { RouteComponentProps } from 'react-router-dom';
+import { Row, Col } from 'react-bootstrap';
 
 type TParams = { id?: string };
 
@@ -44,15 +45,13 @@ export const GroupPage = ({ match }: RouteComponentProps<TParams>) => {
     else return (
         <>
             <h1><i className="fas fa-list"></i> {group.name}</h1>
-            <div className="row">
-                <div className="col-lg-8">
+            <Row>
+                <Col lg={8}>
                     <GroupDetails group={group} />
                     <Tabs group={group} addedPerson={addedPerson} addedSession={addedSession} addedCallback={handleAddedCallback} sidebarVisibilityFunction={handleSidebarVisibility} />
-                </div>
-                <div className="col-lg-4">
-                    {getSidebarModules()}
-                </div>
-            </div>
+                </Col>
+                <Col lg={4}>{getSidebarModules()}</Col>
+            </Row>
         </>
     );
 }

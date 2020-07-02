@@ -1,6 +1,7 @@
 import React from 'react';
 import { ApiHelper, DisplayBox, UserHelper, FormInterface, QuestionInterface, FormQuestionEdit } from './Components';
 import { RouteComponentProps } from 'react-router-dom'
+import { Row, Col } from 'react-bootstrap';
 
 type TParams = { id?: string };
 export const FormPage = ({ match }: RouteComponentProps<TParams>) => {
@@ -74,8 +75,8 @@ export const FormPage = ({ match }: RouteComponentProps<TParams>) => {
     else return (
         <>
             <h1><i className="fas fa-align-left"></i> {form.name}</h1>
-            <div className="row">
-                <div className="col-lg-8">
+            <Row>
+                <Col lg={8}>
                     <DisplayBox headerText="Questions" headerIcon="fas fa-question" editContent={getEditContent()} >
                         <table className="table">
                             <tbody>
@@ -84,11 +85,9 @@ export const FormPage = ({ match }: RouteComponentProps<TParams>) => {
                             </tbody>
                         </table>
                     </DisplayBox>
-                </div>
-                <div className="col-lg-4">
-                    {getSidebarModules()}
-                </div>
-            </div>
+                </Col>
+                <Col lg={4}>{getSidebarModules()}</Col>
+            </Row>
         </>
     );
 }

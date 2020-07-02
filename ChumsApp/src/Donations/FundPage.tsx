@@ -1,7 +1,7 @@
 import React from 'react';
 import { ApiHelper, DisplayBox, InputBox, DonationBatchInterface, Helper, UserHelper, FundDonationInterface, ExportLink } from './Components';
 import { RouteComponentProps, Link } from 'react-router-dom';
-
+import { Row, Col, FormGroup, FormControl, FormLabel } from 'react-bootstrap';
 
 type TParams = { id?: string };
 
@@ -61,29 +61,28 @@ export const FundPage = ({ match }: RouteComponentProps<TParams>) => {
     else return (
         <>
             <h1><i className="fas fa-hand-holding-usd"></i> {fund.name} Donations</h1>
-            <div className="row">
-                <div className="col-lg-8">
+            <Row>
+                <Col lg={8}>
                     <DisplayBox headerIcon="fas fa-hand-holding-usd" headerText="Donations" editContent={getEditContent()}>
                         <table className="table">
                             <tr><th>Date</th><th>Batch</th><th>Donor</th><th>Amount</th></tr>
                             {getRows()}
                         </table>
                     </DisplayBox>
-
-                </div >
-                <div className="col-lg-4">
+                </Col>
+                <Col lg={4}>
                     <InputBox headerIcon="fas fa-filter" headerText="Donation Filter" saveFunction={loadDonations} saveText="Filter" >
-                        <div className="form-group">
-                            <label>Start Date</label>
-                            <input name="startDate" type="date" className="form-control" value={Helper.formatHtml5Date(startDate)} onChange={handleChange} />
-                        </div>
-                        <div className="form-group">
-                            <label>End Date</label>
-                            <input type="date" className="form-control" value={Helper.formatHtml5Date(endDate)} />
-                        </div>
+                        <FormGroup>
+                            <FormLabel>Start Date</FormLabel>
+                            <FormControl name="startDate" type="date" value={Helper.formatHtml5Date(startDate)} onChange={handleChange} />
+                        </FormGroup>
+                        <FormGroup>
+                            <FormLabel>End Date</FormLabel>
+                            <FormControl name="endDate" type="date" value={Helper.formatHtml5Date(endDate)} onChange={handleChange} />
+                        </FormGroup>
                     </InputBox >
-                </div>
-            </div >
+                </Col>
+            </Row >
 
         </>
     );

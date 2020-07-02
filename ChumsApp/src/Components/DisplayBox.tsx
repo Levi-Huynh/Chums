@@ -1,4 +1,5 @@
 import React from 'react';
+import { Row, Col } from 'react-bootstrap';
 
 interface Props {
     children: React.ReactNode,
@@ -15,10 +16,10 @@ export const DisplayBox: React.FC<Props> = (props) => {
     return (
         <div className="inputBox">
             <div className="header">
-                <div className="row">
-                    <div className="col-8"><i className={props.headerIcon}></i> {props.headerText}</div>
-                    <div className="col-4" style={{ textAlign: 'right' }} >{editContent}</div>
-                </div>
+                <Row>
+                    <Col xs={8}><i className={props.headerIcon}></i> {props.headerText}</Col>
+                    <Col xs={4} style={{ textAlign: 'right' }} >{editContent}</Col>
+                </Row>
             </div>
             <div className="content">
                 {props.children}

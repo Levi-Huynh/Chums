@@ -2,6 +2,7 @@ import React from 'react';
 import { ApiHelper, DisplayBox, BatchEdit, DonationBatchInterface, Helper, Funds, DonationChart, UserHelper, DonationFilter, ExportLink } from './Components';
 import { Link } from 'react-router-dom';
 import { set } from 'date-fns'
+import { Row, Col } from 'react-bootstrap';
 
 export const DonationsPage = () => {
     const [editBatchId, setEditBatchId] = React.useState(-1);
@@ -58,8 +59,8 @@ export const DonationsPage = () => {
     else return (
         <form method="post">
             <h1><i className="fas fa-hand-holding-usd"></i> Donations</h1>
-            <div className="row">
-                <div className="col-lg-8">
+            <Row>
+                <Col lg={8}>
                     <DonationChart startDate={startDate} endDate={endDate} />
                     <DisplayBox headerIcon="fas fa-hand-holding-usd" headerText="Batches" editContent={getEditContent()}  >
                         <table className="table">
@@ -69,11 +70,9 @@ export const DonationsPage = () => {
                             </tbody>
                         </table>
                     </DisplayBox >
-                </div >
-                <div className="col-lg-4">
-                    {getSidebarModules()}
-                </div>
-            </div >
+                </Col>
+                <Col lg={4}>{getSidebarModules()}</Col>
+            </Row>
 
         </form >
     );
