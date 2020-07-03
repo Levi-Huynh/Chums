@@ -1,19 +1,18 @@
 import React from 'react';
-import { Col, Card, Table, Tabs, Tab, Alert } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { DisplayBox, UserHelper, PersonInterface, ApiHelper, HouseholdInterface, HouseholdMemberInterface, ImportHelper } from '.';
-import { GroupInterface, GroupMemberInterface, CampusInterface, ServiceInterface, ServiceTimeInterface, GroupServiceTimeInterface, } from '../../Utils';
+import { Table, Tabs, Tab, Alert } from 'react-bootstrap';
+import { DisplayBox, ImportHelper } from '.';
+import { ImportGroupInterface, ImportGroupMemberInterface, ImportCampusInterface, ImportServiceInterface, ImportServiceTimeInterface, ImportGroupServiceTimeInterface, ImportPersonInterface, ImportHouseholdInterface, ImportHouseholdMemberInterface } from '../../Utils/ImportHelper';
 
 interface Props {
-    people: PersonInterface[],
-    households: HouseholdInterface[],
-    householdMembers: HouseholdMemberInterface[],
-    campuses: CampusInterface[],
-    services: ServiceInterface[],
-    serviceTimes: ServiceTimeInterface[],
-    groupServiceTimes: GroupServiceTimeInterface[],
-    groups: GroupInterface[],
-    groupMembers: GroupMemberInterface[],
+    people: ImportPersonInterface[],
+    households: ImportHouseholdInterface[],
+    householdMembers: ImportHouseholdMemberInterface[],
+    campuses: ImportCampusInterface[],
+    services: ImportServiceInterface[],
+    serviceTimes: ImportServiceTimeInterface[],
+    groupServiceTimes: ImportGroupServiceTimeInterface[],
+    groups: ImportGroupInterface[],
+    groupMembers: ImportGroupMemberInterface[],
     triggerRender: number
 }
 
@@ -42,6 +41,11 @@ export const ImportPreview: React.FC<Props> = (props) => {
         return null;
     }
 
+    const getMemberCount = (groupKey: string) => {
+        var count = ImportHelper.getGroupMembers(props.groupMembers, groupKey).length;
+        return (count === 1) ? '1 member' : count.toString() + ' members';
+    }
+
     const getGroupsTable = () => {
         if (props.groups.length === 0) return null;
         else {
@@ -57,7 +61,7 @@ export const ImportPreview: React.FC<Props> = (props) => {
                         var filteredGroupServiceTimes = ImportHelper.getGroupServiceTimes(props.groupServiceTimes, time.importKey);
                         for (var l = 0; l < filteredGroupServiceTimes.length; l++) {
                             var group = ImportHelper.getGroupByKey(props.groups, props.groupServiceTimes[l].groupKey);
-                            rows.push(<tr><td>{props.campuses[i].name}</td><td>{props.services[j].name}</td><td>{props.serviceTimes[k].name}</td><td>{group.categoryName}</td><td>{group.name}</td></tr>);
+                            rows.push(<tr><td>{props.campuses[i].name}</td><td>{props.services[j].name}</td><td>{props.serviceTimes[k].name}</td><td>{group.categoryName}</td><td>{group.name}</td><td>{getMemberCount(group.importKey)}</td></tr>);
                         }
                     }
                 }
@@ -65,11 +69,11 @@ export const ImportPreview: React.FC<Props> = (props) => {
 
             for (var i = 0; i < props.groups.length; i++) {
                 var groupServiceTimes = ImportHelper.getGroupServiceTimesByGroupKey(props.groupServiceTimes, props.groups[i].importKey);
-                if (groupServiceTimes.length === 0) rows.push(<tr><td></td><td></td><td></td><td>{props.groups[i].categoryName}</td><td>{props.groups[i].name}</td></tr>);
+                if (groupServiceTimes.length === 0) rows.push(<tr><td></td><td></td><td></td><td>{props.groups[i].categoryName}</td><td>{props.groups[i].name}</td><td>{getMemberCount(props.groups[i].importKey)}</td></tr>);
             }
 
             return (<Table size="sm">
-                <thead><tr><th>Campus</th><th>Service</th><th>Time</th><th>Category</th><th>Group</th></tr></thead>
+                <thead><tr><th>Campus</th><th>Service</th><th>Time</th><th>Category</th><th>Group</th><th>Members</th></tr></thead>
                 <tbody>{rows}</tbody>
             </Table >);
         }

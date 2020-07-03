@@ -1,20 +1,19 @@
 import React from 'react';
-import { DisplayBox, UserHelper, PersonInterface, ApiHelper, HouseholdInterface, HouseholdMemberInterface, GroupInterface, GroupMemberInterface, ImportPreview, ImportHelper, InputBox, CampusInterface, ServiceInterface, GroupServiceTimeInterface, ServiceTimeInterface } from './Components';
-import { Row, Col, Button } from 'react-bootstrap';
-
-
+import { UserHelper, PersonInterface, ApiHelper, HouseholdInterface, ImportPreview, ImportHelper, InputBox } from './Components';
+import { ImportCampusInterface, ImportHouseholdMemberInterface, ImportPersonInterface, ImportHouseholdInterface, ImportGroupInterface, ImportGroupMemberInterface, ImportServiceInterface, ImportGroupServiceTimeInterface, ImportServiceTimeInterface } from '../Utils/ImportHelper';
+import { Row, Col } from 'react-bootstrap';
 
 export const ImportPage = () => {
-    const [people, setPeople] = React.useState<PersonInterface[]>([]);
-    const [households, setHouseholds] = React.useState<HouseholdInterface[]>([]);
-    const [householdMembers, setHouseholdMembers] = React.useState<HouseholdMemberInterface[]>([]);
+    const [people, setPeople] = React.useState<ImportPersonInterface[]>([]);
+    const [households, setHouseholds] = React.useState<ImportHouseholdInterface[]>([]);
+    const [householdMembers, setHouseholdMembers] = React.useState<ImportHouseholdMemberInterface[]>([]);
 
-    const [campuses, setCampuses] = React.useState<CampusInterface[]>([]);
-    const [services, setServices] = React.useState<ServiceInterface[]>([]);
-    const [serviceTimes, setServiceTimes] = React.useState<ServiceTimeInterface[]>([]);
-    const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
-    const [groups, setGroups] = React.useState<GroupInterface[]>([]);
-    const [groupMembers, setGroupMembers] = React.useState<GroupMemberInterface[]>([]);
+    const [campuses, setCampuses] = React.useState<ImportCampusInterface[]>([]);
+    const [services, setServices] = React.useState<ImportServiceInterface[]>([]);
+    const [serviceTimes, setServiceTimes] = React.useState<ImportServiceTimeInterface[]>([]);
+    const [groupServiceTimes, setGroupServiceTimes] = React.useState<ImportGroupServiceTimeInterface[]>([]);
+    const [groups, setGroups] = React.useState<ImportGroupInterface[]>([]);
+    const [groupMembers, setGroupMembers] = React.useState<ImportGroupMemberInterface[]>([]);
     const [triggerRender, setTriggerRender] = React.useState(0);
 
     const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,11 +29,11 @@ export const ImportPage = () => {
     }
 
     const loadGroups = (data: any) => {
-        var groups: GroupInterface[] = [];
-        var campuses: CampusInterface[] = [];
-        var services: ServiceInterface[] = [];
-        var serviceTimes: ServiceTimeInterface[] = [];
-        var groupServiceTimes: GroupServiceTimeInterface[] = [];
+        var groups: ImportGroupInterface[] = [];
+        var campuses: ImportCampusInterface[] = [];
+        var services: ImportServiceInterface[] = [];
+        var serviceTimes: ImportServiceTimeInterface[] = [];
+        var groupServiceTimes: ImportGroupServiceTimeInterface[] = [];
 
         for (let i = 0; i < data.length; i++) if (data[i].name !== undefined) {
             var campus = ImportHelper.getCampus(campuses, data[i].campus);
@@ -42,7 +41,7 @@ export const ImportPage = () => {
             var serviceTime = ImportHelper.getServiceTime(serviceTimes, data[i].time, service);
             var group = ImportHelper.getGroup(groups, data[i]);
             if (group !== null && serviceTime !== null) {
-                var gst = { groupKey: group.importKey, serviceTimeKey: serviceTime.importKey } as GroupServiceTimeInterface;
+                var gst = { groupKey: group.importKey, serviceTimeKey: serviceTime.importKey } as ImportGroupServiceTimeInterface;
                 groupServiceTimes.push(gst);
             }
         }
@@ -56,19 +55,19 @@ export const ImportPage = () => {
 
 
     const loadGroupMembers = (data: any) => {
-        var members: GroupMemberInterface[] = [];
-        for (let i = 0; i < data.length; i++) if (data[i].groupKey !== undefined) members.push(data[i] as GroupMemberInterface);
+        var members: ImportGroupMemberInterface[] = [];
+        for (let i = 0; i < data.length; i++) if (data[i].groupKey !== undefined) members.push(data[i] as ImportGroupMemberInterface);
         setGroupMembers(members);
     }
 
     const loadPeople = (data: any, allFiles: FileList) => {
-        var people: PersonInterface[] = [];
-        var households: HouseholdInterface[] = [];
-        var householdMembers: HouseholdMemberInterface[] = [];
+        var people: ImportPersonInterface[] = [];
+        var households: ImportHouseholdInterface[] = [];
+        var householdMembers: ImportHouseholdMemberInterface[] = [];
 
         for (let i = 0; i < data.length; i++) {
             if (data[i].lastName !== undefined) {
-                var p = data[i] as PersonInterface;
+                var p = data[i] as ImportPersonInterface;
                 assignHousehold(households, householdMembers, data[i]);
                 if (p.photo !== undefined) ImportHelper.readImage(allFiles, p, () => { setTriggerRender(Math.random()); });
                 people.push(p);
@@ -79,10 +78,10 @@ export const ImportPage = () => {
         setHouseholdMembers(householdMembers);
     }
 
-    const assignHousehold = (households: HouseholdInterface[], householdMembers: HouseholdMemberInterface[], person: any) => {
+    const assignHousehold = (households: ImportHouseholdInterface[], householdMembers: ImportHouseholdMemberInterface[], person: any) => {
         var householdName: string = person.householdName;
-        if (households.length === 0 || households[households.length - 1].name !== householdName) households.push({ name: householdName, importKey: (households.length + 1).toString() } as HouseholdInterface);
-        householdMembers.push({ householdKey: households[households.length - 1].importKey, personKey: person.importKey } as HouseholdMemberInterface);
+        if (households.length === 0 || households[households.length - 1].name !== householdName) households.push({ name: householdName, importKey: (households.length + 1).toString() } as ImportHouseholdInterface);
+        householdMembers.push({ householdKey: households[households.length - 1].importKey, personKey: person.importKey } as ImportHouseholdMemberInterface);
     }
 
     const getAction = () => {
