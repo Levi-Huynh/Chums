@@ -13,11 +13,11 @@ export interface FundDonationInterface { id?: number, donationId?: number, fundI
 export interface GroupInterface { id?: number, name?: string, categoryName: string, memberCount: number, trackAttendance: boolean }
 export interface GroupMemberInterface { id?: number, personId: number, person?: PersonInterface, group?: GroupInterface }
 export interface GroupServiceTimeInterface { id: number, groupId: number, serviceTimeId: number, serviceTime?: ServiceTimeInterface }
-export interface HouseholdInterface { id?: number, name?: string }
-export interface HouseholdMemberInterface { id?: number, householdId?: number, household?: HouseholdInterface, personId?: number, person?: PersonInterface, role?: string }
+export interface HouseholdInterface { id?: number, name?: string, importKey?: string }
+export interface HouseholdMemberInterface { id?: number, householdId?: number, household?: HouseholdInterface, personId?: number, person?: PersonInterface, role?: string, householdKey?: string, personKey?: string }
 export interface NoteInterface { dateAdded?: string, person?: PersonInterface }
 export interface PermissionInterface { contentType?: string, action?: string }
-export interface PersonInterface { id?: number, firstName?: string, middleName?: string, lastName?: string, nickName?: string, displayName?: string, membershipStatus?: string, gender?: string, birthDate?: Date, maritalStatus?: string, anniversary?: Date, address1?: string, address2?: string, city?: string, state?: string, zip?: string, homePhone?: string, mobilePhone?: string, workPhone?: string, email?: string, formSubmissions?: [FormSubmissionInterface], photo?: string, photoUpdated?: Date }
+export interface PersonInterface { id?: number, firstName?: string, middleName?: string, lastName?: string, nickName?: string, displayName?: string, membershipStatus?: string, gender?: string, birthDate?: Date, maritalStatus?: string, anniversary?: Date, address1?: string, address2?: string, city?: string, state?: string, zip?: string, homePhone?: string, mobilePhone?: string, workPhone?: string, email?: string, formSubmissions?: [FormSubmissionInterface], photo?: string, photoUpdated?: Date, importKey?: string }
 export interface QuestionInterface { id?: number, title?: string, fieldType?: string, placeholder?: string, description?: string, choices?: [{ value?: string, text?: string }] }
 export interface RegisterInterface { churchName?: string, firstName?: string, lastName?: string, email?: string, password?: string }
 export interface RoleInterface { id: number, name: string }
