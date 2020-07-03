@@ -1,5 +1,5 @@
 import { format as dateFormat } from 'date-fns'
-import { PersonInterface, HouseholdMemberInterface } from './ApiHelper';
+import { PersonInterface, HouseholdMemberInterface, CampusInterface, ServiceInterface, ServiceTimeInterface, GroupInterface, GroupServiceTimeInterface } from './ApiHelper';
 import Papa from 'papaparse';
 
 export class ImportHelper {
@@ -18,6 +18,78 @@ export class ImportHelper {
         return result;
     }
 
+    static getGroupServiceTimesByGroupKey(groupServiceTimes: GroupServiceTimeInterface[], groupKey: string) {
+        var result = [];
+        for (let i = 0; i < groupServiceTimes.length; i++) if (groupServiceTimes[i].groupKey == groupKey) result.push(groupServiceTimes[i]);
+        return result;
+    }
+
+    static getServices(services: ServiceInterface[], campusKey: string) {
+        var result = [];
+        for (let i = 0; i < services.length; i++) if (services[i].campusKey == campusKey) result.push(services[i]);
+        return result;
+    }
+
+    static getServiceTimes(serviceTimes: ServiceTimeInterface[], serviceKey: string) {
+        var result = [];
+        for (let i = 0; i < serviceTimes.length; i++) if (serviceTimes[i].serviceKey == serviceKey) result.push(serviceTimes[i]);
+        return result;
+    }
+
+    static getGroupServiceTimes(groupServiceTimes: GroupServiceTimeInterface[], serviceTimeKey: string) {
+        var result = [];
+        for (let i = 0; i < groupServiceTimes.length; i++) if (groupServiceTimes[i].serviceTimeKey == serviceTimeKey) result.push(groupServiceTimes[i]);
+        return result;
+    }
+
+    static getCampus(campuses: CampusInterface[], campusName: string) {
+        if (campusName === undefined || campusName === null || campusName === '') return null;
+        for (let i = 0; i < campuses.length; i++) if (campuses[i].name === campusName) return campuses[i];
+        var result = { name: campusName, importKey: (campuses.length + 1).toString() } as CampusInterface;
+        campuses.push(result);
+        return result;
+    }
+
+    static getService(services: ServiceInterface[], serviceName: string, campus: CampusInterface) {
+        if (campus === null || serviceName === undefined || serviceName === null || serviceName === '') return null;
+        for (let i = 0; i < services.length; i++) if (services[i].name === serviceName && services[i].campusKey === campus.importKey) return services[i];
+        var result = { name: serviceName, importKey: (services.length + 1).toString(), campusKey: campus.importKey } as ServiceInterface;
+        services.push(result);
+        return result;
+    }
+
+    static getServiceTime(serviceTimes: ServiceTimeInterface[], serviceTimeName: string, service: ServiceInterface) {
+        if (service === null || serviceTimeName === undefined || serviceTimeName === null || serviceTimeName === '') return null;
+        for (let i = 0; i < serviceTimes.length; i++) if (serviceTimes[i].name === serviceTimeName && serviceTimes[i].serviceKey === service.importKey) return serviceTimes[i];
+        var result = { name: serviceTimeName, importKey: (serviceTimes.length + 1).toString(), serviceKey: service.importKey } as ServiceTimeInterface;
+        serviceTimes.push(result);
+        return result;
+    }
+
+    static getGroupByKey(groups: GroupInterface[], importKey: string) {
+        for (let i = 0; i < groups.length; i++) if (groups[i].importKey === importKey) return groups[i];
+        return null;
+    }
+
+    static getGroup(groups: GroupInterface[], data: any) {
+        var result = this.getGroupByKey(groups, data.importKey) as GroupInterface;
+        if (result === null) {
+            result = data as GroupInterface;
+            if (result.importKey === '') result.importKey = (groups.length + 1).toString();
+            groups.push(result);
+        }
+        return result;
+    }
+
+    /*
+
+    static getGroupServiceTime(groupServiceTimes: ServiceTimeInterface[], serviceTimeName: string, service: ServiceInterface) {
+        if (service === null || serviceTimeName === undefined || serviceTimeName === null || serviceTimeName === '') return null;
+        for (let i = 0; i < serviceTimes.length; i++) if (serviceTimes[i].name === serviceTimeName && serviceTimes[i].serviceKey === service.importKey) return serviceTimes[i];
+        var result = { name: serviceTimeName, importKey: (serviceTimes.length + 1).toString(), serviceKey: service.importKey } as ServiceTimeInterface;
+        serviceTimes.push(result);
+        return result;
+    }*/
 
     static getFile(files: FileList, fileName: string) {
         for (let i = 0; i < files.length; i++) if (files[i].name == fileName) return files[i];

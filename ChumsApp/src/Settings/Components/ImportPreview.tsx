@@ -2,11 +2,18 @@ import React from 'react';
 import { Col, Card, Table, Tabs, Tab, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { DisplayBox, UserHelper, PersonInterface, ApiHelper, HouseholdInterface, HouseholdMemberInterface, ImportHelper } from '.';
+import { GroupInterface, GroupMemberInterface, CampusInterface, ServiceInterface, ServiceTimeInterface, GroupServiceTimeInterface, } from '../../Utils';
 
 interface Props {
     people: PersonInterface[],
     households: HouseholdInterface[],
     householdMembers: HouseholdMemberInterface[],
+    campuses: CampusInterface[],
+    services: ServiceInterface[],
+    serviceTimes: ServiceTimeInterface[],
+    groupServiceTimes: GroupServiceTimeInterface[],
+    groups: GroupInterface[],
+    groupMembers: GroupMemberInterface[],
     triggerRender: number
 }
 
@@ -35,12 +42,47 @@ export const ImportPreview: React.FC<Props> = (props) => {
         return null;
     }
 
+    const getGroupsTable = () => {
+        if (props.groups.length === 0) return null;
+        else {
+            var rows = [];
+            for (var i = 0; i < props.campuses.length; i++) {
+                var campus = props.campuses[i];
+                var filteredServices = ImportHelper.getServices(props.services, campus.importKey);
+                for (var j = 0; j < filteredServices.length; j++) {
+                    var service = filteredServices[j];
+                    var filteredTimes = ImportHelper.getServiceTimes(props.serviceTimes, service.importKey);
+                    for (var k = 0; k < filteredTimes.length; k++) {
+                        var time = filteredTimes[k];
+                        var filteredGroupServiceTimes = ImportHelper.getGroupServiceTimes(props.groupServiceTimes, time.importKey);
+                        for (var l = 0; l < filteredGroupServiceTimes.length; l++) {
+                            var group = ImportHelper.getGroupByKey(props.groups, props.groupServiceTimes[l].groupKey);
+                            rows.push(<tr><td>{props.campuses[i].name}</td><td>{props.services[j].name}</td><td>{props.serviceTimes[k].name}</td><td>{group.categoryName}</td><td>{group.name}</td></tr>);
+                        }
+                    }
+                }
+            }
+
+            for (var i = 0; i < props.groups.length; i++) {
+                var groupServiceTimes = ImportHelper.getGroupServiceTimesByGroupKey(props.groupServiceTimes, props.groups[i].importKey);
+                if (groupServiceTimes.length === 0) rows.push(<tr><td></td><td></td><td></td><td>{props.groups[i].categoryName}</td><td>{props.groups[i].name}</td></tr>);
+            }
+
+            return (<Table size="sm">
+                <thead><tr><th>Campus</th><th>Service</th><th>Time</th><th>Category</th><th>Group</th></tr></thead>
+                <tbody>{rows}</tbody>
+            </Table >);
+        }
+        return <></>;
+    }
+
+
     if (props.people.length === 0) return (<Alert variant="info"><b>Important:</b> This tool is designed to help you load your initial data into the system.  Using it after you have been using Chums for a while is risky and may result in duplicated data.</Alert>);
     else return (<>
         <h2>Preview</h2>
         <Tabs defaultActiveKey="people" id="previewTabs" >
             <Tab eventKey="people" title="People"><DisplayBox headerIcon="" headerText="People">{getPeopleTable()}</DisplayBox></Tab>
-            <Tab eventKey="groups" title="Groups"><DisplayBox headerIcon="" headerText="Groups">Groups</DisplayBox></Tab>
+            <Tab eventKey="groups" title="Groups"><DisplayBox headerIcon="" headerText="Groups">{getGroupsTable()}</DisplayBox></Tab>
         </Tabs>
     </>);
 }
