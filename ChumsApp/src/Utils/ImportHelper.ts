@@ -1,20 +1,57 @@
-import { PersonInterface, HouseholdMemberInterface, CampusInterface, ServiceInterface, ServiceTimeInterface, GroupInterface, GroupMemberInterface, GroupServiceTimeInterface, HouseholdInterface } from './ApiHelper';
+import { PersonInterface, HouseholdMemberInterface, CampusInterface, ServiceInterface, ServiceTimeInterface, GroupInterface, GroupMemberInterface, GroupServiceTimeInterface, HouseholdInterface, SessionInterface, VisitInterface, VisitSessionInterface } from './ApiHelper';
 import Papa from 'papaparse';
 
 export interface ImportCampusInterface extends CampusInterface { importKey: string }
 export interface ImportServiceInterface extends ServiceInterface { importKey: string, campusKey?: string }
 export interface ImportServiceTimeInterface extends ServiceTimeInterface { importKey?: string, serviceKey?: string }
+
 export interface ImportGroupServiceTimeInterface extends GroupServiceTimeInterface { importKey: string, groupKey?: string, serviceTimeKey?: string }
 export interface ImportGroupInterface extends GroupInterface { importKey: string, serviceTimeKey: string }
 export interface ImportGroupMemberInterface extends GroupMemberInterface { groupKey: string, personKey: string }
+
 export interface ImportPersonInterface extends PersonInterface { importKey: string }
 export interface ImportHouseholdInterface extends HouseholdInterface { importKey: string }
 export interface ImportHouseholdMemberInterface extends HouseholdMemberInterface { householdKey?: string, personKey?: string }
 
+export interface ImportSessionInterface extends SessionInterface { importKey: string, groupKey: string, serviceTimeKey: string }
+export interface ImportVisitInterface extends VisitInterface { importKey: string, personKey: string, serviceKey: string, groupKey: string }
+export interface ImportVisitSessionInterface extends VisitSessionInterface { visitKey: string, sessionKey: string }
+
+
 export class ImportHelper {
+
+    static getVisitSessions(visitSessions: ImportVisitSessionInterface[], sessionKey: string) {
+        var result = [];
+        for (let i = 0; i < visitSessions.length; i++) if (visitSessions[i].sessionKey === sessionKey) result.push(visitSessions[i]);
+        return result;
+    }
+
+    static getOrCreateVisit(visits: ImportVisitInterface[], data: any, serviceTimes: ImportServiceTimeInterface[]) {
+        var serviceTime = this.getServiceTime(serviceTimes, data.serviceTimeKey);
+        var serviceKey = (serviceTime === null) ? '' : serviceTime.serviceKey;
+        for (let i = 0; i < visits.length; i++) {
+            var v = visits[i];
+            if (v.personKey === data.personKey && v.serviceKey === serviceKey && v.groupKey === data.groupKey && v.visitDate === data.date) return v;
+        }
+        var result = { importKey: (visits.length + 1).toString(), visitDate: data.date, personKey: data.personKey, serviceKey: serviceKey, groupKey: data.groupKey } as ImportVisitInterface;
+        visits.push(result);
+        return result;
+    }
+
+    static getOrCreateSession(sessions: ImportSessionInterface[], sessionDate: Date, groupKey: string, serviceTimeKey: string) {
+        for (let i = 0; i < sessions.length; i++) if (sessions[i].sessionDate === sessionDate && sessions[i].groupKey === groupKey && sessions[i].serviceTimeKey === serviceTimeKey) return sessions[i];
+        var result = { importKey: (sessions.length + 1).toString(), sessionDate: sessionDate, groupKey: groupKey, serviceTimeKey: serviceTimeKey } as ImportSessionInterface;
+        sessions.push(result);
+        return result;
+    }
 
     static getPerson(people: ImportPersonInterface[], personKey: string) {
         for (let i = 0; i < people.length; i++) if (people[i].importKey == personKey) return people[i];
+        return null;
+    }
+
+    static getServiceTime(serviceTimes: ImportServiceTimeInterface[], importKey: string) {
+        for (let i = 0; i < serviceTimes.length; i++) if (serviceTimes[i].importKey == importKey) return serviceTimes[i];
         return null;
     }
 
@@ -57,7 +94,7 @@ export class ImportHelper {
         return result;
     }
 
-    static getCampus(campuses: ImportCampusInterface[], campusName: string) {
+    static getOrCreateCampus(campuses: ImportCampusInterface[], campusName: string) {
         if (campusName === undefined || campusName === null || campusName === '') return null;
         for (let i = 0; i < campuses.length; i++) if (campuses[i].name === campusName) return campuses[i];
         var result = { name: campusName, importKey: (campuses.length + 1).toString() } as ImportCampusInterface;
@@ -65,7 +102,7 @@ export class ImportHelper {
         return result;
     }
 
-    static getService(services: ImportServiceInterface[], serviceName: string, campus: ImportCampusInterface) {
+    static getOrCreateService(services: ImportServiceInterface[], serviceName: string, campus: ImportCampusInterface) {
         if (campus === null || serviceName === undefined || serviceName === null || serviceName === '') return null;
         for (let i = 0; i < services.length; i++) if (services[i].name === serviceName && services[i].campusKey === campus.importKey) return services[i];
         var result = { name: serviceName, importKey: (services.length + 1).toString(), campusKey: campus.importKey } as ImportServiceInterface;
@@ -73,7 +110,7 @@ export class ImportHelper {
         return result;
     }
 
-    static getServiceTime(serviceTimes: ImportServiceTimeInterface[], data: any, service: ImportServiceInterface) {
+    static getOrCreateServiceTime(serviceTimes: ImportServiceTimeInterface[], data: any, service: ImportServiceInterface) {
         if (service === null || data.importKey === undefined || data.importKey === null || data.importKey === '') return null;
         for (let i = 0; i < serviceTimes.length; i++) if (serviceTimes[i].importKey === data.importKey) return serviceTimes[i];
         var result = { serviceKey: service.importKey, importKey: data.importKey, name: data.time } as ImportServiceTimeInterface

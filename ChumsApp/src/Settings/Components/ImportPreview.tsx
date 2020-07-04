@@ -1,19 +1,22 @@
 import React from 'react';
 import { Table, Tabs, Tab, Alert } from 'react-bootstrap';
-import { DisplayBox, ImportHelper } from '.';
-import { ImportGroupInterface, ImportGroupMemberInterface, ImportCampusInterface, ImportServiceInterface, ImportServiceTimeInterface, ImportGroupServiceTimeInterface, ImportPersonInterface, ImportHouseholdInterface, ImportHouseholdMemberInterface } from '../../Utils/ImportHelper';
+import { DisplayBox, ImportHelper, Helper } from '.';
+import { ImportGroupInterface, ImportGroupMemberInterface, ImportCampusInterface, ImportServiceInterface, ImportServiceTimeInterface, ImportGroupServiceTimeInterface, ImportPersonInterface, ImportHouseholdInterface, ImportHouseholdMemberInterface, ImportVisitInterface, ImportSessionInterface, ImportVisitSessionInterface } from '../../Utils/ImportHelper';
 
 interface Props {
     people: ImportPersonInterface[],
     households: ImportHouseholdInterface[],
     householdMembers: ImportHouseholdMemberInterface[],
+    triggerRender: number,
     campuses: ImportCampusInterface[],
     services: ImportServiceInterface[],
     serviceTimes: ImportServiceTimeInterface[],
     groupServiceTimes: ImportGroupServiceTimeInterface[],
     groups: ImportGroupInterface[],
     groupMembers: ImportGroupMemberInterface[],
-    triggerRender: number
+    visits: ImportVisitInterface[],
+    sessions: ImportSessionInterface[],
+    visitSessions: ImportVisitSessionInterface[]
 }
 
 export const ImportPreview: React.FC<Props> = (props) => {
@@ -80,6 +83,26 @@ export const ImportPreview: React.FC<Props> = (props) => {
         return <></>;
     }
 
+    const getAttendanceTable = () => {
+        if (props.sessions.length === 0) return null;
+        else {
+            var rows = [];
+            for (let i = 0; i < props.sessions.length; i++) {
+                var session = props.sessions[i];
+                var group = ImportHelper.getGroupByKey(props.groups, session.groupKey);
+                var vs = ImportHelper.getVisitSessions(props.visitSessions, session.importKey);
+                var members = ImportHelper.getHouseholdMembers(props.householdMembers, props.people, props.households[i].importKey);
+                rows.push(<tr><td>{Helper.prettyDate(session.sessionDate)}</td><td>{group.name}</td><td>{vs.length}</td></tr>);
+            }
+            return (<Table>
+                <thead><tr><th>Date</th><th>Group</th><th>Visits</th></tr></thead>
+                <tbody>{rows}</tbody>
+            </Table>);
+        }
+        return null;
+    }
+
+
 
     if (props.people.length === 0) return (<Alert variant="info"><b>Important:</b> This tool is designed to help you load your initial data into the system.  Using it after you have been using Chums for a while is risky and may result in duplicated data.</Alert>);
     else return (<>
@@ -87,6 +110,7 @@ export const ImportPreview: React.FC<Props> = (props) => {
         <Tabs defaultActiveKey="people" id="previewTabs" >
             <Tab eventKey="people" title="People"><DisplayBox headerIcon="" headerText="People">{getPeopleTable()}</DisplayBox></Tab>
             <Tab eventKey="groups" title="Groups"><DisplayBox headerIcon="" headerText="Groups">{getGroupsTable()}</DisplayBox></Tab>
+            <Tab eventKey="attendance" title="Attendance"><DisplayBox headerIcon="" headerText="Attendance">{getAttendanceTable()}</DisplayBox></Tab>
         </Tabs>
     </>);
 }

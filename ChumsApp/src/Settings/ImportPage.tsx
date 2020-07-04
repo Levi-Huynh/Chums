@@ -1,20 +1,25 @@
 import React from 'react';
 import { UserHelper, PersonInterface, ApiHelper, HouseholdInterface, ImportPreview, ImportHelper, InputBox } from './Components';
-import { ImportCampusInterface, ImportHouseholdMemberInterface, ImportPersonInterface, ImportHouseholdInterface, ImportGroupInterface, ImportGroupMemberInterface, ImportServiceInterface, ImportGroupServiceTimeInterface, ImportServiceTimeInterface } from '../Utils/ImportHelper';
+import { ImportCampusInterface, ImportHouseholdMemberInterface, ImportPersonInterface, ImportHouseholdInterface, ImportGroupInterface, ImportGroupMemberInterface, ImportServiceInterface, ImportGroupServiceTimeInterface, ImportServiceTimeInterface, ImportVisitInterface, ImportSessionInterface, ImportVisitSessionInterface } from '../Utils/ImportHelper';
 import { Row, Col } from 'react-bootstrap';
 
 export const ImportPage = () => {
     const [people, setPeople] = React.useState<ImportPersonInterface[]>([]);
     const [households, setHouseholds] = React.useState<ImportHouseholdInterface[]>([]);
     const [householdMembers, setHouseholdMembers] = React.useState<ImportHouseholdMemberInterface[]>([]);
+    const [triggerRender, setTriggerRender] = React.useState(0);
 
     const [campuses, setCampuses] = React.useState<ImportCampusInterface[]>([]);
     const [services, setServices] = React.useState<ImportServiceInterface[]>([]);
     const [serviceTimes, setServiceTimes] = React.useState<ImportServiceTimeInterface[]>([]);
+
     const [groupServiceTimes, setGroupServiceTimes] = React.useState<ImportGroupServiceTimeInterface[]>([]);
     const [groups, setGroups] = React.useState<ImportGroupInterface[]>([]);
     const [groupMembers, setGroupMembers] = React.useState<ImportGroupMemberInterface[]>([]);
-    const [triggerRender, setTriggerRender] = React.useState(0);
+
+    const [sessions, setSessions] = React.useState<ImportSessionInterface[]>([])
+    const [visits, setVisits] = React.useState<ImportVisitInterface[]>([])
+    const [visitSessions, setVisitSessions] = React.useState<ImportVisitSessionInterface[]>([])
 
     const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -25,9 +30,33 @@ export const ImportPage = () => {
                 ImportHelper.getCsv(files, 'services.csv', loadServiceTimes);
                 ImportHelper.getCsv(files, 'groups.csv', loadGroups);
                 ImportHelper.getCsv(files, 'groupmembers.csv', loadGroupMembers);
+                ImportHelper.getCsv(files, 'attendance.csv', loadAttendance);
             }
         }
     }
+
+    const loadAttendance = (data: any) => {
+        var sessions: ImportSessionInterface[] = [];
+        var visits: ImportVisitInterface[] = [];
+        var visitSessions: ImportVisitSessionInterface[] = [];
+
+        for (let i = 0; i < data.length; i++) if (data[i].personKey !== undefined && data[i].groupKey !== undefined) {
+            var session = ImportHelper.getOrCreateSession(sessions, data[i].date, data[i].groupKey, data[i].serviceTimeKey);
+            var visit = ImportHelper.getOrCreateVisit(visits, data[i], serviceTimes);
+            var visitSession = { visitKey: visit.importKey, sessionKey: session.importKey } as ImportVisitSessionInterface;
+            visitSessions.push(visitSession);
+
+            var group = ImportHelper.getGroup(groups, data[i]);
+            if (group !== null && group.serviceTimeKey !== undefined && group.serviceTimeKey !== null) {
+                var gst = { groupKey: group.importKey, serviceTimeKey: group.serviceTimeKey } as ImportGroupServiceTimeInterface;
+                groupServiceTimes.push(gst);
+            }
+        }
+        setVisits(visits);
+        setSessions(sessions);
+        setVisitSessions(visitSessions);
+    }
+
 
     const loadServiceTimes = (data: any) => {
         var campuses: ImportCampusInterface[] = [];
@@ -35,9 +64,9 @@ export const ImportPage = () => {
         var serviceTimes: ImportServiceTimeInterface[] = [];
 
         for (let i = 0; i < data.length; i++) if (data[i].time !== undefined) {
-            var campus = ImportHelper.getCampus(campuses, data[i].campus);
-            var service = ImportHelper.getService(services, data[i].service, campus);
-            ImportHelper.getServiceTime(serviceTimes, data[i], service);
+            var campus = ImportHelper.getOrCreateCampus(campuses, data[i].campus);
+            var service = ImportHelper.getOrCreateService(services, data[i].service, campus);
+            ImportHelper.getOrCreateServiceTime(serviceTimes, data[i], service);
         }
         setCampuses(campuses);
         setServices(services);
@@ -58,8 +87,6 @@ export const ImportPage = () => {
         setGroups(groups);
         setGroupServiceTimes(groupServiceTimes);
     }
-
-
 
     const loadGroupMembers = (data: any) => {
         var members: ImportGroupMemberInterface[] = [];
@@ -135,7 +162,11 @@ export const ImportPage = () => {
                         serviceTimes={serviceTimes}
                         groupServiceTimes={groupServiceTimes}
                         groups={groups}
-                        groupMembers={groupMembers} />
+                        groupMembers={groupMembers}
+                        visits={visits}
+                        sessions={sessions}
+                        visitSessions={visitSessions}
+                    />
                 </Col>
                 <Col lg={4}>
                     {getAction()}
