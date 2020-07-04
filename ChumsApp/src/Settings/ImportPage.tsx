@@ -1,6 +1,12 @@
 import React from 'react';
 import { UserHelper, PersonInterface, ApiHelper, HouseholdInterface, ImportPreview, ImportHelper, InputBox } from './Components';
-import { ImportCampusInterface, ImportHouseholdMemberInterface, ImportPersonInterface, ImportHouseholdInterface, ImportGroupInterface, ImportGroupMemberInterface, ImportServiceInterface, ImportGroupServiceTimeInterface, ImportServiceTimeInterface, ImportVisitInterface, ImportSessionInterface, ImportVisitSessionInterface } from '../Utils/ImportHelper';
+import {
+    ImportHouseholdMemberInterface, ImportPersonInterface, ImportHouseholdInterface
+    , ImportCampusInterface, ImportServiceInterface, ImportServiceTimeInterface
+    , ImportGroupInterface, ImportGroupMemberInterface, ImportGroupServiceTimeInterface
+    , ImportVisitInterface, ImportSessionInterface, ImportVisitSessionInterface
+    , ImportDonationBatchInterface, ImportFundInterface, ImportDonationInterface, ImportFundDonationInterface
+} from '../Utils/ImportHelper';
 import { Row, Col } from 'react-bootstrap';
 
 export const ImportPage = () => {
@@ -21,6 +27,11 @@ export const ImportPage = () => {
     const [visits, setVisits] = React.useState<ImportVisitInterface[]>([])
     const [visitSessions, setVisitSessions] = React.useState<ImportVisitSessionInterface[]>([])
 
+    const [batches, setBatches] = React.useState<ImportDonationBatchInterface[]>([]);
+    const [funds, setFunds] = React.useState<ImportFundInterface[]>([]);
+    const [donations, setDonations] = React.useState<ImportDonationInterface[]>([]);
+    const [fundDonations, setFundDonations] = React.useState<ImportFundDonationInterface[]>([]);
+
     const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         if (e.target) {
@@ -31,8 +42,31 @@ export const ImportPage = () => {
                 ImportHelper.getCsv(files, 'groups.csv', loadGroups);
                 ImportHelper.getCsv(files, 'groupmembers.csv', loadGroupMembers);
                 ImportHelper.getCsv(files, 'attendance.csv', loadAttendance);
+                ImportHelper.getCsv(files, 'donations.csv', loadDonations);
             }
         }
+    }
+
+    const loadDonations = (data: any) => {
+        var batches: ImportDonationBatchInterface[] = [];
+        var funds: ImportFundInterface[] = [];
+        var donations: ImportDonationInterface[] = [];
+        var fundDonations: ImportFundDonationInterface[] = [];
+
+        for (let i = 0; i < data.length; i++) if (data[i].amount !== undefined) {
+            var d = data[i];
+            var batch = ImportHelper.getOrCreateBatch(batches, d.batch, d.date);
+            var fund = ImportHelper.getOrCreateFund(funds, d.fund);
+            var donation = { importKey: (donations.length + 1).toString(), batchKey: batch.importKey, personKey: d.personKey, donationDate: d.date, amount: d.amount, method: d.method, methodDetails: d.methodDetails, notes: d.notes } as ImportDonationInterface;
+            var fundDonation = { donationKey: donation.importKey, fundKey: fund.importKey, amount: d.amount } as ImportFundDonationInterface;
+            donations.push(donation);
+            fundDonations.push(fundDonation);
+        }
+
+        setBatches(batches)
+        setFunds(funds);
+        setDonations(donations);
+        setFundDonations(fundDonations);
     }
 
     const loadAttendance = (data: any) => {
@@ -166,6 +200,10 @@ export const ImportPage = () => {
                         visits={visits}
                         sessions={sessions}
                         visitSessions={visitSessions}
+                        batches={batches}
+                        donations={donations}
+                        funds={funds}
+                        fundDonations={fundDonations}
                     />
                 </Col>
                 <Col lg={4}>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Tabs, Tab, Alert } from 'react-bootstrap';
 import { DisplayBox, ImportHelper, Helper } from '.';
-import { ImportGroupInterface, ImportGroupMemberInterface, ImportCampusInterface, ImportServiceInterface, ImportServiceTimeInterface, ImportGroupServiceTimeInterface, ImportPersonInterface, ImportHouseholdInterface, ImportHouseholdMemberInterface, ImportVisitInterface, ImportSessionInterface, ImportVisitSessionInterface } from '../../Utils/ImportHelper';
+import { ImportGroupInterface, ImportGroupMemberInterface, ImportCampusInterface, ImportServiceInterface, ImportServiceTimeInterface, ImportGroupServiceTimeInterface, ImportPersonInterface, ImportHouseholdInterface, ImportHouseholdMemberInterface, ImportVisitInterface, ImportSessionInterface, ImportVisitSessionInterface, ImportDonationBatchInterface, ImportDonationInterface, ImportFundInterface, ImportFundDonationInterface } from '../../Utils/ImportHelper';
 
 interface Props {
     people: ImportPersonInterface[],
@@ -17,6 +17,10 @@ interface Props {
     visits: ImportVisitInterface[],
     sessions: ImportSessionInterface[],
     visitSessions: ImportVisitSessionInterface[]
+    batches: ImportDonationBatchInterface[],
+    funds: ImportFundInterface[],
+    donations: ImportDonationInterface[],
+    fundDonations: ImportFundDonationInterface[]
 }
 
 export const ImportPreview: React.FC<Props> = (props) => {
@@ -91,11 +95,31 @@ export const ImportPreview: React.FC<Props> = (props) => {
                 var session = props.sessions[i];
                 var group = ImportHelper.getGroupByKey(props.groups, session.groupKey);
                 var vs = ImportHelper.getVisitSessions(props.visitSessions, session.importKey);
-                var members = ImportHelper.getHouseholdMembers(props.householdMembers, props.people, props.households[i].importKey);
                 rows.push(<tr><td>{Helper.prettyDate(session.sessionDate)}</td><td>{group.name}</td><td>{vs.length}</td></tr>);
             }
             return (<Table>
                 <thead><tr><th>Date</th><th>Group</th><th>Visits</th></tr></thead>
+                <tbody>{rows}</tbody>
+            </Table>);
+        }
+        return null;
+    }
+
+    const getDonationsTable = () => {
+        if (props.fundDonations.length === 0) return null;
+        else {
+            var rows = [];
+            for (let i = 0; i < props.fundDonations.length; i++) {
+                var fd = props.fundDonations[i];
+                var donation: ImportDonationInterface = ImportHelper.getByImportKey(props.donations, fd.donationKey);
+                var batch: ImportDonationBatchInterface = ImportHelper.getByImportKey(props.batches, donation.batchKey);
+                var fund: ImportFundInterface = ImportHelper.getByImportKey(props.funds, fd.fundKey);
+                var person: ImportPersonInterface = ImportHelper.getByImportKey(props.people, donation.personKey);
+                var personName = (person === null) ? '' : person.firstName + ' ' + person.lastName;
+                rows.push(<tr><td>{Helper.prettyDate(donation.donationDate)}</td><td>{batch.name}</td><td>{personName}</td><td>{fund.name}</td><td>{Helper.formatCurrency(fd.amount)}</td></tr>);
+            }
+            return (<Table>
+                <thead><tr><th>Date</th><th>Batch</th><th>Person</th><th>Fund</th><th>Amount</th></tr></thead>
                 <tbody>{rows}</tbody>
             </Table>);
         }
@@ -111,6 +135,7 @@ export const ImportPreview: React.FC<Props> = (props) => {
             <Tab eventKey="people" title="People"><DisplayBox headerIcon="" headerText="People">{getPeopleTable()}</DisplayBox></Tab>
             <Tab eventKey="groups" title="Groups"><DisplayBox headerIcon="" headerText="Groups">{getGroupsTable()}</DisplayBox></Tab>
             <Tab eventKey="attendance" title="Attendance"><DisplayBox headerIcon="" headerText="Attendance">{getAttendanceTable()}</DisplayBox></Tab>
+            <Tab eventKey="donations" title="Donations"><DisplayBox headerIcon="" headerText="Donations">{getDonationsTable()}</DisplayBox></Tab>
         </Tabs>
     </>);
 }

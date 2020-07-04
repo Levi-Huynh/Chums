@@ -1,4 +1,4 @@
-import { PersonInterface, HouseholdMemberInterface, CampusInterface, ServiceInterface, ServiceTimeInterface, GroupInterface, GroupMemberInterface, GroupServiceTimeInterface, HouseholdInterface, SessionInterface, VisitInterface, VisitSessionInterface } from './ApiHelper';
+import { PersonInterface, HouseholdMemberInterface, CampusInterface, ServiceInterface, ServiceTimeInterface, GroupInterface, GroupMemberInterface, GroupServiceTimeInterface, HouseholdInterface, SessionInterface, VisitInterface, VisitSessionInterface, DonationBatchInterface, FundInterface, DonationInterface, FundDonationInterface } from './ApiHelper';
 import Papa from 'papaparse';
 
 export interface ImportCampusInterface extends CampusInterface { importKey: string }
@@ -17,12 +17,36 @@ export interface ImportSessionInterface extends SessionInterface { importKey: st
 export interface ImportVisitInterface extends VisitInterface { importKey: string, personKey: string, serviceKey: string, groupKey: string }
 export interface ImportVisitSessionInterface extends VisitSessionInterface { visitKey: string, sessionKey: string }
 
+export interface ImportDonationBatchInterface extends DonationBatchInterface { importKey: string }
+export interface ImportFundInterface extends FundInterface { importKey: string }
+export interface ImportDonationInterface extends DonationInterface { importKey: string, batchKey: string, personKey: string }
+export interface ImportFundDonationInterface extends FundDonationInterface { fundKey: string, donationKey: string }
+
 
 export class ImportHelper {
+
+    static getByImportKey(items: any[], importKey: string) {
+        for (let i = 0; i < items.length; i++) if (items[i].importKey === importKey) return items[i];
+        return null;
+    }
 
     static getVisitSessions(visitSessions: ImportVisitSessionInterface[], sessionKey: string) {
         var result = [];
         for (let i = 0; i < visitSessions.length; i++) if (visitSessions[i].sessionKey === sessionKey) result.push(visitSessions[i]);
+        return result;
+    }
+
+    static getOrCreateFund(funds: ImportFundInterface[], name: string) {
+        for (let i = 0; i < funds.length; i++) if (funds[i].name === name) return funds[i];
+        var result = { importKey: (funds.length + 1).toString(), name: name } as ImportFundInterface;
+        funds.push(result);
+        return result;
+    }
+
+    static getOrCreateBatch(batches: ImportDonationBatchInterface[], name: string, date: Date) {
+        for (let i = 0; i < batches.length; i++) if (batches[i].name === name) return batches[i];
+        var result = { importKey: (batches.length + 1).toString(), name: name, batchDate: date } as ImportDonationBatchInterface;
+        batches.push(result);
         return result;
     }
 
