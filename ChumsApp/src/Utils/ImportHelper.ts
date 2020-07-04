@@ -148,15 +148,11 @@ export class ImportHelper {
         return result;
     }
 
-    static getGroupByKey(groups: ImportGroupInterface[], importKey: string) {
-        for (let i = 0; i < groups.length; i++) if (groups[i].importKey === importKey) return groups[i];
-        return null;
-    }
-
-    static getGroup(groups: ImportGroupInterface[], data: any) {
-        var result = this.getGroupByKey(groups, data.importKey) as ImportGroupInterface;
+    static getOrCreateGroup(groups: ImportGroupInterface[], data: any) {
+        var result = this.getByImportKey(groups, data.importKey) as ImportGroupInterface;
         if (result === null) {
             result = data as ImportGroupInterface;
+            result.trackAttendance = (data.trackAttendance === "TRUE");
             if (result.importKey === '') result.importKey = (groups.length + 1).toString();
             groups.push(result);
         }

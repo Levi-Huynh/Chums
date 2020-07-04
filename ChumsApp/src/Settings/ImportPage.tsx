@@ -84,7 +84,7 @@ export const ImportPage = () => {
             var visitSession = { visitKey: visit.importKey, sessionKey: session.importKey } as ImportVisitSessionInterface;
             visitSessions.push(visitSession);
 
-            var group = ImportHelper.getGroup(groups, data[i]);
+            var group = ImportHelper.getOrCreateGroup(groups, data[i]);
             if (group !== null && group.serviceTimeKey !== undefined && group.serviceTimeKey !== null) {
                 var gst = { groupKey: group.importKey, serviceTimeKey: group.serviceTimeKey } as ImportGroupServiceTimeInterface;
                 groupServiceTimes.push(gst);
@@ -116,7 +116,7 @@ export const ImportPage = () => {
         var groupServiceTimes: ImportGroupServiceTimeInterface[] = [];
 
         for (let i = 0; i < data.length; i++) if (data[i].name !== undefined) {
-            var group = ImportHelper.getGroup(groups, data[i]);
+            var group = ImportHelper.getOrCreateGroup(groups, data[i]);
             if (group !== null && group.serviceTimeKey !== undefined && group.serviceTimeKey !== null) {
                 var gst = { groupKey: group.importKey, serviceTimeKey: group.serviceTimeKey } as ImportGroupServiceTimeInterface;
                 groupServiceTimes.push(gst);
@@ -177,6 +177,9 @@ export const ImportPage = () => {
                     {getProgress('People')}
                     {getProgress('Households')}
                     {getProgress('Household Members')}
+                    {getProgress('Groups')}
+                    {getProgress('Group Service Times')}
+                    {getProgress('Group Members')}
                 </ul>
                 <p>This process may take some time.  It is important that you do not close your browser until it has finished.</p>
             </DisplayBox>
@@ -200,6 +203,34 @@ export const ImportPage = () => {
             </InputBox>);
     }
 
+    const importGroups = async (tmpPeople: ImportPersonInterface[], tmpServiceTimes: ImportServiceTimeInterface[]) => {
+        setProgress('Groups', 'running');
+        var tmpGroups: ImportGroupInterface[] = [...groups];
+        var data = await ApiHelper.apiPost('/groups', tmpGroups);
+        for (let i = 0; i < data.length; i++) tmpGroups[i].id = data[i];
+        setProgress('Groups', 'complete');
+
+        setProgress('Group Service Times', 'running');
+        var tmpTimes: ImportGroupServiceTimeInterface[] = [...groupServiceTimes];
+        tmpTimes.forEach((gst) => {
+            gst.groupId = ImportHelper.getByImportKey(tmpGroups, gst.groupKey).id
+            gst.serviceTimeId = ImportHelper.getByImportKey(tmpServiceTimes, gst.serviceTimeKey).id
+        });
+        data = await ApiHelper.apiPost('/groupservicetimes', tmpTimes);
+        setProgress('Group Service Times', 'complete');
+
+        setProgress('Group Members', 'running');
+        var tmpMembers: ImportGroupMemberInterface[] = [...groupMembers];
+        tmpMembers.forEach((gm) => {
+            gm.groupId = ImportHelper.getByImportKey(tmpGroups, gm.groupKey).id
+            gm.personId = ImportHelper.getByImportKey(tmpPeople, gm.personKey).id
+        });
+        data = await ApiHelper.apiPost('/groupmembers', tmpMembers);
+        setProgress('Group Members', 'complete');
+
+        return tmpGroups;
+    }
+
     const importCampuses = async () => {
         setProgress('Campuses', 'running');
         var tmpCampuses: ImportCampusInterface[] = [...campuses];
@@ -209,7 +240,7 @@ export const ImportPage = () => {
 
         setProgress('Services', 'running');
         var tmpServices: ImportServiceInterface[] = [...services];
-        services.forEach((s) => { s.campusId = ImportHelper.getByImportKey(tmpCampuses, s.campusKey).id });
+        tmpServices.forEach((s) => { s.campusId = ImportHelper.getByImportKey(tmpCampuses, s.campusKey).id });
         data = await ApiHelper.apiPost('/services', tmpServices);
         for (let i = 0; i < data.length; i++) tmpServices[i].id = data[i];
         setProgress('Services', 'complete');
@@ -267,6 +298,7 @@ export const ImportPage = () => {
             setImporting(true);
             var campusResult = await importCampuses();
             var tmpPeople = await importPeople();
+            var tmpGroups = await importGroups(tmpPeople, campusResult.serviceTimes);
         }
     }
 

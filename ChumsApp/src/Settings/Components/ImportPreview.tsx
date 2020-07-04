@@ -67,7 +67,7 @@ export const ImportPreview: React.FC<Props> = (props) => {
                         var time = filteredTimes[k];
                         var filteredGroupServiceTimes = ImportHelper.getGroupServiceTimes(props.groupServiceTimes, time.importKey);
                         for (var l = 0; l < filteredGroupServiceTimes.length; l++) {
-                            var group = ImportHelper.getGroupByKey(props.groups, props.groupServiceTimes[l].groupKey);
+                            var group = ImportHelper.getByImportKey(props.groups, props.groupServiceTimes[l].groupKey) as ImportGroupInterface;
                             rows.push(<tr><td>{props.campuses[i].name}</td><td>{props.services[j].name}</td><td>{props.serviceTimes[k].name}</td><td>{group.categoryName}</td><td>{group.name}</td><td>{getMemberCount(group.importKey)}</td></tr>);
                         }
                     }
@@ -93,9 +93,9 @@ export const ImportPreview: React.FC<Props> = (props) => {
             var rows = [];
             for (let i = 0; i < props.sessions.length; i++) {
                 var session = props.sessions[i];
-                var group = ImportHelper.getGroupByKey(props.groups, session.groupKey);
+                var group: ImportGroupInterface = ImportHelper.getByImportKey(props.groups, session.groupKey);
                 var vs = ImportHelper.getVisitSessions(props.visitSessions, session.importKey);
-                rows.push(<tr><td>{Helper.prettyDate(session.sessionDate)}</td><td>{group.name}</td><td>{vs.length}</td></tr>);
+                rows.push(<tr><td>{Helper.prettyDate(session.sessionDate)}</td><td>{group?.name}</td><td>{vs.length}</td></tr>);
             }
             return (<Table>
                 <thead><tr><th>Date</th><th>Group</th><th>Visits</th></tr></thead>
