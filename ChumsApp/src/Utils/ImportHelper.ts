@@ -5,7 +5,7 @@ export interface ImportCampusInterface extends CampusInterface { importKey: stri
 export interface ImportServiceInterface extends ServiceInterface { importKey: string, campusKey?: string }
 export interface ImportServiceTimeInterface extends ServiceTimeInterface { importKey?: string, serviceKey?: string }
 export interface ImportGroupServiceTimeInterface extends GroupServiceTimeInterface { importKey: string, groupKey?: string, serviceTimeKey?: string }
-export interface ImportGroupInterface extends GroupInterface { importKey: string }
+export interface ImportGroupInterface extends GroupInterface { importKey: string, serviceTimeKey: string }
 export interface ImportGroupMemberInterface extends GroupMemberInterface { groupKey: string, personKey: string }
 export interface ImportPersonInterface extends PersonInterface { importKey: string }
 export interface ImportHouseholdInterface extends HouseholdInterface { importKey: string }
@@ -73,10 +73,10 @@ export class ImportHelper {
         return result;
     }
 
-    static getServiceTime(serviceTimes: ImportServiceTimeInterface[], serviceTimeName: string, service: ImportServiceInterface) {
-        if (service === null || serviceTimeName === undefined || serviceTimeName === null || serviceTimeName === '') return null;
-        for (let i = 0; i < serviceTimes.length; i++) if (serviceTimes[i].name === serviceTimeName && serviceTimes[i].serviceKey === service.importKey) return serviceTimes[i];
-        var result = { name: serviceTimeName, importKey: (serviceTimes.length + 1).toString(), serviceKey: service.importKey } as ImportServiceTimeInterface;
+    static getServiceTime(serviceTimes: ImportServiceTimeInterface[], data: any, service: ImportServiceInterface) {
+        if (service === null || data.importKey === undefined || data.importKey === null || data.importKey === '') return null;
+        for (let i = 0; i < serviceTimes.length; i++) if (serviceTimes[i].importKey === data.importKey) return serviceTimes[i];
+        var result = { serviceKey: service.importKey, importKey: data.importKey, name: data.time } as ImportServiceTimeInterface
         serviceTimes.push(result);
         return result;
     }

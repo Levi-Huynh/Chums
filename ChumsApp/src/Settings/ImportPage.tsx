@@ -22,32 +22,39 @@ export const ImportPage = () => {
             let files = e.target.files;
             if (files.length > 0) {
                 ImportHelper.getCsv(files, 'people.csv', (data: any) => { loadPeople(data, files) });
+                ImportHelper.getCsv(files, 'services.csv', loadServiceTimes);
                 ImportHelper.getCsv(files, 'groups.csv', loadGroups);
                 ImportHelper.getCsv(files, 'groupmembers.csv', loadGroupMembers);
             }
         }
     }
 
-    const loadGroups = (data: any) => {
-        var groups: ImportGroupInterface[] = [];
+    const loadServiceTimes = (data: any) => {
         var campuses: ImportCampusInterface[] = [];
         var services: ImportServiceInterface[] = [];
         var serviceTimes: ImportServiceTimeInterface[] = [];
-        var groupServiceTimes: ImportGroupServiceTimeInterface[] = [];
 
-        for (let i = 0; i < data.length; i++) if (data[i].name !== undefined) {
+        for (let i = 0; i < data.length; i++) if (data[i].time !== undefined) {
             var campus = ImportHelper.getCampus(campuses, data[i].campus);
             var service = ImportHelper.getService(services, data[i].service, campus);
-            var serviceTime = ImportHelper.getServiceTime(serviceTimes, data[i].time, service);
-            var group = ImportHelper.getGroup(groups, data[i]);
-            if (group !== null && serviceTime !== null) {
-                var gst = { groupKey: group.importKey, serviceTimeKey: serviceTime.importKey } as ImportGroupServiceTimeInterface;
-                groupServiceTimes.push(gst);
-            }
+            ImportHelper.getServiceTime(serviceTimes, data[i], service);
         }
         setCampuses(campuses);
         setServices(services);
         setServiceTimes(serviceTimes);
+    }
+
+    const loadGroups = (data: any) => {
+        var groups: ImportGroupInterface[] = [];
+        var groupServiceTimes: ImportGroupServiceTimeInterface[] = [];
+
+        for (let i = 0; i < data.length; i++) if (data[i].name !== undefined) {
+            var group = ImportHelper.getGroup(groups, data[i]);
+            if (group !== null && group.serviceTimeKey !== undefined && group.serviceTimeKey !== null) {
+                var gst = { groupKey: group.importKey, serviceTimeKey: group.serviceTimeKey } as ImportGroupServiceTimeInterface;
+                groupServiceTimes.push(gst);
+            }
+        }
         setGroups(groups);
         setGroupServiceTimes(groupServiceTimes);
     }
