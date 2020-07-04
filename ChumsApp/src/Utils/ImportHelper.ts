@@ -88,6 +88,12 @@ export class ImportHelper {
         return result;
     }
 
+    static getHouseholdMembersByHouseholdKey(householdMembers: ImportHouseholdMemberInterface[], householdKey: string) {
+        var result = [];
+        for (let i = 0; i < householdMembers.length; i++) if (householdMembers[i].householdKey === householdKey) result.push(householdMembers[i]);
+        return result;
+    }
+
     static getGroupServiceTimesByGroupKey(groupServiceTimes: ImportGroupServiceTimeInterface[], groupKey: string) {
         var result = [];
         for (let i = 0; i < groupServiceTimes.length; i++) if (groupServiceTimes[i].groupKey == groupKey) result.push(groupServiceTimes[i]);

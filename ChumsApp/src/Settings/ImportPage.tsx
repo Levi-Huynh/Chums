@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserHelper, PersonInterface, ApiHelper, HouseholdInterface, ImportPreview, ImportHelper, InputBox } from './Components';
+import { UserHelper, PersonInterface, ApiHelper, ImportPreview, ImportHelper, InputBox, DisplayBox } from './Components';
 import {
     ImportHouseholdMemberInterface, ImportPersonInterface, ImportHouseholdInterface
     , ImportCampusInterface, ImportServiceInterface, ImportServiceTimeInterface
@@ -31,6 +31,10 @@ export const ImportPage = () => {
     const [funds, setFunds] = React.useState<ImportFundInterface[]>([]);
     const [donations, setDonations] = React.useState<ImportDonationInterface[]>([]);
     const [fundDonations, setFundDonations] = React.useState<ImportFundDonationInterface[]>([]);
+
+    const [importing, setImporting] = React.useState(false);
+    const [status, setStatus] = React.useState<any>({});
+    var progress: any = {};
 
     const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -152,26 +156,87 @@ export const ImportPage = () => {
         householdMembers.push({ householdKey: households[households.length - 1].importKey, personKey: person.importKey } as ImportHouseholdMemberInterface);
     }
 
+    const setProgress = (name: string, status: string) => {
+        progress[name] = status;
+        setStatus({ ...progress });
+    }
+
+    const getProgress = (name: string) => {
+        if (status[name] === undefined) return (<li className="pending">{name}</li>);
+        else return (<li className={status[name]}>{name}</li>);
+    }
+
     const getAction = () => {
-        if (people.length === 0) return (
+        if (importing) return (
+            <DisplayBox headerText="Import" headerIcon="fas fa-upload">
+                Importing content:
+                <ul className="statusList">
+                    {getProgress('People')}
+                    {getProgress('Households')}
+                    {getProgress('Household Members')}
+                </ul>
+            </DisplayBox>
+        );
+        else if (people.length === 0) return (
             <InputBox headerText="Import" headerIcon="fas fa-upload" saveText="Upload and Preview" saveFunction={() => { document.getElementById('fileUpload').click(); }} >
-                Select a Files to Upload
+                Select a files to Upload.  You can download sample files <a href="/importsample.zip">here</a>.
                 <input type="file" onChange={handleUpload} id="fileUpload" accept="*/*" multiple style={{ display: 'none' }} />
             </InputBox>
         );
         else return (
             <InputBox headerText="Import" headerIcon="fas fa-upload" saveText="Import" saveFunction={handleImport} >
+                Previewing:
+                <ul className="statusList">
+                    <li>{people.length} people</li>
+                    <li>{groups.length} groups</li>
+                    <li>{visitSessions.length} attendance records</li>
+                    <li>{fundDonations.length} donations</li>
+                </ul>
                 Please carefully review the preview data and if it looks good, click the Import button to start the import process.
             </InputBox>);
     }
 
-    const handleImport = () => {
+    const importPeople = async () => {
+        setProgress('People', 'running');
+        setProgress('Households', 'running');
+
+        var tmpPeople: ImportPersonInterface[] = [...people];
+        var tmpHouseholds: ImportHouseholdInterface[] = [...households];
+        var tmpHouseholdMembers: ImportHouseholdMemberInterface[] = [];
+        tmpPeople.forEach((p) => { if (p.birthDate !== undefined) p.birthDate = new Date(p.birthDate); });
+
+        var promises: any[] = [];
+        promises.push(ApiHelper.apiPost('/people', tmpPeople).then(data => { for (let i = 0; i < data.length; i++) tmpPeople[i].id = data[i]; }));
+        promises.push(ApiHelper.apiPost('/households', tmpHouseholds).then(data => { for (let i = 0; i < data.length; i++) tmpHouseholds[i].id = data[i]; }));
+        await Promise.all(promises);
+        setProgress('People', 'complete');
+        setProgress('Households', 'complete');
+
+        setProgress('Household Members', 'running');
+        householdMembers.forEach((hm) => {
+            try {
+                hm.personId = ImportHelper.getByImportKey(tmpPeople, hm.personKey).id;
+                hm.householdId = ImportHelper.getByImportKey(tmpHouseholds, hm.householdKey).id;
+                hm.role = 'Other';
+                tmpHouseholdMembers.push(hm);
+            } catch { }
+        });
+        promises = [];
+        tmpHouseholds.forEach((h) => {
+            var hm = ImportHelper.getHouseholdMembersByHouseholdKey(tmpHouseholdMembers, h.importKey);
+            promises.push(ApiHelper.apiPost('/householdmembers/' + h.id, hm));
+        });
+        await Promise.all(promises);
+        setProgress('Household Members', 'complete');
+
+        return tmpPeople;
+    }
+
+    const handleImport = async () => {
         if (window.confirm('Are you sure you wish to load the list of people below into your database?')) {
-            var tmpPeople: PersonInterface[] = [...people];
-            tmpPeople.forEach((p) => { if (p.birthDate !== undefined) p.birthDate = new Date(p.birthDate); });
-            ApiHelper.apiPost('/people', tmpPeople).then(data => {
-                importDone();
-            });
+            setImporting(true);
+            var tmpPeople = importPeople();
+
         }
     }
 
