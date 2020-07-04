@@ -171,10 +171,14 @@ export const ImportPage = () => {
             <DisplayBox headerText="Import" headerIcon="fas fa-upload">
                 Importing content:
                 <ul className="statusList">
+                    {getProgress('Campuses')}
+                    {getProgress('Services')}
+                    {getProgress('Service Times')}
                     {getProgress('People')}
                     {getProgress('Households')}
                     {getProgress('Household Members')}
                 </ul>
+                <p>This process may take some time.  It is important that you do not close your browser until it has finished.</p>
             </DisplayBox>
         );
         else if (people.length === 0) return (
@@ -196,6 +200,30 @@ export const ImportPage = () => {
             </InputBox>);
     }
 
+    const importCampuses = async () => {
+        setProgress('Campuses', 'running');
+        var tmpCampuses: ImportCampusInterface[] = [...campuses];
+        var data = await ApiHelper.apiPost('/campuses', tmpCampuses);
+        for (let i = 0; i < data.length; i++) tmpCampuses[i].id = data[i];
+        setProgress('Campuses', 'complete');
+
+        setProgress('Services', 'running');
+        var tmpServices: ImportServiceInterface[] = [...services];
+        services.forEach((s) => { s.campusId = ImportHelper.getByImportKey(tmpCampuses, s.campusKey).id });
+        data = await ApiHelper.apiPost('/services', tmpServices);
+        for (let i = 0; i < data.length; i++) tmpServices[i].id = data[i];
+        setProgress('Services', 'complete');
+
+        setProgress('Service Times', 'running');
+        var tmpServiceTimes: ImportServiceTimeInterface[] = [...serviceTimes];
+        serviceTimes.forEach((st) => { st.serviceId = ImportHelper.getByImportKey(tmpServices, st.serviceKey).id });
+        data = await ApiHelper.apiPost('/servicetimes', tmpServiceTimes);
+        for (let i = 0; i < data.length; i++) tmpServiceTimes[i].id = data[i];
+        setProgress('Service Times', 'complete');
+
+        return { campuses: tmpCampuses, services: tmpServices, serviceTimes: tmpServiceTimes };
+    }
+
     const importPeople = async () => {
         setProgress('People', 'running');
         setProgress('Households', 'running');
@@ -203,7 +231,9 @@ export const ImportPage = () => {
         var tmpPeople: ImportPersonInterface[] = [...people];
         var tmpHouseholds: ImportHouseholdInterface[] = [...households];
         var tmpHouseholdMembers: ImportHouseholdMemberInterface[] = [];
-        tmpPeople.forEach((p) => { if (p.birthDate !== undefined) p.birthDate = new Date(p.birthDate); });
+        tmpPeople.forEach((p) => {
+            if (p.birthDate !== undefined) p.birthDate = new Date(p.birthDate);
+        });
 
         var promises: any[] = [];
         promises.push(ApiHelper.apiPost('/people', tmpPeople).then(data => { for (let i = 0; i < data.length; i++) tmpPeople[i].id = data[i]; }));
@@ -235,8 +265,8 @@ export const ImportPage = () => {
     const handleImport = async () => {
         if (window.confirm('Are you sure you wish to load the list of people below into your database?')) {
             setImporting(true);
-            var tmpPeople = importPeople();
-
+            var campusResult = await importCampuses();
+            var tmpPeople = await importPeople();
         }
     }
 
