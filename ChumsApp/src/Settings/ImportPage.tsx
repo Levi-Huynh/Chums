@@ -40,15 +40,17 @@ export const ImportPage = () => {
         e.preventDefault();
         if (e.target) {
             let files = e.target.files;
-            if (files.length > 0) {
-                ImportHelper.getCsv(files, 'people.csv', (data: any) => { loadPeople(data, files) });
-                ImportHelper.getCsv(files, 'services.csv', loadServiceTimes);
-                ImportHelper.getCsv(files, 'groups.csv', loadGroups);
-                ImportHelper.getCsv(files, 'groupmembers.csv', loadGroupMembers);
-                ImportHelper.getCsv(files, 'attendance.csv', loadAttendance);
-                ImportHelper.getCsv(files, 'donations.csv', loadDonations);
-            }
+            if (files.length > 0) runImport(files);
         }
+    }
+
+    const runImport = async (files: FileList) => {
+        var tmpPeople = loadPeople(await ImportHelper.getCsv(files, 'people.csv'), files);
+        var tmpServiceTimes = loadServiceTimes(await ImportHelper.getCsv(files, 'services.csv'));
+        var tmpGroups = loadGroups(await ImportHelper.getCsv(files, 'groups.csv'));
+        loadGroupMembers(await ImportHelper.getCsv(files, 'groupmembers.csv'));
+        loadAttendance(await ImportHelper.getCsv(files, 'attendance.csv'), tmpServiceTimes);
+        loadDonations(await ImportHelper.getCsv(files, 'donations.csv'));
     }
 
     const loadDonations = (data: any) => {
@@ -73,14 +75,14 @@ export const ImportPage = () => {
         setFundDonations(fundDonations);
     }
 
-    const loadAttendance = (data: any) => {
+    const loadAttendance = (data: any, tmpServiceTimes: ImportServiceTimeInterface[]) => {
         var sessions: ImportSessionInterface[] = [];
         var visits: ImportVisitInterface[] = [];
         var visitSessions: ImportVisitSessionInterface[] = [];
 
         for (let i = 0; i < data.length; i++) if (data[i].personKey !== undefined && data[i].groupKey !== undefined) {
-            var session = ImportHelper.getOrCreateSession(sessions, data[i].date, data[i].groupKey, data[i].serviceTimeKey);
-            var visit = ImportHelper.getOrCreateVisit(visits, data[i], serviceTimes);
+            var session = ImportHelper.getOrCreateSession(sessions, new Date(data[i].date), data[i].groupKey, data[i].serviceTimeKey);
+            var visit = ImportHelper.getOrCreateVisit(visits, data[i], tmpServiceTimes);
             var visitSession = { visitKey: visit.importKey, sessionKey: session.importKey } as ImportVisitSessionInterface;
             visitSessions.push(visitSession);
 
@@ -109,6 +111,7 @@ export const ImportPage = () => {
         setCampuses(campuses);
         setServices(services);
         setServiceTimes(serviceTimes);
+        return serviceTimes;
     }
 
     const loadGroups = (data: any) => {
@@ -124,6 +127,7 @@ export const ImportPage = () => {
         }
         setGroups(groups);
         setGroupServiceTimes(groupServiceTimes);
+        return groups;
     }
 
     const loadGroupMembers = (data: any) => {
@@ -148,6 +152,7 @@ export const ImportPage = () => {
         setPeople(people);
         setHouseholds(households);
         setHouseholdMembers(householdMembers);
+        return people;
     }
 
     const assignHousehold = (households: ImportHouseholdInterface[], householdMembers: ImportHouseholdMemberInterface[], person: any) => {
@@ -180,6 +185,13 @@ export const ImportPage = () => {
                     {getProgress('Groups')}
                     {getProgress('Group Service Times')}
                     {getProgress('Group Members')}
+                    {getProgress('Group Sessions')}
+                    {getProgress('Visits')}
+                    {getProgress('Group Attendance')}
+                    {getProgress('Funds')}
+                    {getProgress('Donation Batches')}
+                    {getProgress('Donations')}
+                    {getProgress('Donation Funds')}
                 </ul>
                 <p>This process may take some time.  It is important that you do not close your browser until it has finished.</p>
             </DisplayBox>
@@ -201,6 +213,41 @@ export const ImportPage = () => {
                 </ul>
                 Please carefully review the preview data and if it looks good, click the Import button to start the import process.
             </InputBox>);
+    }
+
+    const importAttendance = async (tmpPeople: ImportPersonInterface[], tmpGroups: ImportGroupInterface[], tmpServices: ImportServiceInterface[], tmpServiceTimes: ImportServiceTimeInterface[]) => {
+        setProgress('Group Sessions', 'running');
+        var tmpSessions: ImportSessionInterface[] = [...sessions];
+        tmpSessions.forEach((s) => {
+            s.groupId = ImportHelper.getByImportKey(tmpGroups, s.groupKey).id;
+            s.serviceTimeId = ImportHelper.getByImportKey(tmpServiceTimes, s.serviceTimeKey).id;
+        });
+        var data = await ApiHelper.apiPost('/sessions', tmpSessions);
+        for (let i = 0; i < data.length; i++) tmpSessions[i].id = data[i];
+        setProgress('Group Sessions', 'complete');
+
+        setProgress('Visits', 'running');
+        var tmpVisits: ImportVisitInterface[] = [...visits];
+        tmpVisits.forEach((v) => {
+            v.personId = ImportHelper.getByImportKey(tmpPeople, v.personKey).id;
+            try {
+                v.serviceId = ImportHelper.getByImportKey(tmpServices, v.serviceKey).id;
+            } catch {
+                v.groupId = ImportHelper.getByImportKey(tmpGroups, v.groupKey).id;
+            }
+        });
+        data = await ApiHelper.apiPost('/visits', tmpVisits);
+        for (let i = 0; i < data.length; i++) tmpVisits[i].id = data[i];
+        setProgress('Visits', 'complete');
+
+        setProgress('Group Attendance', 'running');
+        var tmpVisitSessions: ImportVisitSessionInterface[] = [...visitSessions];
+        tmpVisitSessions.forEach((vs) => {
+            vs.visitId = ImportHelper.getByImportKey(tmpVisits, vs.visitKey).id;
+            vs.sessionId = ImportHelper.getByImportKey(tmpSessions, vs.sessionKey).id;
+        });
+        data = await ApiHelper.apiPost('/visitsessions', tmpVisitSessions);
+        setProgress('Group Sessions', 'complete');
     }
 
     const importGroups = async (tmpPeople: ImportPersonInterface[], tmpServiceTimes: ImportServiceTimeInterface[]) => {
@@ -299,6 +346,7 @@ export const ImportPage = () => {
             var campusResult = await importCampuses();
             var tmpPeople = await importPeople();
             var tmpGroups = await importGroups(tmpPeople, campusResult.serviceTimes);
+            var tmpAttendance = await importAttendance(tmpPeople, tmpGroups, campusResult.services, campusResult.serviceTimes);
         }
     }
 

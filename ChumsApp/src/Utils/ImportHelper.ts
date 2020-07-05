@@ -51,13 +51,13 @@ export class ImportHelper {
     }
 
     static getOrCreateVisit(visits: ImportVisitInterface[], data: any, serviceTimes: ImportServiceTimeInterface[]) {
-        var serviceTime = this.getServiceTime(serviceTimes, data.serviceTimeKey);
+        var serviceTime: ImportServiceTimeInterface = this.getByImportKey(serviceTimes, data.serviceTimeKey);
         var serviceKey = (serviceTime === null) ? '' : serviceTime.serviceKey;
         for (let i = 0; i < visits.length; i++) {
             var v = visits[i];
-            if (v.personKey === data.personKey && v.serviceKey === serviceKey && v.groupKey === data.groupKey && v.visitDate === data.date) return v;
+            if (v.personKey === data.personKey && v.serviceKey === serviceKey && v.groupKey === data.groupKey && v.visitDate === new Date(data.date)) return v;
         }
-        var result = { importKey: (visits.length + 1).toString(), visitDate: data.date, personKey: data.personKey, serviceKey: serviceKey, groupKey: data.groupKey } as ImportVisitInterface;
+        var result = { importKey: (visits.length + 1).toString(), visitDate: new Date(data.date), personKey: data.personKey, serviceKey: serviceKey, groupKey: data.groupKey } as ImportVisitInterface;
         visits.push(result);
         return result;
     }
@@ -165,27 +165,50 @@ export class ImportHelper {
         return null;
     }
 
-    static getCsv(files: FileList, fileName: string, callback: (data: any) => void) {
+    static async getCsv(files: FileList, fileName: string) {
         var file = this.getFile(files, fileName);
-        if (file !== null) this.readCsv(file, callback);
+        if (file !== null) return await this.readCsv(file);
+        else return null;
     }
 
-    static readCsv(file: File, callBack: (data: any[]) => void) {
+    static readCsv(file: File) {
         const reader = new FileReader();
-        reader.onload = () => {
-            var result = [];
-            var csv = reader.result.toString();
-            var data = Papa.parse(csv, { header: true });
+        return new Promise((resolve, reject) => {
+            reader.onload = () => {
+                var result = [];
+                var csv = reader.result.toString();
+                var data = Papa.parse(csv, { header: true });
 
-            for (let i = 0; i < data.data.length; i++) {
-                var r: any = this.getStrippedRecord(data.data[i]);
-                result.push(r);
-            }
-            callBack(result);
-        };
-        reader.readAsText(file);
+                for (let i = 0; i < data.data.length; i++) {
+                    var r: any = this.getStrippedRecord(data.data[i]);
+                    result.push(r);
+                }
+                resolve(result);
+            };
+            reader.onerror = () => {
+                reader.abort();
+                reject(new DOMException("Problem parsing input file."));
+            };
+            reader.readAsText(file);
+        });
     }
-
+    /*
+        static readCsv(file: File, callBack: (data: any[]) => void) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                var result = [];
+                var csv = reader.result.toString();
+                var data = Papa.parse(csv, { header: true });
+    
+                for (let i = 0; i < data.data.length; i++) {
+                    var r: any = this.getStrippedRecord(data.data[i]);
+                    result.push(r);
+                }
+                callBack(result);
+            };
+            reader.readAsText(file);
+        }
+    */
     static readImage(files: FileList, person: ImportPersonInterface, callback: () => void) {
         for (let i = 0; i < files.length; i++) {
             if (files[i].name === person.photo) {
