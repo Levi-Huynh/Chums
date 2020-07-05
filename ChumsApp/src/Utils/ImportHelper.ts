@@ -1,5 +1,4 @@
 import { PersonInterface, HouseholdMemberInterface, CampusInterface, ServiceInterface, ServiceTimeInterface, GroupInterface, GroupMemberInterface, GroupServiceTimeInterface, HouseholdInterface, SessionInterface, VisitInterface, VisitSessionInterface, DonationBatchInterface, FundInterface, DonationInterface, FundDonationInterface, ArrayHelper } from './';
-import Papa from 'papaparse';
 
 export interface ImportCampusInterface extends CampusInterface { importKey: string }
 export interface ImportServiceInterface extends ServiceInterface { importKey: string, campusKey?: string }
@@ -21,6 +20,25 @@ export interface ImportDonationBatchInterface extends DonationBatchInterface { i
 export interface ImportFundInterface extends FundInterface { importKey: string }
 export interface ImportDonationInterface extends DonationInterface { importKey: string, batchKey: string, personKey: string }
 export interface ImportFundDonationInterface extends FundDonationInterface { fundKey: string, donationKey: string }
+
+export interface ImportDataInterface {
+    people: ImportPersonInterface[],
+    households: ImportHouseholdInterface[]
+    householdMembers: ImportHouseholdMemberInterface[]
+    campuses: ImportCampusInterface[]
+    services: ImportServiceInterface[]
+    serviceTimes: ImportServiceTimeInterface[]
+    groupServiceTimes: ImportGroupServiceTimeInterface[]
+    groups: ImportGroupInterface[]
+    groupMembers: ImportGroupMemberInterface[]
+    visits: ImportVisitInterface[]
+    sessions: ImportSessionInterface[]
+    visitSessions: ImportVisitSessionInterface[]
+    batches: ImportDonationBatchInterface[]
+    donations: ImportDonationInterface[]
+    funds: ImportFundInterface[]
+    fundDonations: ImportFundDonationInterface[]
+}
 
 
 export class ImportHelper {

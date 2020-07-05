@@ -1,11 +1,11 @@
 import React from 'react';
-import { UserHelper, PersonInterface, ApiHelper, ImportPreview, ImportHelper, InputBox, DisplayBox, UploadHelper } from './Components';
+import { UserHelper, ImportPreview, ImportHelper, InputBox, UploadHelper, ImportStatus } from './Components';
 import {
     ImportHouseholdMemberInterface, ImportPersonInterface, ImportHouseholdInterface
     , ImportCampusInterface, ImportServiceInterface, ImportServiceTimeInterface
     , ImportGroupInterface, ImportGroupMemberInterface, ImportGroupServiceTimeInterface
     , ImportVisitInterface, ImportSessionInterface, ImportVisitSessionInterface
-    , ImportDonationBatchInterface, ImportFundInterface, ImportDonationInterface, ImportFundDonationInterface
+    , ImportDonationBatchInterface, ImportFundInterface, ImportDonationInterface, ImportFundDonationInterface, ImportDataInterface
 } from '../Utils/ImportHelper';
 import { Row, Col } from 'react-bootstrap';
 
@@ -32,9 +32,6 @@ export const ImportPage = () => {
     const [donations, setDonations] = React.useState<ImportDonationInterface[]>([]);
     const [fundDonations, setFundDonations] = React.useState<ImportFundDonationInterface[]>([]);
 
-    const [importing, setImporting] = React.useState(false);
-    const [status, setStatus] = React.useState<any>({});
-    var progress: any = {};
 
     const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -143,7 +140,7 @@ export const ImportPage = () => {
 
         for (let i = 0; i < data.length; i++) {
             if (data[i].lastName !== undefined) {
-                var p = data[i] as ImportPersonInterface;
+                const p = data[i] as ImportPersonInterface;
                 assignHousehold(households, householdMembers, data[i]);
                 if (p.photo !== undefined) UploadHelper.readImage(allFiles, p.photo).then((url: string) => { p.photo = url; setTriggerRender(Math.random()); });
                 people.push(p);
@@ -161,261 +158,35 @@ export const ImportPage = () => {
         householdMembers.push({ householdKey: households[households.length - 1].importKey, personKey: person.importKey } as ImportHouseholdMemberInterface);
     }
 
-    const setProgress = (name: string, status: string) => {
-        progress[name] = status;
-        setStatus({ ...progress });
-    }
-
-    const getProgress = (name: string) => {
-        if (status[name] === undefined) return (<li className="pending">{name}</li>);
-        else return (<li className={status[name]}>{name}</li>);
-    }
 
     const getAction = () => {
-        if (importing) {
-            var steps = ['Campuses', 'Services', 'Service Times', 'People', 'Households', 'Household Members', 'Groups', 'Group Service Times', 'Group Members', 'Group Sessions', 'Visits', 'Group Attendance', 'Funds', 'Donation Batches', 'Donations', 'Donation Funds'];
-            var stepsHtml: JSX.Element[] = [];
-            steps.forEach((s) => stepsHtml.push(getProgress(s)));
-            return (
-                <DisplayBox headerText="Import" headerIcon="fas fa-upload">
-                    Importing content:
-                    <ul className="statusList">{stepsHtml}</ul>
-                    <p>This process may take some time.  It is important that you do not close your browser until it has finished.</p>
-                </DisplayBox>
-            );
-        } else if (people.length === 0) return (
+        if (people.length === 0) return (
             <InputBox headerText="Import" headerIcon="fas fa-upload" saveText="Upload and Preview" saveFunction={() => { document.getElementById('fileUpload').click(); }} >
                 Select a files to Upload.  You can download sample files <a href="/importsample.zip">here</a>.
                 <input type="file" onChange={handleUpload} id="fileUpload" accept="*/*" multiple style={{ display: 'none' }} />
             </InputBox>
         );
-        else return (
-            <InputBox headerText="Import" headerIcon="fas fa-upload" saveText="Import" saveFunction={handleImport} >
-                Previewing:
-                <ul className="statusList">
-                    <li>{people.length} people</li>
-                    <li>{groups.length} groups</li>
-                    <li>{visitSessions.length} attendance records</li>
-                    <li>{fundDonations.length} donations</li>
-                </ul>
-                Please carefully review the preview data and if it looks good, click the Import button to start the import process.
-            </InputBox>);
+        else return (<ImportStatus importData={getData()} />);
     }
 
-    const runImport = async (keyName: string, code: () => void) => {
-        setProgress(keyName, 'running');
-        await code();
-        setProgress(keyName, 'complete');
+    const getData = () => {
+        return {
+            people: people, households: households, householdMembers: householdMembers,
+            campuses: campuses, services: services, serviceTimes: serviceTimes,
+            groupServiceTimes: groupServiceTimes, groups: groups, groupMembers: groupMembers,
+            visits: visits, sessions: sessions, visitSessions: visitSessions,
+            batches: batches, donations: donations, funds: funds, fundDonations: fundDonations,
+        } as ImportDataInterface
+
     }
-
-    const importDonations = async (tmpPeople: ImportPersonInterface[]) => {
-        var tmpFunds: ImportFundInterface[] = [...funds];
-        var tmpBatches: ImportDonationBatchInterface[] = [...batches];
-        var tmpDonations: ImportDonationInterface[] = [...donations];
-
-        await runImport('Funds', async () => {
-            var data = await ApiHelper.apiPost('/funds', tmpFunds);
-            for (let i = 0; i < data.length; i++) tmpFunds[i].id = data[i];
-        });
-
-        await runImport('Donation Batches', async () => {
-            var data = await ApiHelper.apiPost('/donationbatches', tmpBatches);
-            for (let i = 0; i < data.length; i++) tmpBatches[i].id = data[i];
-        });
-
-        await runImport('Donations', async () => {
-            tmpDonations.forEach((d) => {
-                d.batchId = ImportHelper.getByImportKey(tmpBatches, d.batchKey).id;
-                d.personId = ImportHelper.getByImportKey(tmpPeople, d.personKey)?.id;
-            });
-            var data = await ApiHelper.apiPost('/donations', tmpDonations);
-            for (let i = 0; i < data.length; i++) tmpDonations[i].id = data[i];
-        });
-
-        await runImport('Donation Funds', async () => {
-            var tmpFundDonations: ImportFundDonationInterface[] = [...fundDonations];
-            tmpFundDonations.forEach((fd) => {
-                fd.donationId = ImportHelper.getByImportKey(tmpDonations, fd.donationKey).id;
-                fd.fundId = ImportHelper.getByImportKey(tmpFunds, fd.fundKey).id;
-            });
-            await ApiHelper.apiPost('/funddonations', tmpFundDonations);
-        });
-    }
-
-    const importAttendance = async (tmpPeople: ImportPersonInterface[], tmpGroups: ImportGroupInterface[], tmpServices: ImportServiceInterface[], tmpServiceTimes: ImportServiceTimeInterface[]) => {
-        var tmpSessions: ImportSessionInterface[] = [...sessions];
-        var tmpVisits: ImportVisitInterface[] = [...visits];
-
-        await runImport('Group Sessions', async () => {
-            tmpSessions.forEach((s) => {
-                s.groupId = ImportHelper.getByImportKey(tmpGroups, s.groupKey).id;
-                s.serviceTimeId = ImportHelper.getByImportKey(tmpServiceTimes, s.serviceTimeKey).id;
-            });
-            var data = await ApiHelper.apiPost('/sessions', tmpSessions);
-            for (let i = 0; i < data.length; i++) tmpSessions[i].id = data[i];
-        });
-
-        await runImport('Visits', async () => {
-            tmpVisits.forEach((v) => {
-                v.personId = ImportHelper.getByImportKey(tmpPeople, v.personKey).id;
-                try {
-                    v.serviceId = ImportHelper.getByImportKey(tmpServices, v.serviceKey).id;
-                } catch {
-                    v.groupId = ImportHelper.getByImportKey(tmpGroups, v.groupKey).id;
-                }
-            });
-            var data = await ApiHelper.apiPost('/visits', tmpVisits);
-            for (let i = 0; i < data.length; i++) tmpVisits[i].id = data[i];
-        });
-
-        await runImport('Group Attendance', async () => {
-            var tmpVisitSessions: ImportVisitSessionInterface[] = [...visitSessions];
-            tmpVisitSessions.forEach((vs) => {
-                vs.visitId = ImportHelper.getByImportKey(tmpVisits, vs.visitKey).id;
-                vs.sessionId = ImportHelper.getByImportKey(tmpSessions, vs.sessionKey).id;
-            });
-            await ApiHelper.apiPost('/visitsessions', tmpVisitSessions);
-        });
-    }
-
-    const importGroups = async (tmpPeople: ImportPersonInterface[], tmpServiceTimes: ImportServiceTimeInterface[]) => {
-        var tmpGroups: ImportGroupInterface[] = [...groups];
-        var tmpTimes: ImportGroupServiceTimeInterface[] = [...groupServiceTimes];
-        var tmpMembers: ImportGroupMemberInterface[] = [...groupMembers];
-
-        await runImport('Groups', async () => {
-            var data = await ApiHelper.apiPost('/groups', tmpGroups);
-            for (let i = 0; i < data.length; i++) tmpGroups[i].id = data[i];
-        });
-
-        await runImport('Group Service Times', async () => {
-            tmpTimes.forEach((gst) => {
-                gst.groupId = ImportHelper.getByImportKey(tmpGroups, gst.groupKey).id
-                gst.serviceTimeId = ImportHelper.getByImportKey(tmpServiceTimes, gst.serviceTimeKey).id
-            });
-            await ApiHelper.apiPost('/groupservicetimes', tmpTimes);
-        });
-
-        await runImport('Group Members', async () => {
-            tmpMembers.forEach((gm) => {
-                gm.groupId = ImportHelper.getByImportKey(tmpGroups, gm.groupKey).id
-                gm.personId = ImportHelper.getByImportKey(tmpPeople, gm.personKey).id
-            });
-            await ApiHelper.apiPost('/groupmembers', tmpMembers);
-        });
-
-        return tmpGroups;
-    }
-
-    const importCampuses = async () => {
-        var tmpCampuses: ImportCampusInterface[] = [...campuses];
-        var tmpServices: ImportServiceInterface[] = [...services];
-        var tmpServiceTimes: ImportServiceTimeInterface[] = [...serviceTimes];
-
-        await runImport('Campuses', async () => {
-            var data = await ApiHelper.apiPost('/campuses', tmpCampuses);
-            for (let i = 0; i < data.length; i++) tmpCampuses[i].id = data[i];
-        });
-
-        await runImport('Services', async () => {
-            tmpServices.forEach((s) => { s.campusId = ImportHelper.getByImportKey(tmpCampuses, s.campusKey).id });
-            var data = await ApiHelper.apiPost('/services', tmpServices);
-            for (let i = 0; i < data.length; i++) tmpServices[i].id = data[i];
-        });
-
-        await runImport('Service Times', async () => {
-            tmpServiceTimes.forEach((st) => { st.serviceId = ImportHelper.getByImportKey(tmpServices, st.serviceKey).id });
-            var data = await ApiHelper.apiPost('/servicetimes', tmpServiceTimes);
-            for (let i = 0; i < data.length; i++) tmpServiceTimes[i].id = data[i];
-        });
-
-        return { campuses: tmpCampuses, services: tmpServices, serviceTimes: tmpServiceTimes };
-    }
-
-    const importPeople = async () => {
-        var tmpPeople: ImportPersonInterface[] = [...people];
-        var tmpHouseholds: ImportHouseholdInterface[] = [...households];
-        var tmpHouseholdMembers: ImportHouseholdMemberInterface[] = [];
-
-        tmpPeople.forEach((p) => {
-            if (p.birthDate !== undefined) p.birthDate = new Date(p.birthDate);
-        });
-
-        await runImport('People', async () => {
-            var data = await ApiHelper.apiPost('/people', tmpPeople);
-            for (let i = 0; i < data.length; i++) tmpPeople[i].id = data[i];
-        });
-
-        await runImport('Households', async () => {
-            var data = await ApiHelper.apiPost('/households', tmpHouseholds);
-            for (let i = 0; i < data.length; i++) tmpHouseholds[i].id = data[i];
-        });
-
-        await runImport('Household Members', async () => {
-            householdMembers.forEach((hm) => {
-                try {
-                    hm.personId = ImportHelper.getByImportKey(tmpPeople, hm.personKey).id;
-                    hm.householdId = ImportHelper.getByImportKey(tmpHouseholds, hm.householdKey).id;
-                    hm.role = 'Other';
-                    tmpHouseholdMembers.push(hm);
-                } catch { }
-            });
-            var promises: Promise<any>[] = [];
-            tmpHouseholds.forEach((h) => {
-                var hm = ImportHelper.getHouseholdMembers(tmpHouseholdMembers, h.importKey, null);
-                promises.push(ApiHelper.apiPost('/householdmembers/' + h.id, hm));
-            });
-            await Promise.all(promises);
-        });
-
-        return tmpPeople;
-    }
-
-    const handleImport = async () => {
-        if (window.confirm('Are you sure you wish to load the list of people below into your database?')) {
-            setImporting(true);
-            var campusResult = await importCampuses();
-            var tmpPeople = await importPeople();
-            var tmpGroups = await importGroups(tmpPeople, campusResult.serviceTimes);
-            await importAttendance(tmpPeople, tmpGroups, campusResult.services, campusResult.serviceTimes);
-            await importDonations(tmpPeople);
-        }
-    }
-
-
-    //const importDone = () => { setPeople([]) }
-
 
     if (!UserHelper.checkAccess('Admin', 'Import')) return (<></>);
     return (
         <>
             <h1><i className="fas fa-upload"></i> Import Data</h1>
-
             <Row>
-                <Col lg={8}>
-                    <ImportPreview
-                        people={people}
-                        households={households}
-                        householdMembers={householdMembers}
-                        triggerRender={triggerRender}
-                        campuses={campuses}
-                        services={services}
-                        serviceTimes={serviceTimes}
-                        groupServiceTimes={groupServiceTimes}
-                        groups={groups}
-                        groupMembers={groupMembers}
-                        visits={visits}
-                        sessions={sessions}
-                        visitSessions={visitSessions}
-                        batches={batches}
-                        donations={donations}
-                        funds={funds}
-                        fundDonations={fundDonations}
-                    />
-                </Col>
-                <Col lg={4}>
-                    {getAction()}
-                </Col>
+                <Col lg={8}><ImportPreview importData={getData()} triggerRender={triggerRender} /></Col>
+                <Col lg={4}>{getAction()}</Col>
             </Row>
         </>
     );
