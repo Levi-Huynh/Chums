@@ -61,10 +61,10 @@ export const ImportPage = () => {
 
         for (let i = 0; i < data.length; i++) if (data[i].amount !== undefined) {
             var d = data[i];
-            var batch = ImportHelper.getOrCreateBatch(batches, d.batch, d.date);
+            var batch = ImportHelper.getOrCreateBatch(batches, d.batch, new Date(d.date));
             var fund = ImportHelper.getOrCreateFund(funds, d.fund);
-            var donation = { importKey: (donations.length + 1).toString(), batchKey: batch.importKey, personKey: d.personKey, donationDate: d.date, amount: d.amount, method: d.method, methodDetails: d.methodDetails, notes: d.notes } as ImportDonationInterface;
-            var fundDonation = { donationKey: donation.importKey, fundKey: fund.importKey, amount: d.amount } as ImportFundDonationInterface;
+            var donation = { importKey: (donations.length + 1).toString(), batchKey: batch.importKey, personKey: d.personKey, donationDate: new Date(d.date), amount: Number.parseFloat(d.amount), method: d.method, methodDetails: d.methodDetails, notes: d.notes } as ImportDonationInterface;
+            var fundDonation = { donationKey: donation.importKey, fundKey: fund.importKey, amount: Number.parseFloat(d.amount) } as ImportFundDonationInterface;
             donations.push(donation);
             fundDonations.push(fundDonation);
         }
@@ -215,6 +215,39 @@ export const ImportPage = () => {
             </InputBox>);
     }
 
+    const importDonations = async (tmpPeople: ImportPersonInterface[]) => {
+        setProgress('Funds', 'running');
+        var tmpFunds: ImportFundInterface[] = [...funds];
+        var data = await ApiHelper.apiPost('/funds', tmpFunds);
+        for (let i = 0; i < data.length; i++) tmpFunds[i].id = data[i];
+        setProgress('Funds', 'complete');
+
+        setProgress('Donation Batches', 'running');
+        var tmpBatches: ImportDonationBatchInterface[] = [...batches];
+        var data = await ApiHelper.apiPost('/donationbatches', tmpBatches);
+        for (let i = 0; i < data.length; i++) tmpBatches[i].id = data[i];
+        setProgress('Donation Batches', 'complete');
+
+        setProgress('Donations', 'running');
+        var tmpDonations: ImportDonationInterface[] = [...donations];
+        tmpDonations.forEach((d) => {
+            d.batchId = ImportHelper.getByImportKey(tmpBatches, d.batchKey).id;
+            d.personId = ImportHelper.getByImportKey(tmpPeople, d.personKey)?.id;
+        });
+        var data = await ApiHelper.apiPost('/donations', tmpDonations);
+        for (let i = 0; i < data.length; i++) tmpDonations[i].id = data[i];
+        setProgress('Donations', 'complete');
+
+        setProgress('Donation Funds', 'running');
+        var tmpFundDonations: ImportFundDonationInterface[] = [...fundDonations];
+        tmpFundDonations.forEach((fd) => {
+            fd.donationId = ImportHelper.getByImportKey(tmpDonations, fd.donationKey).id;
+            fd.fundId = ImportHelper.getByImportKey(tmpFunds, fd.fundKey).id;
+        });
+        var data = await ApiHelper.apiPost('/funddonations', tmpFundDonations);
+        setProgress('Donation Funds', 'complete');
+    }
+
     const importAttendance = async (tmpPeople: ImportPersonInterface[], tmpGroups: ImportGroupInterface[], tmpServices: ImportServiceInterface[], tmpServiceTimes: ImportServiceTimeInterface[]) => {
         setProgress('Group Sessions', 'running');
         var tmpSessions: ImportSessionInterface[] = [...sessions];
@@ -247,7 +280,7 @@ export const ImportPage = () => {
             vs.sessionId = ImportHelper.getByImportKey(tmpSessions, vs.sessionKey).id;
         });
         data = await ApiHelper.apiPost('/visitsessions', tmpVisitSessions);
-        setProgress('Group Sessions', 'complete');
+        setProgress('Group Attendance', 'complete');
     }
 
     const importGroups = async (tmpPeople: ImportPersonInterface[], tmpServiceTimes: ImportServiceTimeInterface[]) => {
@@ -346,12 +379,13 @@ export const ImportPage = () => {
             var campusResult = await importCampuses();
             var tmpPeople = await importPeople();
             var tmpGroups = await importGroups(tmpPeople, campusResult.serviceTimes);
-            var tmpAttendance = await importAttendance(tmpPeople, tmpGroups, campusResult.services, campusResult.serviceTimes);
+            await importAttendance(tmpPeople, tmpGroups, campusResult.services, campusResult.serviceTimes);
+            await importDonations(tmpPeople);
         }
     }
 
 
-    const importDone = () => { setPeople([]) }
+    //const importDone = () => { setPeople([]) }
 
 
     if (!UserHelper.checkAccess('Admin', 'Import')) return (<></>);
