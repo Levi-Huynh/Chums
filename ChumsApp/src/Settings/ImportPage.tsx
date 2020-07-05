@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserHelper, PersonInterface, ApiHelper, ImportPreview, ImportHelper, InputBox, DisplayBox } from './Components';
+import { UserHelper, PersonInterface, ApiHelper, ImportPreview, ImportHelper, InputBox, DisplayBox, UploadHelper } from './Components';
 import {
     ImportHouseholdMemberInterface, ImportPersonInterface, ImportHouseholdInterface
     , ImportCampusInterface, ImportServiceInterface, ImportServiceTimeInterface
@@ -40,17 +40,17 @@ export const ImportPage = () => {
         e.preventDefault();
         if (e.target) {
             let files = e.target.files;
-            if (files.length > 0) runImport(files);
+            if (files.length > 0) runImports(files);
         }
     }
 
-    const runImport = async (files: FileList) => {
-        var tmpPeople = loadPeople(await ImportHelper.getCsv(files, 'people.csv'), files);
-        var tmpServiceTimes = loadServiceTimes(await ImportHelper.getCsv(files, 'services.csv'));
-        var tmpGroups = loadGroups(await ImportHelper.getCsv(files, 'groups.csv'));
-        loadGroupMembers(await ImportHelper.getCsv(files, 'groupmembers.csv'));
-        loadAttendance(await ImportHelper.getCsv(files, 'attendance.csv'), tmpServiceTimes);
-        loadDonations(await ImportHelper.getCsv(files, 'donations.csv'));
+    const runImports = async (files: FileList) => {
+        loadPeople(await UploadHelper.getCsv(files, 'people.csv'), files);
+        var tmpServiceTimes = loadServiceTimes(await UploadHelper.getCsv(files, 'services.csv'));
+        loadGroups(await UploadHelper.getCsv(files, 'groups.csv'));
+        loadGroupMembers(await UploadHelper.getCsv(files, 'groupmembers.csv'));
+        loadAttendance(await UploadHelper.getCsv(files, 'attendance.csv'), tmpServiceTimes);
+        loadDonations(await UploadHelper.getCsv(files, 'donations.csv'));
     }
 
     const loadDonations = (data: any) => {
@@ -145,7 +145,7 @@ export const ImportPage = () => {
             if (data[i].lastName !== undefined) {
                 var p = data[i] as ImportPersonInterface;
                 assignHousehold(households, householdMembers, data[i]);
-                if (p.photo !== undefined) ImportHelper.readImage(allFiles, p, () => { setTriggerRender(Math.random()); });
+                if (p.photo !== undefined) UploadHelper.readImage(allFiles, p.photo).then((url: string) => { p.photo = url; setTriggerRender(Math.random()); });
                 people.push(p);
             }
         }
@@ -172,31 +172,18 @@ export const ImportPage = () => {
     }
 
     const getAction = () => {
-        if (importing) return (
-            <DisplayBox headerText="Import" headerIcon="fas fa-upload">
-                Importing content:
-                <ul className="statusList">
-                    {getProgress('Campuses')}
-                    {getProgress('Services')}
-                    {getProgress('Service Times')}
-                    {getProgress('People')}
-                    {getProgress('Households')}
-                    {getProgress('Household Members')}
-                    {getProgress('Groups')}
-                    {getProgress('Group Service Times')}
-                    {getProgress('Group Members')}
-                    {getProgress('Group Sessions')}
-                    {getProgress('Visits')}
-                    {getProgress('Group Attendance')}
-                    {getProgress('Funds')}
-                    {getProgress('Donation Batches')}
-                    {getProgress('Donations')}
-                    {getProgress('Donation Funds')}
-                </ul>
-                <p>This process may take some time.  It is important that you do not close your browser until it has finished.</p>
-            </DisplayBox>
-        );
-        else if (people.length === 0) return (
+        if (importing) {
+            var steps = ['Campuses', 'Services', 'Service Times', 'People', 'Households', 'Household Members', 'Groups', 'Group Service Times', 'Group Members', 'Group Sessions', 'Visits', 'Group Attendance', 'Funds', 'Donation Batches', 'Donations', 'Donation Funds'];
+            var stepsHtml: JSX.Element[] = [];
+            steps.forEach((s) => stepsHtml.push(getProgress(s)));
+            return (
+                <DisplayBox headerText="Import" headerIcon="fas fa-upload">
+                    Importing content:
+                    <ul className="statusList">{stepsHtml}</ul>
+                    <p>This process may take some time.  It is important that you do not close your browser until it has finished.</p>
+                </DisplayBox>
+            );
+        } else if (people.length === 0) return (
             <InputBox headerText="Import" headerIcon="fas fa-upload" saveText="Upload and Preview" saveFunction={() => { document.getElementById('fileUpload').click(); }} >
                 Select a files to Upload.  You can download sample files <a href="/importsample.zip">here</a>.
                 <input type="file" onChange={handleUpload} id="fileUpload" accept="*/*" multiple style={{ display: 'none' }} />
@@ -215,160 +202,171 @@ export const ImportPage = () => {
             </InputBox>);
     }
 
+    const runImport = async (keyName: string, code: () => void) => {
+        setProgress(keyName, 'running');
+        await code();
+        setProgress(keyName, 'complete');
+    }
+
     const importDonations = async (tmpPeople: ImportPersonInterface[]) => {
-        setProgress('Funds', 'running');
         var tmpFunds: ImportFundInterface[] = [...funds];
-        var data = await ApiHelper.apiPost('/funds', tmpFunds);
-        for (let i = 0; i < data.length; i++) tmpFunds[i].id = data[i];
-        setProgress('Funds', 'complete');
-
-        setProgress('Donation Batches', 'running');
         var tmpBatches: ImportDonationBatchInterface[] = [...batches];
-        var data = await ApiHelper.apiPost('/donationbatches', tmpBatches);
-        for (let i = 0; i < data.length; i++) tmpBatches[i].id = data[i];
-        setProgress('Donation Batches', 'complete');
-
-        setProgress('Donations', 'running');
         var tmpDonations: ImportDonationInterface[] = [...donations];
-        tmpDonations.forEach((d) => {
-            d.batchId = ImportHelper.getByImportKey(tmpBatches, d.batchKey).id;
-            d.personId = ImportHelper.getByImportKey(tmpPeople, d.personKey)?.id;
-        });
-        var data = await ApiHelper.apiPost('/donations', tmpDonations);
-        for (let i = 0; i < data.length; i++) tmpDonations[i].id = data[i];
-        setProgress('Donations', 'complete');
 
-        setProgress('Donation Funds', 'running');
-        var tmpFundDonations: ImportFundDonationInterface[] = [...fundDonations];
-        tmpFundDonations.forEach((fd) => {
-            fd.donationId = ImportHelper.getByImportKey(tmpDonations, fd.donationKey).id;
-            fd.fundId = ImportHelper.getByImportKey(tmpFunds, fd.fundKey).id;
+        await runImport('Funds', async () => {
+            var data = await ApiHelper.apiPost('/funds', tmpFunds);
+            for (let i = 0; i < data.length; i++) tmpFunds[i].id = data[i];
         });
-        var data = await ApiHelper.apiPost('/funddonations', tmpFundDonations);
-        setProgress('Donation Funds', 'complete');
+
+        await runImport('Donation Batches', async () => {
+            var data = await ApiHelper.apiPost('/donationbatches', tmpBatches);
+            for (let i = 0; i < data.length; i++) tmpBatches[i].id = data[i];
+        });
+
+        await runImport('Donations', async () => {
+            tmpDonations.forEach((d) => {
+                d.batchId = ImportHelper.getByImportKey(tmpBatches, d.batchKey).id;
+                d.personId = ImportHelper.getByImportKey(tmpPeople, d.personKey)?.id;
+            });
+            var data = await ApiHelper.apiPost('/donations', tmpDonations);
+            for (let i = 0; i < data.length; i++) tmpDonations[i].id = data[i];
+        });
+
+        await runImport('Donation Funds', async () => {
+            var tmpFundDonations: ImportFundDonationInterface[] = [...fundDonations];
+            tmpFundDonations.forEach((fd) => {
+                fd.donationId = ImportHelper.getByImportKey(tmpDonations, fd.donationKey).id;
+                fd.fundId = ImportHelper.getByImportKey(tmpFunds, fd.fundKey).id;
+            });
+            await ApiHelper.apiPost('/funddonations', tmpFundDonations);
+        });
     }
 
     const importAttendance = async (tmpPeople: ImportPersonInterface[], tmpGroups: ImportGroupInterface[], tmpServices: ImportServiceInterface[], tmpServiceTimes: ImportServiceTimeInterface[]) => {
-        setProgress('Group Sessions', 'running');
         var tmpSessions: ImportSessionInterface[] = [...sessions];
-        tmpSessions.forEach((s) => {
-            s.groupId = ImportHelper.getByImportKey(tmpGroups, s.groupKey).id;
-            s.serviceTimeId = ImportHelper.getByImportKey(tmpServiceTimes, s.serviceTimeKey).id;
-        });
-        var data = await ApiHelper.apiPost('/sessions', tmpSessions);
-        for (let i = 0; i < data.length; i++) tmpSessions[i].id = data[i];
-        setProgress('Group Sessions', 'complete');
-
-        setProgress('Visits', 'running');
         var tmpVisits: ImportVisitInterface[] = [...visits];
-        tmpVisits.forEach((v) => {
-            v.personId = ImportHelper.getByImportKey(tmpPeople, v.personKey).id;
-            try {
-                v.serviceId = ImportHelper.getByImportKey(tmpServices, v.serviceKey).id;
-            } catch {
-                v.groupId = ImportHelper.getByImportKey(tmpGroups, v.groupKey).id;
-            }
-        });
-        data = await ApiHelper.apiPost('/visits', tmpVisits);
-        for (let i = 0; i < data.length; i++) tmpVisits[i].id = data[i];
-        setProgress('Visits', 'complete');
 
-        setProgress('Group Attendance', 'running');
-        var tmpVisitSessions: ImportVisitSessionInterface[] = [...visitSessions];
-        tmpVisitSessions.forEach((vs) => {
-            vs.visitId = ImportHelper.getByImportKey(tmpVisits, vs.visitKey).id;
-            vs.sessionId = ImportHelper.getByImportKey(tmpSessions, vs.sessionKey).id;
+        await runImport('Group Sessions', async () => {
+            tmpSessions.forEach((s) => {
+                s.groupId = ImportHelper.getByImportKey(tmpGroups, s.groupKey).id;
+                s.serviceTimeId = ImportHelper.getByImportKey(tmpServiceTimes, s.serviceTimeKey).id;
+            });
+            var data = await ApiHelper.apiPost('/sessions', tmpSessions);
+            for (let i = 0; i < data.length; i++) tmpSessions[i].id = data[i];
         });
-        data = await ApiHelper.apiPost('/visitsessions', tmpVisitSessions);
-        setProgress('Group Attendance', 'complete');
+
+        await runImport('Visits', async () => {
+            tmpVisits.forEach((v) => {
+                v.personId = ImportHelper.getByImportKey(tmpPeople, v.personKey).id;
+                try {
+                    v.serviceId = ImportHelper.getByImportKey(tmpServices, v.serviceKey).id;
+                } catch {
+                    v.groupId = ImportHelper.getByImportKey(tmpGroups, v.groupKey).id;
+                }
+            });
+            var data = await ApiHelper.apiPost('/visits', tmpVisits);
+            for (let i = 0; i < data.length; i++) tmpVisits[i].id = data[i];
+        });
+
+        await runImport('Group Attendance', async () => {
+            var tmpVisitSessions: ImportVisitSessionInterface[] = [...visitSessions];
+            tmpVisitSessions.forEach((vs) => {
+                vs.visitId = ImportHelper.getByImportKey(tmpVisits, vs.visitKey).id;
+                vs.sessionId = ImportHelper.getByImportKey(tmpSessions, vs.sessionKey).id;
+            });
+            await ApiHelper.apiPost('/visitsessions', tmpVisitSessions);
+        });
     }
 
     const importGroups = async (tmpPeople: ImportPersonInterface[], tmpServiceTimes: ImportServiceTimeInterface[]) => {
-        setProgress('Groups', 'running');
         var tmpGroups: ImportGroupInterface[] = [...groups];
-        var data = await ApiHelper.apiPost('/groups', tmpGroups);
-        for (let i = 0; i < data.length; i++) tmpGroups[i].id = data[i];
-        setProgress('Groups', 'complete');
-
-        setProgress('Group Service Times', 'running');
         var tmpTimes: ImportGroupServiceTimeInterface[] = [...groupServiceTimes];
-        tmpTimes.forEach((gst) => {
-            gst.groupId = ImportHelper.getByImportKey(tmpGroups, gst.groupKey).id
-            gst.serviceTimeId = ImportHelper.getByImportKey(tmpServiceTimes, gst.serviceTimeKey).id
-        });
-        data = await ApiHelper.apiPost('/groupservicetimes', tmpTimes);
-        setProgress('Group Service Times', 'complete');
-
-        setProgress('Group Members', 'running');
         var tmpMembers: ImportGroupMemberInterface[] = [...groupMembers];
-        tmpMembers.forEach((gm) => {
-            gm.groupId = ImportHelper.getByImportKey(tmpGroups, gm.groupKey).id
-            gm.personId = ImportHelper.getByImportKey(tmpPeople, gm.personKey).id
+
+        await runImport('Groups', async () => {
+            var data = await ApiHelper.apiPost('/groups', tmpGroups);
+            for (let i = 0; i < data.length; i++) tmpGroups[i].id = data[i];
         });
-        data = await ApiHelper.apiPost('/groupmembers', tmpMembers);
-        setProgress('Group Members', 'complete');
+
+        await runImport('Group Service Times', async () => {
+            tmpTimes.forEach((gst) => {
+                gst.groupId = ImportHelper.getByImportKey(tmpGroups, gst.groupKey).id
+                gst.serviceTimeId = ImportHelper.getByImportKey(tmpServiceTimes, gst.serviceTimeKey).id
+            });
+            await ApiHelper.apiPost('/groupservicetimes', tmpTimes);
+        });
+
+        await runImport('Group Members', async () => {
+            tmpMembers.forEach((gm) => {
+                gm.groupId = ImportHelper.getByImportKey(tmpGroups, gm.groupKey).id
+                gm.personId = ImportHelper.getByImportKey(tmpPeople, gm.personKey).id
+            });
+            await ApiHelper.apiPost('/groupmembers', tmpMembers);
+        });
 
         return tmpGroups;
     }
 
     const importCampuses = async () => {
-        setProgress('Campuses', 'running');
         var tmpCampuses: ImportCampusInterface[] = [...campuses];
-        var data = await ApiHelper.apiPost('/campuses', tmpCampuses);
-        for (let i = 0; i < data.length; i++) tmpCampuses[i].id = data[i];
-        setProgress('Campuses', 'complete');
-
-        setProgress('Services', 'running');
         var tmpServices: ImportServiceInterface[] = [...services];
-        tmpServices.forEach((s) => { s.campusId = ImportHelper.getByImportKey(tmpCampuses, s.campusKey).id });
-        data = await ApiHelper.apiPost('/services', tmpServices);
-        for (let i = 0; i < data.length; i++) tmpServices[i].id = data[i];
-        setProgress('Services', 'complete');
-
-        setProgress('Service Times', 'running');
         var tmpServiceTimes: ImportServiceTimeInterface[] = [...serviceTimes];
-        serviceTimes.forEach((st) => { st.serviceId = ImportHelper.getByImportKey(tmpServices, st.serviceKey).id });
-        data = await ApiHelper.apiPost('/servicetimes', tmpServiceTimes);
-        for (let i = 0; i < data.length; i++) tmpServiceTimes[i].id = data[i];
-        setProgress('Service Times', 'complete');
+
+        await runImport('Campuses', async () => {
+            var data = await ApiHelper.apiPost('/campuses', tmpCampuses);
+            for (let i = 0; i < data.length; i++) tmpCampuses[i].id = data[i];
+        });
+
+        await runImport('Services', async () => {
+            tmpServices.forEach((s) => { s.campusId = ImportHelper.getByImportKey(tmpCampuses, s.campusKey).id });
+            var data = await ApiHelper.apiPost('/services', tmpServices);
+            for (let i = 0; i < data.length; i++) tmpServices[i].id = data[i];
+        });
+
+        await runImport('Service Times', async () => {
+            tmpServiceTimes.forEach((st) => { st.serviceId = ImportHelper.getByImportKey(tmpServices, st.serviceKey).id });
+            var data = await ApiHelper.apiPost('/servicetimes', tmpServiceTimes);
+            for (let i = 0; i < data.length; i++) tmpServiceTimes[i].id = data[i];
+        });
 
         return { campuses: tmpCampuses, services: tmpServices, serviceTimes: tmpServiceTimes };
     }
 
     const importPeople = async () => {
-        setProgress('People', 'running');
-        setProgress('Households', 'running');
-
         var tmpPeople: ImportPersonInterface[] = [...people];
         var tmpHouseholds: ImportHouseholdInterface[] = [...households];
         var tmpHouseholdMembers: ImportHouseholdMemberInterface[] = [];
+
         tmpPeople.forEach((p) => {
             if (p.birthDate !== undefined) p.birthDate = new Date(p.birthDate);
         });
 
-        var promises: any[] = [];
-        promises.push(ApiHelper.apiPost('/people', tmpPeople).then(data => { for (let i = 0; i < data.length; i++) tmpPeople[i].id = data[i]; }));
-        promises.push(ApiHelper.apiPost('/households', tmpHouseholds).then(data => { for (let i = 0; i < data.length; i++) tmpHouseholds[i].id = data[i]; }));
-        await Promise.all(promises);
-        setProgress('People', 'complete');
-        setProgress('Households', 'complete');
+        await runImport('People', async () => {
+            var data = await ApiHelper.apiPost('/people', tmpPeople);
+            for (let i = 0; i < data.length; i++) tmpPeople[i].id = data[i];
+        });
 
-        setProgress('Household Members', 'running');
-        householdMembers.forEach((hm) => {
-            try {
-                hm.personId = ImportHelper.getByImportKey(tmpPeople, hm.personKey).id;
-                hm.householdId = ImportHelper.getByImportKey(tmpHouseholds, hm.householdKey).id;
-                hm.role = 'Other';
-                tmpHouseholdMembers.push(hm);
-            } catch { }
+        await runImport('Households', async () => {
+            var data = await ApiHelper.apiPost('/households', tmpHouseholds);
+            for (let i = 0; i < data.length; i++) tmpHouseholds[i].id = data[i];
         });
-        promises = [];
-        tmpHouseholds.forEach((h) => {
-            var hm = ImportHelper.getHouseholdMembersByHouseholdKey(tmpHouseholdMembers, h.importKey);
-            promises.push(ApiHelper.apiPost('/householdmembers/' + h.id, hm));
+
+        await runImport('Household Members', async () => {
+            householdMembers.forEach((hm) => {
+                try {
+                    hm.personId = ImportHelper.getByImportKey(tmpPeople, hm.personKey).id;
+                    hm.householdId = ImportHelper.getByImportKey(tmpHouseholds, hm.householdKey).id;
+                    hm.role = 'Other';
+                    tmpHouseholdMembers.push(hm);
+                } catch { }
+            });
+            var promises: Promise<any>[] = [];
+            tmpHouseholds.forEach((h) => {
+                var hm = ImportHelper.getHouseholdMembers(tmpHouseholdMembers, h.importKey, null);
+                promises.push(ApiHelper.apiPost('/householdmembers/' + h.id, hm));
+            });
+            await Promise.all(promises);
         });
-        await Promise.all(promises);
-        setProgress('Household Members', 'complete');
 
         return tmpPeople;
     }

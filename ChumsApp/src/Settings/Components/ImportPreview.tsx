@@ -32,7 +32,7 @@ export const ImportPreview: React.FC<Props> = (props) => {
                 var rows = [];
                 for (let i = 0; i < props.households.length; i++) {
                     rows.push(<tr><td colSpan={3}><i>{props.households[i].name} Household</i></td></tr>);
-                    var members = ImportHelper.getHouseholdMembers(props.householdMembers, props.people, props.households[i].importKey);
+                    var members = ImportHelper.getHouseholdMembers(props.householdMembers, props.households[i].importKey, props.people);
                     for (let j = 0; j < members.length; j++) {
                         var p = members[j].person;
                         var imgTag = (p.photo === undefined) ? null : <img src={p.photo} className="personPhoto" />;

@@ -1,4 +1,4 @@
-import { PersonInterface, HouseholdMemberInterface, CampusInterface, ServiceInterface, ServiceTimeInterface, GroupInterface, GroupMemberInterface, GroupServiceTimeInterface, HouseholdInterface, SessionInterface, VisitInterface, VisitSessionInterface, DonationBatchInterface, FundInterface, DonationInterface, FundDonationInterface } from './ApiHelper';
+import { PersonInterface, HouseholdMemberInterface, CampusInterface, ServiceInterface, ServiceTimeInterface, GroupInterface, GroupMemberInterface, GroupServiceTimeInterface, HouseholdInterface, SessionInterface, VisitInterface, VisitSessionInterface, DonationBatchInterface, FundInterface, DonationInterface, FundDonationInterface, ArrayHelper } from './';
 import Papa from 'papaparse';
 
 export interface ImportCampusInterface extends CampusInterface { importKey: string }
@@ -24,29 +24,40 @@ export interface ImportFundDonationInterface extends FundDonationInterface { fun
 
 
 export class ImportHelper {
+    //get one
+    static getPerson(people: ImportPersonInterface[], importKey: string) { return ArrayHelper.getOne(people, 'importKey', importKey) as ImportPersonInterface; }
+    static getServiceTime(serviceTimes: ImportServiceTimeInterface[], importKey: string) { return ArrayHelper.getOne(serviceTimes, 'importKey', importKey) as ImportServiceTimeInterface; }
+    static getByImportKey(items: any[], importKey: string) { return ArrayHelper.getOne(items, 'importKey', importKey); }
 
-    static getByImportKey(items: any[], importKey: string) {
-        for (let i = 0; i < items.length; i++) if (items[i].importKey === importKey) return items[i];
-        return null;
-    }
-
-    static getVisitSessions(visitSessions: ImportVisitSessionInterface[], sessionKey: string) {
-        var result = [];
-        for (let i = 0; i < visitSessions.length; i++) if (visitSessions[i].sessionKey === sessionKey) result.push(visitSessions[i]);
+    //get all
+    static getVisitSessions(visitSessions: ImportVisitSessionInterface[], sessionKey: string) { return ArrayHelper.getAll(visitSessions, 'sessionKey', sessionKey) as ImportServiceTimeInterface[]; }
+    static getGroupServiceTimesByGroupKey(groupServiceTimes: ImportGroupServiceTimeInterface[], groupKey: string) { return ArrayHelper.getAll(groupServiceTimes, 'groupKey', groupKey) as ImportGroupServiceTimeInterface[]; }
+    static getGroupMembers(groupMembers: ImportGroupMemberInterface[], groupKey: string) { return ArrayHelper.getAll(groupMembers, 'groupKey', groupKey) as ImportGroupMemberInterface[]; }
+    static getServices(services: ImportServiceInterface[], campusKey: string) { return ArrayHelper.getAll(services, 'campusKey', campusKey) as ImportServiceInterface[]; }
+    static getServiceTimes(serviceTimes: ImportServiceTimeInterface[], serviceKey: string) { return ArrayHelper.getAll(serviceTimes, 'serviceKey', serviceKey) as ImportServiceTimeInterface[]; }
+    static getGroupServiceTimes(groupServiceTimes: ImportGroupServiceTimeInterface[], serviceTimeKey: string) { return ArrayHelper.getAll(groupServiceTimes, 'serviceTimeKey', serviceTimeKey) as ImportGroupServiceTimeInterface[]; }
+    static getHouseholdMembers(householdMembers: ImportHouseholdMemberInterface[], householdKey: string, people: ImportPersonInterface[]) {
+        var result = ArrayHelper.getAll(householdMembers, 'householdKey', householdKey) as ImportHouseholdMemberInterface[];
+        if (people !== null) for (let i = 0; i < result.length; i++) result[i].person = this.getPerson(people, result[i].personKey);
         return result;
-    }
+    };
 
+    //get or create
     static getOrCreateFund(funds: ImportFundInterface[], name: string) {
-        for (let i = 0; i < funds.length; i++) if (funds[i].name === name) return funds[i];
-        var result = { importKey: (funds.length + 1).toString(), name: name } as ImportFundInterface;
-        funds.push(result);
+        var result = ArrayHelper.getOne(funds, 'name', name);
+        if (result === null) {
+            result = { importKey: (funds.length + 1).toString(), name: name } as ImportFundInterface;
+            funds.push(result);
+        }
         return result;
     }
 
     static getOrCreateBatch(batches: ImportDonationBatchInterface[], name: string, date: Date) {
-        for (let i = 0; i < batches.length; i++) if (batches[i].name === name) return batches[i];
-        var result = { importKey: (batches.length + 1).toString(), name: name, batchDate: date } as ImportDonationBatchInterface;
-        batches.push(result);
+        var result = ArrayHelper.getOne(batches, 'name', name);
+        if (result === null) {
+            result = { importKey: (batches.length + 1).toString(), name: name, batchDate: date } as ImportDonationBatchInterface;
+            batches.push(result);
+        }
         return result;
     }
 
@@ -69,66 +80,13 @@ export class ImportHelper {
         return result;
     }
 
-    static getPerson(people: ImportPersonInterface[], personKey: string) {
-        for (let i = 0; i < people.length; i++) if (people[i].importKey == personKey) return people[i];
-        return null;
-    }
-
-    static getServiceTime(serviceTimes: ImportServiceTimeInterface[], importKey: string) {
-        for (let i = 0; i < serviceTimes.length; i++) if (serviceTimes[i].importKey == importKey) return serviceTimes[i];
-        return null;
-    }
-
-    static getHouseholdMembers(householdMembers: ImportHouseholdMemberInterface[], people: ImportPersonInterface[], householdKey: string) {
-        var result = [];
-        for (let i = 0; i < householdMembers.length; i++) {
-            var m = householdMembers[i];
-            if (m.householdKey == householdKey) { m.person = this.getPerson(people, m.personKey); result.push(m); }
-        }
-        return result;
-    }
-
-    static getHouseholdMembersByHouseholdKey(householdMembers: ImportHouseholdMemberInterface[], householdKey: string) {
-        var result = [];
-        for (let i = 0; i < householdMembers.length; i++) if (householdMembers[i].householdKey === householdKey) result.push(householdMembers[i]);
-        return result;
-    }
-
-    static getGroupServiceTimesByGroupKey(groupServiceTimes: ImportGroupServiceTimeInterface[], groupKey: string) {
-        var result = [];
-        for (let i = 0; i < groupServiceTimes.length; i++) if (groupServiceTimes[i].groupKey == groupKey) result.push(groupServiceTimes[i]);
-        return result;
-    }
-
-    static getGroupMembers(groupMembers: ImportGroupMemberInterface[], groupKey: string) {
-        var result = [];
-        for (let i = 0; i < groupMembers.length; i++) if (groupMembers[i].groupKey === groupKey) result.push(groupMembers[i]);
-        return result;
-    }
-
-    static getServices(services: ImportServiceInterface[], campusKey: string) {
-        var result = [];
-        for (let i = 0; i < services.length; i++) if (services[i].campusKey === campusKey) result.push(services[i]);
-        return result;
-    }
-
-    static getServiceTimes(serviceTimes: ImportServiceTimeInterface[], serviceKey: string) {
-        var result = [];
-        for (let i = 0; i < serviceTimes.length; i++) if (serviceTimes[i].serviceKey == serviceKey) result.push(serviceTimes[i]);
-        return result;
-    }
-
-    static getGroupServiceTimes(groupServiceTimes: ImportGroupServiceTimeInterface[], serviceTimeKey: string) {
-        var result = [];
-        for (let i = 0; i < groupServiceTimes.length; i++) if (groupServiceTimes[i].serviceTimeKey == serviceTimeKey) result.push(groupServiceTimes[i]);
-        return result;
-    }
-
     static getOrCreateCampus(campuses: ImportCampusInterface[], campusName: string) {
         if (campusName === undefined || campusName === null || campusName === '') return null;
-        for (let i = 0; i < campuses.length; i++) if (campuses[i].name === campusName) return campuses[i];
-        var result = { name: campusName, importKey: (campuses.length + 1).toString() } as ImportCampusInterface;
-        campuses.push(result);
+        var result = ArrayHelper.getOne(campuses, 'name', campusName);
+        if (result === null) {
+            result = { name: campusName, importKey: (campuses.length + 1).toString() } as ImportCampusInterface;
+            campuses.push(result);
+        }
         return result;
     }
 
@@ -142,9 +100,11 @@ export class ImportHelper {
 
     static getOrCreateServiceTime(serviceTimes: ImportServiceTimeInterface[], data: any, service: ImportServiceInterface) {
         if (service === null || data.importKey === undefined || data.importKey === null || data.importKey === '') return null;
-        for (let i = 0; i < serviceTimes.length; i++) if (serviceTimes[i].importKey === data.importKey) return serviceTimes[i];
-        var result = { serviceKey: service.importKey, importKey: data.importKey, name: data.time } as ImportServiceTimeInterface
-        serviceTimes.push(result);
+        var result: ImportServiceTimeInterface = this.getByImportKey(serviceTimes, data.serviceTimeKey);
+        if (result === null) {
+            var result = { serviceKey: service.importKey, importKey: data.importKey, name: data.time } as ImportServiceTimeInterface
+            serviceTimes.push(result);
+        }
         return result;
     }
 
@@ -158,78 +118,4 @@ export class ImportHelper {
         }
         return result;
     }
-
-
-    static getFile(files: FileList, fileName: string) {
-        for (let i = 0; i < files.length; i++) if (files[i].name == fileName) return files[i];
-        return null;
-    }
-
-    static async getCsv(files: FileList, fileName: string) {
-        var file = this.getFile(files, fileName);
-        if (file !== null) return await this.readCsv(file);
-        else return null;
-    }
-
-    static readCsv(file: File) {
-        const reader = new FileReader();
-        return new Promise((resolve, reject) => {
-            reader.onload = () => {
-                var result = [];
-                var csv = reader.result.toString();
-                var data = Papa.parse(csv, { header: true });
-
-                for (let i = 0; i < data.data.length; i++) {
-                    var r: any = this.getStrippedRecord(data.data[i]);
-                    result.push(r);
-                }
-                resolve(result);
-            };
-            reader.onerror = () => {
-                reader.abort();
-                reject(new DOMException("Problem parsing input file."));
-            };
-            reader.readAsText(file);
-        });
-    }
-    /*
-        static readCsv(file: File, callBack: (data: any[]) => void) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                var result = [];
-                var csv = reader.result.toString();
-                var data = Papa.parse(csv, { header: true });
-    
-                for (let i = 0; i < data.data.length; i++) {
-                    var r: any = this.getStrippedRecord(data.data[i]);
-                    result.push(r);
-                }
-                callBack(result);
-            };
-            reader.readAsText(file);
-        }
-    */
-    static readImage(files: FileList, person: ImportPersonInterface, callback: () => void) {
-        for (let i = 0; i < files.length; i++) {
-            if (files[i].name === person.photo) {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    person.photo = (reader.result.toString());
-                    callback();
-                };
-                reader.readAsDataURL(files[i]);
-            }
-        }
-    }
-
-    static getStrippedRecord(r: any) {
-        var names = Object.getOwnPropertyNames(r)
-        for (let j = names.length - 1; j >= 0; j--) {
-            var n = names[j];
-            if (r[n] == '') delete r[n];
-        }
-        return r;
-    }
-
-
 }
