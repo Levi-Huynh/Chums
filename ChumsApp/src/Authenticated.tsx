@@ -12,6 +12,7 @@ import { FundPage } from './Donations/FundPage'
 import { FormsPage } from './Forms/FormsPage'
 import { RolesPage } from './Settings/RolesPage'
 import { RolePage } from './Settings/RolePage'
+import { ExportPage } from './Settings/ExportPage'
 import { ImportPage } from './Settings/ImportPage'
 import { SettingsPage } from './Settings/SettingsPage'
 import { FormPage } from './Forms/FormPage';
@@ -52,6 +53,7 @@ export const Authenticated = () => {
                             <Route path="/forms"><FormsPage /></Route>
                             <Route path="/settings/roles/:id" component={RolePage}></Route>
                             <Route path="/settings/import"><ImportPage /></Route>
+                            <Route path="/settings/export"><ExportPage /></Route>
                             <Route path="/settings/roles"><RolesPage /></Route>
                             <Route path="/settings"><SettingsPage /></Route>
                             <Route path="/cp"><Redirect to="/people" /></Route>

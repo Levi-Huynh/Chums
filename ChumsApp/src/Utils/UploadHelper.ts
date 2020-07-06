@@ -1,8 +1,19 @@
 import Papa from 'papaparse';
 import { Readable, ReadableOptions } from 'stream';
 import AdmZip from 'adm-zip';
+import FileSaver from 'file-saver';
 
 export class UploadHelper {
+
+    static zipFiles(files: { name: string, contents: string }[], zipFileName: string) {
+        var zip = new AdmZip();
+        files.forEach((f) => {
+            zip.addFile(f.name, Buffer.alloc(f.contents.length, f.contents));
+        });
+        var buffer = zip.toBuffer();
+        var blob = new Blob([buffer], { type: 'applicatoin/zip' });
+        FileSaver.saveAs(blob, zipFileName);
+    }
 
     static async getCsv(files: FileList, fileName: string) {
         var file = this.getFile(files, fileName);

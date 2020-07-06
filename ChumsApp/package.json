@@ -17,6 +17,7 @@
     "@types/react-router-dom": "^5.1.5",
     "adm-zip": "^0.4.16",
     "date-fns": "^2.14.0",
+    "file-saver": "^2.0.2",
     "papaparse": "^5.2.0",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
@@ -51,6 +52,7 @@
     ]
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.1",
     "google-charts": "^2.0.0"
   }
 }
