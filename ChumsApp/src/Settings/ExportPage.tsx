@@ -1,7 +1,7 @@
 import React from 'react';
-import { DisplayBox, InputBox, ApiHelper, UploadHelper } from './Components';
+import { DisplayBox, InputBox, ApiHelper, UploadHelper, ArrayHelper } from './Components';
 import { Row, Col } from 'react-bootstrap';
-import { ImportCampusInterface, ImportServiceInterface, ImportServiceTimeInterface, ImportHelper, ImportPersonInterface } from '../Utils/ImportHelper';
+import { ImportCampusInterface, ImportServiceInterface, ImportServiceTimeInterface, ImportHelper, ImportPersonInterface, ImportGroupInterface, ImportGroupServiceTimeInterface, ImportGroupMemberInterface, ImportDonationBatchInterface, ImportDonationInterface, ImportFundInterface, ImportFundDonationInterface, ImportSessionInterface, ImportVisitInterface, ImportVisitSessionInterface } from '../Utils/ImportHelper';
 import Papa from 'papaparse';
 
 
@@ -11,9 +11,24 @@ export const ExportPage = () => {
     var progress: any = {};
 
     var people: ImportPersonInterface[] = [];
+
     var campuses: ImportCampusInterface[] = [];
     var services: ImportServiceInterface[] = [];
     var serviceTimes: ImportServiceTimeInterface[] = [];
+
+    var groups: ImportGroupInterface[] = [];
+    var groupServiceTimes: ImportGroupServiceTimeInterface[] = [];
+    var groupMembers: ImportGroupMemberInterface[] = [];
+
+    var funds: ImportFundInterface[] = [];
+    var donationBatches: ImportDonationBatchInterface[] = [];
+    var donations: ImportDonationInterface[] = [];
+    var fundDonations: ImportFundDonationInterface[] = [];
+
+    var sessions: ImportSessionInterface[] = [];
+    var visits: ImportVisitInterface[] = [];
+    var visitSessions: ImportVisitSessionInterface[] = [];
+
 
     const setProgress = (name: string, status: string) => {
         progress[name] = status;
@@ -84,13 +99,107 @@ export const ExportPage = () => {
         return Papa.unparse(data);
     }
 
+    const getGroups = async () => {
+        setProgress('Groups', 'running');
+        var promises = []
+        promises.push(ApiHelper.apiGet('/groups').then(data => groups = data));
+        promises.push(ApiHelper.apiGet('/groupserviceTimes').then(data => groupServiceTimes = data));
+        await Promise.all(promises);
+        var data: any[] = [];
+        groups.forEach((g) => {
+            var serviceTimeIds: string[] = [];
+            var gst: ImportGroupServiceTimeInterface[] = ArrayHelper.getAll(groupServiceTimes, 'groupId', g.id);
+            if (gst.length == 0) serviceTimeIds = [''];
+            else gst.forEach((time) => { serviceTimeIds.push(time.serviceTimeId.toString()) });
+            serviceTimeIds.forEach((serviceTimeId) => {
+                var row = {
+                    importKey: g.id,
+                    serviceTimeId: serviceTimeId,
+                    category: g.categoryName,
+                    name: g.name,
+                    trackAttendance: g.trackAttendance
+                }
+                data.push(row);
+            });
+        });
+        setProgress('Groups', 'complete');
+        return Papa.unparse(data);
+    }
 
+    const getGroupMembers = async () => {
+        setProgress('Group Members', 'running');
+        groupMembers = await ApiHelper.apiGet('/groupmembers');
+        var data: any[] = [];
+        groupMembers.forEach((gm) => {
+            var row = { groupKey: gm.groupId, personKey: gm.personId }
+            data.push(row);
+        });
+        setProgress('Group Members', 'complete');
+        return Papa.unparse(data);
+    }
+
+    const getDonations = async () => {
+        setProgress('Donations', 'running');
+        var promises = []
+        promises.push(ApiHelper.apiGet('/funds').then(data => funds = data));
+        promises.push(ApiHelper.apiGet('/donationbatches').then(data => donationBatches = data));
+        promises.push(ApiHelper.apiGet('/donations').then(data => donations = data));
+        promises.push(ApiHelper.apiGet('/funddonations').then(data => fundDonations = data));
+        await Promise.all(promises);
+        var data: any[] = [];
+        fundDonations.forEach((fd) => {
+            var fund: ImportFundInterface = ImportHelper.getById(funds, fd.fundId);
+            var donation: ImportDonationInterface = ImportHelper.getById(donations, fd.donationId);
+            var batch: ImportDonationBatchInterface = ImportHelper.getById(donationBatches, donation.batchId);
+            var row = {
+                batch: batch.id,
+                date: donation.donationDate,
+                personKey: donation.personId,
+                method: donation.method,
+                methodDetails: donation.methodDetails,
+                amount: donation.amount,
+                fund: fund.name,
+                notes: donation.notes
+            }
+            data.push(row);
+        });
+        setProgress('Donations', 'complete');
+        return Papa.unparse(data);
+    }
+
+    const getAttendance = async () => {
+        setProgress('Attendance', 'running');
+        var promises = []
+        promises.push(ApiHelper.apiGet('/sessions').then(data => sessions = data));
+        promises.push(ApiHelper.apiGet('/visits').then(data => visits = data));
+        promises.push(ApiHelper.apiGet('/visitsessions').then(data => visitSessions = data));
+        await Promise.all(promises);
+        var data: any[] = [];
+        visitSessions.forEach((vs) => {
+            var visit: ImportVisitInterface = ImportHelper.getById(visits, vs.visitId);
+            var session: ImportSessionInterface = ImportHelper.getById(sessions, vs.visitId);
+            var row = {
+                date: visit.visitDate,
+                serviceTimeKey: session.serviceTimeId,
+                groupKey: session.groupId,
+                personKey: visit.personId
+            }
+            data.push(row);
+        });
+        setProgress('Attendance', 'complete');
+        return Papa.unparse(data);
+    }
 
     const startExport = async () => {
         setExporting(true);
         var files = [];
         files.push({ name: "services.csv", contents: await getCampusServiceTimes() });
         files.push({ name: "people.csv", contents: await getPeople() });
+        files.push({ name: "groups.csv", contents: await getGroups() });
+        files.push({ name: "groupmembers.csv", contents: await getGroupMembers() });
+        files.push({ name: "donations.csv", contents: await getDonations() });
+        files.push({ name: "attendance.csv", contents: await getAttendance() });
+
         UploadHelper.zipFiles(files, "export.zip");
     }
 
