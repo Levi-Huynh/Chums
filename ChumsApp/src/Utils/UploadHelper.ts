@@ -1,4 +1,6 @@
 import Papa from 'papaparse';
+import { Readable, ReadableOptions } from 'stream';
+import AdmZip from 'adm-zip';
 
 export class UploadHelper {
 
@@ -6,6 +8,16 @@ export class UploadHelper {
         var file = this.getFile(files, fileName);
         if (file !== null) return await this.readCsv(file);
         else return null;
+    }
+
+    static readCsvString(csv: string) {
+        var result = [];
+        var data = Papa.parse(csv, { header: true });
+        for (let i = 0; i < data.data.length; i++) {
+            var r: any = this.getStrippedRecord(data.data[i]);
+            result.push(r);
+        }
+        return result;
     }
 
     static readCsv(file: File) {
@@ -33,6 +45,39 @@ export class UploadHelper {
     static getFile(files: FileList, fileName: string) {
         for (let i = 0; i < files.length; i++) if (files[i].name == fileName) return files[i];
         return null;
+    }
+
+    static readBinary(file: File) {
+        return new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => { resolve(reader.result.toString()); };
+            reader.onerror = () => { reject(new DOMException("Error reading image")) }
+            reader.readAsArrayBuffer(file);
+        });
+    }
+
+    static getZippedFile(files: AdmZip.IZipEntry[], name: string) {
+        for (let i = 0; i < files.length; i++) if (files[i].entryName === name) return files[i];
+        return null;
+    }
+
+    static readZippedCsv(files: AdmZip.IZipEntry[], name: string) {
+        var f = this.getZippedFile(files, name);
+        var txt = f.getData().toString();
+        var cleanedText = txt.substr(1, txt.length - 2); //sof and eof chars
+        return UploadHelper.readCsvString(cleanedText)
+    }
+
+
+    static readZippedImage(files: AdmZip.IZipEntry[], photoUrl: string) {
+        return new Promise<string>((resolve, reject) => {
+            var file = this.getZippedFile(files, photoUrl);
+            if (file === null) reject(new DOMException("Did not find image"));
+            else {
+                var buffer = file.getData();
+                resolve('data:image/png;base64,' + buffer.toString('base64'));
+            }
+        });
     }
 
     static readImage(files: FileList, photoUrl: string) {
