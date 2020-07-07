@@ -1,12 +1,15 @@
 import React from 'react';
-import { DisplayBox, InputBox, ApiHelper, UploadHelper, ArrayHelper, PersonHelper } from './Components';
+import { DisplayBox, InputBox, ApiHelper, UploadHelper, ArrayHelper, PersonHelper, UserHelper } from './Components';
 import { Row, Col } from 'react-bootstrap';
 import { ImportCampusInterface, ImportServiceInterface, ImportServiceTimeInterface, ImportHelper, ImportPersonInterface, ImportGroupInterface, ImportGroupServiceTimeInterface, ImportGroupMemberInterface, ImportDonationBatchInterface, ImportDonationInterface, ImportFundInterface, ImportFundDonationInterface, ImportSessionInterface, ImportVisitInterface, ImportVisitSessionInterface } from '../Utils/ImportHelper';
 import Papa from 'papaparse';
+import { Redirect } from 'react-router-dom';
 
 
 export const ExportPage = () => {
     const [exporting, setExporting] = React.useState(false);
+    const [exportComplete, setExportComplete] = React.useState(false);
+    const [deleted, setDeleted] = React.useState(false);
     const [status, setStatus] = React.useState<any>({});
     var progress: any = {};
 
@@ -29,7 +32,6 @@ export const ExportPage = () => {
     var visits: ImportVisitInterface[] = [];
     var visitSessions: ImportVisitSessionInterface[] = [];
 
-
     const setProgress = (name: string, status: string) => {
         progress[name] = status;
         setStatus({ ...progress });
@@ -40,17 +42,31 @@ export const ExportPage = () => {
         else return (<li className={status[name]}>{name}</li>);
     }
 
+    const handleDelete = (e: React.MouseEvent) => {
+        e.preventDefault();
+        if (window.confirm('Are you sure you wish to permanently delete this account and all associated data?')) {
+            if (window.confirm('Last chance.  This will permanently remove your church account, along with all member and group information.  Are you sure?')) {
+                ApiHelper.apiDelete('/church').then(() => setDeleted(true));
+            }
+        }
+    }
+
     const getExportSteps = () => {
         if (!exporting) return null;
         else {
             var steps = ['Campuses/Services/Times', 'People', 'Photos', 'Groups', 'Group Members', 'Donations', 'Attendance', 'Compressing'];
             var stepsHtml: JSX.Element[] = [];
             steps.forEach((s) => stepsHtml.push(getProgress(s)));
+
+            var deleteButton = null;
+            if (UserHelper.checkAccess('Admin', 'Delete Church') && exportComplete) deleteButton = <a href="about:blank" className="text-danger" onClick={handleDelete}>Permanently Delete Account</a>
+
             return (
                 <DisplayBox headerText="Export" headerIcon="fas fa-download">
                     Exporting content:
                     <ul className="statusList">{stepsHtml}</ul>
                     <p>This process may take some time.  It is important that you do not close your browser until it has finished.</p>
+                    {deleteButton}
                 </DisplayBox>
             );
         }
@@ -215,9 +231,11 @@ export const ExportPage = () => {
         setProgress('Compressing', 'running');
         UploadHelper.zipFiles(files, "export.zip");
         setProgress('Compressing', 'complete');
+        setExportComplete(true);
     }
 
-    return (
+    if (deleted) return <Redirect to="/logout" />
+    else return (
         <>
             <h1><i className="fas fa-download"></i> Export</h1>
             <Row>
