@@ -1,5 +1,5 @@
 import React from 'react';
-import { DisplayBox, InputBox, ApiHelper, UploadHelper, ArrayHelper } from './Components';
+import { DisplayBox, InputBox, ApiHelper, UploadHelper, ArrayHelper, PersonHelper } from './Components';
 import { Row, Col } from 'react-bootstrap';
 import { ImportCampusInterface, ImportServiceInterface, ImportServiceTimeInterface, ImportHelper, ImportPersonInterface, ImportGroupInterface, ImportGroupServiceTimeInterface, ImportGroupMemberInterface, ImportDonationBatchInterface, ImportDonationInterface, ImportFundInterface, ImportFundDonationInterface, ImportSessionInterface, ImportVisitInterface, ImportVisitSessionInterface } from '../Utils/ImportHelper';
 import Papa from 'papaparse';
@@ -43,7 +43,7 @@ export const ExportPage = () => {
     const getExportSteps = () => {
         if (!exporting) return null;
         else {
-            var steps = ['Campuses/Services/Times', 'People', 'Groups', 'Group Members', 'Donations', 'Attendance', 'Compressing'];
+            var steps = ['Campuses/Services/Times', 'People', 'Photos', 'Groups', 'Group Members', 'Donations', 'Attendance', 'Compressing'];
             var stepsHtml: JSX.Element[] = [];
             steps.forEach((s) => stepsHtml.push(getProgress(s)));
             return (
@@ -190,17 +190,31 @@ export const ExportPage = () => {
         return Papa.unparse(data);
     }
 
+
+
+    const getPhotos = (files: { name: string, contents: string | Buffer }[]) => {
+        setProgress('Photos', 'running');
+        var result: Promise<any>[] = [];
+        people.forEach(async (p) => {
+            if (p.photoUpdated !== undefined) result.push(UploadHelper.downloadImageBytes(files, p.id.toString() + '.png', PersonHelper.getPhotoUrl(p)));
+        })
+        Promise.all(result);
+        setProgress('Photos', 'complete');
+    }
+
     const startExport = async () => {
         setExporting(true);
         var files = [];
         files.push({ name: "services.csv", contents: await getCampusServiceTimes() });
         files.push({ name: "people.csv", contents: await getPeople() });
+        getPhotos(files);
         files.push({ name: "groups.csv", contents: await getGroups() });
         files.push({ name: "groupmembers.csv", contents: await getGroupMembers() });
         files.push({ name: "donations.csv", contents: await getDonations() });
         files.push({ name: "attendance.csv", contents: await getAttendance() });
-
+        setProgress('Compressing', 'running');
         UploadHelper.zipFiles(files, "export.zip");
+        setProgress('Compressing', 'complete');
     }
 
     return (

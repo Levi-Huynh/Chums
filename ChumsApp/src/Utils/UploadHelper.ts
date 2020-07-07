@@ -5,14 +5,41 @@ import FileSaver from 'file-saver';
 
 export class UploadHelper {
 
-    static zipFiles(files: { name: string, contents: string }[], zipFileName: string) {
+    static zipFiles(files: { name: string, contents: string | Buffer }[], zipFileName: string) {
         var zip = new AdmZip();
         files.forEach((f) => {
-            zip.addFile(f.name, Buffer.alloc(f.contents.length, f.contents));
+            if (typeof f.contents === "string") zip.addFile(f.name, Buffer.alloc(f.contents.length, f.contents));
+            else zip.addFile(f.name, f.contents as Buffer);
         });
         var buffer = zip.toBuffer();
         var blob = new Blob([buffer], { type: 'applicatoin/zip' });
         FileSaver.saveAs(blob, zipFileName);
+    }
+
+    static downloadImageBytes(files: { name: string, contents: string | Buffer }[], name: string, url: string) {
+        return new Promise<void>((resolve, reject) => {
+            try {
+                var oReq = new XMLHttpRequest();
+                oReq.open("GET", url, true);
+                oReq.responseType = "blob";
+                oReq.onload = async () => {
+                    const blob = new Blob([oReq.response], { type: 'image/png' });
+                    var buffer = this.toBuffer(await blob.arrayBuffer());
+                    files.push({ name: name, contents: buffer });
+                    resolve();
+                };
+                oReq.send();
+            } catch {
+                reject(new DOMException("Could not download image."));
+            }
+        });
+    }
+
+    static toBuffer(ab: ArrayBuffer) {
+        var buffer = new Buffer(ab.byteLength);
+        var view = new Uint8Array(ab);
+        for (var i = 0; i < buffer.length; ++i) buffer[i] = view[i];
+        return buffer;
     }
 
     static async getCsv(files: FileList, fileName: string) {
