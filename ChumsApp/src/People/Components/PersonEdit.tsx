@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { Row, Col, FormControl, FormGroup, FormLabel } from 'react-bootstrap';
 
 interface Props {
+    id?: string,
     updatedFunction: (person: PersonInterface) => void,
     addFormFunction: (formId: number) => void
     togglePhotoEditor: (show: boolean) => void,
@@ -82,7 +83,7 @@ export const PersonEdit: React.FC<Props> = (props) => {
     if (redirect !== '') return <Redirect to={redirect} />
     else {
         return (
-            <InputBox headerIcon="fas fa-user" headerText="Personal Details" cancelFunction={handleCancel} deleteFunction={handleDelete} saveFunction={handleSave} >
+            <InputBox id={props.id} headerIcon="fas fa-user" headerText="Personal Details" cancelFunction={handleCancel} deleteFunction={handleDelete} saveFunction={handleSave} >
                 <Row>
                     <Col xs={3}>{getPhoto()}</Col>
                     <Col xs={9}>

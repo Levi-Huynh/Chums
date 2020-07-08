@@ -2,6 +2,7 @@ import React from 'react';
 import { PersonView, PersonEdit, PersonInterface, UserHelper } from './'
 
 interface Props {
+    id?: string
     person: PersonInterface,
     photoUrl: string,
     togglePhotoEditor: (show: boolean) => void,
@@ -18,6 +19,6 @@ export const Person: React.FC<Props> = (props) => {
 
     React.useEffect(() => setPerson(props.person), [props.person]);
 
-    if (mode === 'display') return <PersonView person={person} editFunction={getEditFunction()} addFormId={addFormId} setAddFormFunction={setAddFormId} photoUrl={props.photoUrl} />
-    else return <PersonEdit person={person} updatedFunction={handleUpdated} addFormFunction={handleAddForm} photoUrl={props.photoUrl} togglePhotoEditor={props.togglePhotoEditor} />
+    if (mode === 'display') return <PersonView id={props.id} person={person} editFunction={getEditFunction()} addFormId={addFormId} setAddFormFunction={setAddFormId} photoUrl={props.photoUrl} />
+    else return <PersonEdit id={props.id} person={person} updatedFunction={handleUpdated} addFormFunction={handleAddForm} photoUrl={props.photoUrl} togglePhotoEditor={props.togglePhotoEditor} />
 }

@@ -21,11 +21,11 @@ export const Notes: React.FC<Props> = (props) => {
     var canEdit = UserHelper.checkAccess('People', 'Edit Notes')
     if (!canEdit) return <DisplayBox headerIcon="far fa-sticky-note" headerText="Notes" >{noteArray}</DisplayBox>
     else return (
-        <InputBox headerIcon="far fa-sticky-note" headerText="Notes" saveFunction={handleSave} saveText="Add Note" >
+        <InputBox id="notesBox" headerIcon="far fa-sticky-note" headerText="Notes" saveFunction={handleSave} saveText="Add Note" >
             {noteArray}<br />
             <div className="form-group">
                 <label>Add a Note</label>
-                <textarea className="form-control" name="contents" onChange={handleChange} value={noteText} />
+                <textarea id="noteText" className="form-control" name="contents" onChange={handleChange} value={noteText} />
             </div>
         </InputBox>
     )

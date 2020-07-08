@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
 
 interface Props {
+    id?: string,
     children?: React.ReactNode,
     headerIcon: string,
     headerText: string,
@@ -25,18 +26,16 @@ export const InputBox: React.FC<Props> = (props) => {
     if (props.saveFunction !== undefined) buttons.push(<Col key="save"><Button variant="success" block onClick={handleSave}>{saveText}</Button></Col>);
 
     return (
-        <form method="post">
-            <div className="inputBox">
-                <div className="header">
-                    <Row>
-                        <Col xs={8}><i className={props.headerIcon}></i> {props.headerText}</Col>
-                        <Col xs={4} style={{ textAlign: 'right' }} >{props.headerActionContent}</Col>
-                    </Row>
-                </div>
-                <div className="content">{props.children}</div>
-                <div className="footer"><Row>{buttons}</Row></div>
+        <div id={props.id} className="inputBox">
+            <div className="header">
+                <Row>
+                    <Col xs={8}><i className={props.headerIcon}></i> {props.headerText}</Col>
+                    <Col xs={4} style={{ textAlign: 'right' }} >{props.headerActionContent}</Col>
+                </Row>
             </div>
-        </form>
+            <div className="content">{props.children}</div>
+            <div className="footer"><Row>{buttons}</Row></div>
+        </div>
     );
 }
 

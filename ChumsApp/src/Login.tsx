@@ -35,10 +35,12 @@ export const Login: React.FC = (props: any) => {
 
     const login = (data: {}) => {
         const requestOptions = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) };
+        console.log('fetching');
         fetch(ApiHelper.baseUrl + '/users/login', requestOptions)
             .then(response => response.json())
             .then(data => {
-                if (data.apiToken === undefined) document.cookie = ''
+                console.log(data);
+                if (data.apiToken === undefined) document.cookie = '';
                 else {
                     ApiHelper.apiKey = data.apiToken;
                     UserHelper.populate(data.mappings).then(d => { ApiHelper.apiKey = data.apiToken; context.setUserName(data.name); });
@@ -58,9 +60,9 @@ export const Login: React.FC = (props: any) => {
                 <ErrorMessages errors={errors} />
                 <div id="loginBox">
                     <h2>Please sign in</h2>
-                    <FormControl name="email" value={email} onChange={e => { e.preventDefault(); setEmail(e.currentTarget.value) }} placeholder="Email address" />
-                    <FormControl name="password" type="password" placeholder="Password" value={password} onChange={e => { e.preventDefault(); setPassword(e.currentTarget.value) }} />
-                    <Button size="lg" variant="primary" block onClick={handleSubmit} >Sign in</Button>
+                    <FormControl id="email" name="email" value={email} onChange={e => { e.preventDefault(); setEmail(e.currentTarget.value) }} placeholder="Email address" />
+                    <FormControl id="password" name="password" type="password" placeholder="Password" value={password} onChange={e => { e.preventDefault(); setPassword(e.currentTarget.value) }} />
+                    <Button id="signInButton" size="lg" variant="primary" block onClick={handleSubmit} >Sign in</Button>
                     <br />
                     <div className="text-right">
                         <a href="/#register">Register</a> &nbsp; | &nbsp;

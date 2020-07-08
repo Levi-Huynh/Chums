@@ -3,6 +3,7 @@ import { PersonHelper, AssociatedForms, PersonInterface } from './'
 import { Row, Col } from 'react-bootstrap';
 
 interface Props {
+    id?: string,
     person: PersonInterface
     editFunction: (e: React.MouseEvent) => void,
     addFormId: number,
@@ -55,7 +56,7 @@ export const PersonView: React.FC<Props> = (props) => {
     }
 
     return (
-        <div className="inputBox">
+        <div id={props.id} className="inputBox">
             <div className="header"><a className="fa-pull-right" onClick={props.editFunction} href="about:blank"><i className="fas fa-pencil-alt"></i></a> <i className="fas fa-user"></i> Personal Details</div>
             <div className="content">
                 <Row>

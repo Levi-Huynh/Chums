@@ -22,8 +22,8 @@ export const PeoplePage = () => {
                 <Col lg={6}>
                     <DisplayBox headerIcon="fas fa-user" headerText="Search" editContent={getEditContent()} >
                         <InputGroup>
-                            <FormControl name="searchText" type="text" placeholder="Name" value={searchText} onChange={handleChange} />
-                            <InputGroup.Append><Button variant="primary" onClick={handleSubmit}>Search</Button></InputGroup.Append>
+                            <FormControl id="searchText" name="searchText" type="text" placeholder="Name" value={searchText} onChange={handleChange} />
+                            <InputGroup.Append><Button id="searchButton" variant="primary" onClick={handleSubmit}>Search</Button></InputGroup.Append>
                         </InputGroup>
                         <br />
                         <PeopleSearchResults people={searchResults} />

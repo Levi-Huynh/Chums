@@ -24,7 +24,7 @@ export const PersonPage = ({ match }: RouteComponentProps<TParams>) => {
     return (
         <Row>
             <Col lg={8}>
-                <Person person={person} photoUrl={photoUrl} togglePhotoEditor={togglePhotoEditor} />
+                <Person id="personDetailsBox" person={person} photoUrl={photoUrl} togglePhotoEditor={togglePhotoEditor} />
                 <Tabs personId={person?.id} />
             </Col>
             <Col lg={4}>
