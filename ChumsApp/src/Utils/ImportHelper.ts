@@ -93,7 +93,7 @@ export class ImportHelper {
     }
 
     static getOrCreateSession(sessions: ImportSessionInterface[], sessionDate: Date, groupKey: string, serviceTimeKey: string) {
-        for (let i = 0; i < sessions.length; i++) if (sessions[i].sessionDate === sessionDate && sessions[i].groupKey === groupKey && sessions[i].serviceTimeKey === serviceTimeKey) return sessions[i];
+        for (let i = 0; i < sessions.length; i++) if (sessions[i].sessionDate.toString() === sessionDate.toString() && sessions[i].groupKey === groupKey && sessions[i].serviceTimeKey === serviceTimeKey) return sessions[i];
         var result = { importKey: (sessions.length + 1).toString(), sessionDate: sessionDate, groupKey: groupKey, serviceTimeKey: serviceTimeKey } as ImportSessionInterface;
         sessions.push(result);
         return result;

@@ -130,7 +130,7 @@ export const ExportPage = () => {
             serviceTimeIds.forEach((serviceTimeId) => {
                 var row = {
                     importKey: g.id,
-                    serviceTimeId: serviceTimeId,
+                    serviceTimeKey: serviceTimeId,
                     category: g.categoryName,
                     name: g.name,
                     trackAttendance: g.trackAttendance
@@ -193,7 +193,7 @@ export const ExportPage = () => {
         var data: any[] = [];
         visitSessions.forEach((vs) => {
             var visit: ImportVisitInterface = ImportHelper.getById(visits, vs.visitId);
-            var session: ImportSessionInterface = ImportHelper.getById(sessions, vs.visitId);
+            var session: ImportSessionInterface = ImportHelper.getById(sessions, vs.sessionId);
             var row = {
                 date: visit.visitDate,
                 serviceTimeKey: session.serviceTimeId,

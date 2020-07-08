@@ -11,8 +11,10 @@ export class Helper {
     }
 
     static formatDate(date: Date, format: string) {
-        var cleanDate = new Date(new Date(date).toISOString().split('T')[0]); //truncate the time
-        return dateFormat(cleanDate, format);
+        try {
+            var cleanDate = new Date(new Date(date).toISOString().split('T')[0]); //truncate the time
+            return dateFormat(cleanDate, format);
+        } catch { return ''; }
     }
 
     static prettyDate(date: Date) {
