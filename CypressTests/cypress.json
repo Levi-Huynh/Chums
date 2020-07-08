@@ -1,0 +1,8 @@
+{
+  "chromeWebSecurity": false,
+  "env": {
+    "url": "https://app.chums.org",
+    "email": "test@test.com",
+    "password": "password"
+  }
+}

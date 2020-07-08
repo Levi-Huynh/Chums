@@ -7,8 +7,11 @@ export const HomeMembers: React.FC = () => {
             <Container>
                 <h2><span>Members</span> and Groups</h2>
                 <Row>
-                    <Col><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam hendrerit ligula sit amet tellus imperdiet, non convallis sapien dignissim. Vivamus sed mollis diam. Suspendisse potenti. Ut faucibus, est quis pellentesque tempus, felis erat sagittis ante, ac bibendum dolor orci vitae mauris. Cras sit amet ante leo. Morbi accumsan elit eget blandit lobortis. Nam varius, quam vel tempus vestibulum, quam nisi malesuada mauris, a viverra ligula risus non nulla. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p></Col>
-                    <Col>Photo</Col>
+                    <Col>
+                        <p>Easily track all of the pertinent information about your members and guests including contact information, birth dates, relationships, and anniversary dates.  Create unlimited custom fields to track information unique to your church such as date 101 class was attended.</p>
+                        <p>You may also create an unlimited amount of groups for classes, at-home small groups, or various ministries.  Keep track of which members are a part of each of these groups to make it easy to send out emails.  You can also track attendance on each of the groups, if you choose and see reports showing how your groups are growing over time.</p>
+                    </Col>
+                    <Col><img src="/images/home/members.png" alt="Members" /></Col>
                 </Row>
             </Container>
         </div >

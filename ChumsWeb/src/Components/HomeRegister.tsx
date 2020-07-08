@@ -66,7 +66,13 @@ export const HomeRegister: React.FC = () => {
                 <Container>
                     <h2><span>Get Started</span> Now</h2>
                     <Row>
-                        <Col md={{ offset: 6 }} >
+                        <Col lg={6}>
+                            <p><b>You own your data.</b></p>
+                            <p>Use our import tool to bring in any existing data you may have, and use our export tool at any time to take your data with you.</p>
+                            <p>If you choose, you may also completely delete all data from Chums any time your wish.</p>
+                            <p>Chums is a completely free service provided to Christian churches and ministries.</p>
+                        </Col>
+                        <Col lg={6} >
                             <InputBox headerIcon="" headerText="Register" saveFunction={handleSave} saveText="Register" >
                                 {getProcessing()}
                                 <ErrorMessages errors={errors} />

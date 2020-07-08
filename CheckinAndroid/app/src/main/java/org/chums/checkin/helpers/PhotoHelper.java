@@ -25,7 +25,7 @@ public class PhotoHelper {
     public static void populateImage(final Activity activity, ImageView imgView, final Person person)
     {
         if (cacheDir=="") init(activity);
-        final String url = "https://chums.org" + person.getPhoto();
+        final String url = CachedData.ContentBaseUrl + person.getPhoto();
 
         class OneShotTask implements Runnable {
             ImageView imgView;
