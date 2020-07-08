@@ -38,9 +38,12 @@ export const Login: React.FC = (props: any) => {
         fetch(ApiHelper.baseUrl + '/users/login', requestOptions)
             .then(response => response.json())
             .then(data => {
-                ApiHelper.apiKey = data.apiToken;
-                UserHelper.populate(data.mappings).then(d => { ApiHelper.apiKey = data.apiToken; context.setUserName(data.name); });
-                document.cookie = "apiKey=" + data.apiToken;
+                if (data.apiToken === undefined) document.cookie = ''
+                else {
+                    ApiHelper.apiKey = data.apiToken;
+                    UserHelper.populate(data.mappings).then(d => { ApiHelper.apiKey = data.apiToken; context.setUserName(data.name); });
+                    document.cookie = "apiKey=" + data.apiToken;
+                }
             })
             .catch(error => document.cookie = '');
     }

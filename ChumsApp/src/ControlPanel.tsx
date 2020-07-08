@@ -8,7 +8,10 @@ import { Logout } from './Logout';
 
 export const ControlPanel = () => {
     const user = React.useContext(UserContext).userName;
-    const getHandler = () => { return (ApiHelper.apiKey === '') ? <Unauthenticated /> : <Authenticated />; }
+    const getHandler = () => {
+        var apiKey = ApiHelper.apiKey;
+        return (ApiHelper.apiKey === '') ? <Unauthenticated /> : <Authenticated />;
+    }
     return (
         <Switch>
             <Route path="/logout"><Logout /></Route>

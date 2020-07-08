@@ -9,7 +9,11 @@ h2 span {color:#24b8ff;}
 #navbar a {color:#FFF;}
 .navbar-brand {padding-top:0px;padding-bottom:0px;}
 .navbar-brand img {height:35px;margin-top:5px;margin-bottom:5px;}
-#userMenu {display: none;}
+#userMenu {min-width:250px;max-width:100%;position:absolute;right:0px;background-color:#666;color:#FFF;top:60px;z-index:9999;}
+#userMenu a, #userMenu .label {display:block;padding-top:7px;padding-bottom:7px;padding-left:20px;color:#FFF;padding-right:10px;}
+#userMenu .label {font-weight:600;color:#DDD;}
+#userMenu a:hover {text-decoration:none;background-color:#777;}
+#userMenu .divider {border-top:1px solid #999;}
 #navSpacer {height:66px;}
 
 .blue{color:#03a9f4;}
