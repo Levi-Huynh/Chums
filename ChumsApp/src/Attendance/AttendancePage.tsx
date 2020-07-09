@@ -44,6 +44,7 @@ export const AttendancePage = () => {
             </tr>);
             lastCampus = a.campus?.name;
             lastService = a.service?.name;
+            lastServiceTime = a.serviceTime?.name;
             lastCategory = a.group?.categoryName;
         }
 

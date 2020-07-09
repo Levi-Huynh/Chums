@@ -172,7 +172,7 @@ export const ImportPage = () => {
     const getAction = () => {
         if (people.length === 0) return (
             <InputBox headerText="Import" headerIcon="fas fa-upload" saveText="Upload and Preview" saveFunction={() => { document.getElementById('fileUpload').click(); }} >
-                Select a files to Upload.  You can download sample files <a href="/importsample.zip">here</a>.
+                Select a files to Upload.  You can download sample files <a href="/sampleimport.zip">here</a>.
                 <input type="file" onChange={handleUpload} id="fileUpload" accept=".zip" style={{ display: 'none' }} />
             </InputBox>
         );

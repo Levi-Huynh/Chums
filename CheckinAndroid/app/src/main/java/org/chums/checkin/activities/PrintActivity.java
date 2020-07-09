@@ -89,7 +89,7 @@ public class PrintActivity extends AppCompatActivity {
 
     private void startProcess()
     {
-        printStatus.setText("Printing...");
+        printStatus.setText("Printing to " + PrintHandHelper.PrinterName);
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override

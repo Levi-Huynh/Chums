@@ -35,6 +35,7 @@ public class PrintHandHelper {
 
     private static IntentAPI intentApi;
     static Boolean rotate=true;
+    public static String PrinterName="";
     public static int PaperWidth=0;
     public static int PaperHeight=0;
     public static int BitmapWidth=0;
@@ -207,10 +208,13 @@ public class PrintHandHelper {
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         try {
-            File tempDir = Environment.getExternalStorageDirectory();
+            //File tempDir = inContext.getCacheDir();
+            File tempDir = inContext.getExternalCacheDir();
+            //File tempDir = Environment.getExternalStorageDirectory();
             tempDir = new File(tempDir.getAbsolutePath() + "/.temp/");
             tempDir.mkdir();
             File tempFile = File.createTempFile("image1", ".jpg", tempDir);
+            //File tempFile = File.createTempFile("image1", ".jpg");
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
             byte[] bitmapData = bytes.toByteArray();
@@ -371,45 +375,51 @@ public class PrintHandHelper {
     {
         try {
             IPrinterInfo printer = intentApi.getCurrentPrinter();
+            if (printer==null) intentApi.setupCurrentPrinter();
+            else {
+
+                PrinterName = printer.getName();
+
+                PaperWidth = printer.getPrinterContext().getPaperWidth();
+                PaperHeight = printer.getPrinterContext().getPaperHeight();
+
+                int xDpi = printer.getPrinterContext().getHResolution();
+                int yDpi = printer.getPrinterContext().getVResolution();
 
 
-
-            PaperWidth = printer.getPrinterContext().getPaperWidth();
-            PaperHeight = printer.getPrinterContext().getPaperHeight();
-
-            int xDpi = printer.getPrinterContext().getHResolution();
-            int yDpi = printer.getPrinterContext().getVResolution();
-
-
-
-            // in dots
+                // in dots
 /*
             BitmapWidth = PaperWidth * xDpi / 72;
             BitmapHeight = PaperHeight * yDpi / 72;
             */
 
-            BitmapWidth = PaperHeight * yDpi / 72;
-            BitmapHeight = PaperWidth * xDpi / 72;
+                BitmapWidth = PaperHeight * yDpi / 72;
+                BitmapHeight = PaperWidth * xDpi / 72;
 
-            List<PrintHandOption> imageOptions = intentApi.getImagesOptions();
-            for (PrintHandOption option : imageOptions)
-            {
-                if (option.getId().equals("size")) option.setValue(option.getValuesList().get(1));
-                else if (option.getId().equals("orientation")) option.setValue(option.getValuesList().get(2));
-                else if (option.getId().equals("margins")) option.setValue(option.getValuesList().get(0));
-                else if (option.getId().equals("align")) option.setValue(option.getValuesList().get(1));
-                else if (option.getId().equals("crop")) option.setValue(option.getValuesList().get(1));
+                List<PrintHandOption> imageOptions = intentApi.getImagesOptions();
+                for (PrintHandOption option : imageOptions) {
+                    if (option.getId().equals("size"))
+                        option.setValue(option.getValuesList().get(1));
+                    else if (option.getId().equals("orientation"))
+                        option.setValue(option.getValuesList().get(2));
+                    else if (option.getId().equals("margins"))
+                        option.setValue(option.getValuesList().get(0));
+                    else if (option.getId().equals("align"))
+                        option.setValue(option.getValuesList().get(1));
+                    else if (option.getId().equals("crop"))
+                        option.setValue(option.getValuesList().get(1));
+                }
+                intentApi.setImagesOptions(imageOptions);
+
+
+                BitmapWidth = 1062;
+                BitmapHeight = (int) ((double) BitmapWidth / 3.5 * 1.1428);
+                //BitmapHeight=350;
+
+                //BitmapHeight=300;
+
+                //rotate=false;
             }
-            intentApi.setImagesOptions(imageOptions);
-
-
-            BitmapWidth=1062;
-            BitmapHeight = (int) ((double)BitmapWidth / 3.5 * 1.1428);
-            //BitmapHeight=350;
-
-            //BitmapHeight=300;
-
-            //rotate=false;
         } catch (Exception ex) {
             int a=0;
 
