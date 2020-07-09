@@ -1,0 +1,10 @@
+
+{
+    "region" : "us-east-2",
+    "configuration" : "Debug",
+    "framework"     : "netcoreapp3.1",
+    "profile"       : "LiveChurchSolutions",
+    "s3-bucket"     : "chums-core-api",
+    "template"      : "serverless.template",
+    "stack-name"    : "ChumsCoreApi",
+    ""              : }
