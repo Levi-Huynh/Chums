@@ -20,7 +20,8 @@ import { Row } from 'react-bootstrap';
 
 export const Authenticated = () => {
 
-    const sidebarToggle = () => {
+    const sidebarToggle = (e: React.MouseEvent) => {
+        e.preventDefault();
         var sidebar = document.getElementById('sidebar');
         if (sidebar.className.indexOf('d-none') > -1) {
             sidebar.className = sidebar.className.replace('d-none', '').trim();
@@ -35,10 +36,10 @@ export const Authenticated = () => {
             <link rel="stylesheet" href="/css/cp.css" />
             <Header></Header>
             <div className="container-fluid">
-                <a href="about:blank" onClick={sidebarToggle} className="d-md-none" id="sidebarToggle"><i className="fas fa-bars"></i></a>
+                <a href="about:blank" onClick={sidebarToggle} className="d-xl-none" id="sidebarToggle"><i className="fas fa-bars"></i></a>
                 <Row>
                     <Sidebar />
-                    <main role="main" className="col-sm-12 ml-sm-auto col-md-10 pt-3">
+                    <main role="main" className="col-sm-12 ml-sm-auto col-xl-10 pt-3">
                         <Switch>
                             <Route path="/login"  ><Redirect to="/people" /></Route>
                             <Route path="/people/:id" component={PersonPage}></Route>

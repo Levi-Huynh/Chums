@@ -26,7 +26,7 @@ export const Sidebar = () => {
     }
 
     return (
-        <nav className="col-sm-3 col-md-2 d-none d-md-block bg-dark sidebar" id="sidebar">
+        <nav className="col-sm-6 col-xl-2 d-none d-xl-block bg-dark sidebar" id="sidebar">
             <ul className="nav flex-column">
                 {getTabs()}
             </ul>
