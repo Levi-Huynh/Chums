@@ -1,5 +1,6 @@
 import React from 'react';
 import { InputBox, QuestionEdit, ApiHelper, FormSubmissionInterface } from "./";
+import { AnswerInterface, QuestionInterface } from '../Utils';
 
 interface Props {
     addFormId: number,
@@ -30,34 +31,40 @@ export const FormSubmissionEdit: React.FC<Props> = (props) => {
                     formId: props.addFormId, contentType: props.contentType, contentId: props.contentId, answers: []
                 };
                 fs.questions = data;
+                fs.answers = [];
+                fs.questions.forEach((q) => {
+                    var answer: AnswerInterface = { formSubmissionId: fs.id, questionId: q.id };
+                    answer.value = getDefaultValue(q);
+                    fs.answers.push(answer);
+                });
                 setFormSubmission(fs);
             });
         }
     }
 
-    const handleSave = () => {
-        //*** This method ultimately triggers the following warning and I'm not sure why:
-        /*
-            index.js:1 Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
-            in FormSubmission (at AssociatedForms.tsx:33)
-            in div (at AssociatedForms.tsx:33)
-            in div (at AssociatedForms.tsx:32)
-            in div (at AssociatedForms.tsx:26)
-            in div (at AssociatedForms.tsx:46)
-         */
+    const getDefaultValue = (q: QuestionInterface) => {
+        var result = q.placeholder;
+        if (q.fieldType === "Yes/No") result = "False";
+        else if (q.fieldType === "Multiple Choice") {
+            if (q.choices !== undefined && q.choices !== null && q.choices.length > 0) result = q.choices[0].value;
+        }
+        return result;
+    }
 
+    const handleSave = () => {
         const fs = formSubmission;
         ApiHelper.apiPost('/formsubmissions/', [fs])
             .then(data => {
                 fs.id = data[0];
-                setFormSubmission(fs);
+                //var addedFormId = (fs.formSubmissionId===0) ? props.addFormId
+                //setFormSubmission(fs);
                 props.updatedFunction(fs.formId);
             });
     }
 
     const handleChange = (questionId: number, value: string) => {
         var fs = formSubmission;
-        var answer = null;
+        var answer: AnswerInterface = null;
         for (var i = 0; i < fs.answers.length; i++) if (fs.answers[i].questionId === questionId) answer = fs.answers[i];
         if (answer !== null) answer.value = value;
         else {

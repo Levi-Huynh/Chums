@@ -1,4 +1,4 @@
-export interface AnswerInterface { id?: number, value?: string }
+export interface AnswerInterface { id?: number, value?: string, questionId?: number, formSubmissionId?: number }
 export interface AttendanceInterface { campus: CampusInterface, service: ServiceInterface, serviceTime: ServiceTimeInterface, group: GroupInterface }
 export interface AttendanceRecordInterface { group: GroupInterface, serviceTime: ServiceTimeInterface, service: ServiceInterface, campus: CampusInterface, week: number, count: number, visitDate: Date }
 export interface CampusInterface { id?: number, name?: string }

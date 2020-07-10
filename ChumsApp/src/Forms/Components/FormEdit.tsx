@@ -44,7 +44,7 @@ export const FormEdit: React.FC<Props> = (props) => {
             </div>
             <div className="form-group">
                 <label>Associate With</label>
-                <select className="form-control" value={form.contentType} onChange={handleChange}>
+                <select name="contentType" className="form-control" value={form.contentType} onChange={handleChange}>
                     <option>Independent Form</option>
                     <option value="person">People</option>
                     <option value="group">Groups</option>

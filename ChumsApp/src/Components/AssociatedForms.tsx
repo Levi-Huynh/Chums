@@ -15,7 +15,7 @@ export const AssociatedForms: React.FC<Props> = (props) => {
     const [editFormSubmissionId, setEditFormSubmissionId] = React.useState(0);
 
     const handleEdit = (formSubmissionId: number) => { setMode('edit'); setEditFormSubmissionId(formSubmissionId); }
-    const handleUpdate = (formId: number) => { setMode('display'); props.setAddFormFunction(formId); }
+    const handleUpdate = (formId: number) => { setMode('display'); props.setAddFormFunction(0); }
     const getCards = () => {
         var cards = [];
         if (props.formSubmissions !== undefined) {

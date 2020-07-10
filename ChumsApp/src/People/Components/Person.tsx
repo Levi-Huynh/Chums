@@ -17,8 +17,8 @@ export const Person: React.FC<Props> = (props) => {
     const handleAddForm = (formId: number) => { setMode('display'); setAddFormId(formId); }
     const handleUpdated = (p: PersonInterface) => { setMode('display'); props.updatedFunction(p); }
     const getEditFunction = () => { return (UserHelper.checkAccess('People', 'Edit')) ? handleEdit : null; }
+    const handleFormAdded = (id: number) => { setAddFormId(id); props.updatedFunction(props.person); }
 
-
-    if (mode === 'display') return <PersonView id={props.id} person={props.person} editFunction={getEditFunction()} addFormId={addFormId} setAddFormFunction={setAddFormId} photoUrl={props.photoUrl} />
+    if (mode === 'display') return <PersonView id={props.id} person={props.person} editFunction={getEditFunction()} addFormId={addFormId} setAddFormFunction={handleFormAdded} photoUrl={props.photoUrl} />
     else return <PersonEdit id={props.id} person={props.person} updatedFunction={handleUpdated} addFormFunction={handleAddForm} photoUrl={props.photoUrl} togglePhotoEditor={props.togglePhotoEditor} />
 }
