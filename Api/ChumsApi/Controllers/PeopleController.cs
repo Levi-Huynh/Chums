@@ -64,14 +64,16 @@ namespace ChumsApiCore.Controllers
 
         [Route("Photos")]
         [HttpPost]
-        public string PostPhoto([FromBody] List<Models.Photo> photos)
+        public string[] PostPhoto([FromBody] List<Models.Photo> photos)
         {
             Helpers.AuthenticatedUser au = Helpers.AuthenticatedUsers.RequireAccess(HttpContext, "People", "Edit");
+            List<string> result = new List<string>();
             foreach (Models.Photo photo in photos)
             {
                 if (photo.Url.StartsWith("data:image/png;base64,")) SavePhoto(ChurchLib.Person.Load(photo.Id, au.ChurchId), photo.Url);
+                result.Add($"/content/c/{au.ChurchId}/p/{photo.Id}.png?dt={DateTime.UtcNow.ToString("yyyyMMddHHmmss")}");
             }
-            return "{}";
+            return result.ToArray();
         }
 
         private void SavePhoto(ChurchLib.Person p, string url)

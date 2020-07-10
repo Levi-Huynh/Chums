@@ -41,7 +41,7 @@ export const ImageEditor: React.FC<Props> = (props) => {
 
     const cropCallback = () => {
         if (cropper.current !== null) {
-            var url = cropper.current.getCroppedCanvas().toDataURL();
+            var url = cropper.current.getCroppedCanvas({ width: 400, height: 300 }).toDataURL();
             setDataUrl(url);
             props.updatedFunction(url);
         }
@@ -57,7 +57,10 @@ export const ImageEditor: React.FC<Props> = (props) => {
 
     const handleSave = () => {
         var photos = [{ id: props.person.id, url: dataUrl }];
-        ApiHelper.apiPost('/people/photos', photos).then(() => props.doneFunction());
+        ApiHelper.apiPost('/people/photos', photos).then((d) => {
+            props.updatedFunction('https://app.chums.org' + d[0]);
+            props.doneFunction();
+        });
     }
     const handleCancel = () => { props.updatedFunction(originalUrl); props.doneFunction(); }
     const handleDelete = () => { ApiHelper.apiDelete('/people/photos/' + props.person.id).then(() => props.doneFunction()); props.updatedFunction('/images/sample-profile.png'); }

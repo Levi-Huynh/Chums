@@ -6,7 +6,7 @@
     "AspNetCoreFunction": {
       "Type": "AWS::Serverless::Function",
       "Properties": {
-        "Handler": "ChumsApiCore::ChumsApiCore.LambdaEntryPoint::FunctionHandlerAsync",
+        "Handler": "ChumsApi::ChumsApi.LambdaEntryPoint::FunctionHandlerAsync",
         "Runtime": "dotnetcore3.1",
         "CodeUri": "",
         "MemorySize": 256,

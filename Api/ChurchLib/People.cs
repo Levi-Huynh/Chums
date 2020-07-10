@@ -17,7 +17,7 @@ namespace ChurchLib
             parameters.Add(new MySqlParameter("@ChurchId", churchId));
             parameters.Add(new MySqlParameter("@StartDate", startDate));
             parameters.Add(new MySqlParameter("@EndDate", endDate));
-            string sql = "SELECT p.Id, p.FirstName, p.MiddleName, p.LastName, p.NickName, p.PhotoUpdated"
+            string sql = "SELECT p.Id, p.ChurchId, p.FirstName, p.MiddleName, p.LastName, p.NickName, p.PhotoUpdated"
                 + " FROM VisitSessions vs"
                 + " INNER JOIN Visits v on v.Id = vs.VisitId"
                 + " INNER JOIN Sessions s on s.Id = vs.SessionId"

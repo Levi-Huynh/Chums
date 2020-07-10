@@ -55,7 +55,7 @@ export const PersonEdit: React.FC<Props> = (props) => {
     }
 
     const handleSave = () => {
-        console.log([person]);
+        var personCopy = [person];
         ApiHelper.apiPost('/people/', [person])
             .then(data => {
                 var p = { ...person };
@@ -79,6 +79,13 @@ export const PersonEdit: React.FC<Props> = (props) => {
     const getAddForm = () => { return (UserHelper.checkAccess('Forms', 'Edit')) ? (<AddForm person={person} addFormFunction={props.addFormFunction} />) : null; }
 
     React.useEffect(() => setPerson(props.person), [props.person]);
+    React.useEffect(() => {
+        if (props.photoUrl !== null) {
+            var p: PersonInterface = { ...person };
+            p.photoUpdated = new Date();
+            setPerson(p);
+        }
+    }, [props.photoUrl]);
 
     if (redirect !== '') return <Redirect to={redirect} />
     else {

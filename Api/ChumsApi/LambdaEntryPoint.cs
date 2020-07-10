@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace ChumsApiCore
+namespace ChumsApi
 {
     /// <summary>
     /// This class extends from APIGatewayProxyFunction which contains the method FunctionHandlerAsync which is the 
@@ -35,7 +35,7 @@ namespace ChumsApiCore
         protected override void Init(IWebHostBuilder builder)
         {
             builder
-                .UseStartup<Startup>();
+                .UseStartup<ChumsApiCore.Startup>();
         }
 
         /// <summary>
