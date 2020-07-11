@@ -37,8 +37,8 @@ export const PersonAdd: React.FC<Props> = (props) => {
     return (
         <>
             <InputGroup>
-                <FormControl value={searchText} onChange={handleChange} />
-                <div className="input-group-append"><Button variant="primary" onClick={handleSearch} ><i className="fas fa-search"></i> Search</Button></div>
+                <FormControl id="personAddText" value={searchText} onChange={handleChange} />
+                <div className="input-group-append"><Button id="personAddButton" variant="primary" onClick={handleSearch} ><i className="fas fa-search"></i> Search</Button></div>
             </InputGroup>
             <Table size="sm" id="householdMemberAddTable"><tbody>{rows}</tbody></Table>
         </>

@@ -33,7 +33,7 @@ export const Household: React.FC<Props> = (props) => {
             }
         }
         return (
-            <DisplayBox headerIcon="fas fa-users" headerText={(household?.name || '') + " Household"} editFunction={getEditFunction()} >
+            <DisplayBox id="householdBox" headerIcon="fas fa-users" headerText={(household?.name || '') + " Household"} editFunction={getEditFunction()} >
                 <Table size="sm" id="household"><tbody>{rows}</tbody></Table>
             </DisplayBox>
         );

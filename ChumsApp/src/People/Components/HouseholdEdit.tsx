@@ -72,10 +72,10 @@ export const HouseholdEdit: React.FC<Props> = (props) => {
 
     var personAdd = (showAdd) ? <PersonAdd addFunction={handlePersonAdd} /> : null;
     return (
-        <InputBox headerIcon="fas fa-users" headerText={household.name + " Household"} saveFunction={handleSave} cancelFunction={handleCancel} >
+        <InputBox id="householdBox" headerIcon="fas fa-users" headerText={household.name + " Household"} saveFunction={handleSave} cancelFunction={handleCancel} >
             <div className="form-group">
                 <label>Household Name</label>
-                <input type="text" className="form-control" value={household.name} onChange={handleChange} />
+                <input name="householdName" type="text" className="form-control" value={household.name} onChange={handleChange} />
             </div>
             <Table size="sm" id="householdMemberTable">
                 <tbody>

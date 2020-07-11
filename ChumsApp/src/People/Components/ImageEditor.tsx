@@ -73,7 +73,7 @@ export const ImageEditor: React.FC<Props> = (props) => {
     React.useEffect(() => init(), [props.person]);
 
     return (
-        <InputBox headerIcon="" headerText="Crop" saveFunction={handleSave} saveText={"Update"} cancelFunction={handleCancel} deleteFunction={handleDelete} headerActionContent={getHeaderButton()}  >
+        <InputBox id="cropperBox" headerIcon="" headerText="Crop" saveFunction={handleSave} saveText={"Update"} cancelFunction={handleCancel} deleteFunction={handleDelete} headerActionContent={getHeaderButton()}  >
             <Cropper
                 ref={cropper}
                 src={currentUrl}
