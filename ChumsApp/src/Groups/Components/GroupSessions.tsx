@@ -98,6 +98,6 @@ export const GroupSessions: React.FC<Props> = (props) => {
         </Table>
     </>);
 
-    return (<DisplayBox headerText="Sessions" headerIcon="far fa-calendar-alt" editContent={getHeaderSection()} >{content}</DisplayBox>);
+    return (<DisplayBox id="groupSessionsBox" headerText="Sessions" headerIcon="far fa-calendar-alt" editContent={getHeaderSection()} >{content}</DisplayBox>);
 }
 

@@ -30,7 +30,7 @@ export const GroupPage = ({ match }: RouteComponentProps<TParams>) => {
     const getSidebarModules = () => {
         const result = [] as JSX.Element[];
         if (addSessionVisible) result.push(<SessionAdd group={group} updatedFunction={handleSessionAdd} />);
-        if (addPersonVisible) result.push(<DisplayBox headerIcon="fas fa-user" headerText="Add Person"><PersonAdd addFunction={addPerson} /></DisplayBox>);
+        if (addPersonVisible) result.push(<DisplayBox id="personAddBox" headerIcon="fas fa-user" headerText="Add Person"><PersonAdd addFunction={addPerson} /></DisplayBox>);
         if (addMemberVisible) result.push(<MembersAdd group={group} addFunction={addPerson} />);
         return result;
     }
@@ -40,6 +40,11 @@ export const GroupPage = ({ match }: RouteComponentProps<TParams>) => {
         setAddedSession(null);
     }
 
+    const handleGroupUpdated = (g: GroupInterface) => {
+        setGroup(g);
+        loadData();
+    }
+
 
     if (!UserHelper.checkAccess('Groups', 'View')) return (<></>);
     else return (
@@ -47,7 +52,7 @@ export const GroupPage = ({ match }: RouteComponentProps<TParams>) => {
             <h1><i className="fas fa-list"></i> {group.name}</h1>
             <Row>
                 <Col lg={8}>
-                    <GroupDetails group={group} />
+                    <GroupDetails group={group} updatedFunction={handleGroupUpdated} />
                     <Tabs group={group} addedPerson={addedPerson} addedSession={addedSession} addedCallback={handleAddedCallback} sidebarVisibilityFunction={handleSidebarVisibility} />
                 </Col>
                 <Col lg={4}>{getSidebarModules()}</Col>

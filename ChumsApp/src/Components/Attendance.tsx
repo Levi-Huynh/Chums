@@ -82,9 +82,9 @@ export const Attendance: React.FC<Props> = (props) => {
     React.useEffect(loadData, [filter]);
     React.useEffect(() => { setFilter(props.filter) }, [props.filter]);
 
-    if (records.length === 0) return (<DisplayBox headerIcon="far fa-calendar-alt" headerText="Attendance History" ><p>No records found.</p></DisplayBox>);
+    if (records.length === 0) return (<DisplayBox id="attendanceBox" headerIcon="far fa-calendar-alt" headerText="Attendance History" ><p>No records found.</p></DisplayBox>);
     else return (
-        <DisplayBox headerIcon="far fa-calendar-alt" headerText="Attendance History" >
+        <DisplayBox id="attendanceBox" headerIcon="far fa-calendar-alt" headerText="Attendance History" >
             <Row>
                 <Col lg={{ span: 6, offset: 6 }}>
                     <FormGroup>

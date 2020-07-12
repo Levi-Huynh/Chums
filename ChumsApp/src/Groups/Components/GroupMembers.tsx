@@ -66,7 +66,7 @@ export const GroupMembers: React.FC<Props> = (props) => {
     React.useEffect(() => { if (props.addedPerson?.id !== undefined) handleAdd() }, [props.addedPerson]);
 
     return (
-        <DisplayBox headerText="Group Members" headerIcon="fas fa-users" editContent={getEditContent()} >
+        <DisplayBox id="groupMembersBox" headerText="Group Members" headerIcon="fas fa-users" editContent={getEditContent()} >
             <Table id="groupMemberTable">
                 <thead><tr><th></th><th>Name</th><th>Action</th></tr></thead>
                 <tbody>{getRows()}</tbody>
