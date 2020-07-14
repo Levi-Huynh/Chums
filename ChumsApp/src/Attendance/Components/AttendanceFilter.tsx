@@ -40,8 +40,13 @@ export const AttendanceFilter: React.FC<Props> = (props) => {
         switch (e.currentTarget.name) {
             case 'week':
                 f.startDate = new Date(e.currentTarget.value);
-                f.endDate = new Date(e.currentTarget.value)
-                f.endDate.setDate(f.endDate.getDate() + 7);
+                if (isNaN(f.startDate.getTime())) {
+                    f.startDate = null;
+                    f.endDate = null;
+                } else {
+                    f.endDate = new Date(e.currentTarget.value)
+                    f.endDate.setDate(f.endDate.getDate() + 7);
+                }
                 break;
             case 'campus': f.campusId = parseInt(e.currentTarget.value); break;
             case 'service': f.serviceId = parseInt(e.currentTarget.value); break;
@@ -94,7 +99,7 @@ export const AttendanceFilter: React.FC<Props> = (props) => {
     React.useEffect(loadGroups, [filter.serviceTimeId, filter.categoryName]);
 
     return (
-        <InputBox saveFunction={handleUpdate} headerText="Attendance Filter" headerIcon="fas fa-filter" saveText="Filter" >
+        <InputBox id="attendanceFilterBox" saveFunction={handleUpdate} headerText="Attendance Filter" headerIcon="fas fa-filter" saveText="Filter" >
             <Row>
                 <Col>
                     <FormGroup>

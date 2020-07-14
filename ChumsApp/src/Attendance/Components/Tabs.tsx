@@ -25,5 +25,5 @@ export const Tabs: React.FC<Props> = (props) => {
         default: currentTab = <div>Not implemented</div>; break;
     }
 
-    return (<><ul className="nav nav-tabs">{tabs}</ul>{currentTab}</>);
+    return (<><ul id="attendanceTabs" className="nav nav-tabs">{tabs}</ul>{currentTab}</>);
 }

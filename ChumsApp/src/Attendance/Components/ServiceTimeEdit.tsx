@@ -53,7 +53,7 @@ export const ServiceTimeEdit: React.FC<Props> = (props) => {
     if (serviceTime === null || serviceTime.id === undefined) return null;
 
     return (
-        <InputBox cancelFunction={props.updatedFunction} saveFunction={handleSave} deleteFunction={handleDelete} headerText={serviceTime.name} headerIcon="far fa-clock" >
+        <InputBox id="serviceTimeBox" cancelFunction={props.updatedFunction} saveFunction={handleSave} deleteFunction={handleDelete} headerText={serviceTime.name} headerIcon="far fa-clock" >
             <ErrorMessages errors={errors} />
             <div className="form-group">
                 <label>Service</label>

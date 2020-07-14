@@ -51,7 +51,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
     if (service === null || service.id === undefined) return null;
 
     return (
-        <InputBox cancelFunction={props.updatedFunction} saveFunction={handleSave} deleteFunction={handleDelete} headerText={service.name} headerIcon="far fa-calendar-alt" >
+        <InputBox id="serviceBox" cancelFunction={props.updatedFunction} saveFunction={handleSave} deleteFunction={handleDelete} headerText={service.name} headerIcon="far fa-calendar-alt" >
             <ErrorMessages errors={errors} />
             <div className="form-group">
                 <label>Campus</label>

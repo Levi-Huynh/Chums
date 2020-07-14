@@ -74,7 +74,7 @@ export const AttendancePage = () => {
             <h1><i className="far fa-calendar-alt"></i> Attendance</h1>
             <Row>
                 <Col lg={8}>
-                    <DisplayBox headerIcon="fas fa-list" headerText="Groups" editContent={getEditLinks()} >
+                    <DisplayBox id="groupsBox" headerIcon="fas fa-list" headerText="Groups" editContent={getEditLinks()} >
                         <Table size="sm">
                             <thead><tr><th>Campus</th><th>Service</th><th>Time</th><th>Category</th><th>Group</th></tr></thead>
                             <tbody>{getRows()}</tbody>

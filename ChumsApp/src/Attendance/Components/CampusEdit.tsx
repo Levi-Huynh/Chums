@@ -29,11 +29,11 @@ export const CampusEdit: React.FC<Props> = (props) => {
     if (campus === null || campus.id === undefined) return null;
 
     return (
-        <InputBox cancelFunction={props.updatedFunction} saveFunction={handleSave} deleteFunction={handleDelete} headerText={campus.name} headerIcon="fas fa-church" >
+        <InputBox id="campusBox" cancelFunction={props.updatedFunction} saveFunction={handleSave} deleteFunction={handleDelete} headerText={campus.name} headerIcon="fas fa-church" >
             <ErrorMessages errors={errors} />
             <div className="form-group">
                 <label>Campus Name</label>
-                <input type="text" className="form-control" value={campus?.name || ''} onChange={handleChange} />
+                <input id="campusName" type="text" className="form-control" value={campus?.name || ''} onChange={handleChange} />
             </div>
         </InputBox>
     );

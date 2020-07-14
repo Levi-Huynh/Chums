@@ -26,7 +26,7 @@ export const Individuals: React.FC<Props> = (props) => {
     React.useEffect(loadData, [props.filter]);
 
     return (
-        <DisplayBox headerIcon="fas fa-user" headerText="People" editContent={getEditContent()} >
+        <DisplayBox id="individualAttendanceBox" headerIcon="fas fa-user" headerText="People" editContent={getEditContent()} >
             <p className="text-right">Total Attendance: {people.length}</p>
             <Table size="sm" id="peopleTable">
                 <thead><tr><th></th><th>Name</th></tr></thead>
