@@ -40,7 +40,7 @@ export const Funds: React.FC = () => {
     React.useEffect(() => { loadData(); }, []);
 
     if (editFund === null) return (
-        <DisplayBox headerIcon="fas fa-hand-holding-usd" headerText="Funds" editContent={getEditSection()} >
+        <DisplayBox id="fundsBox" headerIcon="fas fa-hand-holding-usd" headerText="Funds" editContent={getEditSection()} >
             <Table size="sm">{getRows()}</Table >
         </DisplayBox >
     );

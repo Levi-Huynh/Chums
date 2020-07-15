@@ -50,7 +50,7 @@ export const DonationChart: React.FC<Props> = (props) => {
     React.useEffect(loadData, [props.startDate, props.endDate]);
 
     return (
-        <DisplayBox headerIcon="fas fa-hand-holding-usd" headerText="Donation History" >
+        <DisplayBox id="donationChartBox" headerIcon="fas fa-hand-holding-usd" headerText="Donation History" >
             <Chart
                 chartType="ColumnChart"
                 data={getChartRows()}

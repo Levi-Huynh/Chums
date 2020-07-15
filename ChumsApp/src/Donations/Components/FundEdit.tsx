@@ -24,10 +24,10 @@ export const FundEdit: React.FC<Props> = (props) => {
 
 
     return (
-        <InputBox headerIcon="fas fa-hand-holding-usd" headerText="Edit Fund" cancelFunction={handleCancel} saveFunction={handleSave} deleteFunction={(fund.id === 0) ? undefined : handleDelete} >
+        <InputBox id="fundsBox" headerIcon="fas fa-hand-holding-usd" headerText="Edit Fund" cancelFunction={handleCancel} saveFunction={handleSave} deleteFunction={(fund.id === 0) ? undefined : handleDelete} >
             <div className="form-group">
                 <label>Name</label>
-                <input type="text" className="form-control" value={fund.name} onChange={handleChange} />
+                <input name="fundName" type="text" className="form-control" value={fund.name} onChange={handleChange} />
             </div>
         </InputBox >
 

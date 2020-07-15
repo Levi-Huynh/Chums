@@ -10,6 +10,7 @@ export const DonationFilter: React.FC<Props> = (props) => {
     const handleFilter = () => { props.updateFunction(startDate, endDate) }
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         var date = new Date(e.currentTarget.value);
+        if (isNaN(date.getTime())) date = null;
         switch (e.currentTarget.name) {
             case 'startDate': setStartDate(date); break;
             case 'endDate': setEndDate(date); break;

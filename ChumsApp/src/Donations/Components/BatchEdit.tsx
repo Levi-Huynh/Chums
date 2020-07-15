@@ -20,7 +20,10 @@ export const BatchEdit: React.FC<Props> = (props) => {
         var b = { ...batch } as DonationBatchInterface;
         switch (e.currentTarget.name) {
             case 'name': b.name = e.currentTarget.value; break;
-            case 'date': b.batchDate = new Date(e.currentTarget.value); break;
+            case 'date':
+                b.batchDate = new Date(e.currentTarget.value);
+                if (isNaN(b.batchDate.getTime())) b.batchDate = null;
+                break;
         }
         setBatch(b);
     }
@@ -33,7 +36,7 @@ export const BatchEdit: React.FC<Props> = (props) => {
     React.useEffect(loadData, [props.batchId]);
 
     return (
-        <InputBox headerIcon="fas fa-hand-holding-usd" headerText="Edit Batch" cancelFunction={handleCancel} deleteFunction={getDeleteFunction()} saveFunction={handleSave} >
+        <InputBox id="batchBox" headerIcon="fas fa-hand-holding-usd" headerText="Edit Batch" cancelFunction={handleCancel} deleteFunction={getDeleteFunction()} saveFunction={handleSave} >
             <div className="form-group">
                 <label>Name (optional)</label>
                 <input type="text" className="form-control" name='name' value={batch.name} onChange={handleChange} />

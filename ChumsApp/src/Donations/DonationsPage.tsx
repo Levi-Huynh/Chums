@@ -62,7 +62,7 @@ export const DonationsPage = () => {
             <Row>
                 <Col lg={8}>
                     <DonationChart startDate={startDate} endDate={endDate} />
-                    <DisplayBox headerIcon="fas fa-hand-holding-usd" headerText="Batches" editContent={getEditContent()}  >
+                    <DisplayBox id="batchesBox" headerIcon="fas fa-hand-holding-usd" headerText="Batches" editContent={getEditContent()}  >
                         <Table>
                             <tbody>
                                 <tr><th>Id</th><th>Name</th><th>Date</th><th>Donations</th><th>Total</th><th>Edit</th></tr>

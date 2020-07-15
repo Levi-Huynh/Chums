@@ -78,11 +78,11 @@ namespace ChumsApiCore.Controllers
         public void Delete(int id)
         {
             Helpers.AuthenticatedUser au = Helpers.AuthenticatedUsers.RequireAccess(HttpContext, "Donations", "Edit");
-            ChurchLib.Donation.Delete(id, au.ChurchId);
             foreach (ChurchLib.FundDonation fd in ChurchLib.FundDonations.LoadByDonationId(id, au.ChurchId))
             {
                 if (fd.ChurchId == au.ChurchId) ChurchLib.FundDonation.Delete(fd.Id, au.ChurchId);
             }
+            ChurchLib.Donation.Delete(id, au.ChurchId);
         }
 
         private ChurchLib.Donation ConvertToDb(Models.Donation d, Helpers.AuthenticatedUser au)

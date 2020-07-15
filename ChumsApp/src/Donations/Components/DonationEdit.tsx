@@ -25,7 +25,7 @@ export const DonationEdit: React.FC<Props> = (props) => {
     }
 
     const handleCancel = () => { props.updatedFunction(); }
-    const handleDelete = () => { props.updatedFunction(); }
+    const handleDelete = () => { ApiHelper.apiDelete('/donations/' + donation.id).then(() => { props.updatedFunction() }); }
     const getDeleteFunction = () => { return (props.donationId > 0) ? handleDelete : undefined; }
 
     const handleSave = () => {
@@ -108,7 +108,7 @@ export const DonationEdit: React.FC<Props> = (props) => {
     React.useEffect(loadData, [props.donationId]);
 
     return (
-        <InputBox headerIcon="fas fa-hand-holding-usd" headerText="Edit Donation" cancelFunction={handleCancel} deleteFunction={getDeleteFunction()} saveFunction={handleSave} >
+        <InputBox id="donationBox" headerIcon="fas fa-hand-holding-usd" headerText="Edit Donation" cancelFunction={handleCancel} deleteFunction={getDeleteFunction()} saveFunction={handleSave} >
             <div className="form-group">
                 <label>Person</label>
                 {getPersonSection()}

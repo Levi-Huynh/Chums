@@ -38,7 +38,7 @@ export const Donations: React.FC<Props> = (props) => {
     React.useEffect(() => { if (props.batch?.id > 0) loadData() }, [props.batch]);
 
     return (
-        <DisplayBox headerIcon="fas fa-hand-holding-usd" headerText="Donations" editContent={getEditContent()} >
+        <DisplayBox id="donationsBox" headerIcon="fas fa-hand-holding-usd" headerText="Donations" editContent={getEditContent()} >
             <Table>
                 <tbody>
                     <tr><th>Id</th><th>Name</th><th>Date</th><th>Amount</th></tr>
