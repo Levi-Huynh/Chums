@@ -45,11 +45,11 @@ export const FormQuestionEdit: React.FC<Props> = (props) => {
         </div>);
     }
 
-    React.useEffect(loadData, [props.questionId]);
+    React.useEffect(loadData, [props.questionId | props.formId]);
 
 
     return (
-        <InputBox headerIcon="fas fa-question" headerText="Edit Question" saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={(props.questionId > 0) ? handleDelete : undefined} >
+        <InputBox id="questionBox" headerIcon="fas fa-question" headerText="Edit Question" saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={(props.questionId > 0) ? handleDelete : undefined} >
             <div className="form-group">
                 <label>Question Type</label>
                 <select className="form-control" name="fieldType" value={question.fieldType} onChange={handleChange}>

@@ -46,8 +46,8 @@ export const AddForm: React.FC<Props> = (props) => {
                 <Row>
                     <Col lg={6}>
                         <InputGroup size="sm">
-                            <FormControl as="select" size="sm" onChange={handleChange} >{options}</FormControl>
-                            <InputGroup.Append><Button variant="success" size="sm" onClick={handleAdd}>Add</Button></InputGroup.Append>
+                            <FormControl id="addFormName" as="select" size="sm" onChange={handleChange} >{options}</FormControl>
+                            <InputGroup.Append><Button id="addFormButton" variant="success" size="sm" onClick={handleAdd}>Add</Button></InputGroup.Append>
                         </InputGroup>
                     </Col>
                 </Row>

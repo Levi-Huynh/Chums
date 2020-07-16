@@ -1,38 +1,12 @@
-context('People Functionality', () => {
+context('Attendance', () => {
     Cypress.Cookies.defaults({ whitelist: ['.AspNetCore.Session', '.AspNetCore.Cookies'] })
-    logIntoApp();
-    selectAttendance();
+    it('Log into app', () => { cy.login() });
+    it('Load attendance tab', () => { cy.loadTab('attendanceTab', 'groupsBox'); });
     editCampus();
     editService();
     editServiceTime();
     attendanceChart();
 });
-
-function logIntoApp() {
-    it('Log Into App', () => {
-        cy.visit('/');
-        cy.get('#email').type(Cypress.env('email'));
-        cy.get('#password').type(Cypress.env('password'));
-        cy.get('#signInButton').click();
-        cy.wait(1500);
-        cy.get('body').should('contain', 'Search');
-    });
-    'groupsTab'
-}
-
-function selectAttendance() {
-    it('Open sidebar', () => { cy.get('#sidebarToggle').should('exist').click(); });
-    it('Load attendance tab', () => { cy.get('#attendanceTab').should('exist').click(); });
-    it('Close sidebar', () => {
-        cy.get('#sidebarToggle').should('exist').click();
-        cy.get('#attendanceTab').should('not.be.visible')
-    });
-    it('Attendance is shown', () => {
-        cy.wait(1000);
-        cy.get('#groupsBox').should('exist');
-    });
-
-}
 
 function editCampus() {
     it('Edit Campus', () => {

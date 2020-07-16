@@ -77,7 +77,7 @@ export const FormPage = ({ match }: RouteComponentProps<TParams>) => {
             <h1><i className="fas fa-align-left"></i> {form.name}</h1>
             <Row>
                 <Col lg={8}>
-                    <DisplayBox headerText="Questions" headerIcon="fas fa-question" editContent={getEditContent()} >
+                    <DisplayBox id="questionsBox" headerText="Questions" headerIcon="fas fa-question" editContent={getEditContent()} >
                         <Table>
                             <thead><tr><th>Question</th><th>Type</th><th>Action</th></tr></thead>
                             <tbody>{getRows()}</tbody>

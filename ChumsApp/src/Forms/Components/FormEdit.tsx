@@ -37,7 +37,7 @@ export const FormEdit: React.FC<Props> = (props) => {
 
 
     return (
-        <InputBox headerIcon="fas fa-align-left" headerText="Edit Form" saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={(props.formId > 0) ? handleDelete : undefined} >
+        <InputBox id="formBox" headerIcon="fas fa-align-left" headerText="Edit Form" saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={(props.formId > 0) ? handleDelete : undefined} >
             <div className="form-group">
                 <label>Form Name</label>
                 <input name="formName" type="text" className="form-control" value={form.name} onChange={handleChange} />

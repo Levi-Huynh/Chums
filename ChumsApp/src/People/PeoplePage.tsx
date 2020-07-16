@@ -20,7 +20,7 @@ export const PeoplePage = () => {
             <h1><i className="fas fa-user"></i> People</h1>
             <Row>
                 <Col lg={6}>
-                    <DisplayBox headerIcon="fas fa-user" headerText="Search" editContent={getEditContent()} >
+                    <DisplayBox id="peopleBox" headerIcon="fas fa-user" headerText="Search" editContent={getEditContent()} >
                         <InputGroup>
                             <FormControl id="searchText" name="searchText" type="text" placeholder="Name" value={searchText} onChange={handleChange} />
                             <InputGroup.Append><Button id="searchButton" variant="primary" onClick={handleSubmit}>Search</Button></InputGroup.Append>

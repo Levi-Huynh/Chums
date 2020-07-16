@@ -1,44 +1,13 @@
-context('People Functionality', () => {
+context('Donations', () => {
     Cypress.Cookies.defaults({ whitelist: ['.AspNetCore.Session', '.AspNetCore.Cookies'] })
-    logIntoApp();
-    selectDonations();
-    //donationChart();
-    //editFund();
-    //editBatchName();
+    it('Log into app', () => { cy.login() });
+    it('Load attendance tab', () => { cy.loadTab('donationsTab', 'donationChartBox'); });
+    donationChart();
+    editFund();
+    editBatchName();
     loadBatchPage();
     editDonation();
-
-
-    //editService();
-    //editServiceTime();
-    //attendanceChart();
 });
-
-function logIntoApp() {
-    it('Log Into App', () => {
-        cy.visit('/');
-        cy.get('#email').type(Cypress.env('email'));
-        cy.get('#password').type(Cypress.env('password'));
-        cy.get('#signInButton').click();
-        cy.wait(1500);
-        cy.get('body').should('contain', 'Search');
-    });
-    'groupsTab'
-}
-
-function selectDonations() {
-    it('Open sidebar', () => { cy.get('#sidebarToggle').should('exist').click(); });
-    it('Load donations tab', () => { cy.get('#donationsTab').should('exist').click(); });
-    it('Close sidebar', () => {
-        cy.get('#sidebarToggle').should('exist').click();
-        cy.get('#donationsTab').should('not.be.visible')
-    });
-    it('Donations page is shown', () => {
-        cy.wait(1000);
-        cy.get('#donationChartBox').should('exist');
-    });
-
-}
 
 function donationChart() {
     it('Donation chart shown', () => { cy.get('#donationChartBox svg').should('exist'); });
@@ -106,33 +75,3 @@ function editDonation() {
         cy.get('#donationsBox tr:contains("James Smith"):first a:first').should('exist');
     });
 }
-
-/*
-
-
-function editService() {
-    it('Edit Service', () => {
-        cy.get('#groupsBox a:contains("Sunday"):first').should('exist').click();
-        cy.get('#serviceBox').should('exist');
-        cy.get('#serviceBox input[name="serviceName"]').should('exist').clear().type('Sunday Test');
-        cy.get('#serviceBox .footer .btn-success').click();
-        cy.get('#groupsBox a:contains("Sunday Test"):first').should('exist').click();
-        cy.get('#serviceBox input[name="serviceName"]').should('exist').clear().type('Sunday');
-        cy.get('#serviceBox .footer .btn-success').click();
-    });
-}
-
-function editServiceTime() {
-    it('Edit Service Time', () => {
-        cy.get('#groupsBox a:contains("10:30am"):first').should('exist').click();
-        cy.get('#serviceTimeBox').should('exist');
-        cy.get('#serviceTimeBox input[name="serviceTimeName"]').should('exist').clear().type('10:31am');
-        cy.get('#serviceTimeBox .footer .btn-success').click();
-        cy.get('#groupsBox a:contains("10:31am"):first').should('exist').click();
-        cy.get('#serviceTimeBox input[name="serviceTimeName"]').should('exist').clear().type('10:30am');
-        cy.get('#serviceTimeBox .footer .btn-success').click();
-    });
-}
-
-
-*/

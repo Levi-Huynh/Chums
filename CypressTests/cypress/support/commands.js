@@ -23,3 +23,28 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+Cypress.Commands.add("login", () => {
+    cy.visit('/');
+    cy.get('#email').type(Cypress.env('email'));
+    cy.get('#password').type(Cypress.env('password'));
+    cy.get('#signInButton').click();
+    cy.wait(1500);
+    cy.get('body').should('contain', 'Search');
+});
+
+Cypress.Commands.add("loadTab", (tabId, verifyId) => {
+    cy.get('#sidebarToggle').should('exist').click();
+    cy.get('#' + tabId).should('exist').click();
+    cy.get('#sidebarToggle').should('exist').click();
+    cy.get('#' + tabId).should('not.be.visible');
+    cy.wait(1000);
+    cy.get('#' + verifyId).should('exist');
+});
+
+Cypress.Commands.add("loadPerson", (name) => {
+    cy.get('#searchText').type(name);
+    cy.get('#searchButton').click();
+    cy.get('body').should('contain', name);
+    cy.get("a:contains('" + name + "')").click();
+    cy.get('h2').should('contain', name);
+});

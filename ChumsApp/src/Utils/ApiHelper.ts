@@ -18,7 +18,7 @@ export interface HouseholdMemberInterface { id?: number, householdId?: number, h
 export interface NoteInterface { dateAdded?: string, person?: PersonInterface }
 export interface PermissionInterface { contentType?: string, action?: string }
 export interface PersonInterface { id?: number, firstName?: string, middleName?: string, lastName?: string, nickName?: string, displayName?: string, membershipStatus?: string, gender?: string, birthDate?: Date, maritalStatus?: string, anniversary?: Date, address1?: string, address2?: string, city?: string, state?: string, zip?: string, homePhone?: string, mobilePhone?: string, workPhone?: string, email?: string, formSubmissions?: [FormSubmissionInterface], photo?: string, photoUpdated?: Date }
-export interface QuestionInterface { id?: number, title?: string, fieldType?: string, placeholder?: string, description?: string, choices?: [{ value?: string, text?: string }] }
+export interface QuestionInterface { id?: number, formId?: number, title?: string, fieldType?: string, placeholder?: string, description?: string, choices?: [{ value?: string, text?: string }] }
 export interface RegisterInterface { churchName?: string, firstName?: string, lastName?: string, email?: string, password?: string }
 export interface RoleInterface { id: number, name: string }
 export interface RoleMemberInterface { id?: number, roleId: number, personId: number, person?: PersonInterface, role?: RoleInterface }

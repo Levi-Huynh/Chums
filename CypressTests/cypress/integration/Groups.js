@@ -1,6 +1,7 @@
-context('People Functionality', () => {
+context('Groups', () => {
     Cypress.Cookies.defaults({ whitelist: ['.AspNetCore.Session', '.AspNetCore.Cookies'] })
-    logIntoApp();
+    it('Log into app', () => { cy.login() });
+    it('Load attendance tab', () => { cy.loadTab('groupsTab', 'groupsBox'); });
     selectGroup();
     editGroup();
     removeAddMember();
@@ -8,25 +9,7 @@ context('People Functionality', () => {
     //editHousehold();
 });
 
-function logIntoApp() {
-    it('Log Into App', () => {
-        cy.visit('/');
-        cy.get('#email').type(Cypress.env('email'));
-        cy.get('#password').type(Cypress.env('password'));
-        cy.get('#signInButton').click();
-        cy.wait(1500);
-        cy.get('body').should('contain', 'Search');
-    });
-    'groupsTab'
-}
-
 function selectGroup() {
-    it('Open sidebar', () => { cy.get('#sidebarToggle').should('exist').click(); });
-    it('Load groups tab', () => { cy.get('#groupsTab').should('exist').click(); });
-    it('Close sidebar', () => {
-        cy.get('#sidebarToggle').should('exist').click();
-        cy.get('#groupsTab').should('not.be.visible')
-    });
     it('Select a group', () => { cy.get("a:contains('Davis')").should('exist').click(); });
     it('Attendance not shown', () => {
         cy.wait(1000);

@@ -42,7 +42,7 @@ export const FormsPage = () => {
             <h1><i className="fas fa-align-left"></i> Forms</h1>
             <Row>
                 <Col lg={8}>
-                    <DisplayBox headerText="Forms" headerIcon="fas fa-align-left" editContent={getEditContent()} >
+                    <DisplayBox id="formsBox" headerText="Forms" headerIcon="fas fa-align-left" editContent={getEditContent()} >
                         <Table>
                             <thead><tr><th colSpan={2}>Name</th></tr></thead>
                             <tbody>{getRows()}</tbody>

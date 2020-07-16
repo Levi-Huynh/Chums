@@ -59,7 +59,7 @@ export const ChoicesEdit: React.FC<Props> = (props) => {
                     <tr>
                         <td><FormControl size="sm" name="choiceValue" value={choiceValue} onChange={handleChange} /></td>
                         <td><FormControl size="sm" name="choiceText" value={choiceText} onChange={handleChange} /></td>
-                        <td><Button variant="success" size="sm" onClick={handleAdd}>Add</Button></td>
+                        <td><Button id="addQuestionChoiceButton" variant="success" size="sm" onClick={handleAdd}>Add</Button></td>
                     </tr>
                 </tbody>
             </Table>

@@ -1,33 +1,14 @@
-context('People Functionality', () => {
+context('People', () => {
     Cypress.Cookies.defaults({ whitelist: ['.AspNetCore.Session', '.AspNetCore.Cookies'] })
-    logIntoApp();
+    it('Log into app', () => { cy.login() });
     searchForPerson();
     testEdit();
     editPhoto();
     editHousehold();
 });
 
-function logIntoApp() {
-    it('Log Into App', () => {
-        cy.visit('/');
-        cy.get('#email').type(Cypress.env('email'));
-        cy.get('#password').type(Cypress.env('password'));
-        cy.get('#signInButton').click();
-        cy.wait(750);
-        cy.get('body').should('contain', 'Search');
-    });
-}
-
 function searchForPerson() {
-    it('Search for Person', () => {
-        cy.get('#searchText').type('Smith');
-        cy.get('#searchButton').click();
-        cy.get('body').should('contain', 'James Smith');
-    });
-    it('Load Person', () => {
-        cy.get("a:contains('James Smith')").click();
-        cy.get('body').should('contain', '555-6789');
-    });
+    it('Search for Person', () => { cy.loadPerson('James Smith') });
     it('Verify Household Members', () => { cy.get('body').should('contain', 'Linda Smith'); });
     it('Verify Group Membership', () => { cy.get('body').should('contain', 'Homebuilders'); });
     it('Verify Tabs', () => {
