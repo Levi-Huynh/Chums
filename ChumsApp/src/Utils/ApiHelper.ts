@@ -39,7 +39,10 @@ export class ApiHelper {
 
     static async apiGet(path: string) {
         const requestOptions = { method: 'GET', headers: { 'Authorization': 'Bearer ' + this.apiKey } };
-        return fetch(this.baseUrl + path, requestOptions).then(response => response.json())
+        var promise = fetch(this.baseUrl + path, requestOptions)
+            .then(response => response.json())
+            .catch(error => console.warn(error));
+        return promise;
     }
 
     static async apiPost(path: string, data: any[] | {}) {

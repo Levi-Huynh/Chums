@@ -24,7 +24,7 @@ export const QuestionEdit: React.FC<Props> = (props) => {
         var answerValue = (props.answer === null) ? "" : props.answer.value
 
         switch (q.fieldType) {
-            case "TextBox": input = <input type="text" className="form-control" value={answerValue} placeholder={q.placeholder} onChange={handleChange} />; break;
+            case "Textbox": input = <input type="text" className="form-control" value={answerValue} placeholder={q.placeholder} onChange={handleChange} />; break;
             case "Multiple Choice": input = <select className="form-control" value={answerValue} onChange={handleChange}>{choiceOptions}</select>; break;
             case "Yes/No": input = <select className="form-control" value={answerValue} onChange={handleChange}><option value="False">No</option><option value="True">Yes</option></select>; break;
             case "Whole Number":

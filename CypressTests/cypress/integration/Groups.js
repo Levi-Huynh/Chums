@@ -6,7 +6,7 @@ context('Groups', () => {
     editGroup();
     removeAddMember();
     switchTabs();
-    //editHousehold();
+    editHousehold();
 });
 
 function selectGroup() {

@@ -13,7 +13,7 @@ export const FormQuestionEdit: React.FC<Props> = (props) => {
 
     const loadData = () => {
         if (props.questionId > 0) ApiHelper.apiGet('/questions/' + props.questionId).then((data: QuestionInterface) => setQuestion(data));
-        else setQuestion({ formId: props.formId } as QuestionInterface);
+        else setQuestion({ formId: props.formId, fieldType: 'Textbox' } as QuestionInterface);
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

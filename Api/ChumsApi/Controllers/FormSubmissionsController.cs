@@ -48,7 +48,7 @@ namespace ChumsApiCore.Controllers
             Models.FormSubmission result = null;
             if (fs.ChurchId == au.ChurchId) {
                 List<string> include = Utils.GetInclude(HttpContext);
-                ChurchLib.Questions questions = (include.Contains("questions")) ? ChurchLib.Questions.LoadByFormId(fs.FormId, au.ChurchId) : null;
+                ChurchLib.Questions questions = (include.Contains("questions")) ? ChurchLib.Questions.LoadByFormId(fs.FormId, au.ChurchId).GetActive() : null;
                 ChurchLib.Answers answers = (include.Contains("answers")) ? ChurchLib.Answers.LoadByFormSubmissionId(fs.Id, au.ChurchId) : null;
                 ChurchLib.Form form = (include.Contains("form")) ? ChurchLib.Form.Load(fs.FormId, au.ChurchId) : null;
 
@@ -85,6 +85,7 @@ namespace ChumsApiCore.Controllers
         public void Delete(int id)
         {
             Helpers.AuthenticatedUser au = Helpers.AuthenticatedUsers.RequireAccess(HttpContext, "Forms", "Edit");
+            foreach (ChurchLib.Answer answer in ChurchLib.Answers.LoadByFormSubmissionId(id, au.ChurchId)) ChurchLib.Answer.Delete(answer.Id, au.ChurchId);
             ChurchLib.FormSubmission.Delete(id, au.ChurchId);
         }
 

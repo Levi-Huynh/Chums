@@ -62,3 +62,6 @@ h2 span {color:#24b8ff;}
 #members:after { content:''; background-position-y: center; background-image: url(/images/home/members.jpg); background-size: cover; opacity: 0.10; top: 0;left: 0;bottom: 0;right: 0;position: absolute; z-index: 1; } /*https://pixabay.com/photos/worship-praise-singer-black-africa-435108/*/
 #attendance {position: relative;}
 #attendance:after { content:''; background-position-y: center; background-image: url(/images/home/attendance.jpg); background-size: cover; opacity: 0.10; top: 0;left: 0;bottom: 0;right: 0;position: absolute; z-index: 1; } /*https://pixabay.com/photos/kindergarten-clown-garden-animator-2204239/*/
+
+.form-control::placeholder { color:#CCC; }
+label .description { font-size:12px; padding-left:10px; }

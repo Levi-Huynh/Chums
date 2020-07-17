@@ -17,6 +17,16 @@ export const FormSubmissionEdit: React.FC<Props> = (props) => {
 
     const handleCancel = () => props.updatedFunction(0);
 
+    const getDeleteFunction = () => { return (formSubmission?.id > 0) ? handleDelete : undefined; }
+    const handleDelete = () => {
+        if (window.confirm('Are you sure you wish to delete this form data?')) {
+            ApiHelper.apiDelete('/formsubmissions/' + formSubmission.id).then(() => {
+                props.updatedFunction(0)
+            });
+        }
+    }
+
+
     const getAnswer = (questionId: number) => {
         var answers = formSubmission.answers;
         for (var i = 0; i < answers.length; i++) if (answers[i].questionId === questionId) return answers[i];
@@ -24,7 +34,7 @@ export const FormSubmissionEdit: React.FC<Props> = (props) => {
     }
 
     const loadData = () => {
-        if (props.formSubmissionId > 0) ApiHelper.apiGet('/formsubmissions/' + props.formSubmissionId + '/?include=questions,answers,form').then(data => setFormSubmission(data));
+        if (props.formSubmissionId > 0) { ApiHelper.apiGet('/formsubmissions/' + props.formSubmissionId + '/?include=questions,answers,form').then(data => setFormSubmission(data)); }
         else if (props.addFormId > 0) {
             ApiHelper.apiGet('/questions/?formId=' + props.addFormId).then(data => {
                 var fs: FormSubmissionInterface = {
@@ -43,7 +53,7 @@ export const FormSubmissionEdit: React.FC<Props> = (props) => {
     }
 
     const getDefaultValue = (q: QuestionInterface) => {
-        var result = q.placeholder;
+        var result = '';
         if (q.fieldType === "Yes/No") result = "False";
         else if (q.fieldType === "Multiple Choice") {
             if (q.choices !== undefined && q.choices !== null && q.choices.length > 0) result = q.choices[0].value;
@@ -63,7 +73,7 @@ export const FormSubmissionEdit: React.FC<Props> = (props) => {
     }
 
     const handleChange = (questionId: number, value: string) => {
-        var fs = formSubmission;
+        var fs = { ...formSubmission };
         var answer: AnswerInterface = null;
         for (var i = 0; i < fs.answers.length; i++) if (fs.answers[i].questionId === questionId) answer = fs.answers[i];
         if (answer !== null) answer.value = value;
@@ -84,7 +94,7 @@ export const FormSubmissionEdit: React.FC<Props> = (props) => {
         for (var i = 0; i < questions.length; i++) questionList.push(<QuestionEdit key={questions[i].id} question={questions[i]} answer={getAnswer(questions[i].id)} changeFunction={handleChange} />);
     }
 
-    return <InputBox headerText={formSubmission?.form?.name || 'Edit Form'} headerIcon="fas fa-user" saveFunction={handleSave} cancelFunction={handleCancel} >{questionList}</InputBox>;
+    return <InputBox id="formSubmissionBox" headerText={formSubmission?.form?.name || 'Edit Form'} headerIcon="fas fa-user" saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={getDeleteFunction()} >{questionList}</InputBox>;
 }
 
 

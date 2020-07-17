@@ -1,14 +1,17 @@
 context('Forms', () => {
     Cypress.Cookies.defaults({ whitelist: ['.AspNetCore.Session', '.AspNetCore.Cookies'] })
-    it('Log into App', () => { cy.login() });
+    cy.on('window:confirm', (str) => { return true; });
+    it('Log into App', () => { cy.login(); });
     it('Load forms tab', () => { cy.loadTab('formsTab', 'formsBox'); });
     addAForm();
     loadQuestionsPage();
     addQuestions();
     reorderQuestions();
-    addForm();
+    loadPerson();
+    submitForm();
+    verifyForm();
+    deleteForm();
 });
-
 
 function addAForm() {
     it('Add a form', () => {
@@ -73,13 +76,55 @@ function reorderQuestions() {
     });
 }
 
-function addForm() {
+function loadPerson() {
     it('Load person', () => {
         cy.loadTab('peopleTab', 'peopleBox');
         cy.loadPerson('James Smith');
+    });
+}
+
+function submitForm() {
+    it('Add form to person', () => {
         cy.get('#personDetailsBox .header .fa-pencil-alt').click();
         cy.get('#personDetailsBox a:contains("Add a form")').should('exist').click();
         cy.get('#addFormName').should('exist').select('Test Form');
         cy.get('#addFormButton').should('exist').click();
     });
+    it('Submit form', () => {
+        cy.get('#formSubmissionBox input').should('exist').clear().type('Hello world');
+        cy.get('#formSubmissionBox select').should('exist').select('Option Two');
+        cy.get('#formSubmissionBox .footer .btn-success').click();
+    });
 }
+
+function verifyForm() {
+    it('Verify form submission', () => {
+        cy.get('#formSubmissionsAccordion button:contains("Test Form")').should('exist').click();
+        cy.get('#formSubmissionsAccordion .show').should('contain', 'Hello world').should('contain', '2');
+        cy.get('#formSubmissionsAccordion .show .fa-pencil-alt').should('exist').click();
+    });
+    it('Delete form submission', () => {
+        cy.get('#formSubmissionBox .footer .btn-danger').click();
+        cy.wait(750);
+        cy.get('#formSubmissionsAccordion button:contains("Test Form")').should('not.exist');
+    });
+}
+
+function deleteForm() {
+    it('Delete a question', () => {
+        cy.loadTab('formsTab', 'formsBox');
+        cy.get('#formsBox a:contains("Test Form"):first').should('exist').click();
+        cy.get('#questionsBox a:contains("Text Question"):first').should('exist').click();
+        cy.wait(1000);
+        cy.get('#questionBox .footer .btn-danger').should('exist').click();
+        cy.get('#questionsBox a:contains("Text Question")').should('not.exist');
+    });
+    it('Delete a form', () => {
+        cy.loadTab('formsTab', 'formsBox');
+        cy.get('#formsBox tr:contains("Test Form"):first .fa-pencil-alt').should('exist').click();
+        cy.wait(1000);
+        cy.get('#formBox .footer .btn-danger').should('exist').click();
+        cy.get('#formsBox a:contains("Test Form"):first').should('not.exist')
+    });
+}
+
