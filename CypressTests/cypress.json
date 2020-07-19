@@ -2,7 +2,7 @@
   "chromeWebSecurity": false,
   "baseUrl": "http://localhost:3000",
   "env": {
-    "email": "test@test.com",
+    "email": "jeremy@zongker.net",
     "password": "password"
   }
 }

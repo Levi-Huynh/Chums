@@ -17,18 +17,23 @@ function editCampus() {
         cy.get('#groupsBox a:contains("Main Campus Test")').should('exist').click();
         cy.get('#campusName').should('exist').clear().type('Main Campus');
         cy.get('#campusBox .footer .btn-success').click();
+        cy.wait(500);
     });
 }
 
 function editService() {
     it('Edit Service', () => {
         cy.get('#groupsBox a:contains("Sunday"):first').should('exist').click();
-        cy.get('#serviceBox').should('exist');
-        cy.get('#serviceBox input[name="serviceName"]').should('exist').clear().type('Sunday Test');
+        cy.get('#serviceBox').should('be.visible');
+        cy.wait(300);
+        cy.get('#serviceBox input[name="serviceName"]').should('be.visible').clear().type('Sunday Test');
         cy.get('#serviceBox .footer .btn-success').click();
-        cy.get('#groupsBox a:contains("Sunday Test"):first').should('exist').click();
-        cy.get('#serviceBox input[name="serviceName"]').should('exist').clear().type('Sunday');
+        cy.wait(500);
+        cy.get('#groupsBox a:contains("Sunday Test"):first').should('be.visible').click();
+        cy.wait(300);
+        cy.get('#serviceBox input[name="serviceName"]').should('be.visible').clear().type('Sunday');
         cy.get('#serviceBox .footer .btn-success').click();
+        cy.wait(500);
     });
 }
 
@@ -36,11 +41,14 @@ function editServiceTime() {
     it('Edit Service Time', () => {
         cy.get('#groupsBox a:contains("10:30am"):first').should('exist').click();
         cy.get('#serviceTimeBox').should('exist');
+        cy.wait(300);
         cy.get('#serviceTimeBox input[name="serviceTimeName"]').should('exist').clear().type('10:31am');
         cy.get('#serviceTimeBox .footer .btn-success').click();
+        cy.wait(500);
         cy.get('#groupsBox a:contains("10:31am"):first').should('exist').click();
         cy.get('#serviceTimeBox input[name="serviceTimeName"]').should('exist').clear().type('10:30am');
         cy.get('#serviceTimeBox .footer .btn-success').click();
+        cy.wait(500);
     });
 }
 

@@ -10,7 +10,7 @@ export const RolePermissions: React.FC<Props> = (props) => {
     React.useEffect(() => { if (props.role.id !== undefined) loadData() }, [props.role]);
 
     return (
-        <DisplayBox headerText="Edit Permissions" headerIcon="fas fa-lock" >
+        <DisplayBox id="rolePermissionsBox" headerText="Edit Permissions" headerIcon="fas fa-lock" >
             <Row>
                 <Col xl={6}>
                     <div><b>People:</b></div>

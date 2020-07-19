@@ -41,7 +41,7 @@ export const RolesPage = () => {
             <h1><i className="fas fa-lock"></i> Roles</h1>
             <Row>
                 <Col lg={8}>
-                    <DisplayBox headerText="Roles" headerIcon="fas fa-lock" editContent={getEditContent()} >
+                    <DisplayBox id="rolesBox" headerText="Roles" headerIcon="fas fa-lock" editContent={getEditContent()} >
                         <Table id="roleMemberTable">
                             <thead><tr><th>Name</th><th></th></tr></thead>
                             <tbody>{getRows()}</tbody>

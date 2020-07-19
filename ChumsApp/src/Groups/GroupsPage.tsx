@@ -42,7 +42,7 @@ export const GroupsPage = () => {
             <h1><i className="fas fa-list"></i> Groups</h1>
             <Row>
                 <Col lg={8}>
-                    <DisplayBox headerIcon="fas fa-list" headerText="Groups" editContent={getEditContent()}>
+                    <DisplayBox id="groupsBox" headerIcon="fas fa-list" headerText="Groups" editContent={getEditContent()}>
                         <Table>
                             <thead><tr><th>Category</th><th>Name</th><th>People</th></tr></thead>
                             <tbody>{getRows()}</tbody>

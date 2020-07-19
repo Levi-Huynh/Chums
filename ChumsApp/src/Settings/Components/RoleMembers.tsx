@@ -60,7 +60,7 @@ export const RoleMembers: React.FC<Props> = (props) => {
     React.useEffect(() => { if (props.addedPerson?.id !== undefined) handleAdd() }, [props.addedPerson]);
 
     return (
-        <DisplayBox headerText="Members" headerIcon="fas fa-users" editContent={getEditContent()} >
+        <DisplayBox id="roleMembersBox" headerText="Members" headerIcon="fas fa-users" editContent={getEditContent()} >
             <Table id="roleMemberTable">
                 <thead><tr><th></th><th>Name</th><th>Action</th></tr></thead>
                 <tbody>{getRows()}</tbody>

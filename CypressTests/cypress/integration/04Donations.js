@@ -12,8 +12,9 @@ context('Donations', () => {
 function donationChart() {
     it('Donation chart shown', () => { cy.get('#donationChartBox svg').should('exist'); });
     it('Filter chart', () => {
-        cy.get('#attendanceFilterBox input[name="week"]').should('exist').clear().type('2020-06-28');
-        cy.get('#attendanceFilterBox .footer .btn-success').click();
+        cy.wait(1000);
+        cy.get('#donationFilterBox input[name="startDate"]').should('exist').clear().type('2020-06-28');
+        cy.get('#donationFilterBox .footer .btn-success').click();
     });
     it('Donation chart not shown', () => { cy.get('#donationChartBox svg').should('exist'); });
 }

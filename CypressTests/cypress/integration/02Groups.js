@@ -1,12 +1,12 @@
 context('Groups', () => {
     Cypress.Cookies.defaults({ whitelist: ['.AspNetCore.Session', '.AspNetCore.Cookies'] })
     it('Log into app', () => { cy.login() });
-    it('Load attendance tab', () => { cy.loadTab('groupsTab', 'groupsBox'); });
+    it('Load groups tab', () => { cy.loadTab('groupsTab', 'groupsBox'); });
     selectGroup();
     editGroup();
     removeAddMember();
     switchTabs();
-    editHousehold();
+    turnOffAttendance();
 });
 
 function selectGroup() {
@@ -64,4 +64,15 @@ function switchTabs() {
         cy.get("#attendanceBox").should('be.visible');
     });
 
+}
+
+function turnOffAttendance() {
+    it('Disable Attendance Tracking', () => {
+        cy.get('#groupDetailsBox .header .fa-pencil-alt').click();
+        cy.get('#groupDetailsBox .footer .btn-success').should('exist');
+        cy.get('#groupDetailsBox select[name="trackAttendance"]').select('No');
+        cy.get('#groupDetailsBox .footer .btn-success').click();
+        cy.get('#groupDetailsBox').should('contain', 'No');
+        cy.wait(1000);
+    });
 }

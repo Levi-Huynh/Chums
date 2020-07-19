@@ -16,7 +16,7 @@ export const SettingsPage = () => {
     return (
         <>
             <h1><i className="fas fa-cog"></i> Settings</h1>
-            <Row className="justify-content-md-center">
+            <Row className="justify-content-md-center" id="settingsBoxes">
                 {getLinks()}
             </Row>
         </>

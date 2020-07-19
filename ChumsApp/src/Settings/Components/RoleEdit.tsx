@@ -33,7 +33,7 @@ export const RoleEdit: React.FC<Props> = (props) => {
 
 
     return (
-        <InputBox headerIcon="fas fa-lock" headerText="Edit Role" saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={(props.roleId > 0) ? handleDelete : undefined} >
+        <InputBox id="roleBox" headerIcon="fas fa-lock" headerText="Edit Role" saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={(props.roleId > 0) ? handleDelete : undefined} >
             <div className="form-group">
                 <label>Role Name</label>
                 <input type="text" className="form-control" value={role.name} onChange={handleChange} />

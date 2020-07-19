@@ -46,7 +46,9 @@ namespace ChumsApiCore.Controllers
         public void Delete(int id)
         {
             Helpers.AuthenticatedUser au = Helpers.AuthenticatedUsers.RequireAccess(HttpContext, "Notes", "Edit");
-            ChurchLib.Note.Delete(id, au.ChurchId);
+            foreach (ChurchLib.RoleMember rm in ChurchLib.RoleMembers.LoadByRoleId(id, au.ChurchId)) ChurchLib.RoleMember.Delete(rm.Id, au.ChurchId);
+            foreach (ChurchLib.RolePermission rp in ChurchLib.RolePermissions.LoadByRoleId(id, au.ChurchId)) ChurchLib.RolePermission.Delete(rp.Id, au.ChurchId);
+            ChurchLib.Role.Delete(id, au.ChurchId);
         }
 
         private ChurchLib.Role ConvertToDb(Models.Role r, Helpers.AuthenticatedUser au)

@@ -17,7 +17,7 @@ export const RolePage = ({ match }: RouteComponentProps<TParams>) => {
     const getSidebar = () => {
         if (!UserHelper.checkAccess('Roles', 'Edit')) return (null);
         else return (<>
-            <DisplayBox headerIcon="fas fa-user" headerText="Add Person"><PersonAdd addFunction={addPerson} /></DisplayBox>
+            <DisplayBox id="roleMemberAddBox" headerIcon="fas fa-user" headerText="Add Person"><PersonAdd addFunction={addPerson} /></DisplayBox>
             <RolePermissions role={role} />
         </>);
     }
