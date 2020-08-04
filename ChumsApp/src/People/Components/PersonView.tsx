@@ -57,15 +57,20 @@ export const PersonView: React.FC<Props> = (props) => {
 
     return (
         <div id={props.id} className="inputBox">
-            <div className="header"><a className="fa-pull-right" onClick={props.editFunction} href="about:blank"><i className="fas fa-pencil-alt"></i></a> <i className="fas fa-user"></i> Personal Details</div>
+            <div className="header">
+                <Row>
+                    <Col xs={8}><i className="fas fa-user"></i> Personal Details</Col>
+                    <Col xs={4} style={{ textAlign: 'right' }} ><a className="fa-pull-right" onClick={props.editFunction} href="about:blank"><i className="fas fa-pencil-alt"></i></a></Col>
+                </Row>
+            </div>
             <div className="content">
                 <Row>
                     <Col xs={3}>{getPhoto()}</Col>
                     <Col xs={9}>
                         <h2>{props.person?.displayName}</h2>
                         <Row>
-                            <Col xs={6}>{leftAttributes}</Col>
-                            <Col xs={6}><table className="contactTable"><tbody>{contactMethods}</tbody></table></Col>
+                            <Col lg={6}>{leftAttributes}</Col>
+                            <Col lg={6}><table className="contactTable"><tbody>{contactMethods}</tbody></table></Col>
                         </Row>
                     </Col>
                 </Row>

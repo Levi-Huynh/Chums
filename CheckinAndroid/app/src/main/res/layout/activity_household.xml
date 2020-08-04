@@ -10,18 +10,7 @@
 
 
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/logo"
-        android:layout_marginTop="64dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        />
+    <include layout="@layout/layout_logo" android:layout_width="match_parent"  android:layout_height="wrap_content" android:id="@+id/logo" />
 
     <ExpandableListView
         android:id="@+id/memberList"
@@ -54,7 +43,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
 
         android:text="Checkin"
-        android:textColor="@color/input"
+        android:textColor="@color/buttonText"
         android:background="@color/buttonBackground"
         android:layout_alignParentRight="true"
         />

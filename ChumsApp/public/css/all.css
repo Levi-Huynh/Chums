@@ -2,19 +2,70 @@
 .table {color:#333;}
 a { color: #24b8ff; }
 
+h1 {font-size:35px;}
 h2 span {color:#24b8ff;}
 
-.navbar {background-color: #222 !important;}
-#navbar {color:#FFF;}
-#navbar a {color:#FFF;}
-.navbar-brand {padding-top:0px;padding-bottom:0px;}
-.navbar-brand img {height:35px;margin-top:5px;margin-bottom:5px;}
-#userMenu {min-width:250px;max-width:100%;position:absolute;right:0px;background-color:#666;color:#FFF;top:60px;z-index:9999;}
-#userMenu a, #userMenu .label {display:block;padding-top:7px;padding-bottom:7px;padding-left:20px;color:#FFF;padding-right:10px;}
-#userMenu .label {font-weight:600;color:#DDD;}
-#userMenu a:hover {text-decoration:none;background-color:#777;}
-#userMenu .divider {border-top:1px solid #999;}
-#navSpacer {height:66px;}
+body {
+    background-color: #F3F3F6;
+}
+
+h1 { border-bottom:1px solid #CCC; padding-bottom:10px; margin-bottom:25px; }
+
+.btn-warning, .btn-warning:hover {color:#FFF;}
+
+.note {margin-top:10px;border-bottom:1px solid #DDD;}
+.note .postedBy {color:#999;margin-bottom:5px;}
+.note .postedBy img {width:60px;height:45px;margin-right:15px;}
+
+.personPhoto {width:60px;height:45px;border-radius:5px;}
+#peopleTable img {width:60px;height:45px;border-radius:5px;}
+#peopleTable td {vertical-align:middle;}
+
+#household img {width:60px;height:45px;border-radius:5px;}
+#householdMemberTable td {vertical-align:middle;}
+#householdMemberTable td:last-child {text-align:center;}
+#householdMemberTable img {width:60px;height:45px;border-radius:5px;}
+#householdMemberAddTable {margin-top:10px;}
+#householdMemberAddTable td:last-child {text-align:center;}
+#householdMemberAddTable img {width:60px;height:45px;border-radius:5px;}
+
+#groupMemberTable img, #roleMemberTable img {width:60px;height:45px;border-radius:5px;}
+#groupMemberTable td, #roleMemberTable td {vertical-align:middle;}
+.personSideTable {margin-top:10px;}
+.personSideTable td {vertical-align:middle;}
+.personSideTable td:last-child {text-align:center;}
+.personSideTable img {width:60px;height:45px;border-radius:5px;}
+
+.profilePic {border-radius:10px;}
+.contactTable {width:100%;}
+.contactTable td {vertical-align:top;}
+.contactTable label {margin-bottom:0px;}
+
+.statusList {margin-top:6px;}
+.statusList li {margin-left:20px;margin-bottom: 0px !important;}
+.statusList li:before {font-family: "Font Awesome 5 Free"; font-weight: 900;  padding-right: 10px;}
+.statusList li.pending:before {content:"\f017"; color:#999;}
+.statusList li.running:before {content:"\f70c"; color:#ffc107;}
+.statusList li:before, .statusList li.complete:before { content:"\f00c"; color:#1c7430; }
+
+
+#navbar {background-color: #FFF !important;height:55px;margin-bottom: 20px;box-shadow: 0px 3px 3px 0px #999;}
+#navbar .nav-item {font-size:14px;}
+#navbar .nav-link {color:#555;height:55px;vertical-align: middle;line-height: 45px; max-width:150px; margin-left:auto; margin-right:auto;}
+#navbar .active {border-bottom: 2px solid #03a9f4;}
+.navbar-brand {padding-top:5px;padding-bottom:0px;}
+.navbar-brand img {max-height:35px;max-width:100%;margin-top:5px;margin-bottom:5px;}
+#navRight {white-space: nowrap; overflow: hidden;}
+#navRight img {width:32px;height:24px;margin-top:-3px;margin-right: 8px;}
+
+
+#userMenu {position:absolute;top:55px;z-index:9999;left:0px;right:0px;}
+#userMenu div {width:223px;max-width:100%;position:relative;background-color:#FFF;color:#333;float: right;box-shadow: 3px 3px 3px #999;}
+#userMenu a, #userMenu .label {display:block;padding-top:7px;padding-bottom:7px;padding-left:20px;color:#333;padding-right:10px;}
+#userMenu .label {font-weight:600;color:#333;}
+#userMenu a:hover {text-decoration:none;background-color:#03a9f4;color:#FFF;}
+#userMenu .nav-item, #userMenu .divider {border-top:1px solid #F0F0F0;}
+#navSpacer {height:57px;margin-bottom: 25px;}
 
 .blue{color:#03a9f4;}
 
@@ -22,6 +73,7 @@ h2 span {color:#24b8ff;}
 .inputBox {border:1px solid #E7E7E7;margin-bottom:30px;}
 .inputBox .header {border-top:4px solid #03a9f4; background-color:#FFF; font-weight:bold; font-size:16px; padding:10px; color:#333; border-bottom:1px solid #DDD; }
 .inputBox .header i {margin-right:5px;}
+.inputBox .header .col-4 i {color:#77cc00;}
 .inputBox .header .btn {margin-top:-2px;}
 .inputBox .subhead {background-color:#FFF; font-weight:600; font-size:16px; padding:10px; color:#333; border-bottom:1px solid #DDD; }
 .inputBox .content {padding:10px; background-color:#FFFFFF;}
@@ -39,16 +91,25 @@ h2 span {color:#24b8ff;}
 .inputBox .content li {list-style-type:none;margin-bottom:10px;}
 .inputBox .content li i {margin-right:5px;}
 .inputBox .content td i {margin-right:5px;}
-
+/*
 .btn-primary { background-color:#77cc00; border-color:#70db86; }
 .btn-primary:hover { background-color:#55aa00; border-color:#55aa00; }
-
+*/
 .btn-info { background-color: #03a9f4; border-color: #03a9f4; }
+.btn-primary { background-color:#03a9f4; border-color:#03a9f4; }
+.btn-primary:hover { background-color:#0099e4; border-color:#0099e4; }
+.btn-success { background-color:#77cc00; border-color:#70db86; }
+.btn-success:hover { background-color:#55aa00; border-color:#55aa00; }
+.btn-danger { background-color:#cc0011; border-color:#cc0011; }
+.btn-danger:hover { background-color:#bb0000; border-color:#bb0000; }
 
-@media (max-width: 600px) {
-    #sidebar {margin-top:170px;}
-    #sidebar.d-none {margin-top:0px;}
+.card-header {padding-top:5px;padding-bottom: 5px;}
+
+
+@media (min-width: 1200px) {
+    .col-lg-2-5 {flex: 0 0 20.8%; max-width: 20.8%; position: relative; width:100%; padding-left:15px;padding-right: 15px;}
 }
+
 
 #hero { background-color: #262624; background-image: url(/images/home/hero.jpg); background-size: cover; color: #FFF; padding-bottom: 140px; padding-top: 140px; } /*source - https://pixabay.com/photos/women-teamwork-team-business-1209678/*/
 #heroInfo {background-color:rgba(0, 0, 0, 0.5); padding:20px; border-radius: 10px;}

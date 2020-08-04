@@ -10,7 +10,7 @@ interface Props {
 
 export const BigLinkButton: React.FC<Props> = (props) => {
     return (
-        <Col xs={{ span: 2 }} >
+        <Col xs={{ span: 3 }} >
             <Link to={props.href}>
                 <Card>
                     <Card.Body className="text-center">

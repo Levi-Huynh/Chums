@@ -24,9 +24,9 @@ export const AssociatedForms: React.FC<Props> = (props) => {
                 cards.push(
                     <div key={fs.id} className="card">
                         <div className="card-header" id={"heading" + fs.id}>
-                            <h2>
+                            <div>
                                 <Button variant="link" data-toggle="collapse" data-target={"#collapse" + fs.id} aria-controls={"collapse" + fs.id}>{fs.form.name}</Button>
-                            </h2>
+                            </div>
                         </div>
                         <div id={"collapse" + fs.id} className="collapse" aria-labelledby={"heading" + fs.id} data-parent="#formSubmissionsAccordion">
                             <div className="card-body"><FormSubmission formSubmissionId={fs.id} editFunction={handleEdit} /> </div>

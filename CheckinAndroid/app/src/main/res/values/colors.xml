@@ -14,10 +14,11 @@
     <color name="green">#70dc87</color>
 
 
-    <color name="background">#353535</color>
-    <color name="label">#24b9ff</color>
-    <color name="input">#ffffff</color>
-    <color name="clickable">#ffffff</color>
+    <color name="background">#F3F3F6</color>
+    <color name="label">#333333</color>
+    <color name="input">#333333</color>
+    <color name="inputBg">#ffffff</color>
+    <color name="clickable">#08a0cc</color>
     <color name="divider">#cccccc</color>
     <color name="hint">#999999</color>
     <color name="buttonBackground">#24b9ff</color>

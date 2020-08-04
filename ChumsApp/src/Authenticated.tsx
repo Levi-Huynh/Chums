@@ -20,47 +20,31 @@ import { Row } from 'react-bootstrap';
 
 export const Authenticated = () => {
 
-    const sidebarToggle = (e: React.MouseEvent) => {
-        e.preventDefault();
-        var sidebar = document.getElementById('sidebar');
-        if (sidebar.className.indexOf('d-none') > -1) {
-            sidebar.className = sidebar.className.replace('d-none', '').trim();
-        } else {
-            sidebar.className = (sidebar.className + ' d-none').trim();
-        }
-    }
-
-
     return (
         <>
             <link rel="stylesheet" href="/css/cp.css" />
             <Header></Header>
-            <div className="container-fluid">
-                <a href="about:blank" onClick={sidebarToggle} className="d-xl-none" id="sidebarToggle"><i className="fas fa-bars"></i></a>
-                <Row>
-                    <Sidebar />
-                    <main role="main" className="col-sm-12 ml-sm-auto col-xl-10 pt-3">
-                        <Switch>
-                            <Route path="/login"  ><Redirect to="/people" /></Route>
-                            <Route path="/people/:id" component={PersonPage}></Route>
-                            <Route path="/people"><PeoplePage /></Route>
-                            <Route path="/groups/:id" component={GroupPage}></Route>
-                            <Route path="/groups"><GroupsPage /></Route>
-                            <Route path="/attendance"><AttendancePage /></Route>
-                            <Route path="/donations/funds/:id" component={FundPage}></Route>
-                            <Route path="/donations/:id" component={DonationBatchPage}></Route>
-                            <Route path="/donations"><DonationsPage /></Route>
-                            <Route path="/forms/:id" component={FormPage}></Route>
-                            <Route path="/forms"><FormsPage /></Route>
-                            <Route path="/settings/roles/:id" component={RolePage}></Route>
-                            <Route path="/settings/import"><ImportPage /></Route>
-                            <Route path="/settings/export"><ExportPage /></Route>
-                            <Route path="/settings/roles"><RolesPage /></Route>
-                            <Route path="/settings"><SettingsPage /></Route>
-                            <Route path="/cp"><Redirect to="/people" /></Route>
-                        </Switch>
-                    </main>
-                </Row>
+            <div className="container">
+                <Switch>
+                    <Route path="/login"  ><Redirect to="/people" /></Route>
+                    <Route path="/people/:id" component={PersonPage}></Route>
+                    <Route path="/people"><PeoplePage /></Route>
+                    <Route path="/groups/:id" component={GroupPage}></Route>
+                    <Route path="/groups"><GroupsPage /></Route>
+                    <Route path="/attendance"><AttendancePage /></Route>
+                    <Route path="/donations/funds/:id" component={FundPage}></Route>
+                    <Route path="/donations/:id" component={DonationBatchPage}></Route>
+                    <Route path="/donations"><DonationsPage /></Route>
+                    <Route path="/forms/:id" component={FormPage}></Route>
+                    <Route path="/forms"><FormsPage /></Route>
+                    <Route path="/settings/roles/:id" component={RolePage}></Route>
+                    <Route path="/settings/import"><ImportPage /></Route>
+                    <Route path="/settings/export"><ExportPage /></Route>
+                    <Route path="/settings/roles"><RolesPage /></Route>
+                    <Route path="/settings"><SettingsPage /></Route>
+                    <Route path="/cp"><Redirect to="/people" /></Route>
+                </Switch>
+
             </div>
             <script src="/js/cp.js"></script>
         </>
