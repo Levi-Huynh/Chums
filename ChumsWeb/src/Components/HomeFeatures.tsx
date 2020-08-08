@@ -10,15 +10,15 @@ export const HomeFeatures: React.FC = () => {
                     <div className="title">Features</div>
                     <h2>Say Goodbye to<br />Excel Documents.</h2>
                     <Row>
-                        <Col><HomeFeature icon="far fa-user" title="People" content="Easily track pertinent information on all your members and guests" /></Col>
-                        <Col><HomeFeature icon="far fa-calendar-check" title="Attendance" content="Save time tracking attendance with our self check-in app" /></Col>
-                        <Col><HomeFeature icon="fas fa-users" title="Groups" content="Easily manage classes, small groups and missions" /></Col>
+                        <Col md={3}><HomeFeature icon="far fa-user" title="People" content="Easily track pertinent information on all your members and guests" /></Col>
+                        <Col md={3}><HomeFeature icon="far fa-calendar-check" title="Attendance" content="Save time tracking attendance with our self check-in app" /></Col>
+                        <Col md={3}><HomeFeature icon="fas fa-users" title="Groups" content="Easily manage classes, small groups and missions" /></Col>
                     </Row>
                     <Row>
-                        <Col xs={{ span: 8, offset: 2 }}>
+                        <Col md={{ span: 8, offset: 2 }}>
                             <Row>
-                                <Col><HomeFeature icon="fas fa-hand-holding-usd" title="Giving" content="Quickly enter donations and see reports showing giving over time." /></Col>
-                                <Col><HomeFeature icon="fas fa-align-left" title="Forms" content="Build custom forms to collect any information you would like." /></Col>
+                                <Col md={6}><HomeFeature icon="fas fa-hand-holding-usd" title="Giving" content="Quickly enter donations and see reports showing giving over time." /></Col>
+                                <Col md={6}><HomeFeature icon="fas fa-align-left" title="Forms" content="Build custom forms to collect any information you would like." /></Col>
                             </Row>
                         </Col>
                     </Row>

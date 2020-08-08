@@ -57,6 +57,7 @@ export const Login: React.FC = (props: any) => {
         return (
 
             <div className="smallCenterBlock">
+                <img src="/images/logo-login.png" alt="logo" className="img-fluid" style={{ marginBottom: 50 }} />
                 <ErrorMessages errors={errors} />
                 <div id="loginBox">
                     <h2>Please sign in</h2>

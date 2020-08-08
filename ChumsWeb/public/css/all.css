@@ -89,9 +89,8 @@ p.lead {font-size:16px;font-weight: bold;}
 
 
 
-@media (max-width: 600px) {
-    #sidebar {margin-top:170px;}
-    #sidebar.d-none {margin-top:0px;}
+@media (min-width: 600px) {
+    #navRight .btn:after {content:' for Free';}
 }
 
 
