@@ -1,29 +1,29 @@
 import React from 'react';
 import './Home.css';
-import { Footer } from './Components'
+import { Footer, Header } from './Components'
 import { HomeRegister } from './Components/HomeRegister'
 import { HomeHero } from './Components/HomeHero'
 import { HomeAbout } from './Components/HomeAbout'
-import { Navbar, Nav } from 'react-bootstrap'
+import { HomeFeatures } from './Components/HomeFeatures'
 import { HomeMembers } from './Components/HomeMembers';
 import { HomeGiving } from './Components/HomeGiving';
 import { HomeAttendance } from './Components/HomeAttendance';
+import { HomeExport } from './Components/HomeExport';
+import { HomeTestimony } from './Components/HomeTestimony';
 
 export const Home = () => {
     return (
         <>
-            <Navbar>
-                <Navbar.Brand href="/"><img src="/images/logo.png" alt="logo" /></Navbar.Brand>
-                <Navbar.Collapse id="navbar">
-                    <Nav className="mr-auto"></Nav>
-                    <Nav className="ml-auto"><Nav.Link href="https://app.chums.org/">Login</Nav.Link></Nav>
-                </Navbar.Collapse>
-            </Navbar>
+            <Header />
             <HomeHero />
             <HomeAbout />
+            <HomeFeatures />
             <HomeMembers />
             <HomeGiving />
             <HomeAttendance />
+            <HomeExport />
+            <HomeTestimony />
+
             <HomeRegister />
             <Footer />
         </>

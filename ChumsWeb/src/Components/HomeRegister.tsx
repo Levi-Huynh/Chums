@@ -1,7 +1,7 @@
 import React from 'react';
-import { InputBox, ApiHelper, RegisterInterface } from '.';
+import { ApiHelper, RegisterInterface } from '.';
 import { ErrorMessages } from './ErrorMessages';
-import { Row, Col, Container } from 'react-bootstrap'
+import { Row, Col, Container, Button } from 'react-bootstrap'
 
 export const HomeRegister: React.FC = () => {
 
@@ -11,7 +11,8 @@ export const HomeRegister: React.FC = () => {
     const [redirectUrl, setRedirectUrl] = React.useState('');
 
     //const validateEmail = (email: string) => { return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)); }
-    const validateEmail = (email: string) => { return (/^\w+([\.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(email)); }
+    //const validateEmail = (email: string) => { return (/^\w+([\.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(email)); }
+    const validateEmail = (email: string) => { return (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(email)); }
 
     const validate = () => {
         var errors: string[] = [];
@@ -62,44 +63,44 @@ export const HomeRegister: React.FC = () => {
 
     if (redirectUrl === '') {
         return (
-            <div className="homeSection">
+            <div className="homeSection" id="registerSection">
                 <Container>
-                    <h2><span>Get Started</span> Now</h2>
+                    <div id="register"></div>
+
                     <Row>
+                        <Col lg={6} className="d-none d-lg-block" ><img src="/images/home/register.png" alt="register" className="img-fluid" /></Col>
                         <Col lg={6}>
-                            <p><b>You own your data.</b></p>
-                            <p>Use our import tool to bring in any existing data you may have, and use our export tool at any time to take your data with you.</p>
-                            <p>If you choose, you may also completely delete all data from Chums any time your wish.</p>
-                            <p>Chums is a completely free service provided to Christian churches and ministries.</p>
-                        </Col>
-                        <Col lg={6} >
-                            <InputBox headerIcon="" headerText="Register" saveFunction={handleSave} saveText="Register" >
-                                {getProcessing()}
-                                <ErrorMessages errors={errors} />
-                                <div className="form-group">
-                                    <input type="text" className="form-control" placeholder="Church Name" name="churchName" value={register.churchName} onChange={handleChange} />
-                                </div>
-                                <div className="row">
-                                    <div className="col"><div className="form-group">
-                                        <input type="text" className="form-control" placeholder="First Name" name="firstName" value={register.firstName} onChange={handleChange} />
-                                    </div></div>
-                                    <div className="col"><div className="form-group">
-                                        <input type="text" className="form-control" placeholder="Last Name" name="lastName" value={register.lastName} onChange={handleChange} />
-                                    </div></div>
-                                </div>
-                                <div className="row">
-                                    <div className="col"><div className="form-group">
-                                        <input type="text" className="form-control" placeholder="Email" name="email" value={register.email} onChange={handleChange} />
-                                    </div></div>
-                                    <div className="col"><div className="form-group">
-                                        <input type="password" className="form-control" placeholder="Password" name="password" value={register.password} onChange={handleChange} />
-                                    </div></div>
-                                </div>
-                            </InputBox>
+                            <div className="title"><span>Join CHUMS</span></div>
+                            <h2>Register for a Free Account</h2>
+                            <p>You'll be up and running in less than a minute.</p>
+
+                            {getProcessing()}
+                            <ErrorMessages errors={errors} />
+                            <div className="form-group">
+                                <input type="text" className="form-control" placeholder="Church Name" name="churchName" value={register.churchName} onChange={handleChange} />
+                            </div>
+
+                            <div className="form-group">
+                                <input type="text" className="form-control" placeholder="First Name" name="firstName" value={register.firstName} onChange={handleChange} />
+                            </div>
+                            <div className="form-group">
+                                <input type="text" className="form-control" placeholder="Last Name" name="lastName" value={register.lastName} onChange={handleChange} />
+                            </div>
+
+
+                            <div className="form-group">
+                                <input type="text" className="form-control" placeholder="Email" name="email" value={register.email} onChange={handleChange} />
+                            </div>
+                            <div className="form-group">
+                                <input type="password" className="form-control" placeholder="Password" name="password" value={register.password} onChange={handleChange} />
+                            </div>
+                            <Button variant="success" block onClick={(e: React.MouseEvent) => { e.preventDefault(); handleSave(); }}>Get Started for Free</Button>
+
+
                         </Col>
                     </Row>
                 </Container>
-            </div>
+            </div >
         );
     } else {
         window.location.href = redirectUrl;
