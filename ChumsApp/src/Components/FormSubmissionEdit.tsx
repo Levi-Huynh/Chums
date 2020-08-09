@@ -8,8 +8,6 @@ interface Props {
     contentId: number,
     formSubmissionId: number,
     updatedFunction: (formId: number) => void
-
-
 }
 
 export const FormSubmissionEdit: React.FC<Props> = (props) => {
@@ -84,9 +82,10 @@ export const FormSubmissionEdit: React.FC<Props> = (props) => {
         setFormSubmission(fs);
     }
 
+    const checkFormAdded = () => { if (props.addFormId > 0) loadData(); }
 
     React.useEffect(loadData, [props.formSubmissionId]);
-    React.useEffect(() => { if (props.addFormId > 0) loadData(); }, [props.addFormId]);
+    React.useEffect(checkFormAdded, [props.addFormId]);
 
     var questionList = [];
     if (formSubmission != null) {

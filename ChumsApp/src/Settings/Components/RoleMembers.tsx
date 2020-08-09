@@ -9,7 +9,7 @@ export const RoleMembers: React.FC<Props> = (props) => {
 
     const [roleMembers, setRoleMembers] = React.useState<RoleMemberInterface[]>([]);
 
-    const loadData = () => ApiHelper.apiGet('/rolemembers?roleId=' + props.role.id).then(data => setRoleMembers(data));
+    const loadData = React.useCallback(() => ApiHelper.apiGet('/rolemembers?roleId=' + props.role.id).then(data => setRoleMembers(data)), [props.role]);
     const getEditContent = () => { return (<ExportLink data={roleMembers} spaceAfter={true} filename="rolemembers.csv" />) }
     const handleRemove = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -21,13 +21,13 @@ export const RoleMembers: React.FC<Props> = (props) => {
         ApiHelper.apiDelete('/rolemembers/' + member.id);
     }
 
-    const getMemberByPersonId = (personId: number) => {
+    const getMemberByPersonId = React.useCallback((personId: number) => {
         var result = null;
         for (var i = 0; i < roleMembers.length; i++) if (roleMembers[i].personId === personId) result = roleMembers[i];
         return result;
-    }
+    }, [roleMembers]);
 
-    const handleAdd = () => {
+    const handleAdd = React.useCallback(() => {
         if (getMemberByPersonId(props.addedPerson.id) === null) {
             var rm = { roleId: props.role.id, personId: props.addedPerson.id, person: props.addedPerson } as RoleMemberInterface
             ApiHelper.apiPost('/rolemembers', [rm]);
@@ -36,7 +36,7 @@ export const RoleMembers: React.FC<Props> = (props) => {
             setRoleMembers(members);
             props.addedCallback();
         }
-    }
+    }, [props, roleMembers, getMemberByPersonId]);
 
     const getRows = () => {
         var canEdit = UserHelper.checkAccess('Group Members', 'Edit');
@@ -56,8 +56,8 @@ export const RoleMembers: React.FC<Props> = (props) => {
     }
 
 
-    React.useEffect(() => { if (props.role.id !== undefined) loadData() }, [props.role]);
-    React.useEffect(() => { if (props.addedPerson?.id !== undefined) handleAdd() }, [props.addedPerson]);
+    React.useEffect(() => { if (props.role.id !== undefined) loadData(); }, [props.role, loadData]);
+    React.useEffect(() => { if (props.addedPerson?.id !== undefined) handleAdd(); }, [props.addedPerson, handleAdd]);
 
     return (
         <DisplayBox id="roleMembersBox" headerText="Members" headerIcon="fas fa-users" editContent={getEditContent()} >

@@ -1,10 +1,8 @@
 import React from 'react';
-import { DisplayBox, UserHelper, BigLinkButton } from './Components';
-import { Row, Col, Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { UserHelper, BigLinkButton } from './Components';
+import { Row } from 'react-bootstrap';
 
 export const SettingsPage = () => {
-
     const getLinks = () => {
         var result = [];
         if (UserHelper.checkAccess('Admin', 'Import')) result.push(<BigLinkButton href="/settings/import" icon="fas fa-upload" text="Import Data" />);

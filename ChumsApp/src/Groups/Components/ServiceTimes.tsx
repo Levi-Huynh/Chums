@@ -7,7 +7,7 @@ export const ServiceTimes: React.FC<Props> = (props) => {
 
     const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
 
-    const loadData = () => ApiHelper.apiGet('/groupservicetimes?groupId=' + props.group.id).then(data => setGroupServiceTimes(data));
+    const loadData = React.useCallback(() => ApiHelper.apiGet('/groupservicetimes?groupId=' + props.group.id).then(data => setGroupServiceTimes(data)), [props.group.id]);
 
     const getRows = () => {
         var result: JSX.Element[] = [];
@@ -17,8 +17,8 @@ export const ServiceTimes: React.FC<Props> = (props) => {
         }
         return result;
     }
-    //*** Why does this throw the error 'React Hook React.useEffect has a missing dependency: 'loadData'. Either include it or remove the dependency array  react-hooks/exhaustive-deps'
-    React.useEffect(() => { if (props.group.id !== undefined) loadData() }, [props.group]);
+
+    React.useEffect(() => { if (props.group.id !== undefined) loadData() }, [props.group, loadData]);
 
     return (
         <table>

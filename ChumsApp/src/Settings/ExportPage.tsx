@@ -125,7 +125,7 @@ export const ExportPage = () => {
         groups.forEach((g) => {
             var serviceTimeIds: string[] = [];
             var gst: ImportGroupServiceTimeInterface[] = ArrayHelper.getAll(groupServiceTimes, 'groupId', g.id);
-            if (gst.length == 0) serviceTimeIds = [''];
+            if (gst.length === 0) serviceTimeIds = [''];
             else gst.forEach((time) => { serviceTimeIds.push(time.serviceTimeId.toString()) });
             serviceTimeIds.forEach((serviceTimeId) => {
                 var row = {

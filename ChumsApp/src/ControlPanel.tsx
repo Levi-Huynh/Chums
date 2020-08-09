@@ -7,11 +7,9 @@ import { Switch, Route } from "react-router-dom";
 import { Logout } from './Logout';
 
 export const ControlPanel = () => {
-    const user = React.useContext(UserContext).userName;
-    const getHandler = () => {
-        var apiKey = ApiHelper.apiKey;
-        return (ApiHelper.apiKey === '') ? <Unauthenticated /> : <Authenticated />;
-    }
+    var user = React.useContext(UserContext).userName; //to force rerender on login
+    if (user === null) return null;
+    const getHandler = () => { return (ApiHelper.apiKey === '') ? <Unauthenticated /> : <Authenticated />; }
     return (
         <Switch>
             <Route path="/logout"><Logout /></Route>

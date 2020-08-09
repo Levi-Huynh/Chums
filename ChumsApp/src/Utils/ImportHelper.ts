@@ -121,7 +121,7 @@ export class ImportHelper {
         if (service === null || data.importKey === undefined || data.importKey === null || data.importKey === '') return null;
         var result: ImportServiceTimeInterface = this.getByImportKey(serviceTimes, data.serviceTimeKey);
         if (result === null) {
-            var result = { serviceKey: service.importKey, importKey: data.importKey, name: data.time } as ImportServiceTimeInterface
+            result = { serviceKey: service.importKey, importKey: data.importKey, name: data.time } as ImportServiceTimeInterface
             serviceTimes.push(result);
         }
         return result;

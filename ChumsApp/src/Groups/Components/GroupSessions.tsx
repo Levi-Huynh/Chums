@@ -15,11 +15,13 @@ export const GroupSessions: React.FC<Props> = (props) => {
     const [sessions, setSessions] = React.useState<SessionInterface[]>([]);
     const [session, setSession] = React.useState<SessionInterface>(null);
 
-    const loadAttendance = () => ApiHelper.apiGet('/visitsessions?sessionId=' + session.id).then(data => setVisitSessions(data));
-    const loadSessions = () => ApiHelper.apiGet('/sessions?groupId=' + props.group.id).then(data => {
-        setSessions(data);
-        if (data.length > 0) setSession(data[0]);
-    });
+    const loadAttendance = React.useCallback(() => { ApiHelper.apiGet('/visitsessions?sessionId=' + session.id).then(data => setVisitSessions(data)); }, [session]);
+    const loadSessions = React.useCallback(() => {
+        ApiHelper.apiGet('/sessions?groupId=' + props.group.id).then(data => {
+            setSessions(data);
+            if (data.length > 0) setSession(data[0]);
+        });
+    }, [props.group]);
 
     const handleRemove = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -74,17 +76,14 @@ export const GroupSessions: React.FC<Props> = (props) => {
         }
     }
 
-    const handlePersonAdd = () => {
+    const handlePersonAdd = React.useCallback(() => {
         var v = { checkinTime: new Date(), personId: props.addedPerson.id, visitSessions: [{ sessionId: session.id }] } as VisitInterface;
-
-        ApiHelper.apiPost('/visitsessions/log', v).then(() => {
-            loadAttendance();
-        });
+        ApiHelper.apiPost('/visitsessions/log', v).then(() => { loadAttendance(); });
         props.addedCallback();
-    }
+    }, [props, loadAttendance, session]);
 
-    React.useEffect(() => { if (props.group.id !== undefined) loadSessions(); props.addedCallback(); }, [props.group, props.addedSession]);
-    React.useEffect(() => { if (props.addedPerson?.id !== undefined) handlePersonAdd() }, [props.addedPerson]);
+    React.useEffect(() => { if (props.group.id !== undefined) loadSessions(); props.addedCallback(); }, [props.group, props.addedSession, loadSessions, props]);
+    React.useEffect(() => { if (props.addedPerson?.id !== undefined) handlePersonAdd() }, [props.addedPerson, handlePersonAdd]);
     React.useEffect(handleSessionSelected, [session]);
 
     var content = <></>;

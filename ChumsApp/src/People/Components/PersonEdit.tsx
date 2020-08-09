@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { PersonHelper, Helper, StateOptions, InputBox, ApiHelper, PersonInterface, AddForm, UserHelper } from './'
 import { Redirect } from 'react-router-dom';
 import { Row, Col, FormControl, FormGroup, FormLabel } from 'react-bootstrap';
@@ -55,7 +55,6 @@ export const PersonEdit: React.FC<Props> = (props) => {
     }
 
     const handleSave = () => {
-        var personCopy = [person];
         ApiHelper.apiPost('/people/', [person])
             .then(data => {
                 var p = { ...person };
@@ -78,14 +77,17 @@ export const PersonEdit: React.FC<Props> = (props) => {
 
     const getAddForm = () => { return (UserHelper.checkAccess('Forms', 'Edit')) ? (<AddForm person={person} addFormFunction={props.addFormFunction} />) : null; }
 
-    React.useEffect(() => setPerson(props.person), [props.person]);
-    React.useEffect(() => {
+    const personChanged = useCallback(() => { setPerson(props.person) }, [props.person]);
+    const photoUrlChanged = useCallback(() => {
         if (props.photoUrl !== null) {
             var p: PersonInterface = { ...person };
             p.photoUpdated = new Date();
             setPerson(p);
         }
-    }, [props.photoUrl]);
+    }, [props.photoUrl, person]);
+
+    React.useEffect(personChanged, [props.person]);
+    React.useEffect(photoUrlChanged, [props.photoUrl]);
 
     if (redirect !== '') return <Redirect to={redirect} />
     else {

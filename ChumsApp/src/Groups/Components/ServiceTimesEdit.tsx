@@ -13,14 +13,14 @@ export const ServiceTimesEdit: React.FC<Props> = (props) => {
     const [serviceTimes, setServiceTimes] = React.useState<ServiceTimeInterface[]>([]);
     const [addServiceTimeId, setAddServiceTimeId] = React.useState(0);
 
-    const loadData = () => {
+    const loadData = React.useCallback(() => {
         ApiHelper.apiGet('/groupservicetimes?groupId=' + props.group.id).then(data => setGroupServiceTimes(data));
         ApiHelper.apiGet('/servicetimes').then(data => {
             setServiceTimes(data);
             var st = data[0] as ServiceTimeInterface;
             if (data.length > 0) setAddServiceTimeId(st.id);
         });
-    }
+    }, [props.group]);
 
     const getRows = () => {
         var result: JSX.Element[] = [];
@@ -52,7 +52,7 @@ export const ServiceTimesEdit: React.FC<Props> = (props) => {
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => setAddServiceTimeId(parseInt(e.currentTarget.value));
 
-    React.useEffect(() => { if (props.group.id !== undefined) loadData() }, [props.group]);
+    React.useEffect(() => { if (props.group.id !== undefined) loadData(); }, [props.group, loadData]);
 
     return (
         <div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Tabs, Tab, Alert } from 'react-bootstrap';
 import { DisplayBox, ImportHelper, Helper } from '.';
-import { ImportGroupInterface, ImportGroupMemberInterface, ImportCampusInterface, ImportServiceInterface, ImportServiceTimeInterface, ImportGroupServiceTimeInterface, ImportPersonInterface, ImportHouseholdInterface, ImportHouseholdMemberInterface, ImportVisitInterface, ImportSessionInterface, ImportVisitSessionInterface, ImportDonationBatchInterface, ImportDonationInterface, ImportFundInterface, ImportFundDonationInterface, ImportDataInterface } from '../../Utils/ImportHelper';
+import { ImportGroupInterface, ImportPersonInterface, ImportDonationBatchInterface, ImportDonationInterface, ImportFundInterface, ImportDataInterface } from '../../Utils/ImportHelper';
 
 interface Props { importData: ImportDataInterface, triggerRender: number }
 
@@ -17,7 +17,7 @@ export const ImportPreview: React.FC<Props> = (props) => {
                     var members = ImportHelper.getHouseholdMembers(props.importData.householdMembers, props.importData.households[i].importKey, props.importData.people);
                     for (let j = 0; j < members.length; j++) {
                         var p = members[j].person;
-                        var imgTag = (p.photo === undefined) ? null : <img src={p.photo} className="personPhoto" />;
+                        var imgTag = (p.photo === undefined) ? null : <img src={p.photo} className="personPhoto" alt="person" />;
                         rows.push(<tr><td>{imgTag}</td><td>{p.firstName}</td><td>{p.lastName}</td></tr>);
                     }
                 }
@@ -39,7 +39,7 @@ export const ImportPreview: React.FC<Props> = (props) => {
         if (props.importData.groups.length === 0) return null;
         else {
             var rows = [];
-            for (var i = 0; i < props.importData.campuses.length; i++) {
+            for (let i = 0; i < props.importData.campuses.length; i++) {
                 var campus = props.importData.campuses[i];
                 var filteredServices = ImportHelper.getServices(props.importData.services, campus.importKey);
                 for (var j = 0; j < filteredServices.length; j++) {
@@ -56,7 +56,7 @@ export const ImportPreview: React.FC<Props> = (props) => {
                 }
             }
 
-            for (var i = 0; i < props.importData.groups.length; i++) {
+            for (let i = 0; i < props.importData.groups.length; i++) {
                 var groupServiceTimes = ImportHelper.getGroupServiceTimesByGroupKey(props.importData.groupServiceTimes, props.importData.groups[i].importKey);
                 if (groupServiceTimes.length === 0) rows.push(<tr><td></td><td></td><td></td><td>{props.importData.groups[i].categoryName}</td><td>{props.importData.groups[i].name}</td><td>{getMemberCount(props.importData.groups[i].importKey)}</td></tr>);
             }
@@ -66,7 +66,6 @@ export const ImportPreview: React.FC<Props> = (props) => {
                 <tbody>{rows}</tbody>
             </Table >);
         }
-        return <></>;
     }
 
     const getAttendanceTable = () => {
@@ -84,7 +83,6 @@ export const ImportPreview: React.FC<Props> = (props) => {
                 <tbody>{rows}</tbody>
             </Table>);
         }
-        return null;
     }
 
     const getDonationsTable = () => {
@@ -105,7 +103,6 @@ export const ImportPreview: React.FC<Props> = (props) => {
                 <tbody>{rows}</tbody>
             </Table>);
         }
-        return null;
     }
 
 

@@ -1,13 +1,13 @@
 import React from 'react';
 import { ApiHelper, DisplayBox, RoleInterface, RolePermissionInterface, RoleCheck } from './';
-import { Row, Col, InputGroup, FormControl, Button, FormGroup, FormLabel } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
 interface Props { role: RoleInterface }
 
 export const RolePermissions: React.FC<Props> = (props) => {
     const [rolePermissions, setRolePermissions] = React.useState<RolePermissionInterface[]>([]);
-    const loadData = () => ApiHelper.apiGet('/rolepermissions?roleId=' + props.role.id).then(data => setRolePermissions(data));
-    React.useEffect(() => { if (props.role.id !== undefined) loadData() }, [props.role]);
+    const loadData = React.useCallback(() => { ApiHelper.apiGet('/rolepermissions?roleId=' + props.role.id).then(data => setRolePermissions(data)); }, [props.role]);
+    React.useEffect(() => { if (props.role.id !== undefined) loadData() }, [props.role, loadData]);
 
     return (
         <DisplayBox id="rolePermissionsBox" headerText="Edit Permissions" headerIcon="fas fa-lock" >

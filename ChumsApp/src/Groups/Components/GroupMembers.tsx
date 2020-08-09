@@ -14,7 +14,7 @@ export const GroupMembers: React.FC<Props> = (props) => {
 
     const [groupMembers, setGroupMembers] = React.useState<GroupMemberInterface[]>([]);
 
-    const loadData = () => ApiHelper.apiGet('/groupmembers?groupId=' + props.group.id).then(data => setGroupMembers(data));
+    const loadData = React.useCallback(() => { ApiHelper.apiGet('/groupmembers?groupId=' + props.group.id).then(data => setGroupMembers(data)); }, [props.group]);
     const handleRemove = (e: React.MouseEvent) => {
         e.preventDefault();
         var anchor = e.currentTarget as HTMLAnchorElement;
@@ -26,13 +26,13 @@ export const GroupMembers: React.FC<Props> = (props) => {
     }
 
     //*** Is there a good way to globally attach methods like this to the GroupMembers interface?
-    const getMemberByPersonId = (personId: number) => {
+    const getMemberByPersonId = React.useCallback((personId: number) => {
         var result = null;
         for (var i = 0; i < groupMembers.length; i++) if (groupMembers[i].personId === personId) result = groupMembers[i];
         return result;
-    }
+    }, [groupMembers]);
 
-    const handleAdd = () => {
+    const handleAdd = React.useCallback(() => {
         if (getMemberByPersonId(props.addedPerson.id) === null) {
             var gm = { groupId: props.group.id, personId: props.addedPerson.id, person: props.addedPerson } as GroupMemberInterface
             ApiHelper.apiPost('/groupmembers', [gm]);
@@ -41,7 +41,7 @@ export const GroupMembers: React.FC<Props> = (props) => {
             setGroupMembers(members);
             props.addedCallback();
         }
-    }
+    }, [props, getMemberByPersonId, groupMembers]);
 
     const getRows = () => {
         var canEdit = UserHelper.checkAccess('Group Members', 'Edit');
@@ -51,7 +51,7 @@ export const GroupMembers: React.FC<Props> = (props) => {
             var editLink = (canEdit) ? <a href="about:blank" onClick={handleRemove} data-index={i} className="text-danger" ><i className="fas fa-user-times"></i> Remove</a> : <></>
             rows.push(
                 <tr key={i}>
-                    <td><img src={PersonHelper.getPhotoUrl(gm.person)} /></td>
+                    <td><img src={PersonHelper.getPhotoUrl(gm.person)} alt="avatar" /></td>
                     <td><Link to={"/people/" + gm.personId}>{gm.person.displayName}</Link></td>
                     <td>{editLink}</td>
                 </tr>
@@ -62,8 +62,8 @@ export const GroupMembers: React.FC<Props> = (props) => {
 
     const getEditContent = () => { return (<ExportLink data={groupMembers} spaceAfter={true} filename="groupmembers.csv" />) }
 
-    React.useEffect(() => { if (props.group.id !== undefined) loadData() }, [props.group]);
-    React.useEffect(() => { if (props.addedPerson?.id !== undefined) handleAdd() }, [props.addedPerson]);
+    React.useEffect(() => { if (props.group.id !== undefined) loadData(); }, [props.group, loadData]);
+    React.useEffect(() => { if (props.addedPerson?.id !== undefined) handleAdd() }, [props.addedPerson, handleAdd]);
 
     return (
         <DisplayBox id="groupMembersBox" headerText="Group Members" headerIcon="fas fa-users" editContent={getEditContent()} >

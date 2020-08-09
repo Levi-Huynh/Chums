@@ -1,6 +1,5 @@
 import React from 'react';
 import { InputBox, Helper } from './';
-import { set } from 'date-fns'
 
 interface Props { startDate: Date, endDate: Date, updateFunction: (startDate: Date, endDate: Date) => void }
 

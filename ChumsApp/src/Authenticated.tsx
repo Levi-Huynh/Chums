@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route, Redirect } from "react-router-dom";
-import { Header, Sidebar } from './Components'
+import { Header } from './Components'
 import { PeoplePage } from './People/PeoplePage'
 import { PersonPage } from './People/PersonPage'
 import { GroupsPage } from './Groups/GroupsPage'
@@ -16,7 +16,6 @@ import { ExportPage } from './Settings/ExportPage'
 import { ImportPage } from './Settings/ImportPage'
 import { SettingsPage } from './Settings/SettingsPage'
 import { FormPage } from './Forms/FormPage';
-import { Row } from 'react-bootstrap';
 
 export const Authenticated = () => {
 

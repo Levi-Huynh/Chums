@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { InputBox, PersonHelper, ApiHelper, PersonInterface } from './';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
@@ -64,13 +64,13 @@ export const ImageEditor: React.FC<Props> = (props) => {
     }
     const handleCancel = () => { props.updatedFunction(originalUrl); props.doneFunction(); }
     const handleDelete = () => { ApiHelper.apiDelete('/people/photos/' + props.person.id).then(() => props.doneFunction()); props.updatedFunction('/images/sample-profile.png'); }
-    const init = () => {
+    const init = useCallback(() => {
         var startingUrl = PersonHelper.getPhotoUrl(props.person)
         setOriginalUrl(startingUrl);
         setCurrentUrl(startingUrl);
-    }
+    }, [props.person]);
 
-    React.useEffect(() => init(), [props.person]);
+    React.useEffect(init, [props.person]);
 
     return (
         <InputBox id="cropperBox" headerIcon="" headerText="Crop" saveFunction={handleSave} saveText={"Update"} cancelFunction={handleCancel} deleteFunction={handleDelete} headerActionContent={getHeaderButton()}  >

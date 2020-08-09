@@ -1,5 +1,4 @@
 import Papa from 'papaparse';
-import { Readable, ReadableOptions } from 'stream';
 import AdmZip from 'adm-zip';
 import FileSaver from 'file-saver';
 
@@ -81,7 +80,7 @@ export class UploadHelper {
     }
 
     static getFile(files: FileList, fileName: string) {
-        for (let i = 0; i < files.length; i++) if (files[i].name == fileName) return files[i];
+        for (let i = 0; i < files.length; i++) if (files[i].name === fileName) return files[i];
         return null;
     }
 
@@ -137,7 +136,7 @@ export class UploadHelper {
         var names = Object.getOwnPropertyNames(r)
         for (let j = names.length - 1; j >= 0; j--) {
             var n = names[j];
-            if (r[n] == '') delete r[n];
+            if (r[n] === '') delete r[n];
         }
         return r;
     }

@@ -11,10 +11,12 @@ export const SessionAdd: React.FC<Props> = (props) => {
 
     const handleCancel = () => { props.updatedFunction(null); }
 
-    const loadData = () => ApiHelper.apiGet('/groupservicetimes?groupId=' + props.group.id).then(data => {
-        setGroupServiceTimes(data);
-        if (data.length > 0) setServiceTimeId(data[0].serviceTimeId);
-    });
+    const loadData = React.useCallback(() => {
+        ApiHelper.apiGet('/groupservicetimes?groupId=' + props.group.id).then(data => {
+            setGroupServiceTimes(data);
+            if (data.length > 0) setServiceTimeId(data[0].serviceTimeId);
+        });
+    }, [props.group]);
 
     const handleSave = () => {
         if (validate()) {
@@ -51,7 +53,7 @@ export const SessionAdd: React.FC<Props> = (props) => {
         }
     }
 
-    React.useEffect(() => { if (props.group !== null) loadData() }, [props.group]);
+    React.useEffect(() => { if (props.group.id !== undefined) loadData(); }, [props.group, loadData]);
 
     return (
         <InputBox headerIcon="far fa-calendar-alt" headerText="Add a Session" saveFunction={handleSave} cancelFunction={handleCancel}>

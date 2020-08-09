@@ -13,14 +13,16 @@ export const ServiceEdit: React.FC<Props> = (props) => {
 
     const handleSave = () => { if (validate()) ApiHelper.apiPost('/services', [service]).then(props.updatedFunction); }
     const handleDelete = () => { if (window.confirm('Are you sure you wish to permanently delete this service?')) ApiHelper.apiDelete('/services/' + service.id).then(props.updatedFunction); }
-    const loadData = () => ApiHelper.apiGet('/campuses').then(data => {
-        setCampuses(data);
-        if (data.length > 0) {
-            var s = { ...props.service };
-            s.campusId = data[0].id;
-            setService(s);
-        }
-    });
+    const loadData = React.useCallback(() => {
+        ApiHelper.apiGet('/campuses').then(data => {
+            setCampuses(data);
+            if (data.length > 0) {
+                var s = { ...props.service };
+                s.campusId = data[0].id;
+                setService(s);
+            }
+        });
+    }, [props.service]);
 
     const validate = () => {
         var errors = [];
@@ -45,7 +47,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
         return options;
     }
 
-    React.useEffect(() => { setService(props.service); loadData(); }, [props.service]);
+    React.useEffect(() => { setService(props.service); loadData(); }, [props.service, loadData]);
 
 
     if (service === null || service.id === undefined) return null;

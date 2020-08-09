@@ -13,14 +13,16 @@ export const ServiceTimeEdit: React.FC<Props> = (props) => {
 
     const handleSave = () => { if (validate()) ApiHelper.apiPost('/servicetimes', [serviceTime]).then(props.updatedFunction); }
     const handleDelete = () => { if (window.confirm('Are you sure you wish to permanently delete this service time?')) ApiHelper.apiDelete('/servicetimes/' + serviceTime.id).then(props.updatedFunction); }
-    const loadData = () => ApiHelper.apiGet('/services').then(data => {
-        setServices(data);
-        if (data.length > 0) {
-            var st = { ...props.serviceTime };
-            st.serviceId = data[0].id;
-            setServiceTime(st);
-        }
-    });
+    const loadData = React.useCallback(() => {
+        ApiHelper.apiGet('/services').then(data => {
+            setServices(data);
+            if (data.length > 0) {
+                var st = { ...props.serviceTime };
+                st.serviceId = data[0].id;
+                setServiceTime(st);
+            }
+        });
+    }, [props.serviceTime]);
 
     const validate = () => {
         var errors = [];
@@ -48,7 +50,7 @@ export const ServiceTimeEdit: React.FC<Props> = (props) => {
     }
 
 
-    React.useEffect(() => { setServiceTime(props.serviceTime); loadData(); }, [props.serviceTime]);
+    React.useEffect(() => { setServiceTime(props.serviceTime); loadData(); }, [props.serviceTime, loadData]);
 
     if (serviceTime === null || serviceTime.id === undefined) return null;
 

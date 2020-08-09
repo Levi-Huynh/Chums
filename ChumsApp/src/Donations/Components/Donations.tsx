@@ -7,7 +7,7 @@ interface Props { batch: DonationBatchInterface, addFunction: () => void, editFu
 export const Donations: React.FC<Props> = (props) => {
     const [donations, setDonations] = React.useState<DonationInterface[]>([]);
 
-    const loadData = () => ApiHelper.apiGet('/donations?batchId=' + props.batch?.id).then(data => setDonations(data));
+    const loadData = React.useCallback(() => { ApiHelper.apiGet('/donations?batchId=' + props.batch?.id).then(data => setDonations(data)); }, [props.batch]);
     const showAddDonation = (e: React.MouseEvent) => { e.preventDefault(); props.addFunction() }
     const getEditContent = () => {
         return (UserHelper.checkAccess('Donations', 'Edit')) ? (<><ExportLink data={donations} spaceAfter={true} filename="donations.csv" /><a href="about:blank" onClick={showAddDonation} ><i className="fas fa-plus"></i></a></>) : null;
@@ -35,7 +35,7 @@ export const Donations: React.FC<Props> = (props) => {
         return rows;
     }
 
-    React.useEffect(() => { if (props.batch?.id > 0) loadData() }, [props.batch]);
+    React.useEffect(() => { if (props.batch?.id > 0) loadData() }, [props.batch, loadData]);
 
     return (
         <DisplayBox id="donationsBox" headerIcon="fas fa-hand-holding-usd" headerText="Donations" editContent={getEditContent()} >

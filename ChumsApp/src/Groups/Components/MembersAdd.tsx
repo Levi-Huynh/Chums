@@ -8,7 +8,7 @@ interface Props { group: GroupInterface, addFunction: (person: PersonInterface) 
 export const MembersAdd: React.FC<Props> = (props) => {
     const [groupMembers, setGroupMembers] = React.useState<GroupMemberInterface[]>([]);
 
-    const loadData = () => ApiHelper.apiGet('/groupmembers?groupId=' + props.group.id).then(data => setGroupMembers(data));
+    const loadData = React.useCallback(() => { ApiHelper.apiGet('/groupmembers?groupId=' + props.group.id).then(data => setGroupMembers(data)); }, [props.group]);
     const addMember = (e: React.MouseEvent) => {
 
         e.preventDefault();
@@ -36,7 +36,7 @@ export const MembersAdd: React.FC<Props> = (props) => {
         return rows;
     }
 
-    React.useEffect(() => { if (props.group !== null) loadData() }, [props.group]);
+    React.useEffect(() => { if (props.group !== null) loadData() }, [props.group, loadData]);
 
     return (
         <DisplayBox headerIcon="fas fa-user" headerText="Available Group Members" >
