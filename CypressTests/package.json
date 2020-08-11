@@ -1,0 +1,8 @@
+{
+    "name": "chums-cypress",
+    "version": "0.1.0",
+    "private": false,
+    "scripts": {
+        "cy:run": "cypress run --spec \"cypress/integration/01People.js\" --record --key 5f43f4a2-a071-4d44-b19e-4deae5e3396b"
+    }
+}
