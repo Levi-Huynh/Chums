@@ -1,8 +1,8 @@
 {
   "chromeWebSecurity": false,
-  "baseUrl": "http://localhost:3000",
+  "baseUrl": "https://app.chums.org",
   "env": {
-    "email": "jeremy@zongker.net",
+    "email": "testuser@chums.org",
     "password": "password"
   },
   "projectId": "3dg71k"

@@ -34,9 +34,9 @@ Cypress.Commands.add("login", () => {
 });
 
 Cypress.Commands.add("loadTab", (tabId, verifyId) => {
-    cy.get('#sidebarToggle').should('exist').click();
+    cy.get('#userMenuLink').should('exist').click();
     cy.get('#' + tabId).should('exist').click();
-    cy.get('#sidebarToggle').should('exist').click();
+    cy.get('#userMenuLink').should('exist').click();
     cy.get('#' + tabId).should('not.be.visible');
     cy.wait(1000);
     cy.get('#' + verifyId).should('exist');

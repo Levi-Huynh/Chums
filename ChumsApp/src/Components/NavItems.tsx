@@ -3,7 +3,9 @@ import { UserHelper } from './'
 import { Link } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
 
-export const NavItems = () => {
+interface Props { prefix?: String }
+
+export const NavItems: React.FC<Props> = (props) => {
 
     const location = useLocation()
 
@@ -26,7 +28,7 @@ export const NavItems = () => {
     }
 
     const getTab = (key: string, url: string, icon: string, label: string) => {
-        return (<li key={key} className="nav-item" id={key + 'Tab'}><Link className={getClass(key)} to={url}><i className={icon}></i> {label}</Link></li>);
+        return (<li key={key} className="nav-item" id={(props.prefix || '') + key + 'Tab'}><Link className={getClass(key)} to={url}><i className={icon}></i> {label}</Link></li>);
     }
 
     const getTabs = () => {

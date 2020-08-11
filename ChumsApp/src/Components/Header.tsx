@@ -19,6 +19,7 @@ export const Header: React.FC = () => {
         else return null;
     }
 
+
     return (
         <>
             <div id="navbar" className="fixed-top">
@@ -27,11 +28,11 @@ export const Header: React.FC = () => {
                         <div className="col-6 col-lg-2-5"><a className="navbar-brand" href="/"><img src="/images/logo.png" alt="logo" /></a></div>
                         <Col className="d-none d-xl-block" xl={7} style={{ borderLeft: '2px solid #EEE', borderRight: '2px solid #EEE' }}>
                             <ul className="nav nav-fill">
-                                <NavItems />
+                                <NavItems prefix="main" />
                             </ul>
                         </Col>
                         <div className="col-6 col-lg-2-5 text-right" style={{ paddingTop: 17 }} id="navRight" >
-                            <a href="about:blank" onClick={toggleUserMenu}>
+                            <a href="about:blank" onClick={toggleUserMenu} id="userMenuLink">
                                 <img src={PersonHelper.getPhotoUrl(UserHelper.person)} alt="user" />
                                 {UserHelper.person.displayName} <i className="fas fa-caret-down"></i>
                             </a>
