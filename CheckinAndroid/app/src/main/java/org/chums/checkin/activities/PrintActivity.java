@@ -27,7 +27,7 @@ import java.util.List;
 
 public class PrintActivity extends AppCompatActivity {
     private WebView webView;
-    PrintHandHelper phh = new PrintHandHelper();
+    PrintHandHelper phh = new PrintHandHelper(null);
     List<Bitmap> bitmaps = null;
     int visitIndex = 0;
     TextView printStatus;
@@ -50,11 +50,11 @@ public class PrintActivity extends AppCompatActivity {
             public void onClick(View view) {  goFullScreen();  }
         });
     }
-
+/*
     private void attachPrintHand()
     {
         printStatus.setText("Preparing Printer...");
-        phh.attach(PrintActivity.this, PrintActivity.this   );
+        phh.attach(PrintActivity.this   );
         waitTillReady();
     }
 
@@ -71,20 +71,13 @@ public class PrintActivity extends AppCompatActivity {
                 }
             }, 1000);
         } else attachPrintHand();
-    }
+    }*/
 
 
     public void onResume() {
         super.onResume();
         printStatus =  (TextView)this.findViewById(R.id.printStatus);
-
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() { waitForSdk(); }
-        }, 1000);
-
-
+        if (this.phh.isReady()) startProcess(); else nextScreen();
     }
 
     private void startProcess()
@@ -96,20 +89,6 @@ public class PrintActivity extends AppCompatActivity {
             public void run() { nextScreen(); }
         }, 10000);
         populateBitmaps();
-    }
-
-    private void waitTillReady()
-    {
-        if (!phh.isReady()) {
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    waitTillReady();
-                }
-            }, 1000);
-
-        } else startProcess();
     }
 
 

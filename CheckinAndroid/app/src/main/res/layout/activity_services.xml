@@ -7,13 +7,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" android:id="@+id/fullscreen_content">
 
-    <include layout="@layout/layout_logo" android:layout_width="match_parent"  android:layout_height="wrap_content" android:id="@+id/logo" />
+    <fragment  app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"  android:id="@+id/header"  class="org.chums.checkin.fragments.HeaderFragment" android:layout_width="match_parent" android:layout_height="wrap_content" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/logo"
+        app:layout_constraintTop_toBottomOf="@id/header"
         android:textColor="@color/label"
         android:layout_marginTop="32dp"
         android:layout_marginLeft="24dp"

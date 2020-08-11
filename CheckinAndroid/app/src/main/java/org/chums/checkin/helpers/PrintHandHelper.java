@@ -41,53 +41,62 @@ public class PrintHandHelper {
     public static int BitmapWidth=0;
     public static int BitmapHeight=0;
     public static Boolean isInitialized=false;
+    public static String Status="Pending init";
 
     private PrintingSdk printingSdk;
     private Context appContext;
+    Runnable statusUpdatedRunnable;
 
-
-    public void attach(Activity activity, Context context)
+    public void setPrinterStatus(String status)
     {
-        intentApi = new IntentAPI(activity);
+        PrintHandHelper.Status=status;
+        //toastInMainThread(appContext, status);
+        if (statusUpdatedRunnable != null) statusUpdatedRunnable.run();
+    }
+
+    public PrintHandHelper(Runnable r)
+    {
+        this.statusUpdatedRunnable = r;
+    }
+
+
+
+    public void attach(Context context)
+    {
+        intentApi = new IntentAPI(context);
         final Context appContext = context.getApplicationContext();
         try {
             intentApi.runService(new IServiceCallback.Stub() {
                 @Override
-                public void onServiceDisconnected() {
-                    toastInMainThread(appContext, "Service disconnected");
-                }
+                public void onServiceDisconnected() { setPrinterStatus("Service disconnected."); }
 
                 @Override
                 public void onServiceConnected() {
-                    toastInMainThread(appContext, "Service connected");
+                    setPrinterStatus("Attach - Service connected.");
                     setPaperSize();
                 }
 
                 @Override
-                public void onFileOpen(int progress, int finished) {
-                    toastInMainThread(appContext, "onFileOpen progress " + progress + "; finished " + (finished == 1));
-                }
+                public void onFileOpen(int progress, int finished) { setPrinterStatus("onFileOpen progress " + progress + "; finished " + (finished == 1)); }
 
                 @Override
-                public void onLibraryDownload(int progress) {
-                    toastInMainThread(appContext, "onLibraryDownload progress " + progress);
-                }
+                public void onLibraryDownload(int progress) {  setPrinterStatus("onLibraryDownload progress " + progress);  }
 
                 @Override
                 public boolean onRenderLibraryCheck(boolean renderLibrary, boolean fontLibrary) {
-                    toastInMainThread(appContext, "onRenderLibraryCheck render library " + renderLibrary + "; fonts library " + fontLibrary);
+                    setPrinterStatus("onRenderLibraryCheck render library " + renderLibrary + "; fonts library " + fontLibrary);
                     return true;
                 }
 
                 @Override
                 public String onPasswordRequired() {
-                    toastInMainThread(appContext, "onPasswordRequired");
+                    setPrinterStatus("onPasswordRequired");
                     return "password";
                 }
 
                 @Override
                 public void onError(Result result) {
-                    toastInMainThread(appContext, "error, Result " + result + "; Result type " + result.getType());
+                    setPrinterStatus("error, Result " + result + "; Result type " + result.getType());
                 }
             });
             Boolean isRunning = intentApi.isServiceRunning();
@@ -98,41 +107,25 @@ public class PrintHandHelper {
         try {
             intentApi.setPrintCallback(new IPrintCallback.Stub() {
                 @Override
-                public void startingPrintJob() {
-                    toastInMainThread(appContext, "startingPrintJob");
-                }
+                public void startingPrintJob() {  setPrinterStatus("startingPrintJob"); }
 
                 @Override
-                public void start() {
-                    toastInMainThread(appContext, "start");
-                }
+                public void start() {  setPrinterStatus("start"); }
 
                 @Override
-                public void sendingPage(int pageNum, int progress) {
-                    toastInMainThread(appContext, "sendingPage number " + pageNum + ", progress " + progress);
-                }
+                public void sendingPage(int pageNum, int progress) { setPrinterStatus("sendingPage number " + pageNum + ", progress " + progress); }
 
                 @Override
-                public void preparePage(int pageNum) {
-                    toastInMainThread(appContext, "preparePage number " + pageNum);
-                }
+                public void preparePage(int pageNum) { setPrinterStatus("preparePage number " + pageNum); }
 
                 @Override
-                public boolean needCancel() {
-                    toastInMainThread(appContext, "needCancel");
-                    // If you need to cancel printing send true
-                    return false;
-                }
+                public boolean needCancel() {  setPrinterStatus("needCancel"); return false; }
 
                 @Override
-                public void finishingPrintJob() {
-                    toastInMainThread(appContext, "finishingPrintJob");
-                }
+                public void finishingPrintJob() { setPrinterStatus("finishingPrintJob"); }
 
                 @Override
-                public void finish(Result result, int pagesPrinted) {
-                    toastInMainThread(appContext, "finish, Result " + result + "; Result type " + result.getType() + "; Result message " + result.getType().getMessage() + "; pages printed " + pagesPrinted);
-                }
+                public void finish(Result result, int pagesPrinted) { setPrinterStatus("finish, Result " + result + "; Result type " + result.getType() + "; Result message " + result.getType().getMessage() + "; pages printed " + pagesPrinted); }
             });
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -249,8 +242,10 @@ public class PrintHandHelper {
                 @Override
                 public void finish(com.dynamixsoftware.printingsdk.Result arg0) {
                     isInitialized=true;
-                    toastInMainThread(appContext, "ISetupPrinterListener finish " + arg0.name());
+                    setPrinterStatus("Initialized");
+                    //toastInMainThread(appContext, "ISetupPrinterListener finish " + arg0.name());
                     if (arg0.getType().equals(ResultType.ERROR_LIBRARY_PACK_NOT_INSTALLED)) {
+                        setPrinterStatus("PrintHand not installed.");
                         // printingSdk.setup should be called with forceInstall = true to download required drivers
                     }
                 }
@@ -371,11 +366,16 @@ public class PrintHandHelper {
         return null;
     }*/
 
+    public void configurePrinter()
+    {
+        intentApi.setupCurrentPrinter();
+    }
+
     private void setPaperSize()
     {
         try {
             IPrinterInfo printer = intentApi.getCurrentPrinter();
-            if (printer==null) intentApi.setupCurrentPrinter();
+            if (printer==null) setPrinterStatus("Printer not configured."); //intentApi.setupCurrentPrinter();
             else {
 
                 PrinterName = printer.getName();
@@ -418,11 +418,11 @@ public class PrintHandHelper {
 
                 //BitmapHeight=300;
 
-                //rotate=false;
+
+                setPrinterStatus("Printer ready: " + PrinterName);
             }
         } catch (Exception ex) {
-            int a=0;
-
+            setPrinterStatus(ex.toString());
         }
     }
 
