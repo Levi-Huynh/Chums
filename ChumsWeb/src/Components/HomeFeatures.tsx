@@ -10,9 +10,9 @@ export const HomeFeatures: React.FC = () => {
                     <div className="title">Features</div>
                     <h2>Say Goodbye to<br />Excel Documents.</h2>
                     <Row>
-                        <Col md={3}><HomeFeature icon="far fa-user" title="People" content="Easily track pertinent information on all your members and guests" /></Col>
-                        <Col md={3}><HomeFeature icon="far fa-calendar-check" title="Attendance" content="Save time tracking attendance with our self check-in app" /></Col>
-                        <Col md={3}><HomeFeature icon="fas fa-users" title="Groups" content="Easily manage classes, small groups and missions" /></Col>
+                        <Col md={4}><HomeFeature icon="far fa-user" title="People" content="Easily track pertinent information on all your members and guests" /></Col>
+                        <Col md={4}><HomeFeature icon="far fa-calendar-check" title="Attendance" content="Save time tracking attendance with our self check-in app" /></Col>
+                        <Col md={4}><HomeFeature icon="fas fa-users" title="Groups" content="Easily manage classes, small groups and missions" /></Col>
                     </Row>
                     <Row>
                         <Col md={{ span: 8, offset: 2 }}>

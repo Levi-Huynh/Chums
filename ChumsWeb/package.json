@@ -25,9 +25,16 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "deploy": "aws s3 sync build/ s3://chums-web --profile LiveChurchSolutions",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy-staging": "SET REACT_APP_STAGE=staging&& npm run build",
+    "exec-deploy-staging": "aws s3 sync build/ s3://staging-chums-web",
+    "postdeploy-staging": "aws cloudfront create-invalidation --distribution-id E10ZOMRXVIDU16 --paths /*",
+    "deploy-staging": "npm run predeploy-staging && npm run exec-deploy-staging && npm run postdeploy-staging",
+    "predeploy-prod": "SET REACT_APP_STAGE=prod&& npm run build",
+    "exec-deploy-prod": "aws s3 sync build/ s3://chums-web",
+    "postdeploy-prod": "aws cloudfront create-invalidation --distribution-id E2S67R1UFNENG9 --paths /*",
+    "deploy-prod": "npm run predeploy-prod && npm run exec-deploy-prod && npm run postdeploy-prod"
   },
   "eslintConfig": {
     "extends": "react-app"

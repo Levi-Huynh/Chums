@@ -1,0 +1,3 @@
+#Update values and rename to .env
+REACT_APP_ACCESSMANAGEMENT_API_URL=https://api.staging.livecs.org
+REACT_APP_CHUMS_API_URL=https://api.staging.chums.org
