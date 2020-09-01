@@ -1,0 +1,18 @@
+import { ContactInfo } from './'
+import { Name } from './'
+
+export class Person {
+    public id?: number;
+    public churchId?: number;
+    public userId?: number;
+    public name?: Name;
+    public contactInfo: ContactInfo;
+    public birthDate?: Date;
+    public gender?: string;
+    public maritalStatus?: string;
+    public anniversary?: Date;
+    public membershipStatus?: string;
+    public householdId?: number;
+    public householdRole?: string;
+    public photoUpdated?: Date;
+}

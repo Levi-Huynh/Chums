@@ -13,7 +13,6 @@ DROP TABLE IF EXISTS `groupMembers`;
 DROP TABLE IF EXISTS `groups`;
 DROP TABLE IF EXISTS `groupServiceTimes`;
 DROP TABLE IF EXISTS `households`;
-DROP TABLE IF EXISTS `jobs`;
 DROP TABLE IF EXISTS `notes`;
 DROP TABLE IF EXISTS `people`;
 DROP TABLE IF EXISTS `questions`;
@@ -85,16 +84,6 @@ CREATE TABLE `households` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=613 DEFAULT CHARSET=latin1;
 
-CREATE TABLE `jobs` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `churchId` int(11) DEFAULT NULL,
-  `jobType` varchar(45) DEFAULT NULL,
-  `startTime` timestamp(5) NULL DEFAULT NULL,
-  `endTime` timestamp(5) NULL DEFAULT NULL,
-  `associatedFile` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 CREATE TABLE `notes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `churchId` int(11) DEFAULT NULL,
@@ -114,7 +103,6 @@ CREATE TABLE `people` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `churchId` int(11) DEFAULT NULL,
   `userId` int(11) DEFAULT NULL,
-  `campusId` int(11) DEFAULT NULL,
   `firstName` varchar(50) DEFAULT NULL,
   `middleName` varchar(50) DEFAULT NULL,
   `lastName` varchar(50) DEFAULT NULL,
@@ -139,9 +127,7 @@ CREATE TABLE `people` (
   `householdId` int(11) DEFAULT NULL,
   `householdRole` varchar(10),
   `removed` bit(1) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_people_campuses_idx` (`campusId`),
-  CONSTRAINT `fk_People_campuses` FOREIGN KEY (`campusId`) REFERENCES `campuses` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1005 DEFAULT CHARSET=latin1;
 
 

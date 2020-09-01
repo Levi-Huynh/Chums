@@ -1,10 +1,7 @@
 import { controller, httpPost, httpGet, interfaces, requestParam } from "inversify-express-utils";
-import { Campus } from "../models";
 import express from "express";
-import bcrypt from "bcryptjs";
-import { v4 as uuidv4 } from "uuid";
-import { AuthenticatedUser } from '../auth';
 import { CustomBaseController } from "./CustomBaseController"
+import { Campus } from "../models"
 
 @controller("/campuses")
 export class CampusController extends CustomBaseController {
@@ -15,6 +12,23 @@ export class CampusController extends CustomBaseController {
       if (au.checkAccess("Campuses", "View")) {
         return await this.repositories.campus.load(id);
       }
+    });
+  }
+
+  @httpPost("/")
+  public async register(req: express.Request<{}, {}, Campus[]>, res: express.Response): Promise<interfaces.IHttpActionResult> {
+    return this.actionWrapper(req, res, async (au) => {
+      req.body.forEach((campus) => {
+        if (campus.churchId === au.churchId) {
+          this.repositories.campus.save(campus);
+        }
+      });
+
+
+
+      //if (au.checkAccess("Campuses", "View")) {
+      //return await this.repositories.campus.load(id);
+      //}
     });
   }
 
