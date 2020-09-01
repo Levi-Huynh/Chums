@@ -1,0 +1,16 @@
+service: chums-api
+
+provider:
+ name: aws
+ runtime: nodejs12.x
+ memorySize: 128
+ timeout: 10
+ region: us-east-2
+
+
+functions:
+ api:
+   handler: lambda.universal
+   events:
+     - http: ANY {proxy+}
+     - http: ANY /

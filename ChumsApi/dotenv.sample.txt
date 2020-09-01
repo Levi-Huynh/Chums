@@ -1,0 +1,15 @@
+# Modify and save this file as ".env"
+NODE_ENV=development
+
+# Node.js server configuration
+SERVER_PORT=8081
+
+# MySql configuration
+DB_HOST=localhost
+DB_DATABASE=Chums
+DB_USER=root
+DB_PASSWORD=
+
+JWT_SECRET_KEY=this is a test key that is a sentence
+JWT_EXPIRATION=2 days
+NUM_SALT_ROUNDS=5

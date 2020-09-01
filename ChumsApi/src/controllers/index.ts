@@ -1,0 +1,1 @@
+export { CampusController } from "./CampusController";

@@ -24,6 +24,9 @@ appsettings.json
 .env.test.local
 .env.production.local
 .env
+.serverless
+dist/
+.vscode
 
 npm-debug.log*
 yarn-debug.log*
