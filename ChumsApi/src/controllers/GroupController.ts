@@ -9,7 +9,7 @@ export class GroupController extends CustomBaseController {
     @httpGet("/:id")
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            if (!au.checkAccess("Donations", "View Summary")) return this.json({}, 401);
+            if (!au.checkAccess("Groups", "View")) return this.json({}, 401);
             else return await this.repositories.group.load(id, au.churchId);
         });
     }
@@ -17,7 +17,7 @@ export class GroupController extends CustomBaseController {
     @httpGet("/")
     public async getAll(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            if (!au.checkAccess("Donations", "View Summary")) return this.json({}, 401);
+            if (!au.checkAccess("Groups", "View")) return this.json({}, 401);
             else return await this.repositories.group.loadAll(au.churchId);
         });
     }
@@ -25,10 +25,10 @@ export class GroupController extends CustomBaseController {
     @httpPost("/")
     public async save(req: express.Request<{}, {}, Group[]>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            if (!au.checkAccess("Donations", "Edit")) return this.json({}, 401);
+            if (!au.checkAccess("Groups", "Edit")) return this.json({}, 401);
             else {
                 const promises: Promise<Group>[] = [];
-                req.body.forEach(group => { if (group.churchId === au.churchId) promises.push(this.repositories.group.save(group)); });
+                req.body.forEach(group => { group.churchId = au.churchId; promises.push(this.repositories.group.save(group)); });
                 const result = await Promise.all(promises);
                 return this.json(result);
             }
@@ -38,7 +38,7 @@ export class GroupController extends CustomBaseController {
     @httpDelete("/:id")
     public async delete(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            if (!au.checkAccess("Donations", "Edit")) return this.json({}, 401);
+            if (!au.checkAccess("Groups", "Edit")) return this.json({}, 401);
             else await this.repositories.group.delete(id, au.churchId);
         });
     }

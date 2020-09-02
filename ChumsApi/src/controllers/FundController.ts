@@ -3,7 +3,7 @@ import express from "express";
 import { CustomBaseController } from "./CustomBaseController"
 import { Fund } from "../models"
 
-@controller("/fundes")
+@controller("/funds")
 export class FundController extends CustomBaseController {
 
     @httpGet("/:id")
@@ -28,7 +28,7 @@ export class FundController extends CustomBaseController {
             if (!au.checkAccess("Donations", "Edit")) return this.json({}, 401);
             else {
                 const promises: Promise<Fund>[] = [];
-                req.body.forEach(fund => { if (fund.churchId === au.churchId) promises.push(this.repositories.fund.save(fund)); });
+                req.body.forEach(fund => { fund.churchId = au.churchId; promises.push(this.repositories.fund.save(fund)); });
                 const result = await Promise.all(promises);
                 return this.json(result);
             }

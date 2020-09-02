@@ -26,7 +26,7 @@ export class CampusController extends CustomBaseController {
       if (!au.checkAccess("Services", "Edit")) return this.json({}, 401);
       else {
         const promises: Promise<Campus>[] = [];
-        req.body.forEach(campus => { if (campus.churchId === au.churchId) promises.push(this.repositories.campus.save(campus)); });
+        req.body.forEach(campus => { campus.churchId = au.churchId; promises.push(this.repositories.campus.save(campus)); });
         const result = await Promise.all(promises);
         return this.json(result);
       }

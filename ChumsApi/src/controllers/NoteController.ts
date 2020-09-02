@@ -3,13 +3,13 @@ import express from "express";
 import { CustomBaseController } from "./CustomBaseController"
 import { Note } from "../models"
 
-@controller("/notees")
+@controller("/notes")
 export class NoteController extends CustomBaseController {
 
     @httpGet("/:id")
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            if (!au.checkAccess("Donations", "View Summary")) return this.json({}, 401);
+            if (!au.checkAccess("People", "View Notes")) return this.json({}, 401);
             else return await this.repositories.note.load(id, au.churchId);
         });
     }
@@ -17,7 +17,7 @@ export class NoteController extends CustomBaseController {
     @httpGet("/")
     public async getAll(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            if (!au.checkAccess("Donations", "View Summary")) return this.json({}, 401);
+            if (!au.checkAccess("People", "View Notes")) return this.json({}, 401);
             else return await this.repositories.note.loadAll(au.churchId);
         });
     }
@@ -25,10 +25,10 @@ export class NoteController extends CustomBaseController {
     @httpPost("/")
     public async save(req: express.Request<{}, {}, Note[]>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            if (!au.checkAccess("Donations", "Edit")) return this.json({}, 401);
+            if (!au.checkAccess("People", "Edit Notes")) return this.json({}, 401);
             else {
                 const promises: Promise<Note>[] = [];
-                req.body.forEach(note => { if (note.churchId === au.churchId) promises.push(this.repositories.note.save(note)); });
+                req.body.forEach(note => { note.churchId = au.churchId; promises.push(this.repositories.note.save(note)); });
                 const result = await Promise.all(promises);
                 return this.json(result);
             }
@@ -38,7 +38,7 @@ export class NoteController extends CustomBaseController {
     @httpDelete("/:id")
     public async delete(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            if (!au.checkAccess("Donations", "Edit")) return this.json({}, 401);
+            if (!au.checkAccess("People", "Edit Notes")) return this.json({}, 401);
             else await this.repositories.note.delete(id, au.churchId);
         });
     }

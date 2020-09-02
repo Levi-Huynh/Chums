@@ -1,4 +1,5 @@
 export { AnswerRepository } from "./AnswerRepository";
+export { AttendanceRepository } from "./AttendanceRepository";
 export { CampusRepository } from "./CampusRepository";
 export { DonationBatchRepository } from "./DonationBatchRepository";
 export { DonationRepository } from "./DonationRepository";

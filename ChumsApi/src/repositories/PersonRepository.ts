@@ -43,7 +43,7 @@ export class PersonRepository {
         return DB.queryOne("SELECT * FROM people WHERE id=? AND churchId=?;", [id, churchId]);
     }
 
-    //Need to cast
+    // Need to cast
     public async loadAll(churchId: number) {
         return DB.query("SELECT * FROM people WHERE churchId=?;", [churchId]);
     }

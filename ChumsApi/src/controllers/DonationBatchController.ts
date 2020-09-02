@@ -28,7 +28,7 @@ export class DonationBatchController extends CustomBaseController {
             if (!au.checkAccess("Donations", "Edit")) return this.json({}, 401);
             else {
                 const promises: Promise<DonationBatch>[] = [];
-                req.body.forEach(donationbatch => { if (donationbatch.churchId === au.churchId) promises.push(this.repositories.donationBatch.save(donationbatch)); });
+                req.body.forEach(donationbatch => { donationbatch.churchId = au.churchId; promises.push(this.repositories.donationBatch.save(donationbatch)); });
                 const result = await Promise.all(promises);
                 return this.json(result);
             }

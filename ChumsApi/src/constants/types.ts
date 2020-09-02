@@ -1,5 +1,6 @@
 export const TYPES = {
   AnswerRepository: Symbol("AnswerRepository"),
+  AttendanceRepository: Symbol("AttendanceRepository"),
   CampusRepository: Symbol("CampusRepository"),
   DonationRepository: Symbol("DonationRepository"),
   DonationBatchRepository: Symbol("DonationBatchRepository"),

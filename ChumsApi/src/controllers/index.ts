@@ -1,4 +1,3 @@
-export { AnswerController } from "./AnswerController";
 export { CampusController } from "./CampusController";
 export { DonationBatchController } from "./DonationBatchController";
 export { DonationController } from "./DonationController";
@@ -11,6 +10,7 @@ export { GroupMemberController } from "./GroupMemberController";
 export { GroupServiceTimeController } from "./GroupServiceTimeController";
 export { HouseholdController } from "./HouseholdController";
 export { NoteController } from "./NoteController";
+export { PersonController } from "./PersonController";
 export { QuestionController } from "./QuestionController";
 export { ServiceController } from "./ServiceController";
 export { ServiceTimeController } from "./ServiceTimeController";

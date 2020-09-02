@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { EnvironmentHelper } from './Utils';
 
+EnvironmentHelper.init();
 ReactDOM.render(
   <React.StrictMode>
     <App />

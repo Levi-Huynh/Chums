@@ -3,13 +3,13 @@ import express from "express";
 import { CustomBaseController } from "./CustomBaseController"
 import { Session } from "../models"
 
-@controller("/sessiones")
+@controller("/sessions")
 export class SessionController extends CustomBaseController {
 
     @httpGet("/:id")
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            if (!au.checkAccess("Donations", "View Summary")) return this.json({}, 401);
+            if (!au.checkAccess("Attendance", "View")) return this.json({}, 401);
             else return await this.repositories.session.load(id, au.churchId);
         });
     }
@@ -17,7 +17,7 @@ export class SessionController extends CustomBaseController {
     @httpGet("/")
     public async getAll(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            if (!au.checkAccess("Donations", "View Summary")) return this.json({}, 401);
+            if (!au.checkAccess("Attendance", "View")) return this.json({}, 401);
             else return await this.repositories.session.loadAll(au.churchId);
         });
     }
@@ -25,7 +25,7 @@ export class SessionController extends CustomBaseController {
     @httpPost("/")
     public async save(req: express.Request<{}, {}, Session[]>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            if (!au.checkAccess("Donations", "Edit")) return this.json({}, 401);
+            if (!au.checkAccess("Attendance", "Edit")) return this.json({}, 401);
             else {
                 const promises: Promise<Session>[] = [];
                 req.body.forEach(session => { if (session.churchId === au.churchId) promises.push(this.repositories.session.save(session)); });
