@@ -10,7 +10,7 @@ export class CampusController extends CustomBaseController {
   public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
     return this.actionWrapper(req, res, async (au) => {
       if (au.checkAccess("Campuses", "View")) {
-        return await this.repositories.campus.load(id);
+        return await this.repositories.campus.load(id, au.churchId);
       }
     });
   }

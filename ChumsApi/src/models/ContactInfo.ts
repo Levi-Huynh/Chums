@@ -7,5 +7,5 @@ export class ContactInfo {
     public address2?: string;
     public city?: string;
     public state?: string;
-    public Zip?: string;
+    public zip?: string;
 }

@@ -6,5 +6,6 @@ export class Donation {
     public donationDate?: Date;
     public amount?: number;
     public method?: string;
+    public methodDetails?: string;
     public notes?: string;
 }
