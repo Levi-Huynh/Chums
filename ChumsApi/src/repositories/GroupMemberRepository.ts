@@ -31,4 +31,8 @@ export class GroupMemberRepository {
         return DB.queryOne("SELECT * FROM groupMembers WHERE id=? AND churchId=?;", [id, churchId]);
     }
 
+    public async loadAll(churchId: number) {
+        return DB.query("SELECT * FROM groupMembers WHERE churchId=?;", [churchId]);
+    }
+
 }

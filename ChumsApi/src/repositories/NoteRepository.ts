@@ -31,4 +31,8 @@ export class NoteRepository {
         return DB.queryOne("SELECT * FROM notes WHERE id=? AND churchId=?;", [id, churchId]);
     }
 
+    public async loadAll(churchId: number) {
+        return DB.query("SELECT * FROM notes WHERE churchId=?;", [churchId]);
+    }
+
 }

@@ -31,4 +31,8 @@ export class SessionRepository {
         return DB.queryOne("SELECT * FROM sessions WHERE id=? AND churchId=?;", [id, churchId]);
     }
 
+    public async loadAll(churchId: number) {
+        return DB.query("SELECT * FROM sessions WHERE churchId=?;", [churchId]);
+    }
+
 }

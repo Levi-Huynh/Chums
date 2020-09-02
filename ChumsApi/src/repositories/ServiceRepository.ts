@@ -31,4 +31,8 @@ export class ServiceRepository {
         return DB.queryOne("SELECT * FROM services WHERE id=? AND churchId=?;", [id, churchId]);
     }
 
+    public async loadAll(churchId: number) {
+        return DB.query("SELECT * FROM services WHERE churchId=?;", [churchId]);
+    }
+
 }

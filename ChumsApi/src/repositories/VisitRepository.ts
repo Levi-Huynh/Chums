@@ -31,4 +31,8 @@ export class VisitRepository {
         return DB.queryOne("SELECT * FROM visits WHERE id=? AND churchId=?;", [id, churchId]);
     }
 
+    public async loadAll(churchId: number) {
+        return DB.query("SELECT * FROM visits WHERE churchId=?;", [churchId]);
+    }
+
 }

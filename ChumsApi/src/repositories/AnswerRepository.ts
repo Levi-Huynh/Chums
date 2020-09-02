@@ -31,4 +31,8 @@ export class AnswerRepository {
         return DB.queryOne("SELECT * FROM answers WHERE id=? AND churchId=?;", [id, churchId]);
     }
 
+    public async loadAll(churchId: number) {
+        return DB.query("SELECT * FROM answers WHERE churchId=?;", [churchId]);
+    }
+
 }

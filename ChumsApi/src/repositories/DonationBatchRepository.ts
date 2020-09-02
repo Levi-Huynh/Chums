@@ -31,4 +31,8 @@ export class DonationBatchRepository {
         return DB.queryOne("SELECT * FROM donationBatches WHERE id=? AND churchId=?;", [id, churchId]);
     }
 
+    public async loadAll(churchId: number) {
+        return DB.query("SELECT * FROM donationBatches WHERE churchId=?;", [churchId]);
+    }
+
 }

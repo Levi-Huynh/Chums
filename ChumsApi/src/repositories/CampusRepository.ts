@@ -31,4 +31,8 @@ export class CampusRepository {
     return DB.queryOne("SELECT * FROM campuses WHERE id=? AND churchId=?;", [id, churchId]);
   }
 
+  public async loadAll(churchId: number) {
+    return DB.query("SELECT * FROM campuses WHERE churchId=?;", [churchId]);
+  }
+
 }

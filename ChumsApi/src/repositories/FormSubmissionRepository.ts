@@ -31,4 +31,8 @@ export class FormSubmissionRepository {
         return DB.queryOne("SELECT * FROM formSubmissions WHERE id=? AND churchId=?;", [id, churchId]);
     }
 
+    public async loadAll(churchId: number) {
+        return DB.query("SELECT * FROM formSubmissions WHERE churchId=?;", [churchId]);
+    }
+
 }

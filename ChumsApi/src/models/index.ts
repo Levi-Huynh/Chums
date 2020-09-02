@@ -1,5 +1,6 @@
 export * from './requests';
 export { Answer } from './Answer';
+export { AttendanceRecord } from './AttendanceRecord';
 export { Campus } from './Campus';
 export { ContactInfo } from './ContactInfo';
 export { Donation } from './Donation';

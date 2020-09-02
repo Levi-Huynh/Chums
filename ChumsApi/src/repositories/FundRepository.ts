@@ -31,4 +31,8 @@ export class FundRepository {
         return DB.queryOne("SELECT * FROM funds WHERE id=? AND churchId=?;", [id, churchId]);
     }
 
+    public async loadAll(churchId: number) {
+        return DB.query("SELECT * FROM funds WHERE churchId=?;", [churchId]);
+    }
+
 }
