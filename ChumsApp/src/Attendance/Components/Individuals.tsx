@@ -15,7 +15,7 @@ export const Individuals: React.FC<Props> = (props) => {
             var p = people[i];
             rows.push(<tr>
                 <td><img src={PersonHelper.getPhotoUrl(p)} alt="avatar" /></td>
-                <td>{p.displayName}</td>
+                <td>{p.name.display}</td>
             </tr>);
         }
         return rows;

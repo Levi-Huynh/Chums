@@ -98,7 +98,7 @@ export const DonationEdit: React.FC<Props> = (props) => {
         </>
         );
         else {
-            var personText = (donation.person === undefined || donation.person === null) ? ('Anonymous') : donation.person.displayName;
+            var personText = (donation.person === undefined || donation.person === null) ? ('Anonymous') : donation.person.name.display;
             return (<div>
                 <a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); setShowSelectPerson(true); }}>{personText}</a>
             </div>);

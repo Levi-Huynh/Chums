@@ -56,7 +56,7 @@ export const HouseholdEdit: React.FC<Props> = (props) => {
                 <tr key={m.id} data-index={i} >
                     <td><img src={PersonHelper.getPhotoUrl(m.person)} alt="avatar" /></td>
                     <td>
-                        {m.person.displayName}
+                        {m.person.name.display}
                         <select value={m.role} onChange={handleChangeRole} className="form-control form-control-sm">
                             <option value="Head">Head</option>
                             <option value="Spouse">Spouse</option>

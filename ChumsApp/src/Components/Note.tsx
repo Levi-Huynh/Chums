@@ -17,7 +17,7 @@ export const Note: React.FC<Props> = (props) => {
         <div className="note">
             <div className="postedBy">
                 <img src={photoUrl} alt="avatar" />
-                {note.person.displayName} - {displayDuration} ago
+                {note.person.name.display} - {displayDuration} ago
                 </div>
             <p>{note.contents.replace('\n', '<br/>')}</p>
         </div>

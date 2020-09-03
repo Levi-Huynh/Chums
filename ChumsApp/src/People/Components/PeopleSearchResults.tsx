@@ -16,17 +16,14 @@ export const PeopleSearchResults: React.FC<Props> = (props) => {
     const handleAdd = (e: React.MouseEvent) => {
         e.preventDefault();
         if (validate()) {
-            ApiHelper.apiGet('/campuses').then(data => {
-                var campusId = data[0].id;
-                var person = { firstName: firstName, lastName: lastName, campuseId: campusId } as PersonInterface;
-                var household = { name: lastName } as HouseholdInterface;
-                var promises = [];
-                promises.push(ApiHelper.apiPost('/people', [person]).then(data => person.id = data[0]));
-                promises.push(ApiHelper.apiPost('/households', [household]).then(data => household.id = data[0]));
-                Promise.all(promises).then(() => {
-                    var householdMember = { householdId: household.id, personId: person.id, role: 'Head' };
-                    ApiHelper.apiPost('/householdmembers/' + household.id, [householdMember]).then(() => setRedirectUrl('/people/' + person.id));
-                });
+            var person = { name: { first: firstName, last: lastName } } as PersonInterface;
+            var household = { name: lastName } as HouseholdInterface;
+            var promises = [];
+            promises.push(ApiHelper.apiPost('/people', [person]).then(data => person.id = data[0]));
+            promises.push(ApiHelper.apiPost('/households', [household]).then(data => household.id = data[0]));
+            Promise.all(promises).then(() => {
+                var householdMember = { householdId: household.id, personId: person.id, role: 'Head' };
+                ApiHelper.apiPost('/householdmembers/' + household.id, [householdMember]).then(() => setRedirectUrl('/people/' + person.id));
             });
         }
     }
@@ -45,7 +42,7 @@ export const PeopleSearchResults: React.FC<Props> = (props) => {
             var p = props.people[i];
             result.push(<tr key={p.id}>
                 <td><img src={PersonHelper.getPhotoUrl(p)} alt="avatar" /></td>
-                <td><Link to={"/people/" + p.id.toString()}>{p.displayName}</Link></td>
+                <td><Link to={"/people/" + p.id.toString()}>{p.name.display}</Link></td>
             </tr>);
         }
         return result;

@@ -1,9 +1,11 @@
 import { EnvironmentHelper } from "./";
 
+
 export interface AnswerInterface { id?: number, value?: string, questionId?: number, formSubmissionId?: number }
 export interface AttendanceInterface { campus: CampusInterface, service: ServiceInterface, serviceTime: ServiceTimeInterface, group: GroupInterface }
 export interface AttendanceRecordInterface { group: GroupInterface, serviceTime: ServiceTimeInterface, service: ServiceInterface, campus: CampusInterface, week: number, count: number, visitDate: Date }
 export interface CampusInterface { id?: number, name?: string }
+export interface ContactInfoInterface { address1?: string, address2?: string, city?: string, state?: string, zip?: string, homePhone?: string, mobilePhone?: string, workPhone?: string, email?: string }
 export interface DonationBatchInterface { id?: number, name?: string, batchDate?: Date, donationCount?: number, totalAmount?: number }
 export interface DonationInterface { id?: number, batchId?: number, personId?: number, donationDate?: Date, amount?: number, method?: string, methodDetails?: string, notes?: string, person?: PersonInterface, fund?: FundInterface }
 export interface DonationSummaryInterface { week?: number, totalAmount?: number, fund: FundInterface }
@@ -16,9 +18,10 @@ export interface GroupMemberInterface { id?: number, personId: number, person?: 
 export interface GroupServiceTimeInterface { id?: number, groupId?: number, serviceTimeId?: number, serviceTime?: ServiceTimeInterface }
 export interface HouseholdInterface { id?: number, name?: string }
 export interface HouseholdMemberInterface { id?: number, householdId?: number, household?: HouseholdInterface, personId?: number, person?: PersonInterface, role?: string }
+export interface NameInterface { first?: string, middle?: string, last?: string, nick?: string, display?: string }
 export interface NoteInterface { dateAdded?: string, person?: PersonInterface }
 export interface PermissionInterface { contentType?: string, action?: string }
-export interface PersonInterface { id?: number, firstName?: string, middleName?: string, lastName?: string, nickName?: string, displayName?: string, membershipStatus?: string, gender?: string, birthDate?: Date, maritalStatus?: string, anniversary?: Date, address1?: string, address2?: string, city?: string, state?: string, zip?: string, homePhone?: string, mobilePhone?: string, workPhone?: string, email?: string, formSubmissions?: [FormSubmissionInterface], photo?: string, photoUpdated?: Date }
+export interface PersonInterface { id?: number, name: NameInterface, contactInfo: ContactInfoInterface, membershipStatus?: string, gender?: string, birthDate?: Date, maritalStatus?: string, anniversary?: Date, photo?: string, photoUpdated?: Date, householdId?: number, householdRole?: string, userId?: number, formSubmissions?: [FormSubmissionInterface] }
 export interface QuestionInterface { id?: number, formId?: number, title?: string, fieldType?: string, placeholder?: string, description?: string, choices?: [{ value?: string, text?: string }] }
 export interface RegisterInterface { churchName?: string, firstName?: string, lastName?: string, email?: string, password?: string }
 export interface ServiceInterface { id: number, campusId: number, name: string }

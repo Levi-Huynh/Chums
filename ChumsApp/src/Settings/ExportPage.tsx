@@ -102,11 +102,11 @@ export const ExportPage = () => {
         people.forEach((p) => {
             var row = {
                 importKey: p.id,
-                household: p.lastName,
-                lastName: p.lastName, firstName: p.firstName, middleName: p.middleName, nickName: p.nickName,
+                household: p.name.last,
+                lastName: p.name.last, firstName: p.name.first, middleName: p.name.middle, nickName: p.name.nick,
                 birthDate: p.birthDate, gender: p.gender, maritalStatus: p.maritalStatus, membershipStatus: p.membershipStatus,
-                homePhone: p.homePhone, mobilePhone: p.mobilePhone, workPhone: p.workPhone, email: p.email,
-                address1: p.address1, address2: p.address2, city: p.city, state: p.state, zip: p.zip,
+                homePhone: p.contactInfo.homePhone, mobilePhone: p.contactInfo.mobilePhone, workPhone: p.contactInfo.workPhone, email: p.contactInfo.email,
+                address1: p.contactInfo.address1, address2: p.contactInfo.address2, city: p.contactInfo.city, state: p.contactInfo.state, zip: p.contactInfo.zip,
                 photo: (p.photoUpdated === undefined) ? '' : p.id.toString() + '.png'
             }
             data.push(row);

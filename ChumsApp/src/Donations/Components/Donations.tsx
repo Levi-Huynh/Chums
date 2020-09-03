@@ -27,7 +27,7 @@ export const Donations: React.FC<Props> = (props) => {
             const editLink = (canEdit) ? (<a href="about:blank" onClick={showEditDonation} data-id={d.id}>{d.id}</a>) : (<>{d.id}</>);
             rows.push(<tr>
                 <td>{editLink}</td>
-                <td>{d.person?.displayName || 'Anonymous'}</td>
+                <td>{d.person?.name.display || 'Anonymous'}</td>
                 <td>{Helper.formatHtml5Date(d.donationDate)}</td>
                 <td>{Helper.formatCurrency(d.amount)}</td>
             </tr>);

@@ -34,7 +34,7 @@ export const Header: React.FC = () => {
                         <div className="col-6 col-lg-2-5 text-right" style={{ paddingTop: 17 }} id="navRight" >
                             <a href="about:blank" onClick={toggleUserMenu} id="userMenuLink">
                                 <img src={PersonHelper.getPhotoUrl(UserHelper.person)} alt="user" />
-                                {UserHelper.person.displayName} <i className="fas fa-caret-down"></i>
+                                {UserHelper.person.name.display} <i className="fas fa-caret-down"></i>
                             </a>
                         </div>
                     </Row>

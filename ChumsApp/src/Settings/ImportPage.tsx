@@ -1,7 +1,7 @@
 import React from 'react';
 import { UserHelper, ImportPreview, ImportHelper, InputBox, UploadHelper, ImportStatus } from './Components';
 import {
-    ImportHouseholdMemberInterface, ImportPersonInterface, ImportHouseholdInterface
+    ImportPersonInterface, ImportHouseholdInterface
     , ImportCampusInterface, ImportServiceInterface, ImportServiceTimeInterface
     , ImportGroupInterface, ImportGroupMemberInterface, ImportGroupServiceTimeInterface
     , ImportVisitInterface, ImportSessionInterface, ImportVisitSessionInterface
@@ -13,7 +13,6 @@ import AdmZip from 'adm-zip';
 export const ImportPage = () => {
     const [people, setPeople] = React.useState<ImportPersonInterface[]>([]);
     const [households, setHouseholds] = React.useState<ImportHouseholdInterface[]>([]);
-    const [householdMembers, setHouseholdMembers] = React.useState<ImportHouseholdMemberInterface[]>([]);
     const [triggerRender, setTriggerRender] = React.useState(0);
 
     const [campuses, setCampuses] = React.useState<ImportCampusInterface[]>([]);
@@ -144,12 +143,14 @@ export const ImportPage = () => {
     const loadPeople = (data: any, allFiles: AdmZip.IZipEntry[]) => {
         var people: ImportPersonInterface[] = [];
         var households: ImportHouseholdInterface[] = [];
-        var householdMembers: ImportHouseholdMemberInterface[] = [];
 
         for (let i = 0; i < data.length; i++) {
             if (data[i].lastName !== undefined) {
                 const p = data[i] as ImportPersonInterface;
-                assignHousehold(households, householdMembers, data[i]);
+                p.name = { first: data[i].firstName, last: data[i].lastName, middle: data[i].middleName, nick: data[i].nickName, display: data[i].displayName }
+                p.contactInfo = { address1: data[i].address1, address2: data[i].address2, city: data[i].city, state: data[i].state, zip: data[i].zip, homePhone: data[i].homePhone, workPhone: data[i].workPhone, email: data[i].email }
+
+                assignHousehold(households, data[i]);
                 if (p.photo !== undefined) UploadHelper.readZippedImage(allFiles, p.photo).then((url: string) => {
                     p.photo = url; setTriggerRender(Math.random());
                 });
@@ -158,14 +159,13 @@ export const ImportPage = () => {
         }
         setPeople(people);
         setHouseholds(households);
-        setHouseholdMembers(householdMembers);
         return people;
     }
 
-    const assignHousehold = (households: ImportHouseholdInterface[], householdMembers: ImportHouseholdMemberInterface[], person: any) => {
+    const assignHousehold = (households: ImportHouseholdInterface[], person: any) => {
         var householdName: string = person.householdName;
         if (households.length === 0 || households[households.length - 1].name !== householdName) households.push({ name: householdName, importKey: (households.length + 1).toString() } as ImportHouseholdInterface);
-        householdMembers.push({ householdKey: households[households.length - 1].importKey, personKey: person.importKey } as ImportHouseholdMemberInterface);
+        person.householdKey = households[households.length - 1].importKey;
     }
 
 
@@ -181,7 +181,7 @@ export const ImportPage = () => {
 
     const getData = () => {
         return {
-            people: people, households: households, householdMembers: householdMembers,
+            people: people, households: households,
             campuses: campuses, services: services, serviceTimes: serviceTimes,
             groupServiceTimes: groupServiceTimes, groups: groups, groupMembers: groupMembers,
             visits: visits, sessions: sessions, visitSessions: visitSessions,

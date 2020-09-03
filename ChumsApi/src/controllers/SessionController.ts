@@ -28,9 +28,9 @@ export class SessionController extends CustomBaseController {
             if (!au.checkAccess("Attendance", "Edit")) return this.json({}, 401);
             else {
                 const promises: Promise<Session>[] = [];
-                req.body.forEach(session => { if (session.churchId === au.churchId) promises.push(this.repositories.session.save(session)); });
+                req.body.forEach(session => { session.churchId = au.churchId; promises.push(this.repositories.session.save(session)); });
                 const result = await Promise.all(promises);
-                return this.json(result);
+                return result;
             }
         });
     }

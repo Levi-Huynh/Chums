@@ -14,11 +14,11 @@ export const ImportPreview: React.FC<Props> = (props) => {
                 var rows = [];
                 for (let i = 0; i < props.importData.households.length; i++) {
                     rows.push(<tr><td colSpan={3}><i>{props.importData.households[i].name} Household</i></td></tr>);
-                    var members = ImportHelper.getHouseholdMembers(props.importData.householdMembers, props.importData.households[i].importKey, props.importData.people);
+                    var members = ImportHelper.getHouseholdMembers(props.importData.households[i].importKey, props.importData.people);
                     for (let j = 0; j < members.length; j++) {
-                        var p = members[j].person;
+                        var p = members[j];
                         var imgTag = (p.photo === undefined) ? null : <img src={p.photo} className="personPhoto" alt="person" />;
-                        rows.push(<tr><td>{imgTag}</td><td>{p.firstName}</td><td>{p.lastName}</td></tr>);
+                        rows.push(<tr><td>{imgTag}</td><td>{p.name.first}</td><td>{p.name.last}</td></tr>);
                     }
                 }
                 return (<Table>
@@ -95,7 +95,7 @@ export const ImportPreview: React.FC<Props> = (props) => {
                 var batch: ImportDonationBatchInterface = ImportHelper.getByImportKey(props.importData.batches, donation.batchKey);
                 var fund: ImportFundInterface = ImportHelper.getByImportKey(props.importData.funds, fd.fundKey);
                 var person: ImportPersonInterface = ImportHelper.getByImportKey(props.importData.people, donation.personKey);
-                var personName = (person === null) ? '' : person.firstName + ' ' + person.lastName;
+                var personName = (person === null) ? '' : person.name.first + ' ' + person.name.last;
                 rows.push(<tr><td>{Helper.prettyDate(donation.donationDate)}</td><td>{batch.name}</td><td>{personName}</td><td>{fund.name}</td><td>{Helper.formatCurrency(fd.amount)}</td></tr>);
             }
             return (<Table>

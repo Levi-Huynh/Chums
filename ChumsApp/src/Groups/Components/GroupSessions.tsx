@@ -40,7 +40,7 @@ export const GroupSessions: React.FC<Props> = (props) => {
             result.push(
                 <tr>
                     <td><img className="personPhoto" src={PersonHelper.getPhotoUrl(vs.visit.person)} alt="avatar" /></td>
-                    <td><a className="personName" href={"/people/person.aspx?id=" + vs.visit.personId}>{vs.visit.person.displayName}</a></td>
+                    <td><a className="personName" href={"/people/person.aspx?id=" + vs.visit.personId}>{vs.visit.person.name.display}</a></td>
                     <td>{editLink}</td>
                 </tr >
             );

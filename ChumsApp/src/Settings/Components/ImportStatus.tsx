@@ -1,6 +1,6 @@
 import React from 'react';
 import { DisplayBox, ImportHelper, ApiHelper, InputBox } from '.';
-import { ImportGroupInterface, ImportGroupMemberInterface, ImportCampusInterface, ImportServiceInterface, ImportServiceTimeInterface, ImportGroupServiceTimeInterface, ImportPersonInterface, ImportHouseholdInterface, ImportHouseholdMemberInterface, ImportVisitInterface, ImportSessionInterface, ImportVisitSessionInterface, ImportDonationBatchInterface, ImportDonationInterface, ImportFundInterface, ImportFundDonationInterface, ImportDataInterface } from '../../Utils/ImportHelper';
+import { ImportGroupInterface, ImportGroupMemberInterface, ImportCampusInterface, ImportServiceInterface, ImportServiceTimeInterface, ImportGroupServiceTimeInterface, ImportPersonInterface, ImportHouseholdInterface, ImportVisitInterface, ImportSessionInterface, ImportVisitSessionInterface, ImportDonationBatchInterface, ImportDonationInterface, ImportFundInterface, ImportFundDonationInterface, ImportDataInterface } from '../../Utils/ImportHelper';
 
 interface Props { importData: ImportDataInterface }
 
@@ -20,23 +20,16 @@ export const ImportStatus: React.FC<Props> = (props) => {
         var tmpBatches: ImportDonationBatchInterface[] = [...props.importData.batches];
         var tmpDonations: ImportDonationInterface[] = [...props.importData.donations];
 
-        await runImport('Funds', async () => {
-            var data = await ApiHelper.apiPost('/funds', tmpFunds);
-            for (let i = 0; i < data.length; i++) tmpFunds[i].id = data[i];
-        });
+        await runImport('Funds', async () => { tmpFunds = await ApiHelper.apiPost('/funds', tmpFunds); });
 
-        await runImport('Donation Batches', async () => {
-            var data = await ApiHelper.apiPost('/donationbatches', tmpBatches);
-            for (let i = 0; i < data.length; i++) tmpBatches[i].id = data[i];
-        });
+        await runImport('Donation Batches', async () => { tmpBatches = await ApiHelper.apiPost('/donationbatches', tmpBatches); });
 
         await runImport('Donations', async () => {
             tmpDonations.forEach((d) => {
                 d.batchId = ImportHelper.getByImportKey(tmpBatches, d.batchKey).id;
                 d.personId = ImportHelper.getByImportKey(tmpPeople, d.personKey)?.id;
             });
-            var data = await ApiHelper.apiPost('/donations', tmpDonations);
-            for (let i = 0; i < data.length; i++) tmpDonations[i].id = data[i];
+            tmpDonations = await ApiHelper.apiPost('/donations', tmpDonations);
         });
 
         await runImport('Donation Funds', async () => {
@@ -45,21 +38,19 @@ export const ImportStatus: React.FC<Props> = (props) => {
                 fd.donationId = ImportHelper.getByImportKey(tmpDonations, fd.donationKey).id;
                 fd.fundId = ImportHelper.getByImportKey(tmpFunds, fd.fundKey).id;
             });
-            await ApiHelper.apiPost('/funddonations', tmpFundDonations);
+            tmpFundDonations = await ApiHelper.apiPost('/funddonations', tmpFundDonations);
         });
     }
 
     const importAttendance = async (tmpPeople: ImportPersonInterface[], tmpGroups: ImportGroupInterface[], tmpServices: ImportServiceInterface[], tmpServiceTimes: ImportServiceTimeInterface[]) => {
         var tmpSessions: ImportSessionInterface[] = [...props.importData.sessions];
         var tmpVisits: ImportVisitInterface[] = [...props.importData.visits];
-
         await runImport('Group Sessions', async () => {
             tmpSessions.forEach((s) => {
                 s.groupId = ImportHelper.getByImportKey(tmpGroups, s.groupKey).id;
                 s.serviceTimeId = ImportHelper.getByImportKey(tmpServiceTimes, s.serviceTimeKey).id;
             });
-            var data = await ApiHelper.apiPost('/sessions', tmpSessions);
-            for (let i = 0; i < data.length; i++) tmpSessions[i].id = data[i];
+            tmpSessions = await ApiHelper.apiPost('/sessions', tmpSessions);
         });
 
         await runImport('Visits', async () => {
@@ -71,8 +62,7 @@ export const ImportStatus: React.FC<Props> = (props) => {
                     v.groupId = ImportHelper.getByImportKey(tmpGroups, v.groupKey).id;
                 }
             });
-            var data = await ApiHelper.apiPost('/visits', tmpVisits);
-            for (let i = 0; i < data.length; i++) tmpVisits[i].id = data[i];
+            tmpVisits = await ApiHelper.apiPost('/visits', tmpVisits);
         });
 
         await runImport('Group Attendance', async () => {
@@ -81,7 +71,7 @@ export const ImportStatus: React.FC<Props> = (props) => {
                 vs.visitId = ImportHelper.getByImportKey(tmpVisits, vs.visitKey).id;
                 vs.sessionId = ImportHelper.getByImportKey(tmpSessions, vs.sessionKey).id;
             });
-            await ApiHelper.apiPost('/visitsessions', tmpVisitSessions);
+            tmpVisitSessions = await ApiHelper.apiPost('/visitsessions', tmpVisitSessions);
         });
     }
 
@@ -90,17 +80,14 @@ export const ImportStatus: React.FC<Props> = (props) => {
         var tmpTimes: ImportGroupServiceTimeInterface[] = [...props.importData.groupServiceTimes];
         var tmpMembers: ImportGroupMemberInterface[] = [...props.importData.groupMembers];
 
-        await runImport('Groups', async () => {
-            var data = await ApiHelper.apiPost('/groups', tmpGroups);
-            for (let i = 0; i < data.length; i++) tmpGroups[i].id = data[i];
-        });
+        await runImport('Groups', async () => { tmpGroups = await ApiHelper.apiPost('/groups', tmpGroups); });
 
         await runImport('Group Service Times', async () => {
             tmpTimes.forEach((gst) => {
                 gst.groupId = ImportHelper.getByImportKey(tmpGroups, gst.groupKey).id
                 gst.serviceTimeId = ImportHelper.getByImportKey(tmpServiceTimes, gst.serviceTimeKey).id
             });
-            await ApiHelper.apiPost('/groupservicetimes', tmpTimes);
+            tmpTimes = await ApiHelper.apiPost('/groupservicetimes', tmpTimes);
         });
 
         await runImport('Group Members', async () => {
@@ -108,7 +95,7 @@ export const ImportStatus: React.FC<Props> = (props) => {
                 gm.groupId = ImportHelper.getByImportKey(tmpGroups, gm.groupKey).id
                 gm.personId = ImportHelper.getByImportKey(tmpPeople, gm.personKey).id
             });
-            await ApiHelper.apiPost('/groupmembers', tmpMembers);
+            tmpMembers = await ApiHelper.apiPost('/groupmembers', tmpMembers);
         });
 
         return tmpGroups;
@@ -120,20 +107,17 @@ export const ImportStatus: React.FC<Props> = (props) => {
         var tmpServiceTimes: ImportServiceTimeInterface[] = [...props.importData.serviceTimes];
 
         await runImport('Campuses', async () => {
-            var data = await ApiHelper.apiPost('/campuses', tmpCampuses);
-            for (let i = 0; i < data.length; i++) tmpCampuses[i].id = data[i];
+            tmpCampuses = await ApiHelper.apiPost('/campuses', tmpCampuses);
         });
 
         await runImport('Services', async () => {
             tmpServices.forEach((s) => { s.campusId = ImportHelper.getByImportKey(tmpCampuses, s.campusKey).id });
-            var data = await ApiHelper.apiPost('/services', tmpServices);
-            for (let i = 0; i < data.length; i++) tmpServices[i].id = data[i];
+            tmpServices = await ApiHelper.apiPost('/services', tmpServices);
         });
 
         await runImport('Service Times', async () => {
             tmpServiceTimes.forEach((st) => { st.serviceId = ImportHelper.getByImportKey(tmpServices, st.serviceKey).id });
-            var data = await ApiHelper.apiPost('/servicetimes', tmpServiceTimes);
-            for (let i = 0; i < data.length; i++) tmpServiceTimes[i].id = data[i];
+            tmpServiceTimes = await ApiHelper.apiPost('/servicetimes', tmpServiceTimes);
         });
 
         return { campuses: tmpCampuses, services: tmpServices, serviceTimes: tmpServiceTimes };
@@ -142,37 +126,23 @@ export const ImportStatus: React.FC<Props> = (props) => {
     const importPeople = async () => {
         var tmpPeople: ImportPersonInterface[] = [...props.importData.people];
         var tmpHouseholds: ImportHouseholdInterface[] = [...props.importData.households];
-        var tmpHouseholdMembers: ImportHouseholdMemberInterface[] = [];
 
         tmpPeople.forEach((p) => {
             if (p.birthDate !== undefined) p.birthDate = new Date(p.birthDate);
         });
 
+        await runImport('Households', async () => { tmpHouseholds = await ApiHelper.apiPost('/households', tmpHouseholds); });
+
         await runImport('People', async () => {
-            var data = await ApiHelper.apiPost('/people', tmpPeople);
-            for (let i = 0; i < data.length; i++) tmpPeople[i].id = data[i];
-        });
 
-        await runImport('Households', async () => {
-            var data = await ApiHelper.apiPost('/households', tmpHouseholds);
-            for (let i = 0; i < data.length; i++) tmpHouseholds[i].id = data[i];
-        });
-
-        await runImport('Household Members', async () => {
-            props.importData.householdMembers.forEach((hm) => {
+            tmpPeople.forEach((p) => {
                 try {
-                    hm.personId = ImportHelper.getByImportKey(tmpPeople, hm.personKey).id;
-                    hm.householdId = ImportHelper.getByImportKey(tmpHouseholds, hm.householdKey).id;
-                    hm.role = 'Other';
-                    tmpHouseholdMembers.push(hm);
+                    p.householdId = ImportHelper.getByImportKey(tmpHouseholds, p.householdKey).id;
+                    p.householdRole = 'Other';
                 } catch { }
             });
-            var promises: Promise<any>[] = [];
-            tmpHouseholds.forEach((h) => {
-                var hm = ImportHelper.getHouseholdMembers(tmpHouseholdMembers, h.importKey, null);
-                promises.push(ApiHelper.apiPost('/householdmembers/' + h.id, hm));
-            });
-            await Promise.all(promises);
+
+            tmpPeople = await ApiHelper.apiPost('/people', tmpPeople);
         });
 
         return tmpPeople;
@@ -201,7 +171,7 @@ export const ImportStatus: React.FC<Props> = (props) => {
     }
 
     if (importing) {
-        var steps = ['Campuses', 'Services', 'Service Times', 'People', 'Households', 'Household Members', 'Groups', 'Group Service Times', 'Group Members', 'Group Sessions', 'Visits', 'Group Attendance', 'Funds', 'Donation Batches', 'Donations', 'Donation Funds'];
+        var steps = ['Campuses', 'Services', 'Service Times', 'Households', 'People', 'Groups', 'Group Service Times', 'Group Members', 'Group Sessions', 'Visits', 'Group Attendance', 'Funds', 'Donation Batches', 'Donations', 'Donation Funds'];
         var stepsHtml: JSX.Element[] = [];
         steps.forEach((s) => stepsHtml.push(getProgress(s)));
         return (

@@ -8,9 +8,8 @@ export interface ImportGroupServiceTimeInterface extends GroupServiceTimeInterfa
 export interface ImportGroupInterface extends GroupInterface { importKey: string, serviceTimeKey: string }
 export interface ImportGroupMemberInterface extends GroupMemberInterface { groupKey: string, personKey: string }
 
-export interface ImportPersonInterface extends PersonInterface { importKey: string }
+export interface ImportPersonInterface extends PersonInterface { importKey: string, householdKey?: string, }
 export interface ImportHouseholdInterface extends HouseholdInterface { importKey: string }
-export interface ImportHouseholdMemberInterface extends HouseholdMemberInterface { householdKey?: string, personKey?: string }
 
 export interface ImportSessionInterface extends SessionInterface { importKey: string, groupKey: string, serviceTimeKey: string }
 export interface ImportVisitInterface extends VisitInterface { importKey: string, personKey: string, serviceKey: string, groupKey: string }
@@ -24,7 +23,6 @@ export interface ImportFundDonationInterface extends FundDonationInterface { fun
 export interface ImportDataInterface {
     people: ImportPersonInterface[],
     households: ImportHouseholdInterface[]
-    householdMembers: ImportHouseholdMemberInterface[]
     campuses: ImportCampusInterface[]
     services: ImportServiceInterface[]
     serviceTimes: ImportServiceTimeInterface[]
@@ -55,9 +53,8 @@ export class ImportHelper {
     static getServices(services: ImportServiceInterface[], campusKey: string) { return ArrayHelper.getAll(services, 'campusKey', campusKey) as ImportServiceInterface[]; }
     static getServiceTimes(serviceTimes: ImportServiceTimeInterface[], serviceKey: string) { return ArrayHelper.getAll(serviceTimes, 'serviceKey', serviceKey) as ImportServiceTimeInterface[]; }
     static getGroupServiceTimes(groupServiceTimes: ImportGroupServiceTimeInterface[], serviceTimeKey: string) { return ArrayHelper.getAll(groupServiceTimes, 'serviceTimeKey', serviceTimeKey) as ImportGroupServiceTimeInterface[]; }
-    static getHouseholdMembers(householdMembers: ImportHouseholdMemberInterface[], householdKey: string, people: ImportPersonInterface[]) {
-        var result = ArrayHelper.getAll(householdMembers, 'householdKey', householdKey) as ImportHouseholdMemberInterface[];
-        if (people !== null) for (let i = 0; i < result.length; i++) result[i].person = this.getPerson(people, result[i].personKey);
+    static getHouseholdMembers(householdKey: string, people: ImportPersonInterface[]) {
+        var result = ArrayHelper.getAll(people, 'householdKey', householdKey) as ImportPersonInterface[];
         return result;
     };
 
