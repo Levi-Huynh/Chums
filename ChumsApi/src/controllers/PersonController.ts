@@ -13,6 +13,13 @@ export class PersonController extends CustomBaseController {
         });
     }
 
+    @httpGet("/userid/:userId")
+    public async getByUserId(@requestParam("userId") userId: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
+        return this.actionWrapper(req, res, async (au) => {
+            return await this.repositories.person.loadByUserId(userId, au.churchId);
+        });
+    }
+
     @httpGet("/")
     public async getAll(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {

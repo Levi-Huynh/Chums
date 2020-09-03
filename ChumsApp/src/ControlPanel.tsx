@@ -9,7 +9,7 @@ import { Logout } from './Logout';
 export const ControlPanel = () => {
     var user = React.useContext(UserContext).userName; //to force rerender on login
     if (user === null) return null;
-    const getHandler = () => { return (ApiHelper.apiKey === '') ? <Unauthenticated /> : <Authenticated />; }
+    const getHandler = () => { return (ApiHelper.jwt === '') ? <Unauthenticated /> : <Authenticated />; }
     return (
         <Switch>
             <Route path="/logout"><Logout /></Route>

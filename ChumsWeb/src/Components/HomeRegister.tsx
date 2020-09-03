@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import { ApiHelper, RegisterInterface, RoleInterface, LoginResponseInterface, RolePermissionInterface, RoleMemberInterface, ErrorMessages, EnvironmentHelper, ChurchInterface, CampusInterface, UserInterface, PersonInterface, HouseholdInterface, GroupInterface, GroupServiceTimeInterface, ServiceInterface, ServiceTimeInterface, FundInterface } from './';
 import { Row, Col, Container, Button } from 'react-bootstrap'
 
@@ -34,7 +34,10 @@ export const HomeRegister: React.FC = () => {
         if (validate()) {
             setProcessing(true);
             btn.innerHTML = "Registering. Please wait...";
-            const churchId = await createAccess();
+            const loginResp = await createAccess();
+            const churchId = loginResp.churches[0].id;
+            const userId = loginResp.user.id;
+
 
             btn.innerHTML = "Configuring...";
 
@@ -50,7 +53,7 @@ export const HomeRegister: React.FC = () => {
             await Promise.all(promises);
 
             promises = [];
-            var person: PersonInterface = { contactInfo: { email: register.email }, name: { first: firstName, last: lastName }, householdId: household.id, householdRole: "Head" };
+            var person: PersonInterface = { contactInfo: { email: register.email }, name: { first: firstName, last: lastName }, householdId: household.id, householdRole: "Head", userId: userId };
             promises.push(ApiHelper.apiPost("/people", [person]).then(p => person = p));
             var service: ServiceInterface = { campusId: campus.id, name: "Sunday Morning" };
             promises.push(ApiHelper.apiPost("/services", [service]).then(s => service = s));
@@ -80,14 +83,14 @@ export const HomeRegister: React.FC = () => {
 
         await addAdminRole(church, resp.user)
 
-        resp = await ApiHelper.apiPost(EnvironmentHelper.AccessManagementApiUrl + '/users/switchApp', { churchId: church.id, appName: "StreamingLive" });
+        resp = await ApiHelper.apiPost(EnvironmentHelper.AccessManagementApiUrl + '/users/switchApp', { churchId: church.id, appName: "CHUMS" });
         ApiHelper.jwt = resp.token;
 
-        return church.id;
+        return resp;
     }
 
     const addAdminRole = async (church: ChurchInterface, user: UserInterface) => {
-        var role: RoleInterface = { appName: "StreamingLive", churchId: church.id, name: "Admins" };
+        var role: RoleInterface = { appName: "CHUMS", churchId: church.id, name: "Admins" };
         role.id = (await ApiHelper.apiPost(EnvironmentHelper.AccessManagementApiUrl + '/roles', [role]))[0].id;
 
         const member: RoleMemberInterface = { churchId: church.id, roleId: role.id, userId: user.id };

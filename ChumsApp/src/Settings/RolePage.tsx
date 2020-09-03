@@ -10,16 +10,21 @@ export const RolePage = ({ match }: RouteComponentProps<TParams>) => {
     const [role, setRole] = React.useState<RoleInterface>({} as RoleInterface);
 
     const loadData = () => { ApiHelper.apiGet('/roles/' + match.params.id).then(data => setRole(data)); }
-    const addPerson = (p: PersonInterface) => {
-        var rm: RoleMemberInterface = { roleId: role.id, personId: p.id };
-        ApiHelper.apiPost('/rolemembers', [rm]).then(loadData);
-    }
+
+    /*
+        const addPerson = (p: PersonInterface) => {
+            var rm: RoleMemberInterface = { roleId: role.id, personId: p.id };
+            ApiHelper.apiPost('/rolemembers', [rm]).then(loadData);
+        }
+        */
     const getSidebar = () => {
+        return <></>
+        /*
         if (!UserHelper.checkAccess('Roles', 'Edit')) return (null);
         else return (<>
             <DisplayBox id="roleMemberAddBox" headerIcon="fas fa-user" headerText="Add Person"><PersonAdd addFunction={addPerson} /></DisplayBox>
             <RolePermissions role={role} />
-        </>);
+        </>);*/
     }
 
     React.useEffect(loadData, []);

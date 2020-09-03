@@ -12,7 +12,7 @@ export class EnvironmentHelper {
 
     static initDev = () => {
         EnvironmentHelper.AccessManagementApiUrl = process.env.REACT_APP_ACCESSMANAGEMENT_API_URL || "";
-        EnvironmentHelper.ChumsApiUrl = process.env.REACT_APP_STREAMINGLIVE_API_URL || "";
+        EnvironmentHelper.ChumsApiUrl = process.env.REACT_APP_CHUMS_API_URL || "";
     }
 
     //NOTE: None of these values are secret.

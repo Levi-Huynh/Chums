@@ -7,8 +7,8 @@ import UserContext from './UserContext'
 export const Logout = () => {
     const context = React.useContext(UserContext)
 
-    document.cookie = "apiKey=";
-    ApiHelper.apiKey = '';
+    //document.cookie = "apiKey=";
+    //ApiHelper.apiKey = '';
     context.setUserName('');
     return <Redirect to="/" />
 }

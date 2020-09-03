@@ -22,9 +22,11 @@ export const RoleMembers: React.FC<Props> = (props) => {
     }
 
     const getMemberByPersonId = React.useCallback((personId: number) => {
+        return null;
+        /*
         var result = null;
         for (var i = 0; i < roleMembers.length; i++) if (roleMembers[i].personId === personId) result = roleMembers[i];
-        return result;
+        return result;*/
     }, [roleMembers]);
 
     const handleAdd = React.useCallback(() => {
@@ -39,6 +41,8 @@ export const RoleMembers: React.FC<Props> = (props) => {
     }, [props, roleMembers, getMemberByPersonId]);
 
     const getRows = () => {
+        return <></>;
+        /*
         var canEdit = UserHelper.checkAccess('Group Members', 'Edit');
         var rows = [];
         for (let i = 0; i < roleMembers.length; i++) {
@@ -52,7 +56,7 @@ export const RoleMembers: React.FC<Props> = (props) => {
                 </tr>
             );
         }
-        return rows;
+        return rows;*/
     }
 
 

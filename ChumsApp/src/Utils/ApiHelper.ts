@@ -1,8 +1,9 @@
+import { EnvironmentHelper } from "./";
+
 export interface AnswerInterface { id?: number, value?: string, questionId?: number, formSubmissionId?: number }
 export interface AttendanceInterface { campus: CampusInterface, service: ServiceInterface, serviceTime: ServiceTimeInterface, group: GroupInterface }
 export interface AttendanceRecordInterface { group: GroupInterface, serviceTime: ServiceTimeInterface, service: ServiceInterface, campus: CampusInterface, week: number, count: number, visitDate: Date }
 export interface CampusInterface { id?: number, name?: string }
-export interface ChurchInterface { id?: number }
 export interface DonationBatchInterface { id?: number, name?: string, batchDate?: Date, donationCount?: number, totalAmount?: number }
 export interface DonationInterface { id?: number, batchId?: number, personId?: number, donationDate?: Date, amount?: number, method?: string, methodDetails?: string, notes?: string, person?: PersonInterface, fund?: FundInterface }
 export interface DonationSummaryInterface { week?: number, totalAmount?: number, fund: FundInterface }
@@ -20,38 +21,56 @@ export interface PermissionInterface { contentType?: string, action?: string }
 export interface PersonInterface { id?: number, firstName?: string, middleName?: string, lastName?: string, nickName?: string, displayName?: string, membershipStatus?: string, gender?: string, birthDate?: Date, maritalStatus?: string, anniversary?: Date, address1?: string, address2?: string, city?: string, state?: string, zip?: string, homePhone?: string, mobilePhone?: string, workPhone?: string, email?: string, formSubmissions?: [FormSubmissionInterface], photo?: string, photoUpdated?: Date }
 export interface QuestionInterface { id?: number, formId?: number, title?: string, fieldType?: string, placeholder?: string, description?: string, choices?: [{ value?: string, text?: string }] }
 export interface RegisterInterface { churchName?: string, firstName?: string, lastName?: string, email?: string, password?: string }
-export interface RoleInterface { id: number, name: string }
-export interface RoleMemberInterface { id?: number, roleId: number, personId: number, person?: PersonInterface, role?: RoleInterface }
-export interface RolePermissionInterface { id?: number, roleId: number, contentType: string, action: string }
 export interface ServiceInterface { id: number, campusId: number, name: string }
 export interface ServiceTimeInterface { id: number, name: string, longName?: string, serviceId: number }
 export interface SessionInterface { id: number, groupId: number, serviceTimeId: number, sessionDate: Date, displayName: string }
-export interface UserMappingInterface { church?: ChurchInterface, personId?: number }
-export interface UserInterface { apiKey: string, name: string }
+export interface UserInterface { id?: number, name: string }
 export interface VisitInterface { id?: number, personId?: number, serviceId?: number, groupId?: number, visitDate?: Date, visitSessions?: VisitSessionInterface[], person?: PersonInterface }
 export interface VisitSessionInterface { id?: number, visitId?: number, sessionId?: number, visit?: VisitInterface, session?: SessionInterface }
 
+//AccessManagment
+export interface ApplicationInterface { name: string, permissions: RolePermissionInterface[] }
+export interface ChurchInterface { id?: number, name: string, registrationDate?: Date, apps?: ApplicationInterface[] }
+export interface LoginResponseInterface { user: UserInterface, churches: ChurchInterface[], token: string }
+export interface RegisterInterface { churchName?: string, displayName?: string, email?: string, password?: string }
+export interface RoleInterface { id?: number, churchId?: number, appName?: string, name?: string }
+export interface RolePermissionInterface { id?: number, churchId?: number, roleId?: number, appName?: string, contentType?: string, contentId?: number, action?: string }
+export interface RoleMemberInterface { id?: number, churchId?: number, roleId?: number, userId?: number, user?: UserInterface }
+export interface ResetPasswordRequestInterface { userEmail: string, fromEmail: string, subject: string, body: string }
+export interface ResetPasswordResponseInterface { emailed: boolean }
+export interface SwitchAppRequestInterface { appName: string, churchId: number }
+export interface SwitchAppResponseInterface { appName: string, churchId: number }
+export interface UserInterface { id?: number, email?: string, authGuid?: string, displayName?: string, registrationDate?: Date, lastLogin?: Date, password?: string }
+
 export class ApiHelper {
-    //*** What's a good way to toggle this based on environment?
-    static baseUrl = 'https://api.chums.org';
-    //static baseUrl = 'http://localhost:50494';
-    static apiKey = '';
+    static jwt = '';
+    static amJwt = '';
+
+    static getUrl(path: string) {
+        if (path.indexOf("://") > -1) return path;
+        else return EnvironmentHelper.ChumsApiUrl + path;
+    }
 
     static async apiGet(path: string) {
-        const requestOptions = { method: 'GET', headers: { 'Authorization': 'Bearer ' + this.apiKey } };
-        var promise = fetch(this.baseUrl + path, requestOptions)
-            .then(response => response.json())
-            .catch(error => console.warn(error));
-        return promise;
+        const requestOptions = { method: 'GET', headers: { 'Authorization': 'Bearer ' + this.jwt } };
+        return fetch(this.getUrl(path), requestOptions).then(response => response.json())
     }
 
     static async apiPost(path: string, data: any[] | {}) {
         const requestOptions = {
             method: 'POST',
-            headers: { 'Authorization': 'Bearer ' + this.apiKey, 'Content-Type': 'application/json' },
+            headers: { 'Authorization': 'Bearer ' + this.jwt, 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         };
-        return fetch(this.baseUrl + path, requestOptions).then(response => response.json())
+        return fetch(this.getUrl(path), requestOptions).then(response => response.json())
+    }
+
+    static async apiDelete(path: string) {
+        const requestOptions = {
+            method: 'DELETE',
+            headers: { 'Authorization': 'Bearer ' + this.jwt }
+        };
+        return fetch(this.getUrl(path), requestOptions);
     }
 
     static async apiPostAnonymous(path: string, data: any[] | {}) {
@@ -60,23 +79,7 @@ export class ApiHelper {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         };
-        return fetch(this.baseUrl + path, requestOptions).then(response => response.json())
-    }
-
-    static async apiDelete(path: string) {
-        const requestOptions = {
-            method: 'DELETE',
-            headers: { 'Authorization': 'Bearer ' + this.apiKey }
-        };
-        return fetch(this.baseUrl + path, requestOptions);
-    }
-
-    static async login(email: string, password: string) {
-        var data = { Email: email, Password: password };
-        const requestOptions = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) };
-        return fetch(this.baseUrl + '/users/login', requestOptions)
-            .then(response => response.json());
+        return fetch(this.getUrl(path), requestOptions).then(response => response.json())
     }
 
 }
-

@@ -1,11 +1,9 @@
 import React from 'react';
 import './Login.css';
-import { ErrorMessages, ApiHelper, UserHelper } from './Components';
+import { ErrorMessages, ApiHelper, UserHelper, EnvironmentHelper, LoginResponseInterface } from './Components';
 import UserContext from './UserContext'
 import { Button, FormControl } from 'react-bootstrap'
 import { Redirect } from 'react-router-dom';
-
-interface LoginResponse { apiToken: string, name: string }
 
 
 export const Login: React.FC = (props: any) => {
@@ -24,18 +22,34 @@ export const Login: React.FC = (props: any) => {
 
     const handleSubmit = (e: React.MouseEvent) => {
         e.preventDefault();
-        if (validate()) login({ Email: email, Password: password });
+        if (validate()) login({ email: email, password: password });
     }
 
     const init = () => {
-        let search = new URLSearchParams(props.location.search);
-        var apiKey = search.get('guid') || getCookieValue('apiKey');
-        if (apiKey !== '') login({ resetGuid: apiKey });
+        //let search = new URLSearchParams(props.location.search);
+        //var apiKey = search.get('guid') || getCookieValue('apiKey');
+        //if (apiKey !== '') login({ resetGuid: apiKey });
     }
 
     const login = (data: {}) => {
+        ApiHelper.apiPostAnonymous(EnvironmentHelper.AccessManagementApiUrl + '/users/login', data).then((resp: LoginResponseInterface) => {
+            ApiHelper.jwt = resp.token;
+            ApiHelper.amJwt = resp.token;
+            UserHelper.user = resp.user;
+            UserHelper.churches = [];
+            resp.churches.forEach(c => {
+                var add = false;
+                c.apps.forEach(a => { if (a.name === "CHUMS") add = true; })
+                if (add) UserHelper.churches.push(c);
+            });
+            selectChurch();
+        }).catch((e) => {
+            throw e;
+            //window.location.href = '/';
+        });
+
+        /*
         const requestOptions = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) };
-        console.log('fetching');
         fetch(ApiHelper.baseUrl + '/users/login', requestOptions)
             .then(response => response.json())
             .then(data => {
@@ -47,13 +61,18 @@ export const Login: React.FC = (props: any) => {
                     document.cookie = "apiKey=" + data.apiToken;
                 }
             })
-            .catch(error => document.cookie = '');
+            .catch(error => document.cookie = '');*/
+    }
+
+
+    const selectChurch = () => {
+        UserHelper.selectChurch(UserHelper.churches[0].id, context);
     }
 
     const context = React.useContext(UserContext)
     React.useEffect(init, []);
 
-    if (context.userName === '' || ApiHelper.apiKey === '') {
+    if (context.userName === '' || ApiHelper.jwt === '') {
         return (
 
             <div className="smallCenterBlock">
@@ -66,7 +85,6 @@ export const Login: React.FC = (props: any) => {
                     <Button id="signInButton" size="lg" variant="primary" block onClick={handleSubmit} >Sign in</Button>
                     <br />
                     <div className="text-right">
-                        <a href="/#register">Register</a> &nbsp; | &nbsp;
                         <a href="/forgot">Forgot Password</a>&nbsp;
                     </div>
                 </div>
