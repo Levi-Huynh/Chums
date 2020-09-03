@@ -36,6 +36,7 @@ export class CustomBaseController extends BaseHttpController {
         try {
             return await fetchFunction(this.authUser());
         } catch (e) {
+            console.log(e);
             this.logger.logger.error(e);
             return this.internalServerError(e);
         }

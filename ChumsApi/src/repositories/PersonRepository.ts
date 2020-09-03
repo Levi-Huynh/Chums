@@ -53,15 +53,16 @@ export class PersonRepository {
     }
 
     public async search(churchId: number, term: string) {
+        console.log(term);
         return DB.query(
-            "SELECT * FROM people WHERE churchId=? AND concat(IFNULL(FirstName,''), ' ', IFNULL(MiddleName,''), ' ', IFNULL(NickName,''), ' ', IFNULL(LastName,'')) LIKE ? LIMIT 100;",
+            "SELECT * FROM people WHERE churchId=? AND concat(IFNULL(FirstName,''), ' ', IFNULL(MiddleName,''), ' ', IFNULL(NickName,''), ' ', IFNULL(LastName,'')) LIKE ? AND removed=0 LIMIT 100;",
             [churchId, "%" + term.replace(" ", "%") + "%"]
         );
     }
 
     public async searchPhone(churchId: number, phoneNumber: string) {
         return DB.query(
-            "SELECT * FROM people WHERE churchId=? AND (REPLACE(HomePhone,'-','') LIKE @PhoneNumber OR REPLACE(WorkPhone,'-','') LIKE @PhoneNumber OR REPLACE(MobilePhone,'-','') LIKE @PhoneNumber) LIMIT 100;",
+            "SELECT * FROM people WHERE churchId=? AND (REPLACE(HomePhone,'-','') LIKE @PhoneNumber OR REPLACE(WorkPhone,'-','') LIKE @PhoneNumber OR REPLACE(MobilePhone,'-','') LIKE @PhoneNumber) AND removed=0 LIMIT 100;",
             [churchId, "%" + phoneNumber.replace(" ", "%") + "%"]
         );
     }

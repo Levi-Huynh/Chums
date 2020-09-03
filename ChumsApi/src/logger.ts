@@ -23,6 +23,6 @@ export class WinstonLogger {
       const wc = new WinstonCloudWatch({ logGroupName: 'Chums', logStreamName: 'API' });
       this._logger = winston.createLogger({ transports: [wc], format: winston.format.json() });
     }
-    this._logger.info("Logger initialized");
+    // this._logger.info("Logger initialized");
   }
 }

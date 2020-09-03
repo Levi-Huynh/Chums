@@ -15,4 +15,5 @@ export class Person {
     public householdId?: number;
     public householdRole?: string;
     public photoUpdated?: Date;
+    public photo: string;
 }
