@@ -6,7 +6,7 @@ export class Person {
     public churchId?: number;
     public userId?: number;
     public name?: Name;
-    public contactInfo: ContactInfo;
+    public contactInfo?: ContactInfo;
     public birthDate?: Date;
     public gender?: string;
     public maritalStatus?: string;
@@ -15,5 +15,5 @@ export class Person {
     public householdId?: number;
     public householdRole?: string;
     public photoUpdated?: Date;
-    public photo: string;
+    public photo?: string;
 }

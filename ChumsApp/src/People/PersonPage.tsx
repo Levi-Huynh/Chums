@@ -30,7 +30,7 @@ export const PersonPage = ({ match }: RouteComponentProps<TParams>) => {
             </Col>
             <Col lg={4}>
                 {getImageEditor()}
-                <Household personId={person?.id} reload={person?.photoUpdated} />
+                <Household person={person} reload={person?.photoUpdated} />
                 {getGroups()}
             </Col>
         </Row >

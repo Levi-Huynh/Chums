@@ -1,3 +1,5 @@
+import { Person } from "./Person";
+
 export class Note {
     public id?: number;
     public churchId?: number;
@@ -7,4 +9,6 @@ export class Note {
     public addedBy?: number;
     public dateAdded?: Date;
     public contents: string;
+
+    public person: Person;
 }

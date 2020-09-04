@@ -11,7 +11,13 @@ export const Note: React.FC<Props> = (props) => {
 
     if (note === null) return null;
     const photoUrl = PersonHelper.getPhotoUrl(note.person);
-    const displayDuration = Helper.getDisplayDuration(new Date(note.dateAdded + 'Z'));
+    var datePosted = new Date(note.dateAdded);
+    console.log(datePosted);
+    console.log(datePosted.getTimezoneOffset());
+    datePosted.setTime(datePosted.getTime() - (datePosted.getTimezoneOffset() * 60 * 1000));
+    console.log(datePosted);
+    const displayDuration = Helper.getDisplayDuration(datePosted);
+
 
     return (
         <div className="note">

@@ -2,7 +2,7 @@ import { controller, httpPost, httpGet, interfaces, requestParam, httpDelete, re
 import express from "express";
 import { CustomBaseController } from "./CustomBaseController"
 import { Person } from "../models"
-import { AwsHelper } from "../helpers"
+import { AwsHelper, PersonHelper } from "../helpers"
 
 @controller("/people")
 export class PersonController extends CustomBaseController {
@@ -90,15 +90,12 @@ export class PersonController extends CustomBaseController {
             photo: data.photo, anniversary: data.anniversary, birthDate: data.birthDate, gender: data.gender, householdId: data.householdId, householdRole: data.householdRole, maritalStatus: data.maritalStatus,
             membershipStatus: data.membershipStatus, photoUpdated: data.photoUpdated, id: data.id, userId: data.userId
         }
-        result.name.display = this.getDisplayName(result.name.first, result.name.last, result.name.nick);
-        if (result.photo === undefined) result.photo = this.getPhotoUrl(result);
+        result.name.display = PersonHelper.getDisplayName(result);
+        if (result.photo === undefined) result.photo = PersonHelper.getPhotoUrl(result);
         return result;
     }
 
-    public getDisplayName(first: string, last: string, nick: string) {
-        if (nick !== null && nick !== "") return first + " \"" + nick + "\" " + last;
-        else return first + " " + last;
-    }
+
 
     private convertAllToModel(data: any[]) {
         const result: Person[] = [];
@@ -116,10 +113,7 @@ export class PersonController extends CustomBaseController {
         });
     }
 
-    private getPhotoUrl(person: Person) {
-        if (person.photoUpdated === null) return "/images/sample-profile.png";
-        else return "/content/c/" + person.churchId + "/p/" + person.id + ".png" + "?dt=" + person.photoUpdated.getTime().toString();
-    }
+
 
 
 }

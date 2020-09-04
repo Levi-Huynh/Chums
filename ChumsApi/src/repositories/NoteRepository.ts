@@ -32,11 +32,12 @@ export class NoteRepository {
     }
 
     public async loadForContent(churchId: number, contentType: string, contentId: number) {
-        return DB.query("SELECT * FROM notes WHERE churchId=? AND contentType=? AND contentId=?;", [churchId, contentType, contentId]);
+        return DB.query("SELECT n.*, p.photoUpdated, p.firstName, p.lastName, p.nickName FROM notes n INNER JOIN people p on p.churchId=n.churchId AND p.userId=n.addedBy WHERE n.churchId=? AND n.contentType=? AND n.contentId=?;", [churchId, contentType, contentId]);
     }
 
     public async loadAll(churchId: number) {
         return DB.query("SELECT * FROM notes WHERE churchId=?;", [churchId]);
     }
+
 
 }

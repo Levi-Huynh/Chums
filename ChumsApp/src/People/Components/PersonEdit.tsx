@@ -100,19 +100,19 @@ export const PersonEdit: React.FC<Props> = (props) => {
                             <Col lg={4}>
                                 <FormGroup>
                                     <FormLabel>First Name</FormLabel>
-                                    <FormControl name="firstName" value={person?.name.first || ''} onChange={handleChange} />
+                                    <FormControl name="firstName" value={person?.name?.first || ''} onChange={handleChange} />
                                 </FormGroup>
                             </Col>
                             <Col lg={4}>
                                 <FormGroup>
                                     <FormLabel>Middle Name</FormLabel>
-                                    <FormControl name="middleName" value={person?.name.middle || ''} onChange={handleChange} />
+                                    <FormControl name="middleName" value={person?.name?.middle || ''} onChange={handleChange} />
                                 </FormGroup>
                             </Col>
                             <Col lg={4}>
                                 <FormGroup>
                                     <FormLabel>Last Name</FormLabel>
-                                    <FormControl name="lastName" value={person?.name.last || ''} onChange={handleChange} />
+                                    <FormControl name="lastName" value={person?.name?.last || ''} onChange={handleChange} />
                                 </FormGroup>
                             </Col>
                         </Row>
@@ -120,7 +120,7 @@ export const PersonEdit: React.FC<Props> = (props) => {
                             <Col lg={4}>
                                 <FormGroup>
                                     <FormLabel>Nickname</FormLabel>
-                                    <FormControl name="nickName" value={person?.name.nick || ''} onChange={handleChange} />
+                                    <FormControl name="nickName" value={person?.name?.nick || ''} onChange={handleChange} />
                                 </FormGroup>
                             </Col>
                             <Col lg={4}>
@@ -179,23 +179,23 @@ export const PersonEdit: React.FC<Props> = (props) => {
                         <div className="section">Address</div>
                         <FormGroup>
                             <FormLabel>Line 1</FormLabel>
-                            <FormControl name="address1" value={person?.contactInfo.address1 || ''} onChange={handleChange} />
+                            <FormControl name="address1" value={person?.contactInfo?.address1 || ''} onChange={handleChange} />
                         </FormGroup>
                         <FormGroup>
                             <FormLabel>Line 2</FormLabel>
-                            <FormControl name="address2" value={person?.contactInfo.address2 || ''} onChange={handleChange} />
+                            <FormControl name="address2" value={person?.contactInfo?.address2 || ''} onChange={handleChange} />
                         </FormGroup>
                         <Row>
                             <Col xs={6}>
                                 <FormGroup>
                                     <FormLabel>City</FormLabel>
-                                    <FormControl type="text" name="city" value={person?.contactInfo.city || ''} onChange={handleChange} />
+                                    <FormControl type="text" name="city" value={person?.contactInfo?.city || ''} onChange={handleChange} />
                                 </FormGroup>
                             </Col>
                             <Col xs={3}>
                                 <FormGroup>
                                     <FormLabel>State</FormLabel>
-                                    <FormControl as="select" name="state" value={person?.contactInfo.state || ''} onChange={handleChange}>
+                                    <FormControl as="select" name="state" value={person?.contactInfo?.state || ''} onChange={handleChange}>
                                         <StateOptions />
                                     </FormControl>
                                 </FormGroup>
@@ -203,7 +203,7 @@ export const PersonEdit: React.FC<Props> = (props) => {
                             <Col xs={3}>
                                 <FormGroup>
                                     <FormLabel>Zip</FormLabel>
-                                    <FormControl type="text" name="zip" value={person?.contactInfo.zip || ''} onChange={handleChange} />
+                                    <FormControl type="text" name="zip" value={person?.contactInfo?.zip || ''} onChange={handleChange} />
                                 </FormGroup>
                             </Col>
                         </Row>
@@ -212,22 +212,22 @@ export const PersonEdit: React.FC<Props> = (props) => {
                         <div className="section">Phone</div>
                         <FormGroup>
                             <FormLabel>Home</FormLabel>
-                            <FormControl type="text" name="homePhone" value={person?.contactInfo.homePhone || ''} onChange={handleChange} />
+                            <FormControl type="text" name="homePhone" value={person?.contactInfo?.homePhone || ''} onChange={handleChange} />
                         </FormGroup>
                         <FormGroup>
                             <FormLabel>Work</FormLabel>
-                            <FormControl type="text" name="workPhone" value={person?.contactInfo.workPhone || ''} onChange={handleChange} />
+                            <FormControl type="text" name="workPhone" value={person?.contactInfo?.workPhone || ''} onChange={handleChange} />
                         </FormGroup>
                         <FormGroup>
                             <FormLabel>Mobile</FormLabel>
-                            <FormControl type="text" name="mobilePhone" value={person?.contactInfo.mobilePhone || ''} onChange={handleChange} />
+                            <FormControl type="text" name="mobilePhone" value={person?.contactInfo?.mobilePhone || ''} onChange={handleChange} />
                         </FormGroup>
                     </Col>
                     <Col xs={3}>
                         <div className="section">Email</div>
                         <FormGroup>
                             <FormLabel>Email</FormLabel>
-                            <FormControl type="text" name="email" value={person?.contactInfo.email || ''} onChange={handleChange} />
+                            <FormControl type="text" name="email" value={person?.contactInfo?.email || ''} onChange={handleChange} />
                         </FormGroup>
                     </Col>
                 </Row>

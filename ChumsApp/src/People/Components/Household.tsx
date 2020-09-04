@@ -1,9 +1,10 @@
 import React from 'react';
-import { DisplayBox, PersonHelper, ApiHelper, HouseholdEdit, UserHelper } from './';
+import { DisplayBox, PersonHelper, ApiHelper, HouseholdEdit, UserHelper, PersonInterface } from './';
 import { Link } from 'react-router-dom';
 import { Table } from 'react-bootstrap';
 
-interface Props { personId: number, reload: any }
+
+interface Props { person: PersonInterface, reload: any }
 
 export const Household: React.FC<Props> = (props) => {
     const [household, setHousehold] = React.useState(null);
@@ -12,11 +13,11 @@ export const Household: React.FC<Props> = (props) => {
 
     const handleEdit = () => setMode('edit');
     const handleUpdate = () => { loadData(); loadMembers(); setMode('display'); }
-    const loadData = () => { if (props.personId > 0) ApiHelper.apiGet('/households?personId=' + props.personId).then(data => setHousehold(data[0])); }
+    const loadData = () => { if (props.person?.householdId > 0) ApiHelper.apiGet('/households/' + props?.person.householdId).then(data => setHousehold(data[0])); }
     const loadMembers = () => { if (household != null) { ApiHelper.apiGet('/householdmembers?householdId=' + household.id).then(data => setMembers(data)); } }
     const getEditFunction = () => { return (UserHelper.checkAccess('Households', 'Edit')) ? handleEdit : null }
 
-    React.useEffect(loadData, [props.personId]);
+    React.useEffect(loadData, [props.person]);
     React.useEffect(loadMembers, [household?.id | props.reload]);
 
     var rows = [];

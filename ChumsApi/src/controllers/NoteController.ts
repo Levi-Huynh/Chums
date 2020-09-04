@@ -2,6 +2,7 @@ import { controller, httpPost, httpGet, interfaces, requestParam, httpDelete } f
 import express from "express";
 import { CustomBaseController } from "./CustomBaseController"
 import { Note } from "../models"
+import { PersonHelper } from "../helpers";
 
 @controller("/notes")
 export class NoteController extends CustomBaseController {
@@ -18,7 +19,9 @@ export class NoteController extends CustomBaseController {
     public async getForContent(@requestParam("contentType") contentType: string, @requestParam("contentId") contentId: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("People", "View Notes")) return this.json({}, 401);
-            else return await this.repositories.note.loadForContent(au.churchId, contentType, contentId);
+            else return await this.repositories.note.loadForContent(au.churchId, contentType, contentId).then(data => {
+                return this.convertAllToModel(data)
+            });
         });
     }
 
@@ -36,9 +39,9 @@ export class NoteController extends CustomBaseController {
             if (!au.checkAccess("People", "Edit Notes")) return this.json({}, 401);
             else {
                 const promises: Promise<Note>[] = [];
-                req.body.forEach(note => { note.churchId = au.churchId; promises.push(this.repositories.note.save(note)); });
+                req.body.forEach(note => { note.churchId = au.churchId; note.addedBy = au.id; promises.push(this.repositories.note.save(note)); });
                 const result = await Promise.all(promises);
-                return this.json(result);
+                return result;
             }
         });
     }
@@ -50,5 +53,24 @@ export class NoteController extends CustomBaseController {
             else await this.repositories.note.delete(id, au.churchId);
         });
     }
+
+    private convertToModel(data: any) {
+        const result: Note = {
+            person: { photoUpdated: data.photoUpdate, name: { first: data.firstName, last: data.lastName, nick: data.nickName } },
+            contentId: data.contentId, contentType: data.contentType, contents: data.contents, id: data.id, addedBy: data.addedBy, dateAdded: data.dateAdded, noteType: data.noteType
+        }
+        result.person.photo = PersonHelper.getPhotoUrl(result.person);
+        result.person.name.display = PersonHelper.getDisplayName(result.person);
+        return result;
+    }
+
+
+    private convertAllToModel(data: any[]) {
+        const result: Note[] = [];
+        data.forEach(d => result.push(this.convertToModel(d)));
+        return result;
+    }
+
+
 
 }

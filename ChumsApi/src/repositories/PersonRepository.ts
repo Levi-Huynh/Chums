@@ -30,7 +30,7 @@ export class PersonRepository {
                 person.name.first, person.name.middle, person.name.last, person.name.nick, person.name.prefix, person.name.suffix,
                 person.birthDate, person.gender, person.maritalStatus, person.anniversary, person.membershipStatus,
                 person.contactInfo.homePhone, person.contactInfo.mobilePhone, person.contactInfo.workPhone, person.contactInfo.email, person.contactInfo.address1, person.contactInfo.address2, person.contactInfo.city, person.contactInfo.state, person.contactInfo.zip,
-                person.photoUpdated, person.householdId, person.householdRole
+                person.photoUpdated, person.householdId, person.householdRole, person.id, person.churchId
             ]
         ).then(() => { return person });
     }
