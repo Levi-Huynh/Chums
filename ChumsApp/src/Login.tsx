@@ -26,13 +26,14 @@ export const Login: React.FC = (props: any) => {
     }
 
     const init = () => {
-        //let search = new URLSearchParams(props.location.search);
-        //var apiKey = search.get('guid') || getCookieValue('apiKey');
-        //if (apiKey !== '') login({ resetGuid: apiKey });
+        let search = new URLSearchParams(props.location.search);
+        var jwt = search.get('jwt') || getCookieValue('jwt');
+        if (jwt !== '') login({ jwt: jwt });
     }
 
     const login = (data: {}) => {
         ApiHelper.apiPostAnonymous(EnvironmentHelper.AccessManagementApiUrl + '/users/login', data).then((resp: LoginResponseInterface) => {
+            document.cookie = "jwt=" + resp.token;
             ApiHelper.jwt = resp.token;
             ApiHelper.amJwt = resp.token;
             UserHelper.user = resp.user;
