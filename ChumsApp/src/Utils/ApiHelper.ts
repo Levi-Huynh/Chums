@@ -55,8 +55,15 @@ export class ApiHelper {
     }
 
     static async apiGet(path: string) {
-        const requestOptions = { method: 'GET', headers: { 'Authorization': 'Bearer ' + this.jwt } };
-        return fetch(this.getUrl(path), requestOptions).then(response => response.json())
+        try {
+            const requestOptions = { method: 'GET', headers: { 'Authorization': 'Bearer ' + this.jwt } };
+            return fetch(this.getUrl(path), requestOptions).then(response => response.json())
+        } catch (e) {
+            console.log(path);
+            console.log(e);
+            throw (e);
+
+        }
     }
 
     static async apiPost(path: string, data: any[] | {}) {

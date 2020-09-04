@@ -84,9 +84,12 @@ export class PersonController extends CustomBaseController {
 
 
     private convertToModel(data: any) {
-        const result: Person = data;
-        result.name = { first: data.firstName, last: data.lastName, middle: data.middleName, nick: data.nickName, prefix: data.prefix, suffix: data.suffix };
-        result.contactInfo = { address1: data.address1, address2: data.address2, city: data.city, state: data.state, zip: data.zip, homePhone: data.homePhone, workPhone: data.workPhone, email: data.email };
+        const result: Person = {
+            name: { first: data.firstName, last: data.lastName, middle: data.middleName, nick: data.nickName, prefix: data.prefix, suffix: data.suffix },
+            contactInfo: { address1: data.address1, address2: data.address2, city: data.city, state: data.state, zip: data.zip, homePhone: data.homePhone, workPhone: data.workPhone, email: data.email },
+            photo: data.photo, anniversary: data.anniversary, birthDate: data.birthDate, gender: data.gender, householdId: data.householdId, householdRole: data.householdRole, maritalStatus: data.maritalStatus,
+            membershipStatus: data.membershipStatus, photoUpdated: data.photoUpdated, id: data.id, userId: data.userId
+        }
         result.name.display = this.getDisplayName(result.name.first, result.name.last, result.name.nick);
         if (result.photo === undefined) result.photo = this.getPhotoUrl(result);
         return result;
@@ -105,10 +108,10 @@ export class PersonController extends CustomBaseController {
 
     private async savePhoto(person: Person) {
         const base64 = person.photo.split(',')[1];
-        const key = "c/" + person.churchId + "/p/" + person.id + ".png";
+        const key = "content/c/" + person.churchId + "/p/" + person.id + ".png";
         return AwsHelper.S3Upload(key, "image/png", Buffer.from(base64, 'base64')).then(() => {
             person.photoUpdated = new Date();
-            person.photo = "/content/" + key + "?dt=" + person.photoUpdated.getTime().toString();
+            person.photo = "/" + key + "?dt=" + person.photoUpdated.getTime().toString();
             this.repositories.person.save(person);
         });
     }

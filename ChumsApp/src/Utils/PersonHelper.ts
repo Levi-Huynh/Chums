@@ -1,8 +1,9 @@
 import { PersonInterface } from './ApiHelper';
+import { EnvironmentHelper } from '../Components';
 
 export class PersonHelper {
     static getPhotoUrl(person: PersonInterface) {
-        return 'https://app.chums.org' + person.photo;
+        return EnvironmentHelper.ContentRoot + person.photo;
     }
 
     static getAge(birthdate: Date): string {

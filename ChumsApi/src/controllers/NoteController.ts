@@ -14,6 +14,14 @@ export class NoteController extends CustomBaseController {
         });
     }
 
+    @httpGet("/:contentType/:contentId")
+    public async getForContent(@requestParam("contentType") contentType: string, @requestParam("contentId") contentId: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
+        return this.actionWrapper(req, res, async (au) => {
+            if (!au.checkAccess("People", "View Notes")) return this.json({}, 401);
+            else return await this.repositories.note.loadForContent(au.churchId, contentType, contentId);
+        });
+    }
+
     @httpGet("/")
     public async getAll(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {

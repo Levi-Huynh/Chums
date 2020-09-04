@@ -26,10 +26,10 @@ export const init = async () => {
     const app = new InversifyExpressServer(container, null, null, null, CustomAuthProvider);
 
     const configFunction = (expApp: express.Application) => {
-
-        expApp.use(bodyParser({ limit: "50mb" }));
+        // expApp.use(bodyParser({ limit: "50mb" }));
+        // expApp.use()
         expApp.use(bodyParser.urlencoded({ extended: true }));
-        expApp.use(bodyParser.json());
+        expApp.use(bodyParser.json({ limit: "50mb" }));
         expApp.use(cors())
     };
 

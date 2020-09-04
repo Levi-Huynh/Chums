@@ -22,6 +22,7 @@ export const ExportLink: React.FC<Props> = (props) => {
     const getAllPropertyNames = () => {
         var result = [];
         for (let i = 0; i < props.data.length; i++) {
+            console.log(props.data);
             var propertyNames = getPropertyNames('', props.data[i]);
             for (let j = 0; j < propertyNames.length; j++) if (result.indexOf(propertyNames[j]) === -1) result.push(propertyNames[j]);
         }
@@ -30,6 +31,7 @@ export const ExportLink: React.FC<Props> = (props) => {
 
     const getPropertyNames = (prefix: string, obj: any) => {
         var result = [];
+        console.log(obj);
         var names = Object.getOwnPropertyNames(obj)
         for (let i = 0; i < names.length; i++) {
             var t = typeof obj[names[i]];
