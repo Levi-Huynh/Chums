@@ -2,11 +2,11 @@ import React, { ChangeEvent } from 'react';
 import { InputBox, PersonAdd, PersonHelper, ApiHelper, HouseholdInterface, HouseholdMemberInterface, PersonInterface } from './';
 import { Table } from 'react-bootstrap';
 
-interface Props { updatedFunction: () => void, household: HouseholdInterface, members: [HouseholdMemberInterface] }
+interface Props { updatedFunction: () => void, household: HouseholdInterface, members: PersonInterface[] }
 
 export const HouseholdEdit: React.FC<Props> = (props) => {
     const [household, setHousehold] = React.useState<HouseholdInterface>({} as HouseholdInterface);
-    const [members, setMembers] = React.useState<HouseholdMemberInterface[]>([]);
+    const [members, setMembers] = React.useState<PersonInterface[]>([]);
     const [showAdd, setShowAdd] = React.useState(false);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => { let h = { ...household }; h.name = e.currentTarget.value; setHousehold(h); }
@@ -27,21 +27,23 @@ export const HouseholdEdit: React.FC<Props> = (props) => {
         var row = e.currentTarget.parentNode.parentNode as HTMLElement;
         var idx = parseInt(row.getAttribute('data-index'));
         var m = [...members];
-        m[idx].role = e.currentTarget.value;
+        m[idx].householdRole = e.currentTarget.value;
         setMembers(m);
     }
 
     const handlePersonAdd = (person: PersonInterface) => {
-        var member = { householdId: household.id, personId: person.id, person: person, role: 'Other' };
+        person.householdId = household.id;
+        person.householdRole = "Other";
         var m = [...members];
-        m.push(member);
+        m.push(person);
         setMembers(m);
+
     }
 
     const handleSave = () => {
         var promises = [];
         promises.push(ApiHelper.apiPost('/households', [household]));
-        promises.push(ApiHelper.apiPost('/householdmembers/' + household.id, members));
+        promises.push(ApiHelper.apiPost('/people/household/' + household.id, members));
         Promise.all(promises).then(() => props.updatedFunction());
     }
 
@@ -54,10 +56,10 @@ export const HouseholdEdit: React.FC<Props> = (props) => {
             var m = members[i];
             rows.push(
                 <tr key={m.id} data-index={i} >
-                    <td><img src={PersonHelper.getPhotoUrl(m.person)} alt="avatar" /></td>
+                    <td><img src={PersonHelper.getPhotoUrl(m)} alt="avatar" /></td>
                     <td>
-                        {m.person.name.display}
-                        <select value={m.role} onChange={handleChangeRole} className="form-control form-control-sm">
+                        {m.name.display}
+                        <select value={m.householdRole} onChange={handleChangeRole} className="form-control form-control-sm">
                             <option value="Head">Head</option>
                             <option value="Spouse">Spouse</option>
                             <option value="Child">Child</option>

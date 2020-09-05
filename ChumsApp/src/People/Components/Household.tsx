@@ -8,13 +8,15 @@ interface Props { person: PersonInterface, reload: any }
 
 export const Household: React.FC<Props> = (props) => {
     const [household, setHousehold] = React.useState(null);
-    const [members, setMembers] = React.useState(null);
+    const [members, setMembers] = React.useState<PersonInterface[]>(null);
     const [mode, setMode] = React.useState('display');
 
     const handleEdit = () => setMode('edit');
     const handleUpdate = () => { loadData(); loadMembers(); setMode('display'); }
-    const loadData = () => { if (props.person?.householdId > 0) ApiHelper.apiGet('/households/' + props?.person.householdId).then(data => setHousehold(data[0])); }
-    const loadMembers = () => { if (household != null) { ApiHelper.apiGet('/householdmembers?householdId=' + household.id).then(data => setMembers(data)); } }
+    const loadData = () => {
+        if (props.person?.householdId > 0) ApiHelper.apiGet('/households/' + props?.person.householdId).then(data => setHousehold(data));
+    }
+    const loadMembers = () => { if (household != null) { ApiHelper.apiGet('/people/household/' + household.id).then(data => setMembers(data)); } }
     const getEditFunction = () => { return (UserHelper.checkAccess('Households', 'Edit')) ? handleEdit : null }
 
     React.useEffect(loadData, [props.person]);
@@ -27,8 +29,8 @@ export const Household: React.FC<Props> = (props) => {
                 var m = members[i];
                 rows.push(
                     <tr key={m.id}>
-                        <td><img src={PersonHelper.getPhotoUrl(m.person)} alt="avatar" /></td>
-                        <td><Link to={"/people/" + m.personId}>{m.person.name.display}</Link><div>{m.role}</div></td>
+                        <td><img src={PersonHelper.getPhotoUrl(m)} alt="avatar" /></td>
+                        <td><Link to={"/people/" + m.id}>{m.name.display}</Link><div>{m.householdRole}</div></td>
                     </tr>
                 );
             }

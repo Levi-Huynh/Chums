@@ -28,7 +28,7 @@ export class HouseholdController extends CustomBaseController {
                 const promises: Promise<Household>[] = [];
                 req.body.forEach(household => { household.churchId = au.churchId; promises.push(this.repositories.household.save(household)); });
                 const result = await Promise.all(promises);
-                return this.json(result);
+                return result;
             }
         });
     }

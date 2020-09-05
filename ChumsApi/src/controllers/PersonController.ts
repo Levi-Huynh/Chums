@@ -1,11 +1,56 @@
 import { controller, httpPost, httpGet, interfaces, requestParam, httpDelete, results } from "inversify-express-utils";
 import express from "express";
 import { CustomBaseController } from "./CustomBaseController"
-import { Person } from "../models"
+import { Person, Household } from "../models"
 import { AwsHelper, PersonHelper } from "../helpers"
 
 @controller("/people")
 export class PersonController extends CustomBaseController {
+
+    @httpGet("/household/:householdId")
+    public async getHouseholdMembers(@requestParam("householdId") householdId: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
+        return this.actionWrapper(req, res, async (au) => {
+            return this.convertAllToModel(await this.repositories.person.loadByHousehold(au.churchId, householdId));
+        });
+    }
+
+    @httpPost("/household/:householdId")
+    public async saveMembers(@requestParam("householdId") householdId: number, req: express.Request<{}, {}, Person[]>, res: express.Response): Promise<interfaces.IHttpActionResult> {
+        return this.actionWrapper(req, res, async (au) => {
+            if (!au.checkAccess("Households", "Edit")) return this.json({}, 401);
+            else {
+                // save submitted
+                const promises: Promise<Person>[] = [];
+                req.body.forEach(person => { person.churchId = au.churchId; promises.push(this.repositories.person.updateHousehold(person)); });
+                const result = await Promise.all(promises);
+
+                // remove missing
+                const removePromises: Promise<any>[] = [];
+                const dbPeople = await this.repositories.person.loadByHousehold(au.churchId, householdId);
+                dbPeople.forEach((dbPerson: Person) => {
+                    let match = false;
+                    req.body.forEach(person => { if (person.id === dbPerson.id) match = true; })
+                    if (!match) {
+                        const p = this.convertToModel(dbPerson);
+                        p.churchId = au.churchId;
+                        removePromises.push(this.removeFromHousehold(p));
+                    }
+                });
+                if (removePromises.length > 0) await Promise.all(removePromises);
+                this.repositories.household.deleteUnused(au.churchId);
+                return result;
+            }
+        });
+    }
+
+    private async removeFromHousehold(person: Person) {
+        const household: Household = { churchId: person.churchId, name: person.name.last };
+        return this.repositories.household.save(household).then(async h => {
+            person.householdId = h.id;
+            person.householdRole = "Head";
+            await this.repositories.person.updateHousehold(person);
+        });
+    }
 
     @httpGet("/search/phone")
     public async searchPhone(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {

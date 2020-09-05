@@ -23,6 +23,10 @@ export class HouseholdRepository {
         ).then(() => { return household });
     }
 
+    public async deleteUnused(churchId: number) {
+        return DB.query("DELETE FROM households WHERE churchId=? AND id not in (SELECT householdId FROM people WHERE churchId=? AND householdId IS NOT NULL group by householdId)", [churchId, churchId]);
+    }
+
     public async delete(id: number, churchId: number) {
         DB.query("DELETE FROM households WHERE id=? AND churchId=?;", [id, churchId]);
     }

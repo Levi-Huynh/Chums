@@ -27,7 +27,7 @@ export const PersonAdd: React.FC<Props> = (props) => {
             rows.push(
                 <tr key={sr.id}>
                     <td><img src={PersonHelper.getPhotoUrl(sr)} alt="avatar" /></td>
-                    <td>{sr.displayName}</td>
+                    <td>{sr.name.display}</td>
                     <td><a href="about:blank" className="text-success" data-index={i} onClick={handleAdd}><i className="fas fa-user"></i> Add</a></td>
                 </tr>
             );

@@ -35,6 +35,11 @@ export class PersonRepository {
         ).then(() => { return person });
     }
 
+    public async updateHousehold(person: Person) {
+        return DB.query("UPDATE people SET householdId=?, householdRole=? WHERE id=? and churchId=?", [person.householdId, person.householdRole, person.id, person.churchId])
+            .then(() => { return person });
+    }
+
     public async delete(id: number, churchId: number) {
         DB.query("UPDATE people SET removed=1 WHERE id=? AND churchId=?;", [id, churchId]);
     }
@@ -47,9 +52,12 @@ export class PersonRepository {
         return DB.queryOne("SELECT * FROM people WHERE userId=? AND churchId=?;", [userId, churchId]);
     }
 
-    // Need to cast
     public async loadAll(churchId: number) {
         return DB.query("SELECT * FROM people WHERE churchId=?;", [churchId]);
+    }
+
+    public async loadByHousehold(churchId: number, householdId: number) {
+        return DB.query("SELECT * FROM people WHERE churchId=? and householdId=?;", [churchId, householdId]);
     }
 
     public async search(churchId: number, term: string) {
