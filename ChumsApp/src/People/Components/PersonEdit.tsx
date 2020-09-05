@@ -81,7 +81,7 @@ export const PersonEdit: React.FC<Props> = (props) => {
     const photoUrlChanged = useCallback(() => {
         if (props.photoUrl !== null) {
             var p: PersonInterface = { ...person };
-            p.photoUpdated = new Date();
+            p.photo = props.photoUrl;
             setPerson(p);
         }
     }, [props.photoUrl, person]);

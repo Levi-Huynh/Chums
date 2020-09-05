@@ -10,7 +10,7 @@ export class PersonController extends CustomBaseController {
     @httpGet("/household/:householdId")
     public async getHouseholdMembers(@requestParam("householdId") householdId: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            return this.convertAllToModel(await this.repositories.person.loadByHousehold(au.churchId, householdId));
+            return this.convertAllToModel(au.churchId, await this.repositories.person.loadByHousehold(au.churchId, householdId));
         });
     }
 
@@ -31,7 +31,7 @@ export class PersonController extends CustomBaseController {
                     let match = false;
                     req.body.forEach(person => { if (person.id === dbPerson.id) match = true; })
                     if (!match) {
-                        const p = this.convertToModel(dbPerson);
+                        const p = this.convertToModel(au.churchId, dbPerson);
                         p.churchId = au.churchId;
                         removePromises.push(this.removeFromHousehold(p));
                     }
@@ -57,7 +57,7 @@ export class PersonController extends CustomBaseController {
         return this.actionWrapper(req, res, async (au) => {
             const phoneNumber: string = req.query.number.toString();
             const data = await this.repositories.person.searchPhone(au.churchId, phoneNumber);
-            return this.convertAllToModel(data);
+            return this.convertAllToModel(au.churchId, data);
         });
     }
 
@@ -67,7 +67,7 @@ export class PersonController extends CustomBaseController {
             let term: string = req.query.term.toString();
             if (term === null) term = "";
             const data = await this.repositories.person.search(au.churchId, term);
-            return this.convertAllToModel(data);
+            return this.convertAllToModel(au.churchId, data);
         });
     }
 
@@ -75,7 +75,7 @@ export class PersonController extends CustomBaseController {
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             const data = await this.repositories.person.load(id, au.churchId);
-            return this.convertToModel(data);
+            return this.convertToModel(au.churchId, data);
         });
     }
 
@@ -83,7 +83,7 @@ export class PersonController extends CustomBaseController {
     public async getByUserId(@requestParam("userId") userId: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             const data = await this.repositories.person.loadByUserId(userId, au.churchId);
-            return this.convertToModel(data);
+            return this.convertToModel(au.churchId, data);
         });
     }
 
@@ -94,7 +94,7 @@ export class PersonController extends CustomBaseController {
     public async getAll(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             const data = await this.repositories.person.loadAll(au.churchId);
-            return this.convertAllToModel(data);
+            return this.convertAllToModel(au.churchId, data);
         });
     }
 
@@ -108,8 +108,8 @@ export class PersonController extends CustomBaseController {
                     person.churchId = au.churchId;
                     promises.push(
                         this.repositories.person.save(person).then(async (p) => {
-                            const r = this.convertToModel(p);
-                            if (r.photo.startsWith("data:image/png;base64,")) await this.savePhoto(r);
+                            const r = this.convertToModel(au.churchId, p);
+                            if (r.photo.startsWith("data:image/png;base64,")) await this.savePhoto(au.churchId, r);
                             return r;
                         })
                     );
@@ -128,7 +128,7 @@ export class PersonController extends CustomBaseController {
     }
 
 
-    private convertToModel(data: any) {
+    private convertToModel(churchId: number, data: any) {
         const result: Person = {
             name: { first: data.firstName, last: data.lastName, middle: data.middleName, nick: data.nickName, prefix: data.prefix, suffix: data.suffix },
             contactInfo: { address1: data.address1, address2: data.address2, city: data.city, state: data.state, zip: data.zip, homePhone: data.homePhone, workPhone: data.workPhone, email: data.email },
@@ -136,21 +136,21 @@ export class PersonController extends CustomBaseController {
             membershipStatus: data.membershipStatus, photoUpdated: data.photoUpdated, id: data.id, userId: data.userId, importKey: data.importKey
         }
         result.name.display = PersonHelper.getDisplayName(result);
-        if (result.photo === undefined) result.photo = PersonHelper.getPhotoUrl(result);
+        if (result.photo === undefined) result.photo = PersonHelper.getPhotoUrl(churchId, result);
         return result;
     }
 
 
 
-    private convertAllToModel(data: any[]) {
+    private convertAllToModel(churchId: number, data: any[]) {
         const result: Person[] = [];
-        data.forEach(d => result.push(this.convertToModel(d)));
+        data.forEach(d => result.push(this.convertToModel(churchId, d)));
         return result;
     }
 
-    private async savePhoto(person: Person) {
+    private async savePhoto(churchId: number, person: Person) {
         const base64 = person.photo.split(',')[1];
-        const key = "content/c/" + person.churchId + "/p/" + person.id + ".png";
+        const key = "content/c/" + churchId + "/p/" + person.id + ".png";
         return AwsHelper.S3Upload(key, "image/png", Buffer.from(base64, 'base64')).then(() => {
             person.photoUpdated = new Date();
             person.photo = "/" + key + "?dt=" + person.photoUpdated.getTime().toString();

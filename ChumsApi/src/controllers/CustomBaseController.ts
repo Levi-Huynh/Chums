@@ -36,8 +36,10 @@ export class CustomBaseController extends BaseHttpController {
     public async actionWrapper(req: express.Request, res: express.Response, fetchFunction: (au: AuthenticatedUser) => any): Promise<any> {
         try {
             const data = await fetchFunction(this.authUser());
-            const result = OmitEmpty.omitEmpty(data);
-            return result;
+            try {
+                const result = OmitEmpty.omitEmpty(data);
+                return result;
+            } catch { return data; }
         } catch (e) {
             console.log(e);
             this.logger.logger.error(e);

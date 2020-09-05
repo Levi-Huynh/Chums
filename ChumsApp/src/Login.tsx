@@ -28,7 +28,7 @@ export const Login: React.FC = (props: any) => {
     const init = () => {
         let search = new URLSearchParams(props.location.search);
         var jwt = search.get('jwt') || getCookieValue('jwt');
-        if (jwt !== '') login({ jwt: jwt });
+        if (jwt !== "undefined" && jwt !== '') login({ jwt: jwt });
     }
 
     const login = (data: {}) => {

@@ -56,14 +56,22 @@ export const ImageEditor: React.FC<Props> = (props) => {
     }
 
     const handleSave = () => {
+        /*
         var photos = [{ id: props.person.id, url: dataUrl }];
+
         ApiHelper.apiPost('/people/photos', photos).then((d) => {
             props.updatedFunction('https://app.chums.org' + d[0]);
             props.doneFunction();
-        });
+        });*/
+        props.updatedFunction(dataUrl);
+        props.doneFunction();
     }
     const handleCancel = () => { props.updatedFunction(originalUrl); props.doneFunction(); }
-    const handleDelete = () => { ApiHelper.apiDelete('/people/photos/' + props.person.id).then(() => props.doneFunction()); props.updatedFunction('/images/sample-profile.png'); }
+    const handleDelete = () => {
+        //ApiHelper.apiDelete('/people/photos/' + props.person.id).then(() => props.doneFunction()); 
+        props.updatedFunction('/images/sample-profile.png');
+        props.doneFunction();
+    }
     const init = useCallback(() => {
         var startingUrl = PersonHelper.getPhotoUrl(props.person)
         setOriginalUrl(startingUrl);
@@ -77,7 +85,7 @@ export const ImageEditor: React.FC<Props> = (props) => {
             <Cropper
                 ref={cropper}
                 src={currentUrl}
-                style={{ height: 360, width: '100%' }}
+                style={{ height: 240, width: '100%' }}
                 aspectRatio={4 / 3}
                 guides={false}
                 crop={handleCrop} />

@@ -20,7 +20,7 @@ export class NoteController extends CustomBaseController {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("People", "View Notes")) return this.json({}, 401);
             else return await this.repositories.note.loadForContent(au.churchId, contentType, contentId).then(data => {
-                return this.convertAllToModel(data)
+                return this.convertAllToModel(au.churchId, data)
             });
         });
     }
@@ -54,20 +54,20 @@ export class NoteController extends CustomBaseController {
         });
     }
 
-    private convertToModel(data: any) {
+    private convertToModel(churchId: number, data: any) {
         const result: Note = {
             person: { photoUpdated: data.photoUpdate, name: { first: data.firstName, last: data.lastName, nick: data.nickName } },
             contentId: data.contentId, contentType: data.contentType, contents: data.contents, id: data.id, addedBy: data.addedBy, dateAdded: data.dateAdded, noteType: data.noteType
         }
-        result.person.photo = PersonHelper.getPhotoUrl(result.person);
+        result.person.photo = PersonHelper.getPhotoUrl(churchId, result.person);
         result.person.name.display = PersonHelper.getDisplayName(result.person);
         return result;
     }
 
 
-    private convertAllToModel(data: any[]) {
+    private convertAllToModel(churchId: number, data: any[]) {
         const result: Note[] = [];
-        data.forEach(d => result.push(this.convertToModel(d)));
+        data.forEach(d => result.push(this.convertToModel(churchId, d)));
         return result;
     }
 
