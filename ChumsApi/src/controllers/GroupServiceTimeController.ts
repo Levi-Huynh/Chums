@@ -28,7 +28,7 @@ export class GroupServiceTimeController extends CustomBaseController {
                 const promises: Promise<GroupServiceTime>[] = [];
                 req.body.forEach(groupservicetime => { groupservicetime.churchId = au.churchId; promises.push(this.repositories.groupServiceTime.save(groupservicetime)); });
                 const result = await Promise.all(promises);
-                return this.json(result);
+                return result;
             }
         });
     }

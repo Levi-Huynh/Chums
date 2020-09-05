@@ -30,7 +30,7 @@ export class VisitController extends CustomBaseController {
                 const promises: Promise<Visit>[] = [];
                 req.body.forEach(visit => { visit.churchId = au.churchId; promises.push(this.repositories.visit.save(visit)); });
                 const result = await Promise.all(promises);
-                return this.json(result);
+                return result;
             }
         });
     }

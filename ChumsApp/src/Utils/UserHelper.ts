@@ -16,10 +16,10 @@ export class UserHelper {
         else {
             UserHelper.currentChurch = church;
             UserHelper.currentChurch.apps.forEach(app => {
-                if (app.name === "StreamingLive") UserHelper.currentPermissions = app.permissions;
+                if (app.name === "CHUMS") UserHelper.currentPermissions = app.permissions;
             })
 
-            const data: SwitchAppRequestInterface = { appName: "StreamingLive", churchId: UserHelper.currentChurch.id };
+            const data: SwitchAppRequestInterface = { appName: "CHUMS", churchId: UserHelper.currentChurch.id };
             ApiHelper.apiPost(EnvironmentHelper.AccessManagementApiUrl + '/users/switchApp', data).then((resp: LoginResponseInterface) => {
                 ApiHelper.jwt = resp.token;
 

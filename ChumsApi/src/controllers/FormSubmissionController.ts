@@ -30,7 +30,7 @@ export class FormSubmissionController extends CustomBaseController {
                 const promises: Promise<FormSubmission>[] = [];
                 req.body.forEach(formsubmission => { formsubmission.churchId = au.churchId; promises.push(this.repositories.formSubmission.save(formsubmission)); });
                 const result = await Promise.all(promises);
-                return this.json(result);
+                return result;
             }
         });
     }

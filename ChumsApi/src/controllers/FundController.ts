@@ -30,7 +30,7 @@ export class FundController extends CustomBaseController {
                 const promises: Promise<Fund>[] = [];
                 req.body.forEach(fund => { fund.churchId = au.churchId; promises.push(this.repositories.fund.save(fund)); });
                 const result = await Promise.all(promises);
-                return this.json(result);
+                return result;
             }
         });
     }

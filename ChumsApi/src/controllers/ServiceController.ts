@@ -28,7 +28,7 @@ export class ServiceController extends CustomBaseController {
                 const promises: Promise<Service>[] = [];
                 req.body.forEach(service => { service.churchId = au.churchId; promises.push(this.repositories.service.save(service)); });
                 const result = await Promise.all(promises);
-                return this.json(result);
+                return result;
             }
         });
     }

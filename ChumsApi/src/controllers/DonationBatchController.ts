@@ -30,7 +30,7 @@ export class DonationBatchController extends CustomBaseController {
                 const promises: Promise<DonationBatch>[] = [];
                 req.body.forEach(donationbatch => { donationbatch.churchId = au.churchId; promises.push(this.repositories.donationBatch.save(donationbatch)); });
                 const result = await Promise.all(promises);
-                return this.json(result);
+                return result;
             }
         });
     }

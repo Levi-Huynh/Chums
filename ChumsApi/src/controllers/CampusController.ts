@@ -28,7 +28,7 @@ export class CampusController extends CustomBaseController {
         const promises: Promise<Campus>[] = [];
         req.body.forEach(campus => { campus.churchId = au.churchId; promises.push(this.repositories.campus.save(campus)); });
         const result = await Promise.all(promises);
-        return this.json(result);
+        return result;
       }
     });
   }

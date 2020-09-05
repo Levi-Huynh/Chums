@@ -30,7 +30,7 @@ export class FormController extends CustomBaseController {
                 const promises: Promise<Form>[] = [];
                 req.body.forEach(form => { form.churchId = au.churchId; promises.push(this.repositories.form.save(form)); });
                 const result = await Promise.all(promises);
-                return this.json(result);
+                return result;
             }
         });
     }

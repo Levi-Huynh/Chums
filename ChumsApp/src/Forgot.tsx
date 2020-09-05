@@ -27,8 +27,8 @@ export const Forgot = () => {
 
         var req: ResetPasswordRequestInterface = {
             userEmail: email,
-            fromEmail: "support@streaminglive.church",
-            subject: "StreamingLive Password Reset",
+            fromEmail: "support@chums.org",
+            subject: "CHUMS Password Reset",
             body: "Please click here to reset your password: <a href=\"" + resetUrl + "\">" + resetUrl + "</a>"
         };
 

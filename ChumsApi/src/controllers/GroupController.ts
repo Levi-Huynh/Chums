@@ -30,7 +30,7 @@ export class GroupController extends CustomBaseController {
                 const promises: Promise<Group>[] = [];
                 req.body.forEach(group => { group.churchId = au.churchId; promises.push(this.repositories.group.save(group)); });
                 const result = await Promise.all(promises);
-                return this.json(result);
+                return result;
             }
         });
     }

@@ -30,7 +30,7 @@ export class QuestionController extends CustomBaseController {
                 const promises: Promise<Question>[] = [];
                 req.body.forEach(question => { question.churchId = au.churchId; promises.push(this.repositories.question.save(question)); });
                 const result = await Promise.all(promises);
-                return this.json(result);
+                return result;
             }
         });
     }

@@ -11,7 +11,7 @@ export class GroupMemberRepository {
 
     public async create(groupMember: GroupMember) {
         return DB.query(
-            "INSERT INTO groupMembers (churchId, groupId, personId, joinDate) VALUES (churchId, groupId, personId, NOW());",
+            "INSERT INTO groupMembers (churchId, groupId, personId, joinDate) VALUES (?, ?, ?, NOW());",
             [groupMember.churchId, groupMember.groupId, groupMember.personId]
         ).then((row: any) => { groupMember.id = row.insertId; return groupMember; });
     }
@@ -33,6 +33,24 @@ export class GroupMemberRepository {
 
     public async loadAll(churchId: number) {
         return DB.query("SELECT * FROM groupMembers WHERE churchId=?;", [churchId]);
+    }
+
+    public async loadForGroup(churchId: number, groupId: number) {
+        const sql = "SELECT gm.*, p.photoUpdated, p.firstName, p.lastName, p.nickName, p.email"
+            + " FROM groupMembers gm"
+            + " INNER JOIN people p on p.id=gm.personId"
+            + " WHERE gm.churchId=? AND gm.groupId=?"
+            + " ORDER BY p.lastName, p.firstName;"
+        return DB.query(sql, [churchId, groupId]);
+    }
+
+    public async loadForPerson(churchId: number, personId: number) {
+        const sql = "SELECT gm.*, g.name as groupName"
+            + " FROM groupMembers gm"
+            + " INNER JOIN groups g on g.Id=gm.groupId"
+            + " WHERE gm.churchId=? AND gm.personId=?"
+            + " ORDER BY g.name;"
+        return DB.query(sql, [churchId, personId]);
     }
 
 }
