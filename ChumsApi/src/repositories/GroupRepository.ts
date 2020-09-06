@@ -28,11 +28,16 @@ export class GroupRepository {
     }
 
     public async load(id: number, churchId: number) {
-        return DB.queryOne("SELECT * FROM groups WHERE id=? AND churchId=?;", [id, churchId]);
+        return DB.queryOne("SELECT * FROM groups WHERE id=? AND churchId=? AND removed=0;", [id, churchId]);
     }
 
     public async loadAll(churchId: number) {
-        return DB.query("SELECT * FROM groups WHERE churchId=?;", [churchId]);
+        return DB.query("SELECT *, (SELECT COUNT(*) FROM groupMembers gm WHERE gm.groupId=g.id) AS memberCount FROM groups g WHERE churchId=? AND removed=0 ORDER by name;", [churchId]);
+    }
+
+    public async loadByIds(churchId: number, ids: number[]) {
+        const sql = "SELECT * FROM groups WHERE churchId=? AND removed=0 AND id IN (" + ids.join(",") + ") ORDER by name";
+        return DB.query(sql, [churchId]);
     }
 
 }

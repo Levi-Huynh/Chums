@@ -35,4 +35,20 @@ export class ServiceTimeRepository {
         return DB.query("SELECT * FROM serviceTimes WHERE churchId=?;", [churchId]);
     }
 
+    public async loadNamesWithCampusService(churchId: number) {
+        return DB.query("SELECT st.*, concat(c.name, ' - ', s.name, ' - ', st.name) as longName FROM serviceTimes st INNER JOIN services s on s.Id=st.serviceId INNER JOIN campuses c on c.Id=s.campusId WHERE s.churchId=? AND st.removed=0 ORDER BY c.name, s.name, st.name;", [churchId]);
+    }
+
+    public async loadNamesByServiceId(churchId: number, serviceId: number) {
+        return DB.query("SELECT st.*, concat(c.name, ' - ', s.name, ' - ', st.name) as longName FROM serviceTimes st INNER JOIN services s on s.id=st.serviceId INNER JOIN campuses c on c.id=s.campusId WHERE s.churchId=? AND s.id=? AND st.removed=0 ORDER BY c.name, s.name, st.name", [churchId, serviceId]);
+    }
+
+    public async loadByChurchCampusService(churchId: number, campusId: number, serviceId: number) {
+        const sql = "SELECT st.*"
+            + " FROM serviceTimes st"
+            + " LEFT OUTER JOIN services s on s.id=st.serviceId"
+            + " WHERE st.churchId = ? AND(?=0 OR st.serviceId=?) AND (? = 0 OR s.campusId = ?) AND st.removed=0";
+        return DB.query(sql, [churchId, serviceId, serviceId, campusId, campusId]);
+    }
+
 }

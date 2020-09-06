@@ -10,7 +10,7 @@ export class GroupController extends CustomBaseController {
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Groups", "View")) return this.json({}, 401);
-            else return await this.repositories.group.load(id, au.churchId);
+            else return this.convertToModel(await this.repositories.group.load(id, au.churchId));
         });
     }
 
@@ -18,7 +18,7 @@ export class GroupController extends CustomBaseController {
     public async getAll(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Groups", "View")) return this.json({}, 401);
-            else return await this.repositories.group.loadAll(au.churchId);
+            else return this.convertAllToModel(await this.repositories.group.loadAll(au.churchId));
         });
     }
 
@@ -30,7 +30,7 @@ export class GroupController extends CustomBaseController {
                 const promises: Promise<Group>[] = [];
                 req.body.forEach(group => { group.churchId = au.churchId; promises.push(this.repositories.group.save(group)); });
                 const result = await Promise.all(promises);
-                return result;
+                return this.convertAllToModel(result);
             }
         });
     }
@@ -41,6 +41,19 @@ export class GroupController extends CustomBaseController {
             if (!au.checkAccess("Groups", "Edit")) return this.json({}, 401);
             else await this.repositories.group.delete(id, au.churchId);
         });
+    }
+
+
+    private convertToModel(data: any) {
+        console.log(data);
+        const result: Group = { id: data.id, categoryName: data.categoryName, name: data.name, trackAttendance: data.trackAttendance, memberCount: data.memberCount, importKey: data.importKey }
+        return result;
+    }
+
+    private convertAllToModel(data: any[]) {
+        const result: Group[] = [];
+        data.forEach(d => result.push(this.convertToModel(d)));
+        return result;
     }
 
 }

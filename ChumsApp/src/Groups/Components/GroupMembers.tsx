@@ -25,7 +25,6 @@ export const GroupMembers: React.FC<Props> = (props) => {
         ApiHelper.apiDelete('/groupmembers/' + member.id);
     }
 
-    //*** Is there a good way to globally attach methods like this to the GroupMembers interface?
     const getMemberByPersonId = React.useCallback((personId: number) => {
         var result = null;
         for (var i = 0; i < groupMembers.length; i++) if (groupMembers[i].personId === personId) result = groupMembers[i];

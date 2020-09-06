@@ -35,4 +35,19 @@ export class GroupServiceTimeRepository {
         return DB.query("SELECT * FROM groupServiceTimes WHERE churchId=?;", [churchId]);
     }
 
+    public async loadWithServiceNames(churchId: number, groupId: number) {
+        const sql = "SELECT gst.*, concat(c.name, ' - ', s.name, ' - ', st.name) as serviceTimeName"
+            + " FROM groupServiceTimes gst"
+            + " INNER JOIN serviceTimes st on st.id = gst.serviceTimeId"
+            + " INNER JOIN services s on s.id = st.serviceId"
+            + " INNER JOIN campuses c on c.id = s.campusId"
+            + " WHERE gst.churchId=? AND gst.groupId=?";
+        return DB.query(sql, [churchId, groupId]);
+    }
+
+    public async loadByServiceTimeIds(churchId: number, serviceTimeIds: number[]) {
+        const sql = "SELECT * FROM groupServiceTimes WHERE churchId=? AND serviceTimeId IN (" + serviceTimeIds.join(",") + ")";
+        return DB.query(sql, [churchId]);
+    }
+
 }

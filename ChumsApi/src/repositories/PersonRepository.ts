@@ -45,11 +45,11 @@ export class PersonRepository {
     }
 
     public async load(id: number, churchId: number) {
-        return DB.queryOne("SELECT * FROM people WHERE id=? AND churchId=?;", [id, churchId]);
+        return DB.queryOne("SELECT * FROM people WHERE id=? AND churchId=? AND removed=0;", [id, churchId]);
     }
 
     public async loadByUserId(userId: number, churchId: number) {
-        return DB.queryOne("SELECT * FROM people WHERE userId=? AND churchId=?;", [userId, churchId]);
+        return DB.queryOne("SELECT * FROM people WHERE userId=? AND churchId=? AND removed=0;", [userId, churchId]);
     }
 
     public async loadAll(churchId: number) {
@@ -57,7 +57,7 @@ export class PersonRepository {
     }
 
     public async loadByHousehold(churchId: number, householdId: number) {
-        return DB.query("SELECT * FROM people WHERE churchId=? and householdId=?;", [churchId, householdId]);
+        return DB.query("SELECT * FROM people WHERE churchId=? and householdId=? AND removed=0;", [churchId, householdId]);
     }
 
     public async search(churchId: number, term: string) {

@@ -33,10 +33,8 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
     const handleSave = () => {
         if (validate()) {
             ApiHelper.apiPost('/groups', [group]).then(data => {
-                var g = { ...group };
-                g.id = parseInt(data);
-                setGroup(g);
-                props.updatedFunction(g);
+                setGroup(data);
+                props.updatedFunction(data);
             });
         }
     }
