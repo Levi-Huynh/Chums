@@ -10,7 +10,10 @@ export class DonationBatchController extends CustomBaseController {
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Donations", "View Summary")) return this.json({}, 401);
-            else return await this.repositories.donationBatch.load(id, au.churchId);
+            else {
+                const data = await this.repositories.donationBatch.load(id, au.churchId);
+                return this.repositories.donationBatch.convertToModel(au.churchId, data);
+            }
         });
     }
 
@@ -18,7 +21,10 @@ export class DonationBatchController extends CustomBaseController {
     public async getAll(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Donations", "View Summary")) return this.json({}, 401);
-            else return await this.repositories.donationBatch.loadAll(au.churchId);
+            else {
+                const data = await this.repositories.donationBatch.loadAll(au.churchId);
+                return this.repositories.donationBatch.convertAllToModel(au.churchId, data);
+            }
         });
     }
 
@@ -30,7 +36,7 @@ export class DonationBatchController extends CustomBaseController {
                 const promises: Promise<DonationBatch>[] = [];
                 req.body.forEach(donationbatch => { donationbatch.churchId = au.churchId; promises.push(this.repositories.donationBatch.save(donationbatch)); });
                 const result = await Promise.all(promises);
-                return result;
+                return this.repositories.donationBatch.convertAllToModel(au.churchId, result);
             }
         });
     }

@@ -30,7 +30,10 @@ export const DonationEdit: React.FC<Props> = (props) => {
 
     const handleSave = () => {
         ApiHelper.apiPost('/donations', [donation]).then(data => {
-            var id = parseInt(data[0]);
+            var id = data[0].id;
+
+            console.log("DONATION ID");
+            console.log(id);
             var promises = [];
             var fDonations = [...fundDonations];
             for (let i = fDonations.length - 1; i >= 0; i--) {

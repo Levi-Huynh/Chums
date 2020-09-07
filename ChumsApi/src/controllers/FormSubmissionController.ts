@@ -2,7 +2,6 @@ import { controller, httpPost, httpGet, interfaces, requestParam, httpDelete } f
 import express from "express";
 import { CustomBaseController } from "./CustomBaseController"
 import { FormSubmission, Answer } from "../models"
-import { fstat } from "fs-extra";
 
 @controller("/formsubmissions")
 export class FormSubmissionController extends CustomBaseController {

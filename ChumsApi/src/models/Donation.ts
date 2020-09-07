@@ -1,3 +1,5 @@
+import { Person, Fund } from "./"
+
 export class Donation {
     public id?: number;
     public churchId?: number;
@@ -8,4 +10,7 @@ export class Donation {
     public method?: string;
     public methodDetails?: string;
     public notes?: string;
+
+    public person?: Person;
+    public fund?: Fund;
 }

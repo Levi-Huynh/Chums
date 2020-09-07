@@ -32,7 +32,24 @@ export class DonationBatchRepository {
     }
 
     public async loadAll(churchId: number) {
-        return DB.query("SELECT * FROM donationBatches WHERE churchId=?;", [churchId]);
+        const sql = "SELECT *"
+            + " , IFNULL((SELECT Count(*) FROM donations WHERE batchId = db.Id),0) AS donationCount"
+            + " , IFNULL((SELECT SUM(amount) FROM donations WHERE batchId = db.Id),0) AS totalAmount"
+            + " FROM donationBatches db"
+            + " WHERE db.churchId = ?";
+        return DB.query(sql, [churchId]);
+    }
+
+    public convertToModel(churchId: number, data: any) {
+        const result: DonationBatch = { id: data.id, name: data.name, batchDate: data.batchDate, donationCount: data.donationCount, totalAmount: data.totalAmount };
+        return result;
+    }
+
+    public convertAllToModel(churchId: number, data: any[]) {
+        console.log(data);
+        const result: DonationBatch[] = [];
+        data.forEach(d => result.push(this.convertToModel(churchId, d)));
+        return result;
     }
 
 }
