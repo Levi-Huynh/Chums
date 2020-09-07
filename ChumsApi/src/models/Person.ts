@@ -1,5 +1,6 @@
 import { ContactInfo } from './'
 import { Name } from './'
+import { FormSubmission } from './FormSubmission';
 
 export class Person {
     public id?: number;
@@ -17,4 +18,6 @@ export class Person {
     public photoUpdated?: Date;
     public photo?: string;
     public importKey?: string;
+
+    public formSubmissions?: FormSubmission[];
 }

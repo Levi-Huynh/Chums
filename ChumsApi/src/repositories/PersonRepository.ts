@@ -1,6 +1,7 @@
 import { injectable } from "inversify";
 import { DB } from "../db";
 import { Person } from "../models";
+import { PersonHelper } from "../helpers";
 
 @injectable()
 export class PersonRepository {
@@ -73,6 +74,24 @@ export class PersonRepository {
             "SELECT * FROM people WHERE churchId=? AND (REPLACE(HomePhone,'-','') LIKE @PhoneNumber OR REPLACE(WorkPhone,'-','') LIKE @PhoneNumber OR REPLACE(MobilePhone,'-','') LIKE @PhoneNumber) AND removed=0 LIMIT 100;",
             [churchId, "%" + phoneNumber.replace(" ", "%") + "%"]
         );
+    }
+
+    public convertToModel(churchId: number, data: any) {
+        const result: Person = {
+            name: { first: data.firstName, last: data.lastName, middle: data.middleName, nick: data.nickName, prefix: data.prefix, suffix: data.suffix },
+            contactInfo: { address1: data.address1, address2: data.address2, city: data.city, state: data.state, zip: data.zip, homePhone: data.homePhone, workPhone: data.workPhone, email: data.email },
+            photo: data.photo, anniversary: data.anniversary, birthDate: data.birthDate, gender: data.gender, householdId: data.householdId, householdRole: data.householdRole, maritalStatus: data.maritalStatus,
+            membershipStatus: data.membershipStatus, photoUpdated: data.photoUpdated, id: data.id, userId: data.userId, importKey: data.importKey
+        }
+        result.name.display = PersonHelper.getDisplayName(result);
+        if (result.photo === undefined) result.photo = PersonHelper.getPhotoUrl(churchId, result);
+        return result;
+    }
+
+    public convertAllToModel(churchId: number, data: any[]) {
+        const result: Person[] = [];
+        data.forEach(d => result.push(this.convertToModel(churchId, d)));
+        return result;
     }
 
 }

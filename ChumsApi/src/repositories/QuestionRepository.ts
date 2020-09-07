@@ -35,4 +35,19 @@ export class QuestionRepository {
         return DB.query("SELECT * FROM questions WHERE churchId=?;", [churchId]);
     }
 
+    public async loadForForm(churchId: number, formId: number) {
+        return DB.query("SELECT * FROM questions WHERE churchId=? AND formId=? AND removed=0;", [churchId, formId]);
+    }
+
+    public convertToModel(churchId: number, data: any) {
+        const result: Question = { id: data.id, formId: data.formId, parentId: data.parentId, title: data.title, description: data.description, fieldType: data.fieldType, placeholder: data.placeholder, sort: data.sort, choices: data.choices };
+        return result;
+    }
+
+    public convertAllToModel(churchId: number, data: any[]) {
+        const result: Question[] = [];
+        data.forEach(d => result.push(this.convertToModel(churchId, d)));
+        return result;
+    }
+
 }

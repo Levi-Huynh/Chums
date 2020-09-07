@@ -1,8 +1,9 @@
 import { controller, httpPost, httpGet, interfaces, requestParam, httpDelete, results } from "inversify-express-utils";
 import express from "express";
 import { CustomBaseController } from "./CustomBaseController"
-import { Person, Household } from "../models"
+import { Person, Household, FormSubmission, Form } from "../models"
 import { AwsHelper, PersonHelper } from "../helpers"
+import { FormSubmissionController, FormController } from "./"
 
 @controller("/people")
 export class PersonController extends CustomBaseController {
@@ -10,7 +11,7 @@ export class PersonController extends CustomBaseController {
     @httpGet("/household/:householdId")
     public async getHouseholdMembers(@requestParam("householdId") householdId: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            return this.convertAllToModel(au.churchId, await this.repositories.person.loadByHousehold(au.churchId, householdId));
+            return this.repositories.person.convertAllToModel(au.churchId, await this.repositories.person.loadByHousehold(au.churchId, householdId));
         });
     }
 
@@ -31,7 +32,7 @@ export class PersonController extends CustomBaseController {
                     let match = false;
                     req.body.forEach(person => { if (person.id === dbPerson.id) match = true; })
                     if (!match) {
-                        const p = this.convertToModel(au.churchId, dbPerson);
+                        const p = this.repositories.person.convertToModel(au.churchId, dbPerson);
                         p.churchId = au.churchId;
                         removePromises.push(this.removeFromHousehold(p));
                     }
@@ -57,7 +58,7 @@ export class PersonController extends CustomBaseController {
         return this.actionWrapper(req, res, async (au) => {
             const phoneNumber: string = req.query.number.toString();
             const data = await this.repositories.person.searchPhone(au.churchId, phoneNumber);
-            return this.convertAllToModel(au.churchId, data);
+            return this.repositories.person.convertAllToModel(au.churchId, data);
         });
     }
 
@@ -67,7 +68,7 @@ export class PersonController extends CustomBaseController {
             let term: string = req.query.term.toString();
             if (term === null) term = "";
             const data = await this.repositories.person.search(au.churchId, term);
-            return this.convertAllToModel(au.churchId, data);
+            return this.repositories.person.convertAllToModel(au.churchId, data);
         });
     }
 
@@ -75,7 +76,9 @@ export class PersonController extends CustomBaseController {
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             const data = await this.repositories.person.load(id, au.churchId);
-            return this.convertToModel(au.churchId, data);
+            const result = this.repositories.person.convertToModel(au.churchId, data)
+            await this.appendFormSubmissions(au.churchId, result);
+            return result;
         });
     }
 
@@ -83,7 +86,7 @@ export class PersonController extends CustomBaseController {
     public async getByUserId(@requestParam("userId") userId: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             const data = await this.repositories.person.loadByUserId(userId, au.churchId);
-            return this.convertToModel(au.churchId, data);
+            return this.repositories.person.convertToModel(au.churchId, data);
         });
     }
 
@@ -94,7 +97,7 @@ export class PersonController extends CustomBaseController {
     public async getAll(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             const data = await this.repositories.person.loadAll(au.churchId);
-            return this.convertAllToModel(au.churchId, data);
+            return this.repositories.person.convertAllToModel(au.churchId, data);
         });
     }
 
@@ -108,7 +111,7 @@ export class PersonController extends CustomBaseController {
                     person.churchId = au.churchId;
                     promises.push(
                         this.repositories.person.save(person).then(async (p) => {
-                            const r = this.convertToModel(au.churchId, p);
+                            const r = this.repositories.person.convertToModel(au.churchId, p);
                             if (r.photo.startsWith("data:image/png;base64,")) await this.savePhoto(au.churchId, r);
                             return r;
                         })
@@ -128,26 +131,6 @@ export class PersonController extends CustomBaseController {
     }
 
 
-    private convertToModel(churchId: number, data: any) {
-        const result: Person = {
-            name: { first: data.firstName, last: data.lastName, middle: data.middleName, nick: data.nickName, prefix: data.prefix, suffix: data.suffix },
-            contactInfo: { address1: data.address1, address2: data.address2, city: data.city, state: data.state, zip: data.zip, homePhone: data.homePhone, workPhone: data.workPhone, email: data.email },
-            photo: data.photo, anniversary: data.anniversary, birthDate: data.birthDate, gender: data.gender, householdId: data.householdId, householdRole: data.householdRole, maritalStatus: data.maritalStatus,
-            membershipStatus: data.membershipStatus, photoUpdated: data.photoUpdated, id: data.id, userId: data.userId, importKey: data.importKey
-        }
-        result.name.display = PersonHelper.getDisplayName(result);
-        if (result.photo === undefined) result.photo = PersonHelper.getPhotoUrl(churchId, result);
-        return result;
-    }
-
-
-
-    private convertAllToModel(churchId: number, data: any[]) {
-        const result: Person[] = [];
-        data.forEach(d => result.push(this.convertToModel(churchId, d)));
-        return result;
-    }
-
     private async savePhoto(churchId: number, person: Person) {
         const base64 = person.photo.split(',')[1];
         const key = "content/c/" + churchId + "/p/" + person.id + ".png";
@@ -156,6 +139,21 @@ export class PersonController extends CustomBaseController {
             person.photo = "/" + key + "?dt=" + person.photoUpdated.getTime().toString();
             this.repositories.person.save(person);
         });
+    }
+
+    private async appendFormSubmissions(churchId: number, person: Person) {
+        const submissions: FormSubmission[] = this.repositories.formSubmission.convertAllToModel(churchId, await this.repositories.formSubmission.loadForContent(churchId, "person", person.id));
+        if (submissions.length > 0) {
+            const formIds: number[] = [];
+            submissions.forEach(s => { if (formIds.indexOf(s.formId) === -1) formIds.push(s.formId) });
+            const forms: Form[] = this.repositories.form.convertAllToModel(churchId, await this.repositories.form.loadByIds(churchId, formIds));
+
+            person.formSubmissions = [];
+            submissions.forEach(s => {
+                forms.forEach(f => { if (f.id === s.formId) s.form = f; });
+                if (s.form !== undefined) person.formSubmissions.push(s);
+            })
+        }
     }
 
 

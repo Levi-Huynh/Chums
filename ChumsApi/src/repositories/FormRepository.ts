@@ -1,6 +1,7 @@
 import { injectable } from "inversify";
 import { DB } from "../db";
 import { Form } from "../models";
+import { stringify } from "uuid";
 
 @injectable()
 export class FormRepository {
@@ -33,6 +34,23 @@ export class FormRepository {
 
     public async loadAll(churchId: number) {
         return DB.query("SELECT * FROM forms WHERE churchId=?;", [churchId]);
+    }
+
+    public async loadByIds(churchId: number, ids: number[]) {
+        const sql = "SELECT * FROM forms WHERE churchId=? AND removed=0 AND id IN (" + ids.join(",") + ") ORDER by name";
+        return DB.query(sql, [churchId]);
+    }
+
+
+    public convertToModel(churchId: number, data: any) {
+        const result: Form = { id: data.id, name: data.name, contentType: data.contentType, createdTime: data.createdTime, modifiedTime: data.modifiedTime };
+        return result;
+    }
+
+    public convertAllToModel(churchId: number, data: any[]) {
+        const result: Form[] = [];
+        data.forEach(d => result.push(this.convertToModel(churchId, d)));
+        return result;
     }
 
 }
