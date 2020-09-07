@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import { DB } from "../db";
-import { Donation } from "../models";
+import { Donation, DonationSummary } from "../models";
 import { PersonHelper } from "../helpers"
 
 @injectable()
@@ -49,6 +49,18 @@ export class DonationRepository {
         return DB.query(sql, [churchId, personId]);
     }
 
+    public async loadSummary(churchId: number, startDate: Date, endDate: Date) {
+        const sql = "SELECT week(d.donationDate, 0) as week, SUM(fd.amount) as totalAmount, f.name as fundName"
+            + " FROM donations d"
+            + " INNER JOIN fundDonations fd on fd.donationId = d.id"
+            + " INNER JOIN funds f on f.id = fd.fundId"
+            + " WHERE d.churchId=?"
+            + " AND d.donationDate BETWEEN ? AND ?"
+            + " GROUP BY week(d.donationDate, 0), f.name"
+            + " ORDER BY week(d.donationDate, 0), f.name";
+        return DB.query(sql, [churchId, startDate, endDate]);
+    }
+
 
     public convertToModel(churchId: number, data: any) {
         const result: Donation = { id: data.id, batchId: data.batchId, personId: data.personId, donationDate: data.donationDate, amount: data.amount, method: data.method, methodDetails: data.methodDetails, notes: data.notes };
@@ -61,9 +73,22 @@ export class DonationRepository {
     }
 
     public convertAllToModel(churchId: number, data: any[]) {
-        console.log(data);
         const result: Donation[] = [];
         data.forEach(d => result.push(this.convertToModel(churchId, d)));
+        return result;
+    }
+
+
+    public convertToSummary(churchId: number, data: any) {
+        const result: DonationSummary = { week: data.week, totalAmount: data.totalAmount };
+
+        if (data.fundName !== undefined) result.fund = { name: data.fundName };
+        return result;
+    }
+
+    public convertAllToSummary(churchId: number, data: any[]) {
+        const result: DonationSummary[] = [];
+        data.forEach(d => result.push(this.convertToSummary(churchId, d)));
         return result;
     }
 

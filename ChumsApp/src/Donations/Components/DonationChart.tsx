@@ -7,7 +7,7 @@ interface Props { startDate: Date, endDate: Date }
 export const DonationChart: React.FC<Props> = (props) => {
     const [records, setRecords] = React.useState<DonationSummaryInterface[]>([]);
 
-    const loadData = () => { ApiHelper.apiGet('/donationsummaries?startDate=' + Helper.formatHtml5Date(props.startDate) + '&endDate=' + Helper.formatHtml5Date(props.endDate)).then(data => setRecords(data)); }
+    const loadData = () => { ApiHelper.apiGet('/donations/summary?startDate=' + Helper.formatHtml5Date(props.startDate) + '&endDate=' + Helper.formatHtml5Date(props.endDate)).then(data => setRecords(data)); }
 
     const getWeekRecords = (weekNum: number) => {
         var result: DonationSummaryInterface[] = [];

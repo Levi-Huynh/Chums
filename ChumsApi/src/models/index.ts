@@ -5,6 +5,7 @@ export { Campus } from './Campus';
 export { ContactInfo } from './ContactInfo';
 export { Donation } from './Donation';
 export { DonationBatch } from './DonationBatch';
+export { DonationSummary } from './DonationSummary';
 export { Form } from './Form';
 export { FormSubmission } from './FormSubmission';
 export { Fund } from './Fund';

@@ -1,10 +1,24 @@
 import { controller, httpPost, httpGet, interfaces, requestParam, httpDelete, results } from "inversify-express-utils";
 import express from "express";
 import { CustomBaseController } from "./CustomBaseController"
-import { Donation } from "../models"
+import { Donation, DonationSummary } from "../models"
 
 @controller("/donations")
 export class DonationController extends CustomBaseController {
+
+
+    @httpGet("/summary")
+    public async getSummary(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
+        return this.actionWrapper(req, res, async (au) => {
+            if (!au.checkAccess("Donations", "View Summary")) return this.json({}, 401);
+            else {
+                const startDate = (req.query.startDate === undefined) ? new Date(2000, 1, 1) : new Date(req.query.startDate.toString());
+                const endDate = (req.query.endDate === undefined) ? new Date() : new Date(req.query.endDate.toString());
+                const result = await this.repositories.donation.loadSummary(au.churchId, startDate, endDate);
+                return this.repositories.donation.convertAllToSummary(au.churchId, result);
+            }
+        });
+    }
 
     @httpGet("/:id")
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
@@ -32,6 +46,7 @@ export class DonationController extends CustomBaseController {
             }
         });
     }
+
 
     @httpPost("/")
     public async save(req: express.Request<{}, {}, Donation[]>, res: express.Response): Promise<interfaces.IHttpActionResult> {
