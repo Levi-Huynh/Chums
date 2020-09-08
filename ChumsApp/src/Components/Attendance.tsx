@@ -90,12 +90,12 @@ export const Attendance: React.FC<Props> = (props) => {
                     <FormGroup>
                         <FormLabel>Grouping</FormLabel>
                         <FormControl as="select" value={filter.groupBy} onChange={handleChange} >
-                            <option value="CampusName">Campus</option>
-                            <option value="ServiceName">Service</option>
-                            <option value="ServiceTimeName">Service Time</option>
-                            <option value="CategoryName">Category</option>
-                            <option value="GroupName">Group</option>
-                            <option value="Gender">Gender</option>
+                            <option value="campusName">Campus</option>
+                            <option value="serviceName">Service</option>
+                            <option value="serviceTimeName">Service Time</option>
+                            <option value="categoryName">Category</option>
+                            <option value="groupName">Group</option>
+                            <option value="gender">Gender</option>
                         </FormControl>
                     </FormGroup>
                 </Col>

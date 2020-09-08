@@ -53,6 +53,24 @@ export class PersonController extends CustomBaseController {
         });
     }
 
+    @httpGet("/attendance")
+    public async loadAttendees(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
+        return this.actionWrapper(req, res, async (au) => {
+            if (!au.checkAccess("People", "Edit")) return this.json({}, 401);
+            else {
+                const campusId = (req.query.campusId === undefined) ? 0 : parseInt(req.query.campusId.toString(), 0);
+                const serviceId = (req.query.serviceId === undefined) ? 0 : parseInt(req.query.serviceId.toString(), 0);
+                const serviceTimeId = (req.query.serviceTimeId === undefined) ? 0 : parseInt(req.query.serviceTimeId.toString(), 0);
+                const groupId = (req.query.groupId === undefined) ? 0 : parseInt(req.query.groupId.toString(), 0);
+                const categoryName = (req.query.categoryName === undefined) ? "" : req.query.categoryName.toString();
+                const startDate = (req.query.startDate === undefined) ? null : new Date(req.query.startDate.toString());
+                const endDate = (req.query.endDate === undefined) ? null : new Date(req.query.endDate.toString());
+                const data = await this.repositories.person.loadAttendees(au.churchId, campusId, serviceId, serviceTimeId, categoryName, groupId, startDate, endDate);
+                return this.repositories.person.convertAllToModel(au.churchId, data);
+            }
+        });
+    }
+
     @httpGet("/search/phone")
     public async searchPhone(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {

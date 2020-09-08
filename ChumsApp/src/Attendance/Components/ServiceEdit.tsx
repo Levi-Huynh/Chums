@@ -17,9 +17,11 @@ export const ServiceEdit: React.FC<Props> = (props) => {
         ApiHelper.apiGet('/campuses').then(data => {
             setCampuses(data);
             if (data.length > 0) {
-                var s = { ...props.service };
-                s.campusId = data[0].id;
-                setService(s);
+                if (service?.campusId === undefined || service?.campusId === null || service?.campusId === 0) {
+                    var s = { ...props.service };
+                    s.campusId = data[0].id;
+                    setService(s);
+                }
             }
         });
     }, [props.service]);

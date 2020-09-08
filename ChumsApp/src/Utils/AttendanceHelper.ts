@@ -15,7 +15,7 @@ export interface AttendanceFilterInterface {
 export class AttendanceHelper {
 
     static createFilter() {
-        var filter: AttendanceFilterInterface = { campusId: 0, serviceId: 0, serviceTimeId: 0, categoryName: '', groupId: 0, startDate: new Date(2000, 1, 1), endDate: new Date(), groupBy: 'CampusName', trend: false };
+        var filter: AttendanceFilterInterface = { campusId: 0, serviceId: 0, serviceTimeId: 0, categoryName: '', groupId: 0, startDate: new Date(2000, 1, 1), endDate: new Date(), groupBy: 'campusName', trend: false };
         filter.startDate = Helper.getLastSunday();
         var endDate = Helper.getLastSunday();
         endDate.setDate(endDate.getDate() + 7);
@@ -26,12 +26,12 @@ export class AttendanceHelper {
     static getGroupingName(groupBy: string) {
         var result = 'Grouping'
         switch (groupBy) {
-            case 'CampusName': result = 'Campus'; break;
-            case 'ServiceName': result = 'Service'; break;
-            case 'ServiceTimeName': result = 'Service Time'; break;
-            case 'CategoryName': result = 'Category'; break;
-            case 'GroupName': result = 'Group'; break;
-            case 'Gender': result = 'Gender'; break;
+            case 'campusName': result = 'Campus'; break;
+            case 'serviceName': result = 'Service'; break;
+            case 'serviceTimeName': result = 'Service Time'; break;
+            case 'categoryName': result = 'Category'; break;
+            case 'groupName': result = 'Group'; break;
+            case 'gender': result = 'Gender'; break;
             default: result = 'Grouping'; break;
         }
         return result;
@@ -72,5 +72,6 @@ export class AttendanceHelper {
         else if (record.serviceTime !== undefined && record.serviceTime.name !== '') return record.serviceTime.name;
         else if (record.service !== undefined && record.service.name !== '') return record.service.name;
         else if (record.campus !== undefined && record.campus.name !== '') return record.campus.name;
+        else if (record.gender !== undefined && record.gender !== '') return record.gender;
     }
 }

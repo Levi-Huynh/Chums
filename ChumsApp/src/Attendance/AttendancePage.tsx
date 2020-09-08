@@ -95,6 +95,7 @@ export const AttendancePage = () => {
                     <AttendanceFilter filter={filter} updatedFunction={handleFilterUpdated} />
                 </Col>
             </Row>
+
         </form >
     );
 }

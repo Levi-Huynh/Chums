@@ -6,6 +6,13 @@ import { Service } from "../models"
 @controller("/services")
 export class ServiceController extends CustomBaseController {
 
+    @httpGet("/search")
+    public async search(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
+        return this.actionWrapper(req, res, async (au) => {
+            return await this.repositories.service.searchByCampus(au.churchId, parseInt(req.query.campusId.toString(), 0));
+        });
+    }
+
     @httpGet("/:id")
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {

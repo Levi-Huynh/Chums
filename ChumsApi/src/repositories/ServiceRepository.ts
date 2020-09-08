@@ -18,7 +18,7 @@ export class ServiceRepository {
 
     public async update(service: Service) {
         return DB.query(
-            "UPDATE services SET campusId=?, name=?, WHERE id=? and churchId=?",
+            "UPDATE services SET campusId=?, name=? WHERE id=? and churchId=?",
             [service.campusId, service.name, service.id, service.churchId]
         ).then(() => { return service });
     }
@@ -33,6 +33,10 @@ export class ServiceRepository {
 
     public async loadAll(churchId: number) {
         return DB.query("SELECT * FROM services WHERE churchId=?;", [churchId]);
+    }
+
+    public async searchByCampus(churchId: number, campusId: number) {
+        return DB.query("SELECT * FROM services WHERE churchId=? AND (?=0 OR CampusId=?) AND removed=0 ORDER by name;", [churchId, campusId, campusId]);
     }
 
 }

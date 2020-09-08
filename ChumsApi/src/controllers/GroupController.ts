@@ -6,6 +6,16 @@ import { Group } from "../models"
 @controller("/groups")
 export class GroupController extends CustomBaseController {
 
+    @httpGet("/search")
+    public async search(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
+        return this.actionWrapper(req, res, async (au) => {
+            const campusId = parseInt(req.query.campusId.toString(), 0);
+            const serviceId = parseInt(req.query.serviceId.toString(), 0);
+            const serviceTimeId = parseInt(req.query.serviceTimeId.toString(), 0);
+            return await this.repositories.group.search(au.churchId, campusId, serviceId, serviceTimeId);
+        });
+    }
+
     @httpGet("/:id")
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {

@@ -89,14 +89,12 @@ export const AttendanceFilter: React.FC<Props> = (props) => {
 
     const loadData = () => {
         loadCampuses();
-        loadServices();
-        loadServiceTimes();
-        loadGroups();
     }
 
     React.useEffect(loadData, []);
     React.useEffect(loadServices, [filter.campusId]);
-    React.useEffect(loadGroups, [filter.serviceTimeId, filter.categoryName]);
+    React.useEffect(loadServiceTimes, [filter.campusId, filter.serviceId]);
+    React.useEffect(loadGroups, [filter.serviceTimeId, filter.serviceId, filter.campusId, filter.categoryName]);
 
     return (
         <InputBox id="attendanceFilterBox" saveFunction={handleUpdate} headerText="Attendance Filter" headerIcon="fas fa-filter" saveText="Filter" >

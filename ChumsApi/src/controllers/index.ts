@@ -1,3 +1,4 @@
+export { AttendanceRecordController } from "./AttendanceRecordController";
 export { CampusController } from "./CampusController";
 export { DonationBatchController } from "./DonationBatchController";
 export { DonationController } from "./DonationController";

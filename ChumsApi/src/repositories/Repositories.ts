@@ -2,6 +2,7 @@ import { inject, injectable } from "inversify";
 import { TYPES } from "../constants";
 import {
   AnswerRepository,
+  AttendanceRepository,
   CampusRepository,
   DonationRepository,
   DonationBatchRepository,
@@ -26,6 +27,7 @@ import {
 @injectable()
 export class Repositories {
   public answer: AnswerRepository;
+  public attendance: AttendanceRepository;
   public campus: CampusRepository;
   public donationBatch: DonationBatchRepository;
   public donation: DonationRepository;
@@ -49,6 +51,7 @@ export class Repositories {
 
   constructor(
     @inject(TYPES.AnswerRepository) answerRepository: AnswerRepository,
+    @inject(TYPES.AttendanceRepository) attendanceRepository: AttendanceRepository,
     @inject(TYPES.CampusRepository) campusRepository: CampusRepository,
     @inject(TYPES.DonationBatchRepository) donationBatchRepository: DonationBatchRepository,
     @inject(TYPES.DonationRepository) donationRepository: DonationRepository,
@@ -70,6 +73,7 @@ export class Repositories {
     @inject(TYPES.VisitSessionRepository) visitSessionRepository: VisitSessionRepository,
   ) {
     this.answer = answerRepository;
+    this.attendance = attendanceRepository;
     this.campus = campusRepository;
     this.donationBatch = donationBatchRepository;
     this.donation = donationRepository;

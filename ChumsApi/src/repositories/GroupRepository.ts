@@ -40,4 +40,15 @@ export class GroupRepository {
         return DB.query(sql, [churchId]);
     }
 
+    public async search(churchId: number, campusId: number, serviceId: number, serviceTimeId: number) {
+        const sql = "SELECT g.id, g.categoryName, g.name"
+            + " FROM groups g"
+            + " LEFT OUTER JOIN groupServiceTimes gst on gst.groupId=g.id"
+            + " LEFT OUTER JOIN serviceTimes st on st.id=gst.serviceTimeId"
+            + " LEFT OUTER JOIN services s on s.id=st.serviceId"
+            + " WHERE g.churchId = ? AND (?=0 OR gst.serviceTimeId=?) AND (?=0 OR st.serviceId=?) AND (? = 0 OR s.campusId = ?) and g.removed=0"
+            + " GROUP BY g.id, g.categoryName, g.name ORDER BY g.name";
+        return DB.query(sql, [churchId, serviceTimeId, serviceTimeId, serviceId, serviceId, campusId, campusId]);
+    }
+
 }

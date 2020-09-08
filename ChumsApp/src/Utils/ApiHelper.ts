@@ -3,7 +3,7 @@ import { EnvironmentHelper } from "./";
 
 export interface AnswerInterface { id?: number, value?: string, questionId?: number, formSubmissionId?: number }
 export interface AttendanceInterface { campus: CampusInterface, service: ServiceInterface, serviceTime: ServiceTimeInterface, group: GroupInterface }
-export interface AttendanceRecordInterface { group: GroupInterface, serviceTime: ServiceTimeInterface, service: ServiceInterface, campus: CampusInterface, week: number, count: number, visitDate: Date }
+export interface AttendanceRecordInterface { group: GroupInterface, serviceTime: ServiceTimeInterface, service: ServiceInterface, campus: CampusInterface, week: number, count: number, visitDate: Date, gender?: string }
 export interface CampusInterface { id?: number, name?: string }
 export interface ContactInfoInterface { address1?: string, address2?: string, city?: string, state?: string, zip?: string, homePhone?: string, mobilePhone?: string, workPhone?: string, email?: string }
 export interface DonationBatchInterface { id?: number, name?: string, batchDate?: Date, donationCount?: number, totalAmount?: number }

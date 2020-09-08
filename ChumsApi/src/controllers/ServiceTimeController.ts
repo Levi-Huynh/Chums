@@ -6,6 +6,15 @@ import { ServiceTime, GroupServiceTime, Group } from "../models"
 @controller("/servicetimes")
 export class ServiceTimeController extends CustomBaseController {
 
+    @httpGet("/search")
+    public async search(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
+        return this.actionWrapper(req, res, async (au) => {
+            const campusId = parseInt(req.query.campusId.toString(), 0);
+            const serviceId = parseInt(req.query.serviceId.toString(), 0);
+            return await this.repositories.serviceTime.loadByChurchCampusService(au.churchId, campusId, serviceId);
+        });
+    }
+
     @httpGet("/:id")
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
