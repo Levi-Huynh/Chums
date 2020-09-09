@@ -23,11 +23,11 @@ export class SessionRepository {
         ).then(() => { return session });
     }
 
-    public async delete(id: number, churchId: number) {
+    public async delete(churchId: number, id: number) {
         DB.query("DELETE FROM sessions WHERE id=? AND churchId=?;", [id, churchId]);
     }
 
-    public async load(id: number, churchId: number) {
+    public async load(churchId: number, id: number) {
         return DB.queryOne("SELECT * FROM sessions WHERE id=? AND churchId=?;", [id, churchId]);
     }
 

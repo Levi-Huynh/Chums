@@ -10,7 +10,7 @@ export class FundDonationController extends CustomBaseController {
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Donations", "View")) return this.json({}, 401);
-            else return await this.repositories.fundDonation.load(id, au.churchId);
+            else return await this.repositories.fundDonation.load(au.churchId, id);
         });
     }
 
@@ -51,7 +51,7 @@ export class FundDonationController extends CustomBaseController {
     public async delete(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Donations", "Edit")) return this.json({}, 401);
-            else await this.repositories.fundDonation.delete(id, au.churchId);
+            else await this.repositories.fundDonation.delete(au.churchId, au.churchId);
         });
     }
 

@@ -23,11 +23,11 @@ export class ServiceTimeRepository {
         ).then(() => { return serviceTime });
     }
 
-    public async delete(id: number, churchId: number) {
+    public async delete(churchId: number, id: number) {
         DB.query("UPDATE serviceTimes SET removed=1 WHERE id=? AND churchId=?;", [id, churchId]);
     }
 
-    public async load(id: number, churchId: number) {
+    public async load(churchId: number, id: number) {
         return DB.queryOne("SELECT * FROM serviceTimes WHERE id=? AND churchId=?;", [id, churchId]);
     }
 

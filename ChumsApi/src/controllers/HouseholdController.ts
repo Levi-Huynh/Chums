@@ -9,7 +9,7 @@ export class HouseholdController extends CustomBaseController {
     @httpGet("/:id")
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            return await this.repositories.household.load(id, au.churchId);
+            return await this.repositories.household.load(au.churchId, id);
         });
     }
 
@@ -37,7 +37,7 @@ export class HouseholdController extends CustomBaseController {
     public async delete(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Households", "Edit")) return this.json({}, 401);
-            else await this.repositories.household.delete(id, au.churchId);
+            else await this.repositories.household.delete(au.churchId, id);
         });
     }
 

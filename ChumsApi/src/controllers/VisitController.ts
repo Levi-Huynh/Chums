@@ -10,7 +10,7 @@ export class VisitController extends CustomBaseController {
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Attendance", "View")) return this.json({}, 401);
-            else return await this.repositories.visit.load(id, au.churchId);
+            else return await this.repositories.visit.load(au.churchId, id);
         });
     }
 
@@ -39,7 +39,7 @@ export class VisitController extends CustomBaseController {
     public async delete(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Donations", "Edit")) return this.json({}, 401);
-            else await this.repositories.visit.delete(id, au.churchId);
+            else await this.repositories.visit.delete(au.churchId, id);
         });
     }
 

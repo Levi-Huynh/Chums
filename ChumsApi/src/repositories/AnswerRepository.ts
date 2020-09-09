@@ -23,11 +23,11 @@ export class AnswerRepository {
         ).then(() => { return answer });
     }
 
-    public async delete(id: number, churchId: number) {
+    public async delete(churchId: number, id: number) {
         DB.query("DELETE FROM answers WHERE id=? AND churchId=?;", [id, churchId]);
     }
 
-    public async load(id: number, churchId: number) {
+    public async load(churchId: number, id: number) {
         return DB.queryOne("SELECT * FROM answers WHERE id=? AND churchId=?;", [id, churchId]);
     }
 

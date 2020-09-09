@@ -9,7 +9,7 @@ export class GroupServiceTimeController extends CustomBaseController {
     @httpGet("/:id")
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            return this.convertAllToModel(await this.repositories.groupServiceTime.load(id, au.churchId));
+            return this.convertAllToModel(await this.repositories.groupServiceTime.load(au.churchId, id));
         });
     }
 
@@ -40,7 +40,7 @@ export class GroupServiceTimeController extends CustomBaseController {
     public async delete(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Services", "Edit")) return this.json({}, 401);
-            else await this.repositories.groupServiceTime.delete(id, au.churchId);
+            else await this.repositories.groupServiceTime.delete(au.churchId, id);
         });
     }
 

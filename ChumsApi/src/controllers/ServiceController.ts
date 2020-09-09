@@ -16,7 +16,7 @@ export class ServiceController extends CustomBaseController {
     @httpGet("/:id")
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            return await this.repositories.service.load(id, au.churchId);
+            return await this.repositories.service.load(au.churchId, id);
         });
     }
 
@@ -44,7 +44,7 @@ export class ServiceController extends CustomBaseController {
     public async delete(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Services", "Edit")) return this.json({}, 401);
-            else await this.repositories.service.delete(id, au.churchId);
+            else await this.repositories.service.delete(au.churchId, id);
         });
     }
 

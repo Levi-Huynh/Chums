@@ -23,11 +23,11 @@ export class FundRepository {
         ).then(() => { return fund });
     }
 
-    public async delete(id: number, churchId: number) {
+    public async delete(churchId: number, id: number) {
         DB.query("UPDATE funds SET removed=0 WHERE id=? AND churchId=?;", [id, churchId]);
     }
 
-    public async load(id: number, churchId: number) {
+    public async load(churchId: number, id: number) {
         return DB.queryOne("SELECT * FROM funds WHERE id=? AND churchId=?;", [id, churchId]);
     }
 

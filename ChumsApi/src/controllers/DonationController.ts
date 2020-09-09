@@ -25,7 +25,7 @@ export class DonationController extends CustomBaseController {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Donations", "View")) return this.json({}, 401);
             else {
-                const data = await this.repositories.donation.load(id, au.churchId);
+                const data = await this.repositories.donation.load(au.churchId, id);
                 const result = this.repositories.donation.convertToModel(au.churchId, data);
                 if (this.include(req, "person")) await this.appendPerson(au.churchId, result);
                 return result;
@@ -65,12 +65,12 @@ export class DonationController extends CustomBaseController {
     public async delete(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Donations", "Edit")) return this.json({}, 401);
-            else await this.repositories.donation.delete(id, au.churchId);
+            else await this.repositories.donation.delete(au.churchId, id);
         });
     }
 
     private async appendPerson(churchId: number, donation: Donation) {
-        const data = await this.repositories.person.load(donation.personId, churchId);
+        const data = await this.repositories.person.load(churchId, donation.personId);
         donation.person = this.repositories.person.convertToModel(churchId, data);
     }
 

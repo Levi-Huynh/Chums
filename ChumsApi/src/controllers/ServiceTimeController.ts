@@ -18,7 +18,7 @@ export class ServiceTimeController extends CustomBaseController {
     @httpGet("/:id")
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            return await this.repositories.serviceTime.load(id, au.churchId);
+            return await this.repositories.serviceTime.load(au.churchId, id);
         });
     }
 
@@ -52,7 +52,7 @@ export class ServiceTimeController extends CustomBaseController {
     public async delete(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Services", "Edit")) return this.json({}, 401);
-            else await this.repositories.serviceTime.delete(id, au.churchId);
+            else await this.repositories.serviceTime.delete(au.churchId, id);
         });
     }
 

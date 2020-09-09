@@ -11,7 +11,7 @@ export class DonationBatchController extends CustomBaseController {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Donations", "View Summary")) return this.json({}, 401);
             else {
-                const data = await this.repositories.donationBatch.load(id, au.churchId);
+                const data = await this.repositories.donationBatch.load(au.churchId, id);
                 return this.repositories.donationBatch.convertToModel(au.churchId, data);
             }
         });
@@ -45,7 +45,7 @@ export class DonationBatchController extends CustomBaseController {
     public async delete(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Donations", "Edit")) return this.json({}, 401);
-            else await this.repositories.donationBatch.delete(id, au.churchId);
+            else await this.repositories.donationBatch.delete(au.churchId, id);
         });
     }
 

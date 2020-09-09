@@ -10,7 +10,7 @@ export class FormSubmissionController extends CustomBaseController {
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Forms", "View")) return this.json({}, 401);
-            const result: FormSubmission = this.repositories.formSubmission.convertToModel(au.churchId, await this.repositories.formSubmission.load(id, au.churchId));
+            const result: FormSubmission = this.repositories.formSubmission.convertToModel(au.churchId, await this.repositories.formSubmission.load(au.churchId, id));
             if (this.include(req, "form")) await this.appendForm(au.churchId, result);
             if (this.include(req, "questions")) await this.appendQuestions(au.churchId, result);
             if (this.include(req, "answers")) await this.appendAnswers(au.churchId, result);
@@ -57,12 +57,12 @@ export class FormSubmissionController extends CustomBaseController {
     public async delete(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Forms", "Edit")) return this.json({}, 401);
-            else await this.repositories.formSubmission.delete(id, au.churchId);
+            else await this.repositories.formSubmission.delete(au.churchId, id);
         });
     }
 
     private async appendForm(churchId: number, formSubmission: FormSubmission) {
-        const data = await this.repositories.form.load(formSubmission.formId, churchId);
+        const data = await this.repositories.form.load(churchId, formSubmission.formId);
         console.log(data);
         formSubmission.form = this.repositories.form.convertToModel(churchId, data);
     }

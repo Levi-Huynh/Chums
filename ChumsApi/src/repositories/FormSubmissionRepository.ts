@@ -23,11 +23,11 @@ export class FormSubmissionRepository {
         ).then(() => { return formSubmission });
     }
 
-    public async delete(id: number, churchId: number) {
+    public async delete(churchId: number, id: number) {
         DB.query("DELETE FROM formSubmissions WHERE id=? AND churchId=?;", [id, churchId]);
     }
 
-    public async load(id: number, churchId: number) {
+    public async load(churchId: number, id: number) {
         return DB.queryOne("SELECT * FROM formSubmissions WHERE id=? AND churchId=?;", [id, churchId]);
     }
 

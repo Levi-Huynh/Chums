@@ -41,15 +41,15 @@ export class PersonRepository {
             .then(() => { return person });
     }
 
-    public async delete(id: number, churchId: number) {
+    public async delete(churchId: number, id: number) {
         DB.query("UPDATE people SET removed=1 WHERE id=? AND churchId=?;", [id, churchId]);
     }
 
-    public async load(id: number, churchId: number) {
+    public async load(churchId: number, id: number) {
         return DB.queryOne("SELECT * FROM people WHERE id=? AND churchId=? AND removed=0;", [id, churchId]);
     }
 
-    public async loadByUserId(userId: number, churchId: number) {
+    public async loadByUserId(churchId: number, userId: number) {
         return DB.queryOne("SELECT * FROM people WHERE userId=? AND churchId=? AND removed=0;", [userId, churchId]);
     }
 

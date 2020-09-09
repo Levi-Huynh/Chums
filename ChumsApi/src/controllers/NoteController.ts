@@ -11,7 +11,7 @@ export class NoteController extends CustomBaseController {
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("People", "View Notes")) return this.json({}, 401);
-            else return await this.repositories.note.load(id, au.churchId);
+            else return await this.repositories.note.load(au.churchId, id);
         });
     }
 
@@ -50,7 +50,7 @@ export class NoteController extends CustomBaseController {
     public async delete(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("People", "Edit Notes")) return this.json({}, 401);
-            else await this.repositories.note.delete(id, au.churchId);
+            else await this.repositories.note.delete(au.churchId, id);
         });
     }
 

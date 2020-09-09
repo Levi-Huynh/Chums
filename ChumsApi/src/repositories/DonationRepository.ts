@@ -24,11 +24,11 @@ export class DonationRepository {
         ).then(() => { return donation });
     }
 
-    public async delete(id: number, churchId: number) {
+    public async delete(churchId: number, id: number) {
         DB.query("DELETE FROM donations WHERE id=? AND churchId=?;", [id, churchId]);
     }
 
-    public async load(id: number, churchId: number) {
+    public async load(churchId: number, id: number) {
         return DB.queryOne("SELECT * FROM donations WHERE id=? AND churchId=?;", [id, churchId]);
     }
 

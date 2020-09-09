@@ -17,11 +17,11 @@ export class VisitSessionController extends CustomBaseController {
                 let newVisit = false;
                 let visit = await this.repositories.visitSession.loadForSessionPerson(au.churchId, sessionId, personId);
                 if (visit == null) {
-                    const session: Session = await this.repositories.session.load(sessionId, au.churchId);
+                    const session: Session = await this.repositories.session.load(au.churchId, sessionId);
                     visit = { addedBy: au.id, checkinTime: new Date(), churchId: au.churchId, personId, visitDate: session.sessionDate };
                     if (session.serviceTimeId === null) visit.groupId = session.groupId;
                     else {
-                        const st: ServiceTime = await this.repositories.serviceTime.load(session.serviceTimeId, au.churchId);
+                        const st: ServiceTime = await this.repositories.serviceTime.load(au.churchId, session.serviceTimeId);
                         visit.serviceId = st.serviceId;
                     }
                     await this.repositories.visit.save(visit);
@@ -43,7 +43,7 @@ export class VisitSessionController extends CustomBaseController {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Attendance", "View")) return this.json({}, 401);
             else {
-                const data = await this.repositories.visitSession.load(id, au.churchId);
+                const data = await this.repositories.visitSession.load(au.churchId, id);
                 return this.repositories.visitSession.convertToModel(au.churchId, data);
             }
         });
@@ -80,7 +80,7 @@ export class VisitSessionController extends CustomBaseController {
     public async delete(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Attendance", "Edit")) return this.json({}, 401);
-            else await this.repositories.visitSession.delete(id, au.churchId);
+            else await this.repositories.visitSession.delete(au.churchId, id);
         });
     }
 
@@ -96,9 +96,9 @@ export class VisitSessionController extends CustomBaseController {
                 console.log(visit);
                 if (visit !== null) {
                     const existingSession = await this.repositories.visitSession.loadByVisitIdSessionId(au.churchId, visit.id, sessionId);
-                    if (existingSession !== null) await this.repositories.visitSession.delete(existingSession.id, au.churchId);
+                    if (existingSession !== null) await this.repositories.visitSession.delete(au.churchId, existingSession.id);
                     const visitSessions = await this.repositories.visitSession.loadByVisitId(au.churchId, visit.id);
-                    if (visitSessions.length === 0) await this.repositories.visit.delete(visit.id, au.churchId);
+                    if (visitSessions.length === 0) await this.repositories.visit.delete(au.churchId, visit.id);
                 }
 
             }

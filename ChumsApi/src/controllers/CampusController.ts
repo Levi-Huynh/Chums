@@ -9,7 +9,7 @@ export class CampusController extends CustomBaseController {
   @httpGet("/:id")
   public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
     return this.actionWrapper(req, res, async (au) => {
-      return await this.repositories.campus.load(id, au.churchId);
+      return await this.repositories.campus.load(au.churchId, id);
     });
   }
 
@@ -37,7 +37,7 @@ export class CampusController extends CustomBaseController {
   public async delete(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
     return this.actionWrapper(req, res, async (au) => {
       if (!au.checkAccess("Services", "Edit")) return this.json({}, 401);
-      else await this.repositories.campus.delete(id, au.churchId);
+      else await this.repositories.campus.delete(au.churchId, id);
     });
   }
 

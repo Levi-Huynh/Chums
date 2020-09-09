@@ -93,7 +93,7 @@ export class PersonController extends CustomBaseController {
     @httpGet("/:id")
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            const data = await this.repositories.person.load(id, au.churchId);
+            const data = await this.repositories.person.load(au.churchId, id);
             const result = this.repositories.person.convertToModel(au.churchId, data)
             await this.appendFormSubmissions(au.churchId, result);
             return result;
@@ -103,7 +103,7 @@ export class PersonController extends CustomBaseController {
     @httpGet("/userid/:userId")
     public async getByUserId(@requestParam("userId") userId: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            const data = await this.repositories.person.loadByUserId(userId, au.churchId);
+            const data = await this.repositories.person.loadByUserId(au.churchId, userId);
             return this.repositories.person.convertToModel(au.churchId, data);
         });
     }
@@ -144,7 +144,7 @@ export class PersonController extends CustomBaseController {
     public async delete(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("People", "Edit")) return this.json({}, 401);
-            else await this.repositories.person.delete(id, au.churchId);
+            else await this.repositories.person.delete(au.churchId, id);
         });
     }
 
