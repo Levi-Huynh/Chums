@@ -4,4 +4,6 @@ export class Session {
     public groupId?: number;
     public serviceTimeId?: number;
     public sessionDate?: Date;
+
+    public disalayName?: string;
 }

@@ -35,4 +35,17 @@ export class SessionRepository {
         return DB.query("SELECT * FROM sessions WHERE churchId=?;", [churchId]);
     }
 
+    public async loadByGroupIdWithNames(churchId: number, groupId: number) {
+        const sql = "select s.id, "
+            + " CASE"
+            + "     WHEN st.name IS NULL THEN DATE_FORMAT(sessionDate, '%m/%d/%Y')"
+            + "     ELSE concat(DATE_FORMAT(sessionDate, '%m/%d/%Y'), ' - ', st.name)"
+            + " END AS displayName"
+            + " FROM sessions s"
+            + " LEFT OUTER JOIN serviceTimes st on st.id = s.serviceTimeId"
+            + " WHERE s.churchId=? AND s.groupId=?"
+            + " ORDER by s.sessionDate desc";
+        return DB.query(sql, [churchId, groupId]);
+    }
+
 }

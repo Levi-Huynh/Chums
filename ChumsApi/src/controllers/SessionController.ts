@@ -18,7 +18,15 @@ export class SessionController extends CustomBaseController {
     public async getAll(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Attendance", "View")) return this.json({}, 401);
-            else return await this.repositories.session.loadAll(au.churchId);
+            else {
+                let result;
+                if (req.query.groupId === undefined) result = await this.repositories.session.loadAll(au.churchId);
+                else {
+                    const groupId = parseInt(req.query.groupId.toString(), 0);
+                    result = this.repositories.session.loadByGroupIdWithNames(au.churchId, groupId);
+                }
+                return result;
+            }
         });
     }
 

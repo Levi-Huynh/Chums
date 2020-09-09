@@ -35,4 +35,13 @@ export class VisitRepository {
         return DB.query("SELECT * FROM visits WHERE churchId=?;", [churchId]);
     }
 
+    public async loadForSessionPerson(churchId: number, sessionId: number, personId: number) {
+        const sql = "SELECT v.*"
+            + " FROM sessions s"
+            + " LEFT OUTER JOIN serviceTimes st on st.id = s.serviceTimeId"
+            + " INNER JOIN visits v on(v.serviceId = st.serviceId or v.groupId = s.groupId) and v.visitDate = s.sessionDate"
+            + " WHERE v.churchId=? AND s.id = ? AND v.personId=? LIMIT 1";
+        return DB.queryOne(sql, [churchId, sessionId, personId]);
+    }
+
 }

@@ -90,15 +90,11 @@ export const ImportStatus: React.FC<Props> = (props) => {
             tmpTimes = await ApiHelper.apiPost('/groupservicetimes', tmpTimes);
         });
 
-        console.log(tmpPeople);
-        console.log(tmpGroups);
-
         await runImport('Group Members', async () => {
             tmpMembers.forEach((gm) => {
                 gm.groupId = ImportHelper.getByImportKey(tmpGroups, gm.groupKey).id
                 gm.personId = ImportHelper.getByImportKey(tmpPeople, gm.personKey).id
             });
-            console.log(tmpMembers);
             tmpMembers = await ApiHelper.apiPost('/groupmembers', tmpMembers);
         });
 

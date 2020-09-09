@@ -1,6 +1,7 @@
 import { injectable } from "inversify";
 import { DB } from "../db";
 import { GroupMember } from "../models";
+import { PersonHelper } from "../helpers"
 
 @injectable()
 export class GroupMemberRepository {
@@ -51,6 +52,25 @@ export class GroupMemberRepository {
             + " WHERE gm.churchId=? AND gm.personId=?"
             + " ORDER BY g.name;"
         return DB.query(sql, [churchId, personId]);
+    }
+
+
+    public convertToModel(churchId: number, data: any) {
+        const result: GroupMember = { id: data.id, groupId: data.groupId, personId: data.personId, joinDate: data.joinDate }
+        if (data.firstName !== undefined) {
+            result.person = { id: result.personId, photoUpdated: data.photoUpdated, name: { first: data.firstName, last: data.lastName, nick: data.nickName }, contactInfo: { email: data.email } };
+            result.person.name.display = PersonHelper.getDisplayName(result.person);
+            result.person.photo = PersonHelper.getPhotoUrl(churchId, result.person);
+        }
+        if (data.groupName !== undefined) result.group = { id: result.groupId, name: data.groupName };
+
+        return result;
+    }
+
+    public convertAllToModel(churchId: number, data: any[]) {
+        const result: GroupMember[] = [];
+        data.forEach(d => result.push(this.convertToModel(churchId, d)));
+        return result;
     }
 
 }

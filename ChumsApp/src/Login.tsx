@@ -49,20 +49,6 @@ export const Login: React.FC = (props: any) => {
             //window.location.href = '/';
         });
 
-        /*
-        const requestOptions = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) };
-        fetch(ApiHelper.baseUrl + '/users/login', requestOptions)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                if (data.apiToken === undefined) document.cookie = '';
-                else {
-                    ApiHelper.apiKey = data.apiToken;
-                    UserHelper.populate(data.mappings).then(d => { ApiHelper.apiKey = data.apiToken; context.setUserName(data.name); });
-                    document.cookie = "apiKey=" + data.apiToken;
-                }
-            })
-            .catch(error => document.cookie = '');*/
     }
 
 

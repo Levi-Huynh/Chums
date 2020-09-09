@@ -82,6 +82,7 @@ export const GroupSessions: React.FC<Props> = (props) => {
         props.addedCallback();
     }, [props, loadAttendance, session]);
 
+
     React.useEffect(() => { if (props.group.id !== undefined) loadSessions(); props.addedCallback(); }, [props.group, props.addedSession, loadSessions, props]);
     React.useEffect(() => { if (props.addedPerson?.id !== undefined) handlePersonAdd() }, [props.addedPerson, handlePersonAdd]);
     React.useEffect(handleSessionSelected, [session]);

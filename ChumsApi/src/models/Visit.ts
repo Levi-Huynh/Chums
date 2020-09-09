@@ -1,3 +1,6 @@
+import { Person } from "./";
+import { VisitSession } from "./";
+
 export class Visit {
     public id?: number;
     public churchId?: number;
@@ -7,5 +10,8 @@ export class Visit {
     public visitDate?: Date;
     public checkinTime?: Date;
     public addedBy?: number;
+
+    public person?: Person;
+    public visitSessions?: VisitSession[]
 }
 
