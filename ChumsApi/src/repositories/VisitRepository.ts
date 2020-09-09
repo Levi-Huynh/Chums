@@ -44,4 +44,15 @@ export class VisitRepository {
         return DB.queryOne(sql, [churchId, sessionId, personId]);
     }
 
+    public convertToModel(churchId: number, data: any) {
+        const result: Visit = { id: data.id, personId: data.personId, serviceId: data.serviceId, groupId: data.groupId, visitDate: data.visitDate, checkinTime: data.checkinTime };
+        return result;
+    }
+
+    public convertAllToModel(churchId: number, data: any[]) {
+        const result: Visit[] = [];
+        data.forEach(d => result.push(this.convertToModel(churchId, d)));
+        return result;
+    }
+
 }

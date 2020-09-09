@@ -1,6 +1,7 @@
 import { injectable } from "inversify";
 import { DB } from "../db";
 import { Fund } from "../models";
+import { stringify } from "uuid";
 
 @injectable()
 export class FundRepository {
@@ -28,11 +29,22 @@ export class FundRepository {
     }
 
     public async load(churchId: number, id: number) {
-        return DB.queryOne("SELECT * FROM funds WHERE id=? AND churchId=?;", [id, churchId]);
+        return DB.queryOne("SELECT * FROM funds WHERE id=? AND churchId=? AND removed=0;", [id, churchId]);
     }
 
     public async loadAll(churchId: number) {
-        return DB.query("SELECT * FROM funds WHERE churchId=?;", [churchId]);
+        return DB.query("SELECT * FROM funds WHERE churchId=? AND removed=0;", [churchId]);
+    }
+
+    public convertToModel(churchId: number, data: any) {
+        const result: Fund = { id: data.id, name: data.name };
+        return result;
+    }
+
+    public convertAllToModel(churchId: number, data: any[]) {
+        const result: Fund[] = [];
+        data.forEach(d => result.push(this.convertToModel(churchId, d)));
+        return result;
     }
 
 }

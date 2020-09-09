@@ -11,14 +11,14 @@ export class ServiceTimeController extends CustomBaseController {
         return this.actionWrapper(req, res, async (au) => {
             const campusId = parseInt(req.query.campusId.toString(), 0);
             const serviceId = parseInt(req.query.serviceId.toString(), 0);
-            return await this.repositories.serviceTime.loadByChurchCampusService(au.churchId, campusId, serviceId);
+            return this.repositories.serviceTime.convertAllToModel(au.churchId, await this.repositories.serviceTime.loadByChurchCampusService(au.churchId, campusId, serviceId));
         });
     }
 
     @httpGet("/:id")
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            return await this.repositories.serviceTime.load(au.churchId, id);
+            return this.repositories.serviceTime.convertToModel(au.churchId, await this.repositories.serviceTime.load(au.churchId, id));
         });
     }
 
@@ -29,7 +29,7 @@ export class ServiceTimeController extends CustomBaseController {
             let result = null;
             if (req.query.serviceId !== undefined) result = await this.repositories.serviceTime.loadNamesByServiceId(au.churchId, parseInt(req.query.serviceId.toString(), 0));
             else result = await this.repositories.serviceTime.loadNamesWithCampusService(au.churchId);
-            result = this.convertAllToModel(result);
+            result = this.repositories.serviceTime.convertAllToModel(au.churchId, result);
             if (result.length > 0 && this.include(req, "groups")) await this.appendGroups(au.churchId, result);
             return result;
         });
@@ -43,7 +43,7 @@ export class ServiceTimeController extends CustomBaseController {
                 const promises: Promise<ServiceTime>[] = [];
                 req.body.forEach(servicetime => { servicetime.churchId = au.churchId; promises.push(this.repositories.serviceTime.save(servicetime)); });
                 const result = await Promise.all(promises);
-                return result;
+                return this.repositories.serviceTime.convertAllToModel(au.churchId, result);
             }
         });
     }
@@ -77,17 +77,6 @@ export class ServiceTimeController extends CustomBaseController {
 
 
 
-
-    private convertToModel(data: any) {
-        const result: ServiceTime = { id: data.id, serviceId: data.serviceId, name: data.name, longName: data.longName };
-        return result;
-    }
-
-    private convertAllToModel(data: any[]) {
-        const result: ServiceTime[] = [];
-        data.forEach(d => result.push(this.convertToModel(d)));
-        return result;
-    }
 
 
 

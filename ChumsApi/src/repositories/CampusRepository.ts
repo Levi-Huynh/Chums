@@ -28,11 +28,22 @@ export class CampusRepository {
   }
 
   public async load(churchId: number, id: number) {
-    return DB.queryOne("SELECT * FROM campuses WHERE id=? AND churchId=?;", [id, churchId]);
+    return DB.queryOne("SELECT * FROM campuses WHERE id=? AND churchId=? AND removed=0;", [id, churchId]);
   }
 
   public async loadAll(churchId: number) {
-    return DB.query("SELECT * FROM campuses WHERE churchId=?;", [churchId]);
+    return DB.query("SELECT * FROM campuses WHERE churchId=? AND removed=0;", [churchId]);
+  }
+
+  public convertToModel(churchId: number, data: any) {
+    const result: Campus = { id: data.id, name: data.name, address1: data.address1, address2: data.address2, city: data.city, state: data.state, zip: data.zip };
+    return result;
+  }
+
+  public convertAllToModel(churchId: number, data: any[]) {
+    const result: Campus[] = [];
+    data.forEach(d => result.push(this.convertToModel(churchId, d)));
+    return result;
   }
 
 }

@@ -8,7 +8,7 @@ export class Note {
     public noteType?: string;
     public addedBy?: number;
     public dateAdded?: Date;
-    public contents: string;
+    public contents?: string;
 
-    public person: Person;
+    public person?: Person;
 }

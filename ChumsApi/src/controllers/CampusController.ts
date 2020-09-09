@@ -9,14 +9,14 @@ export class CampusController extends CustomBaseController {
   @httpGet("/:id")
   public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
     return this.actionWrapper(req, res, async (au) => {
-      return await this.repositories.campus.load(au.churchId, id);
+      return this.repositories.campus.convertToModel(au.churchId, await this.repositories.campus.load(au.churchId, id));
     });
   }
 
   @httpGet("/")
   public async getAll(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
     return this.actionWrapper(req, res, async (au) => {
-      return await this.repositories.campus.loadAll(au.churchId);
+      return this.repositories.campus.convertAllToModel(au.churchId, await this.repositories.campus.loadAll(au.churchId));
     });
   }
 
@@ -28,7 +28,7 @@ export class CampusController extends CustomBaseController {
         const promises: Promise<Campus>[] = [];
         req.body.forEach(campus => { campus.churchId = au.churchId; promises.push(this.repositories.campus.save(campus)); });
         const result = await Promise.all(promises);
-        return result;
+        return this.repositories.campus.convertAllToModel(au.churchId, result);
       }
     });
   }

@@ -50,4 +50,16 @@ export class GroupServiceTimeRepository {
         return DB.query(sql, [churchId]);
     }
 
+    public convertToModel(churchId: number, data: any) {
+        const result: GroupServiceTime = { id: data.id, groupId: data.groupId, serviceTimeId: data.serviceTimeId };
+        if (data.serviceTimeName !== undefined) result.serviceTime = { id: result.serviceTimeId, name: data.serviceTimeName }
+        return result;
+    }
+
+    public convertAllToModel(churchId: number, data: any[]) {
+        const result: GroupServiceTime[] = [];
+        data.forEach(d => result.push(this.convertToModel(churchId, d)));
+        return result;
+    }
+
 }

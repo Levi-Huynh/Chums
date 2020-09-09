@@ -39,4 +39,15 @@ export class HouseholdRepository {
         return DB.query("SELECT * FROM households WHERE churchId=?;", [churchId]);
     }
 
+    public convertToModel(churchId: number, data: any) {
+        const result: Household = { id: data.id, name: data.name };
+        return result;
+    }
+
+    public convertAllToModel(churchId: number, data: any[]) {
+        const result: Household[] = [];
+        data.forEach(d => result.push(this.convertToModel(churchId, d)));
+        return result;
+    }
+
 }

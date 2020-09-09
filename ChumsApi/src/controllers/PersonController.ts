@@ -39,7 +39,7 @@ export class PersonController extends CustomBaseController {
                 });
                 if (removePromises.length > 0) await Promise.all(removePromises);
                 this.repositories.household.deleteUnused(au.churchId);
-                return result;
+                return this.repositories.person.convertAllToModel(au.churchId, result);
             }
         });
     }
@@ -135,7 +135,7 @@ export class PersonController extends CustomBaseController {
                         })
                     );
                 });
-                return await Promise.all(promises);
+                return this.repositories.person.convertAllToModel(au.churchId, await Promise.all(promises));
             }
         });
     }

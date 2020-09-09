@@ -28,15 +28,26 @@ export class ServiceRepository {
     }
 
     public async load(churchId: number, id: number) {
-        return DB.queryOne("SELECT * FROM services WHERE id=? AND churchId=?;", [id, churchId]);
+        return DB.queryOne("SELECT * FROM services WHERE id=? AND churchId=? AND removed=0;", [id, churchId]);
     }
 
     public async loadAll(churchId: number) {
-        return DB.query("SELECT * FROM services WHERE churchId=?;", [churchId]);
+        return DB.query("SELECT * FROM services WHERE churchId=? AND removed=0;", [churchId]);
     }
 
     public async searchByCampus(churchId: number, campusId: number) {
         return DB.query("SELECT * FROM services WHERE churchId=? AND (?=0 OR CampusId=?) AND removed=0 ORDER by name;", [churchId, campusId, campusId]);
+    }
+
+    public convertToModel(churchId: number, data: any) {
+        const result: Service = { id: data.id, campusId: data.campusId, name: data.name };
+        return result;
+    }
+
+    public convertAllToModel(churchId: number, data: any[]) {
+        const result: Service[] = [];
+        data.forEach(d => result.push(this.convertToModel(churchId, d)));
+        return result;
     }
 
 }

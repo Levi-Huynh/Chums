@@ -28,11 +28,11 @@ export class ServiceTimeRepository {
     }
 
     public async load(churchId: number, id: number) {
-        return DB.queryOne("SELECT * FROM serviceTimes WHERE id=? AND churchId=?;", [id, churchId]);
+        return DB.queryOne("SELECT * FROM serviceTimes WHERE id=? AND churchId=? AND removed=0;", [id, churchId]);
     }
 
     public async loadAll(churchId: number) {
-        return DB.query("SELECT * FROM serviceTimes WHERE churchId=?;", [churchId]);
+        return DB.query("SELECT * FROM serviceTimes WHERE churchId=? AND removed=0;", [churchId]);
     }
 
     public async loadNamesWithCampusService(churchId: number) {
@@ -47,9 +47,19 @@ export class ServiceTimeRepository {
         const sql = "SELECT st.*"
             + " FROM serviceTimes st"
             + " LEFT OUTER JOIN services s on s.id=st.serviceId"
-            + " WHERE st.churchId = ? AND(?=0 OR st.serviceId=?) AND (? = 0 OR s.campusId = ?) AND st.removed=0";
+            + " WHERE st.churchId = ? AND (?=0 OR st.serviceId=?) AND (? = 0 OR s.campusId = ?) AND st.removed=0";
         return DB.query(sql, [churchId, serviceId, serviceId, campusId, campusId]);
     }
 
+    public convertToModel(churchId: number, data: any) {
+        const result: ServiceTime = { id: data.id, serviceId: data.serviceId, name: data.name };
+        return result;
+    }
+
+    public convertAllToModel(churchId: number, data: any[]) {
+        const result: ServiceTime[] = [];
+        data.forEach(d => result.push(this.convertToModel(churchId, d)));
+        return result;
+    }
 
 }

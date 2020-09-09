@@ -10,7 +10,7 @@ export class FundDonationController extends CustomBaseController {
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Donations", "View")) return this.json({}, 401);
-            else return await this.repositories.fundDonation.load(au.churchId, id);
+            else return this.repositories.fundDonation.convertToModel(au.churchId, await this.repositories.fundDonation.load(au.churchId, id));
         });
     }
 
@@ -42,7 +42,7 @@ export class FundDonationController extends CustomBaseController {
                 const promises: Promise<FundDonation>[] = [];
                 req.body.forEach(funddonation => { funddonation.churchId = au.churchId; promises.push(this.repositories.fundDonation.save(funddonation)); });
                 const result = await Promise.all(promises);
-                return result;
+                return this.repositories.fundDonation.convertToModel(au.churchId, result);
             }
         });
     }

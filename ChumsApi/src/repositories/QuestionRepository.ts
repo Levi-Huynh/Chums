@@ -28,11 +28,11 @@ export class QuestionRepository {
     }
 
     public async load(churchId: number, id: number) {
-        return DB.queryOne("SELECT * FROM questions WHERE id=? AND churchId=?;", [id, churchId]);
+        return DB.queryOne("SELECT * FROM questions WHERE id=? AND churchId=? AND removed=0;", [id, churchId]);
     }
 
     public async loadAll(churchId: number) {
-        return DB.query("SELECT * FROM questions WHERE churchId=?;", [churchId]);
+        return DB.query("SELECT * FROM questions WHERE churchId=? AND removed=0;", [churchId]);
     }
 
     public async loadForForm(churchId: number, formId: number) {

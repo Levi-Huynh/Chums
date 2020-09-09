@@ -1,6 +1,7 @@
 import { injectable } from "inversify";
 import { DB } from "../db";
 import { Note } from "../models";
+import { PersonHelper } from "../helpers"
 
 @injectable()
 export class NoteRepository {
@@ -37,6 +38,23 @@ export class NoteRepository {
 
     public async loadAll(churchId: number) {
         return DB.query("SELECT * FROM notes WHERE churchId=?;", [churchId]);
+    }
+
+
+    public convertToModel(churchId: number, data: any) {
+        const result: Note = {
+            person: { photoUpdated: data.photoUpdate, name: { first: data.firstName, last: data.lastName, nick: data.nickName } },
+            contentId: data.contentId, contentType: data.contentType, contents: data.contents, id: data.id, addedBy: data.addedBy, dateAdded: data.dateAdded, noteType: data.noteType
+        }
+        result.person.photo = PersonHelper.getPhotoUrl(churchId, result.person);
+        result.person.name.display = PersonHelper.getDisplayName(result.person);
+        return result;
+    }
+
+    public convertAllToModel(churchId: number, data: any[]) {
+        const result: Note[] = [];
+        data.forEach(d => result.push(this.convertToModel(churchId, d)));
+        return result;
     }
 
 

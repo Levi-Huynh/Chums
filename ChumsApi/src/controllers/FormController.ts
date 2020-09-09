@@ -10,7 +10,7 @@ export class FormController extends CustomBaseController {
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Forms", "View")) return this.json({}, 401);
-            else return await this.repositories.form.load(au.churchId, id);
+            else return this.repositories.form.convertToModel(au.churchId, await this.repositories.form.load(au.churchId, id));
         });
     }
 
@@ -18,7 +18,7 @@ export class FormController extends CustomBaseController {
     public async getAll(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Forms", "View")) return this.json({}, 401);
-            else return await this.repositories.form.loadAll(au.churchId);
+            else return this.repositories.form.convertAllToModel(au.churchId, await this.repositories.form.loadAll(au.churchId));
         });
     }
 
@@ -30,7 +30,7 @@ export class FormController extends CustomBaseController {
                 const promises: Promise<Form>[] = [];
                 req.body.forEach(form => { form.churchId = au.churchId; promises.push(this.repositories.form.save(form)); });
                 const result = await Promise.all(promises);
-                return result;
+                return this.repositories.form.convertAllToModel(au.churchId, result);
             }
         });
     }

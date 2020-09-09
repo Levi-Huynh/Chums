@@ -48,4 +48,15 @@ export class SessionRepository {
         return DB.query(sql, [churchId, groupId]);
     }
 
+    public convertToModel(churchId: number, data: any) {
+        const result: Session = { id: data.id, groupId: data.groupId, serviceTimeId: data.serviceTimeId, sessionDate: data.sessionDate };
+        return result;
+    }
+
+    public convertAllToModel(churchId: number, data: any[]) {
+        const result: Session[] = [];
+        data.forEach(d => result.push(this.convertToModel(churchId, d)));
+        return result;
+    }
+
 }

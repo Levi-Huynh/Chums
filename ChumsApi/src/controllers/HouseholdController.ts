@@ -9,14 +9,14 @@ export class HouseholdController extends CustomBaseController {
     @httpGet("/:id")
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            return await this.repositories.household.load(au.churchId, id);
+            return this.repositories.household.convertToModel(au.churchId, await this.repositories.household.load(au.churchId, id));
         });
     }
 
     @httpGet("/")
     public async getAll(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            return await this.repositories.household.loadAll(au.churchId);
+            return this.repositories.household.convertAllToModel(au.churchId, await this.repositories.household.loadAll(au.churchId));
         });
     }
 
@@ -28,7 +28,7 @@ export class HouseholdController extends CustomBaseController {
                 const promises: Promise<Household>[] = [];
                 req.body.forEach(household => { household.churchId = au.churchId; promises.push(this.repositories.household.save(household)); });
                 const result = await Promise.all(promises);
-                return result;
+                return this.repositories.household.convertAllToModel(au.churchId, result);
             }
         });
     }

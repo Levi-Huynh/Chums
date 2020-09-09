@@ -22,7 +22,7 @@ export class FormSubmissionController extends CustomBaseController {
     public async getAll(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Forms", "View")) return this.json({}, 401);
-            else return await this.repositories.formSubmission.loadAll(au.churchId);
+            else return this.repositories.formSubmission.convertAllToModel(au.churchId, await this.repositories.formSubmission.loadAll(au.churchId));
         });
     }
 
@@ -48,7 +48,7 @@ export class FormSubmissionController extends CustomBaseController {
                 }
                 if (answerPromises.length > 0) await Promise.all(answerPromises);
 
-                return result;
+                return this.repositories.formSubmission.convertAllToModel(au.churchId, result);
             }
         });
     }
@@ -63,7 +63,6 @@ export class FormSubmissionController extends CustomBaseController {
 
     private async appendForm(churchId: number, formSubmission: FormSubmission) {
         const data = await this.repositories.form.load(churchId, formSubmission.formId);
-        console.log(data);
         formSubmission.form = this.repositories.form.convertToModel(churchId, data);
     }
 

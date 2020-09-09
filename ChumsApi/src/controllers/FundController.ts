@@ -10,7 +10,7 @@ export class FundController extends CustomBaseController {
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Donations", "View Summary")) return this.json({}, 401);
-            else return await this.repositories.fund.load(au.churchId, id);
+            else return this.repositories.fund.convertToModel(au.churchId, await this.repositories.fund.load(au.churchId, id));
         });
     }
 
@@ -18,7 +18,7 @@ export class FundController extends CustomBaseController {
     public async getAll(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
             if (!au.checkAccess("Donations", "View Summary")) return this.json({}, 401);
-            else return await this.repositories.fund.loadAll(au.churchId);
+            else return this.repositories.fund.convertAllToModel(au.churchId, await this.repositories.fund.loadAll(au.churchId));
         });
     }
 
@@ -30,7 +30,7 @@ export class FundController extends CustomBaseController {
                 const promises: Promise<Fund>[] = [];
                 req.body.forEach(fund => { fund.churchId = au.churchId; promises.push(this.repositories.fund.save(fund)); });
                 const result = await Promise.all(promises);
-                return result;
+                return this.repositories.fund.convertAllToModel(au.churchId, result);
             }
         });
     }

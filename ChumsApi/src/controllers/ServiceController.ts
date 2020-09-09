@@ -9,21 +9,21 @@ export class ServiceController extends CustomBaseController {
     @httpGet("/search")
     public async search(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            return await this.repositories.service.searchByCampus(au.churchId, parseInt(req.query.campusId.toString(), 0));
+            return this.repositories.service.convertAllToModel(au.churchId, await this.repositories.service.searchByCampus(au.churchId, parseInt(req.query.campusId.toString(), 0)));
         });
     }
 
     @httpGet("/:id")
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            return await this.repositories.service.load(au.churchId, id);
+            return this.repositories.service.convertToModel(au.churchId, await this.repositories.service.load(au.churchId, id));
         });
     }
 
     @httpGet("/")
     public async getAll(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            return await this.repositories.service.loadAll(au.churchId);
+            return this.repositories.service.convertAllToModel(au.churchId, await this.repositories.service.loadAll(au.churchId));
         });
     }
 
@@ -35,7 +35,7 @@ export class ServiceController extends CustomBaseController {
                 const promises: Promise<Service>[] = [];
                 req.body.forEach(service => { service.churchId = au.churchId; promises.push(this.repositories.service.save(service)); });
                 const result = await Promise.all(promises);
-                return result;
+                return this.repositories.service.convertAllToModel(au.churchId, result);
             }
         });
     }

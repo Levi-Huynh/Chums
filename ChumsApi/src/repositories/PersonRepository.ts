@@ -54,7 +54,7 @@ export class PersonRepository {
     }
 
     public async loadAll(churchId: number) {
-        return DB.query("SELECT * FROM people WHERE churchId=?;", [churchId]);
+        return DB.query("SELECT * FROM people WHERE churchId=? AND removed=0;", [churchId]);
     }
 
     public async loadByHousehold(churchId: number, householdId: number) {
