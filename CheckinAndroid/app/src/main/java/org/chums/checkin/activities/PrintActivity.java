@@ -143,11 +143,11 @@ public class PrintActivity extends AppCompatActivity {
     private String replaceValues(String html)
     {
         Visit v = CachedData.PendingVisits.get(visitIndex);
-        Person p = CachedData.HouseholdMembers.getByPersonId(v.getPersonId()).getPerson();
+        Person p = CachedData.HouseholdMembers.getById(v.getPersonId());
 
         String result = html;
 
-        result = result.replace("[Name]", p.getDisplayName());
+        result = result.replace("[Name]", p.getName().getDisplay());
         result = result.replace("[Sessions]", v.getVisitSessions().getDisplayText());
 
         return result;

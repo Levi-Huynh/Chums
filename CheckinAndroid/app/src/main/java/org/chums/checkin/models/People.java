@@ -29,4 +29,27 @@ public class People extends ArrayList<Person> {
         return result;
     }
 
+    public Person getById(int id)
+    {
+        Person result = null;
+        for (Person person : this)
+        {
+            if (person.getId()==id) result = person;
+        }
+        return result;
+    }
+
+    public static People loadForHousehold(int householdId)
+    {
+        People result = null;
+        String url = CachedData.ApiRoot + "/people/household/" + Integer.toString(householdId);
+        try {
+            String jsonResponse = Json.get(url);
+            result = inflate(jsonResponse);
+        } catch (Exception ex) {
+            int a=0;
+        }
+        return result;
+    }
+
 }

@@ -1,4 +1,9 @@
-package org.chums.checkin.models;
+package org.chums.checkin.models.accessManagement;
+
+import com.google.gson.Gson;
+
+import org.chums.checkin.helpers.CachedData;
+import org.chums.checkin.helpers.Json;
 
 public class LoginResponse {
     private User user;
@@ -28,4 +33,12 @@ public class LoginResponse {
     public void setToken(String token) {
         this.token = token;
     }
+
+
+
+    public static LoginResponse inflate(String json)
+    {
+        return new Gson().fromJson(json, LoginResponse.class);
+    }
+
 }

@@ -70,9 +70,10 @@ export class PersonRepository {
     }
 
     public async searchPhone(churchId: number, phoneNumber: string) {
+        const phoneSearch = "%" + phoneNumber.replace(" ", "%") + "%";
         return DB.query(
-            "SELECT * FROM people WHERE churchId=? AND (REPLACE(HomePhone,'-','') LIKE @PhoneNumber OR REPLACE(WorkPhone,'-','') LIKE @PhoneNumber OR REPLACE(MobilePhone,'-','') LIKE @PhoneNumber) AND removed=0 LIMIT 100;",
-            [churchId, "%" + phoneNumber.replace(" ", "%") + "%"]
+            "SELECT * FROM people WHERE churchId=? AND (REPLACE(HomePhone,'-','') LIKE ? OR REPLACE(WorkPhone,'-','') LIKE ? OR REPLACE(MobilePhone,'-','') LIKE ?) AND removed=0 LIMIT 100;",
+            [churchId, phoneSearch, phoneSearch, phoneSearch]
         );
     }
 

@@ -35,12 +35,17 @@ export class ServiceRepository {
         return DB.query("SELECT * FROM services WHERE churchId=? AND removed=0;", [churchId]);
     }
 
+    public async loadWithCampus(churchId: number) {
+        return DB.query("SELECT s.*, c.name as campusName FROM services s INNER JOIN campuses c on c.id=s.campusId WHERE s.churchId=? AND s.removed=0 ORDER BY c.name, s.name", [churchId]);
+    }
+
     public async searchByCampus(churchId: number, campusId: number) {
         return DB.query("SELECT * FROM services WHERE churchId=? AND (?=0 OR CampusId=?) AND removed=0 ORDER by name;", [churchId, campusId, campusId]);
     }
 
     public convertToModel(churchId: number, data: any) {
         const result: Service = { id: data.id, campusId: data.campusId, name: data.name };
+        if (data.campusName !== undefined) result.campus = { id: result.campusId, name: data.campusName };
         return result;
     }
 

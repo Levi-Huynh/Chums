@@ -12,12 +12,9 @@ import android.widget.Toast;
 
 import org.chums.checkin.R;
 import org.chums.checkin.helpers.CachedData;
-import org.chums.checkin.helpers.Json;
-import org.chums.checkin.models.User;
-import org.chums.checkin.models.Users;
-import org.json.JSONObject;
-
-import java.net.URLEncoder;
+import org.chums.checkin.models.accessManagement.LoginRequest;
+import org.chums.checkin.models.accessManagement.LoginResponse;
+import org.chums.checkin.models.accessManagement.User;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -115,9 +112,9 @@ public class LoginActivity extends AppCompatActivity {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                User u = User.login(email, password);
-                if (u.getApiToken()!=null) {
-                    CachedData.ApiKey = u.getApiToken();
+                LoginResponse resp = LoginRequest.login(email, password);
+                if (resp.getToken()!=null) {
+                    CachedData.ApiKey = resp.getToken();
                     nextScreen();
                 }
             }

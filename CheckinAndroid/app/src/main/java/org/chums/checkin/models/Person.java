@@ -2,10 +2,13 @@ package org.chums.checkin.models;
 
 import java.util.Date;
 
+
+
 public class Person {
     private int id;
-    private String displayName;
-    //public Date PhotoUpdated;
+    private int householdId;
+    private Name name;
+
     private String photo;
 
     public int getId() {
@@ -16,14 +19,6 @@ public class Person {
         this.id = id;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
     public String getPhoto() {
         return photo;
     }
@@ -31,4 +26,12 @@ public class Person {
     public void setPhoto(String photo) {
         this.photo = photo;
     }
+
+    public Name getName() {  return name;  }
+
+    public void setName(Name name) {  this.name = name; }
+
+    public int getHouseholdId() { return householdId; }
+
+    public void setHouseholdId(int householdId) { this.householdId = householdId; }
 }

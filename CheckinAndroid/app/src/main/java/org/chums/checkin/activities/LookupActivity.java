@@ -17,7 +17,6 @@ import android.widget.Toast;
 import org.chums.checkin.R;
 import org.chums.checkin.adapters.PersonAdapter;
 import org.chums.checkin.helpers.CachedData;
-import org.chums.checkin.models.HouseholdMembers;
 import org.chums.checkin.models.People;
 import org.chums.checkin.models.Visits;
 
@@ -81,13 +80,13 @@ public class LookupActivity  extends AppCompatActivity {
         peopleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CachedData.SelectedPersonId = people.get(position).getId();
+                CachedData.SelectedHouseholdId = people.get(position).getHouseholdId();
                 CachedData.PendingVisits = new Visits();
 
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        CachedData.HouseholdMembers = HouseholdMembers.loadByPerson(CachedData.SelectedPersonId);
+                        CachedData.HouseholdMembers = People.loadForHousehold(CachedData.SelectedHouseholdId);
                         if (CachedData.HouseholdMembers.size()>0) {
                             CachedData.LoadedVisits = Visits.loadForServiceHousehold(CachedData.ServiceId, CachedData.HouseholdMembers.get(0).getHouseholdId());
                             CachedData.PendingVisits = CachedData.LoadedVisits;

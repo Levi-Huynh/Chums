@@ -1,16 +1,9 @@
-package org.chums.checkin.models;
+package org.chums.checkin.models.accessManagement;
 
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import org.chums.checkin.R;
 import org.chums.checkin.helpers.CachedData;
 import org.chums.checkin.helpers.Json;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class User {
     private String email;
@@ -18,19 +11,7 @@ public class User {
     private String token;
 
 
-    public static User login(String email, String password)
-    {
-        User result = null;
-        String url = CachedData.AccessManagementApiRoot + "/users/login";
-        String jsonBody = new User(email, password).toJson();
-        try {
-            String jsonResponse = Json.post(url, jsonBody);
-            result = inflate(jsonResponse);
-        } catch (Exception ex) {
-            int a=0;
-        }
-        return result;
-    }
+
 
     public String toJson()
     {
@@ -44,11 +25,7 @@ public class User {
 
 
     public User(){}
-    public User(String email, String password)
-    {
-        this.email=email;
-        this.password=password;
-    }
+
 
 
     public String getEmail() {

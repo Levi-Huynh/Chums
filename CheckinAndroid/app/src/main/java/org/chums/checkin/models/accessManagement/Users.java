@@ -1,10 +1,6 @@
-package org.chums.checkin.models;
+package org.chums.checkin.models.accessManagement;
 
 import com.google.gson.Gson;
-
-import org.chums.checkin.helpers.CachedData;
-import org.chums.checkin.helpers.Json;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-import { Visit } from "./"
+import { Visit, Session } from "./"
 
 export class VisitSession {
     public id?: number;
@@ -7,5 +7,6 @@ export class VisitSession {
     public sessionId?: number;
 
     public visit?: Visit;
+    public session?: Session;
 }
 

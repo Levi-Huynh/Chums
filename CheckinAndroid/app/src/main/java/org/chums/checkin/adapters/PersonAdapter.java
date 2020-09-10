@@ -38,7 +38,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
         View rowView = inflater.inflate(R.layout.list_person, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.personName);
         ImageView imgView = (ImageView) rowView.findViewById(R.id.personPhoto);
-        textView.setText(people.get(position).getDisplayName());
+        textView.setText(people.get(position).getName().getDisplay());
 
         PhotoHelper.populateImage((Activity)context, imgView, people.get(position));
 

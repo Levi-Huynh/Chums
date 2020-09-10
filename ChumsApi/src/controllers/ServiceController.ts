@@ -23,7 +23,8 @@ export class ServiceController extends CustomBaseController {
     @httpGet("/")
     public async getAll(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            return this.repositories.service.convertAllToModel(au.churchId, await this.repositories.service.loadAll(au.churchId));
+            const data = await this.repositories.service.loadWithCampus(au.churchId)
+            return this.repositories.service.convertAllToModel(au.churchId, data);
         });
     }
 

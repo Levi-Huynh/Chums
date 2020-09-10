@@ -15,6 +15,7 @@ export class PersonController extends CustomBaseController {
         });
     }
 
+
     @httpPost("/household/:householdId")
     public async saveMembers(@requestParam("householdId") householdId: number, req: express.Request<{}, {}, Person[]>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {

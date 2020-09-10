@@ -44,6 +44,11 @@ export class VisitRepository {
         return DB.queryOne(sql, [churchId, sessionId, personId]);
     }
 
+    public async loadByHouseholdServiceDate(churchId: number, householdId: number, serviceId: number, visitDate: Date) {
+        const sql = "SELECT * FROM visits WHERE churchId=? AND serviceId = ? AND visitDate = ? AND personId IN (SELECT id FROM people WHERE householdId = ?)";
+        return DB.query(sql, [churchId, serviceId, visitDate, householdId]);
+    }
+
     public convertToModel(churchId: number, data: any) {
         const result: Visit = { id: data.id, personId: data.personId, serviceId: data.serviceId, groupId: data.groupId, visitDate: data.visitDate, checkinTime: data.checkinTime };
         return result;

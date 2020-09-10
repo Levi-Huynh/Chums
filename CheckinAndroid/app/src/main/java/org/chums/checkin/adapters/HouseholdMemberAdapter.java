@@ -15,7 +15,7 @@ import android.widget.TextView;
 import org.chums.checkin.R;
 import org.chums.checkin.helpers.CachedData;
 import org.chums.checkin.helpers.PhotoHelper;
-import org.chums.checkin.models.HouseholdMembers;
+import org.chums.checkin.models.People;
 import org.chums.checkin.models.ServiceTime;
 import org.chums.checkin.models.Visit;
 import org.chums.checkin.models.VisitSessions;
@@ -23,10 +23,10 @@ import org.chums.checkin.models.VisitSessions;
 
 public class HouseholdMemberAdapter extends BaseExpandableListAdapter {
     private final Context context;
-    private final HouseholdMembers members;
+    private final People members;
 
 
-    public HouseholdMemberAdapter(Context context, HouseholdMembers members) {
+    public HouseholdMemberAdapter(Context context, People members) {
         //super(context, -1, members);
         this.context = context;
         this.members = members;
@@ -50,13 +50,13 @@ public class HouseholdMemberAdapter extends BaseExpandableListAdapter {
         TextView serviceTimeName = (TextView) convertView.findViewById(R.id.serviceTimeName);
         Button groupButton = (Button) convertView.findViewById(R.id.groupButton);
 
-        Visit v = CachedData.PendingVisits.getByPersonId(members.get(groupPosition).getPerson().getId());
+        Visit v = CachedData.PendingVisits.getByPersonId(members.get(groupPosition).getId());
         VisitSessions sessions = new VisitSessions();
         if (v!=null) sessions = v.getVisitSessions().getByServiceTimeId(serviceTime.getId());
 
 
         groupButton.setTag(serviceTime.getId());
-        convertView.setTag(members.get(groupPosition).getPerson().getId());
+        convertView.setTag(members.get(groupPosition).getId());
         groupButton.setBackgroundColor(context.getResources().getColor(R.color.buttonBackground));
 
         serviceTimeName.setText(serviceTime.getName());
@@ -110,11 +110,11 @@ public class HouseholdMemberAdapter extends BaseExpandableListAdapter {
         TextView selectedGroups = (TextView) rowView.findViewById(R.id.selectedGroups);
         ViewGroup.LayoutParams params = rowView.getLayoutParams();
 
-        if (CachedData.CheckinPersonId== members.get(position).getPerson().getId()) ((ExpandableListView)parent).expandGroup(position);
+        if (CachedData.CheckinPersonId== members.get(position).getId()) ((ExpandableListView)parent).expandGroup(position);
 
-        personName.setText(members.get(position).getPerson().getDisplayName());
+        personName.setText(members.get(position).getName().getDisplay());
 
-        PhotoHelper.populateImage((Activity)context, imgView, members.get(position).getPerson());
+        PhotoHelper.populateImage((Activity)context, imgView, members.get(position));
 
         if (isExpanded)
         {
@@ -132,7 +132,7 @@ public class HouseholdMemberAdapter extends BaseExpandableListAdapter {
 
 
 
-        Visit v = CachedData.PendingVisits.getByPersonId(members.get(position).getPerson().getId());
+        Visit v = CachedData.PendingVisits.getByPersonId(members.get(position).getId());
         if (v!=null && v.getVisitSessions().size()>0) {
             String displayText = v.getVisitSessions().getDisplayText();
             selectedGroups.setText(displayText);

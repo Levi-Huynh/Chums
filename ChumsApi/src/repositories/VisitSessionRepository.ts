@@ -40,6 +40,10 @@ export class VisitSessionRepository {
         return DB.queryOne("SELECT * FROM visitSessions WHERE churchId=? AND visitId=? AND sessionId=? LIMIT 1;", [churchId, visitId, sessionId]);
     }
 
+    public async loadByVisitIds(churchId: number, visitIds: number[]) {
+        return DB.query("SELECT * FROM visitSessions WHERE churchId=? AND visitId IN (" + visitIds.join(",") + ");", [churchId]);
+    }
+
     public async loadByVisitId(churchId: number, visitId: number) {
         return DB.query("SELECT * FROM visitSessions WHERE churchId=? AND visitId=?;", [churchId, visitId]);
     }

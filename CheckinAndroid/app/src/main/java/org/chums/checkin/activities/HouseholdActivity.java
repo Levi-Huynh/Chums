@@ -11,11 +11,11 @@ import android.widget.ExpandableListView;
 import org.chums.checkin.R;
 import org.chums.checkin.adapters.HouseholdMemberAdapter;
 import org.chums.checkin.helpers.CachedData;
-import org.chums.checkin.models.HouseholdMembers;
+import org.chums.checkin.models.People;
 
 
 public class HouseholdActivity extends AppCompatActivity {
-    private HouseholdMembers members;
+    private People members;
     ExpandableListView memberList;
 
     @Override
@@ -51,7 +51,7 @@ public class HouseholdActivity extends AppCompatActivity {
 
             @Override
             public void onGroupExpand(int groupPosition) {
-                CachedData.CheckinPersonId = CachedData.HouseholdMembers.get(groupPosition).getPerson().getId();
+                CachedData.CheckinPersonId = CachedData.HouseholdMembers.get(groupPosition).getId();
                 if(groupPosition != previousGroup) memberList.collapseGroup(previousGroup);
                 previousGroup = groupPosition;
             }
