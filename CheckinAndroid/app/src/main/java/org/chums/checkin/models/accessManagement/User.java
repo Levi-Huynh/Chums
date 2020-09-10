@@ -15,13 +15,13 @@ import java.util.List;
 public class User {
     private String email;
     private String password;
-    private String apiToken;
+    private String token;
 
 
     public static User login(String email, String password)
     {
         User result = null;
-        String url = CachedData.ApiRoot + "/users/login";
+        String url = CachedData.AccessManagementApiRoot + "/users/login";
         String jsonBody = new User(email, password).toJson();
         try {
             String jsonResponse = Json.post(url, jsonBody);
@@ -67,11 +67,11 @@ public class User {
         this.password = password;
     }
 
-    public String getApiToken() {
-        return apiToken;
+    public String getToken() {
+        return token;
     }
 
-    public void setApiToken(String apiToken) {
-        this.apiToken = apiToken;
+    public void setToken(String token) {
+        this.token = token;
     }
 }
