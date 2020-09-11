@@ -19,7 +19,7 @@ export class FormRepository {
 
     public async update(form: Form) {
         return DB.query(
-            "UPDATE forms SET name=?, contentType=?, modifiedTime=NOW(), WHERE id=? and churchId=?",
+            "UPDATE forms SET name=?, contentType=?, modifiedTime=NOW() WHERE id=? and churchId=?",
             [form.name, form.contentType, form.id, form.churchId]
         ).then(() => { return form });
     }

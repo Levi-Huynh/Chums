@@ -32,11 +32,15 @@ export class SessionRepository {
     }
 
     public async loadByIds(churchId: number, ids: number[]) {
-        return DB.queryOne("SELECT * FROM sessions WHERE churchId=? AND id IN (" + ids.join(",") + ");", [churchId]);
+        return DB.query("SELECT * FROM sessions WHERE churchId=? AND id IN (" + ids.join(",") + ");", [churchId]);
     }
 
     public async loadAll(churchId: number) {
         return DB.query("SELECT * FROM sessions WHERE churchId=?;", [churchId]);
+    }
+
+    public async loadByGroupServiceTimeDate(churchId: number, groupId: number, serviceTimeId: number, sessionDate: Date) {
+        return DB.queryOne("SELECT * FROM sessions WHERE churchId=? AND groupId = ? AND serviceTimeId = ? AND sessionDate = ?;", [churchId, groupId, serviceTimeId, sessionDate]);
     }
 
     public async loadByGroupIdWithNames(churchId: number, groupId: number) {

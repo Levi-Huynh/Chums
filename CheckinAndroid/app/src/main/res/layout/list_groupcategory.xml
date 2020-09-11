@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dip">
+    android:padding="16dip"
+    >
 
     <TextView
         android:id="@+id/groupCategoryName"
@@ -19,6 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:paddingLeft="20dp"
         />
 
 </android.support.constraint.ConstraintLayout>

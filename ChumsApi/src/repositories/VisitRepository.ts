@@ -18,7 +18,7 @@ export class VisitRepository {
 
     public async update(visit: Visit) {
         return DB.query(
-            "UPDATE visits SET personId=?, serviceId=?, groupId=?, visitDate=?, checkinTime=?, addedBy=?, WHERE id=? and churchId=?",
+            "UPDATE visits SET personId=?, serviceId=?, groupId=?, visitDate=?, checkinTime=?, addedBy=? WHERE id=? and churchId=?",
             [visit.personId, visit.serviceId, visit.groupId, visit.visitDate, visit.checkinTime, visit.addedBy, visit.id, visit.churchId]
         ).then(() => { return visit });
     }

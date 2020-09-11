@@ -18,7 +18,7 @@ export class QuestionRepository {
 
     public async update(question: Question) {
         return DB.query(
-            "UPDATE questions SET formId=?, parentId=?, title=?, description=?, fieldType=?, placeholder=?, sort=?, choices=?, WHERE id=? and churchId=?",
+            "UPDATE questions SET formId=?, parentId=?, title=?, description=?, fieldType=?, placeholder=?, sort=?, choices=? WHERE id=? and churchId=?",
             [question.formId, question.parentId, question.title, question.description, question.fieldType, question.placeholder, question.sort, question.choices, question.id, question.churchId]
         ).then(() => { return question });
     }
