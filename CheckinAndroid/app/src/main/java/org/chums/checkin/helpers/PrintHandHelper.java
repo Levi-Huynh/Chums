@@ -32,8 +32,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Stack;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class PrintHandHelper {
@@ -49,10 +52,12 @@ public class PrintHandHelper {
     public static String Status="Pending init";
 
     private PrintingSdk printingSdk;
-    private Context appContext;
+    private static Context appContext;
     Runnable statusUpdatedRunnable;
 
+
     private static Stack<Uri> imageQueue = new Stack<Uri>();
+
 
     private static void checkQueue()
     {
@@ -80,6 +85,101 @@ public class PrintHandHelper {
         this.statusUpdatedRunnable = r;
     }
 
+    private IServiceCallback.Stub getServiceStub()
+    {
+        return new IServiceCallback.Stub() {
+            @Override
+            public void onServiceDisconnected() {
+                setPrinterStatus("Service disconnected.");
+            }
+
+            @Override
+            public void onServiceConnected() {
+                setPrinterStatus("Attach - Service connected.");
+                setPaperSize();
+            }
+
+            @Override
+            public void onFileOpen(int progress, int finished) {
+                setPrinterStatus("onFileOpen progress " + progress + "; finished " + (finished == 1));
+            }
+
+            @Override
+            public void onLibraryDownload(int progress) {
+                setPrinterStatus("onLibraryDownload progress " + progress);
+            }
+
+            @Override
+            public boolean onRenderLibraryCheck(boolean renderLibrary, boolean fontLibrary) {
+                setPrinterStatus("onRenderLibraryCheck render library " + renderLibrary + "; fonts library " + fontLibrary);
+                return true;
+            }
+
+            @Override
+            public String onPasswordRequired() {
+                setPrinterStatus("onPasswordRequired");
+                return "password";
+            }
+
+            @Override
+            public void onError(Result result) {
+                setPrinterStatus("error, Result " + result + "; Result type " + result.getType());
+            }
+        };
+    }
+
+    private IPrintCallback.Stub getPrintStub()
+    {
+        return new IPrintCallback.Stub() {
+            @Override
+            public void startingPrintJob() {
+                setPrinterStatus("startingPrintJob");
+            }
+
+            @Override
+            public void start() {
+                setPrinterStatus("start");
+
+                TimerTask task = new TimerTask() {
+                    public void run() {
+                        checkQueue();
+                    }
+                };
+                Timer timer = new Timer("Timer");
+                timer.schedule(task, 2000);
+
+
+
+            }
+
+            @Override
+            public void sendingPage(int pageNum, int progress) {
+                setPrinterStatus("sendingPage number " + pageNum + ", progress " + progress);
+            }
+
+            @Override
+            public void preparePage(int pageNum) {
+                setPrinterStatus("preparePage number " + pageNum);
+            }
+
+            @Override
+            public boolean needCancel() {
+                setPrinterStatus("needCancel"); return false;
+            }
+
+            @Override
+            public void finishingPrintJob() {
+                //PrintHandHelper.printNextItem();
+                PrintHandHelper.checkQueue();
+            }
+
+            @Override
+            public void finish(Result result, int pagesPrinted) {
+                setPrinterStatus("finish, Result " + result + "; Result type " + result.getType() + "; Result message " + result.getType().getMessage() + "; pages printed " + pagesPrinted);
+                PrintHandHelper.checkQueue();
+            }
+        };
+    }
 
 
     public void attach(Context context)
@@ -87,77 +187,17 @@ public class PrintHandHelper {
         intentApi = new IntentAPI(context);
         final Context appContext = context.getApplicationContext();
         try {
-            intentApi.runService(new IServiceCallback.Stub() {
-                @Override
-                public void onServiceDisconnected() { setPrinterStatus("Service disconnected."); }
-
-                @Override
-                public void onServiceConnected() {
-                    setPrinterStatus("Attach - Service connected.");
-                    setPaperSize();
-                }
-
-                @Override
-                public void onFileOpen(int progress, int finished) { setPrinterStatus("onFileOpen progress " + progress + "; finished " + (finished == 1)); }
-
-                @Override
-                public void onLibraryDownload(int progress) {  setPrinterStatus("onLibraryDownload progress " + progress);  }
-
-                @Override
-                public boolean onRenderLibraryCheck(boolean renderLibrary, boolean fontLibrary) {
-                    setPrinterStatus("onRenderLibraryCheck render library " + renderLibrary + "; fonts library " + fontLibrary);
-                    return true;
-                }
-
-                @Override
-                public String onPasswordRequired() {
-                    setPrinterStatus("onPasswordRequired");
-                    return "password";
-                }
-
-                @Override
-                public void onError(Result result) {
-                    setPrinterStatus("error, Result " + result + "; Result type " + result.getType());
-                }
-            });
+            intentApi.runService(getServiceStub());
             Boolean isRunning = intentApi.isServiceRunning();
         } catch (RemoteException e) {
             ErrorLogs.error(e);
             //e.printStackTrace();
         }
         try {
-            intentApi.setPrintCallback(new IPrintCallback.Stub() {
-                @Override
-                public void startingPrintJob() {  setPrinterStatus("startingPrintJob"); }
-
-                @Override
-                public void start() {  setPrinterStatus("start"); }
-
-                @Override
-                public void sendingPage(int pageNum, int progress) { setPrinterStatus("sendingPage number " + pageNum + ", progress " + progress); }
-
-                @Override
-                public void preparePage(int pageNum) { setPrinterStatus("preparePage number " + pageNum); }
-
-                @Override
-                public boolean needCancel() {  setPrinterStatus("needCancel"); return false; }
-
-                @Override
-                public void finishingPrintJob() {
-                    //PrintHandHelper.printNextItem();
-//                    PrintHandHelper.checkQueue();
-                }
-
-                @Override
-                public void finish(Result result, int pagesPrinted) {
-                    setPrinterStatus("finish, Result " + result + "; Result type " + result.getType() + "; Result message " + result.getType().getMessage() + "; pages printed " + pagesPrinted);
-                    PrintHandHelper.checkQueue();
-                }
-            });
+            intentApi.setPrintCallback(getPrintStub());
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-
     }
 
     private void toastInMainThread(final Context appContext, final String message) {
@@ -173,57 +213,6 @@ public class PrintHandHelper {
     {
         //intentApi.print("PrintingSample", "image/png", Uri.parse("file://" + FilesUtils.getFilePath(requireContext(), FilesUtils.FILE_PNG)));
     }
-
-    /*
-    public void printWebView(final WebView webView)
-    {
-        try {
-            IJob.Stub job = new IJob.Stub() {
-                @Override
-                public int getTotalPages() {
-                    return 1;
-                }
-
-                @Override
-                public Bitmap renderPageFragment(int num, Rect fragment) throws RemoteException {
-                    return getWebViewBitmap(webView, PaperWidth, PaperHeight);
-                }
-            };
-            Boolean premium = intentApi.checkPremium();
-            intentApi.print(job, 1);
-        } catch (RemoteException ex)
-        {
-            ErrorLogs.error(ex);
-        }
-    }*/
-/*
-    public void print(final Bitmap bitmap)
-    {
-        try {
-            IJob.Stub job = new IJob.Stub() {
-                @Override
-                public int getTotalPages() {
-                    return 1;
-                }
-                @Override
-                public Bitmap renderPageFragment(int num, Rect fragment) throws RemoteException {
-                    if (!rotate) return bitmap;
-                    else {
-                        int x = fragment.centerX()-(bitmap.getHeight()/2);
-                        int y = fragment.centerY()-(bitmap.getWidth()/2);
-                        Matrix matrix = new Matrix();
-                        matrix.postRotate(90);
-                        Bitmap result = Bitmap.createBitmap(bitmap, x, y, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-                        return result;
-                    }
-                }
-            };
-            intentApi.print(job, 1);
-        } catch (RemoteException ex)
-        {
-            ErrorLogs.error(ex);
-        }
-    }*/
 
     public Uri getImageUri(Context inContext, Bitmap inImage, int index) {
         try {
@@ -304,6 +293,11 @@ public class PrintHandHelper {
     public void print(final List<Bitmap> bitmaps, Context context)
     {
         for (int i=0;i<bitmaps.size();i++) imageQueue.push(getImageUri(context, bitmaps.get(i), i));
+        try {
+            intentApi.setPrintCallback(getPrintStub());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
         checkQueue();
     }
 

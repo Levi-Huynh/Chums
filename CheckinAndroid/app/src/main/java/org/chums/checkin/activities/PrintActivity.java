@@ -166,7 +166,7 @@ public class PrintActivity extends AppCompatActivity {
     private void print()
     {
         phh.print(bitmaps, this);
-        phh.detach();
+        //phh.detach();
     }
 
     private Bitmap getBitmap()
