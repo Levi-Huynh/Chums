@@ -31,7 +31,10 @@ import org.chums.checkin.models.ErrorLogs;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
+
 
 public class PrintHandHelper {
 
@@ -48,6 +51,22 @@ public class PrintHandHelper {
     private PrintingSdk printingSdk;
     private Context appContext;
     Runnable statusUpdatedRunnable;
+
+    private static Stack<Uri> imageQueue = new Stack<Uri>();
+
+    private static void checkQueue()
+    {
+        if (imageQueue.size()>0) {
+            Uri uri = imageQueue.pop();
+            try {
+                intentApi.print("label 1", "image/jpg", uri);
+            } catch (Exception ex) {
+                ErrorLogs.error(ex);
+            }
+        }
+    }
+
+
 
     public void setPrinterStatus(String status)
     {
@@ -124,10 +143,16 @@ public class PrintHandHelper {
                 public boolean needCancel() {  setPrinterStatus("needCancel"); return false; }
 
                 @Override
-                public void finishingPrintJob() { setPrinterStatus("finishingPrintJob"); }
+                public void finishingPrintJob() {
+                    //PrintHandHelper.printNextItem();
+//                    PrintHandHelper.checkQueue();
+                }
 
                 @Override
-                public void finish(Result result, int pagesPrinted) { setPrinterStatus("finish, Result " + result + "; Result type " + result.getType() + "; Result message " + result.getType().getMessage() + "; pages printed " + pagesPrinted); }
+                public void finish(Result result, int pagesPrinted) {
+                    setPrinterStatus("finish, Result " + result + "; Result type " + result.getType() + "; Result message " + result.getType().getMessage() + "; pages printed " + pagesPrinted);
+                    PrintHandHelper.checkQueue();
+                }
             });
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -200,14 +225,14 @@ public class PrintHandHelper {
         }
     }*/
 
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
+    public Uri getImageUri(Context inContext, Bitmap inImage, int index) {
         try {
             //File tempDir = inContext.getCacheDir();
             File tempDir = inContext.getExternalCacheDir();
             //File tempDir = Environment.getExternalStorageDirectory();
             tempDir = new File(tempDir.getAbsolutePath() + "/.temp/");
             tempDir.mkdir();
-            File tempFile = File.createTempFile("image1", ".jpg", tempDir);
+            File tempFile = File.createTempFile("image" + index + "_", ".jpg", tempDir);
             //File tempFile = File.createTempFile("image1", ".jpg");
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
@@ -278,13 +303,8 @@ public class PrintHandHelper {
 
     public void print(final List<Bitmap> bitmaps, Context context)
     {
-        Uri uri = getImageUri(context, bitmaps.get(0));
-        try {
-            intentApi.print("label 1", "image/jpg", uri);
-        } catch (Exception ex)
-        {
-            ErrorLogs.error(ex);
-        }
+        for (int i=0;i<bitmaps.size();i++) imageQueue.push(getImageUri(context, bitmaps.get(i), i));
+        checkQueue();
     }
 
     public void print2(final List<Bitmap> bitmaps, Context context)

@@ -31,6 +31,7 @@ public class PrintActivity extends AppCompatActivity {
     List<Bitmap> bitmaps = null;
     int visitIndex = 0;
     TextView printStatus;
+    boolean pickupSlipPending=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,28 +51,6 @@ public class PrintActivity extends AppCompatActivity {
             public void onClick(View view) {  goFullScreen();  }
         });
     }
-/*
-    private void attachPrintHand()
-    {
-        printStatus.setText("Preparing Printer...");
-        phh.attach(PrintActivity.this   );
-        waitTillReady();
-    }
-
-    private void waitForSdk()
-    {
-        printStatus.setText("Finding Printer...");
-        if (!phh.isInitialized) {
-            phh.initSdk(this);
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    waitForSdk();
-                }
-            }, 1000);
-        } else attachPrintHand();
-    }*/
 
 
     public void onResume() {
@@ -104,21 +83,18 @@ public class PrintActivity extends AppCompatActivity {
     {
         bitmaps = new ArrayList<Bitmap>();
         visitIndex = 0;
-        if (CachedData.PendingVisits.size()>0) prepareBitmap();
+        if (CachedData.PendingVisits.size()>0) prepareBitmap("1_1x3_5.html");
     }
 
 
 
-    private void prepareBitmap() {
+    private void prepareBitmap(final String htmlFile) {
         webView = (WebView) findViewById(R.id.webBrowser);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
 
-        //RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(PrintHandHelper.BitmapWidth, PrintHandHelper.BitmapHeight);
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(PrintHandHelper.BitmapWidth, PrintHandHelper.BitmapHeight);
-        //params. .addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
         webView.setLayoutParams(params);
-
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -130,13 +106,18 @@ public class PrintActivity extends AppCompatActivity {
                         bitmaps.add(getBitmap());
                         showPrintPreview();
                         visitIndex++;
-                        if (visitIndex<CachedData.PendingVisits.size()) prepareBitmap();
+                        if (visitIndex<CachedData.PendingVisits.size()) prepareBitmap(htmlFile);
+                        else if (pickupSlipPending) {
+                            pickupSlipPending=false;
+                            prepareBitmap("pickup_" + htmlFile);
+                        }
                         else print();
                     }
                 }, 1000);
             }
         });
-        String htmlDocument = replaceValues(readHtml("1_1x3_5.html"));
+        String template = readHtml(htmlFile);
+        String htmlDocument = (visitIndex<CachedData.PendingVisits.size()) ? replaceValues(template) : replaceValuesPickup(template);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
     }
 
@@ -146,10 +127,18 @@ public class PrintActivity extends AppCompatActivity {
         Person p = CachedData.HouseholdMembers.getById(v.getPersonId());
 
         String result = html;
-
         result = result.replace("[Name]", p.getName().getDisplay());
-        result = result.replace("[Sessions]", v.getVisitSessions().getDisplayText());
+        result = result.replace("[Sessions]", v.getVisitSessions().getDisplayText().replace(", ", "<br/>"));
+        return result;
+    }
 
+    private String replaceValuesPickup(String html)
+    {
+        //Visit v = CachedData.PendingVisits.get(visitIndex);
+        //Person p = CachedData.HouseholdMembers.getById(v.getPersonId());
+
+        String result = html;
+        result = result.replace("[Children]", "childrenNamesHere");
         return result;
     }
 
