@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import org.chums.checkin.helpers.CachedData;
 import org.chums.checkin.helpers.Json;
+import org.chums.checkin.models.ErrorLogs;
 import org.chums.checkin.models.People;
 
 public class SwitchAppRequest {
@@ -45,7 +46,7 @@ public class SwitchAppRequest {
             result = LoginResponse.inflate(jsonResponse);
             CachedData.ApiKey = result.getToken();
         } catch (Exception ex) {
-            int a=0;
+            ErrorLogs.error(ex);
         }
 
         return result;

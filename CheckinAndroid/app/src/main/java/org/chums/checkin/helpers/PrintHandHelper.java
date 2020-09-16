@@ -26,6 +26,8 @@ import com.dynamixsoftware.printingsdk.PrintingSdk;
 import com.dynamixsoftware.printingsdk.ResultType;
 
 
+import org.chums.checkin.models.ErrorLogs;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -100,9 +102,9 @@ public class PrintHandHelper {
                 }
             });
             Boolean isRunning = intentApi.isServiceRunning();
-            int a=0;
         } catch (RemoteException e) {
-            e.printStackTrace();
+            ErrorLogs.error(e);
+            //e.printStackTrace();
         }
         try {
             intentApi.setPrintCallback(new IPrintCallback.Stub() {
@@ -134,7 +136,6 @@ public class PrintHandHelper {
     }
 
     private void toastInMainThread(final Context appContext, final String message) {
-        int a=0;
 //        mainHandler.post(new Runnable() {
 //            @Override
 //            public void run() {
@@ -167,7 +168,7 @@ public class PrintHandHelper {
             intentApi.print(job, 1);
         } catch (RemoteException ex)
         {
-            int a=0;
+            ErrorLogs.error(ex);
         }
     }*/
 /*
@@ -195,7 +196,7 @@ public class PrintHandHelper {
             intentApi.print(job, 1);
         } catch (RemoteException ex)
         {
-            int a=0;
+            ErrorLogs.error(ex);
         }
     }*/
 
@@ -282,7 +283,7 @@ public class PrintHandHelper {
             intentApi.print("label 1", "image/jpg", uri);
         } catch (Exception ex)
         {
-            int a=0;
+            ErrorLogs.error(ex);
         }
     }
 
@@ -322,7 +323,7 @@ public class PrintHandHelper {
             intentApi.print(job, 1);
         } catch (RemoteException ex)
         {
-            int a=0;
+            ErrorLogs.error(ex);
         }
     }
 
@@ -344,7 +345,7 @@ public class PrintHandHelper {
             fOut.flush();
             fOut.close();
         } catch (Exception ex){
-            int a=0;
+            ErrorLogs.error(ex);
         }
     }
 

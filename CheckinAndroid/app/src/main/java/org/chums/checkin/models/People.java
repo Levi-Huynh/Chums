@@ -24,7 +24,7 @@ public class People extends ArrayList<Person> {
             String jsonResponse = Json.get(url);
             result = inflate(jsonResponse);
         } catch (Exception ex) {
-            int a=0;
+            ErrorLogs.error(ex);
         }
         return result;
     }
@@ -47,7 +47,7 @@ public class People extends ArrayList<Person> {
             String jsonResponse = Json.get(url);
             result = inflate(jsonResponse);
         } catch (Exception ex) {
-            int a=0;
+            ErrorLogs.error(ex);
         }
         return result;
     }

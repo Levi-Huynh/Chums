@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import org.chums.checkin.helpers.CachedData;
 import org.chums.checkin.helpers.Json;
+import org.chums.checkin.models.ErrorLogs;
 
 public class LoginRequest {
     private String email;
@@ -51,7 +52,7 @@ public class LoginRequest {
                 result = SwitchAppRequest.switchApp(result);
             }
         } catch (Exception ex) {
-            int a=0;
+            ErrorLogs.error(ex);
         }
         return result;
     }

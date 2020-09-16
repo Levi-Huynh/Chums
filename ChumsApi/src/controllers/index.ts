@@ -2,6 +2,7 @@ export { AttendanceRecordController } from "./AttendanceRecordController";
 export { CampusController } from "./CampusController";
 export { DonationBatchController } from "./DonationBatchController";
 export { DonationController } from "./DonationController";
+export { ErrorController } from "./ErrorController";
 export { FormController } from "./FormController";
 export { FormSubmissionController } from "./FormSubmissionController";
 export { FundController } from "./FundController";

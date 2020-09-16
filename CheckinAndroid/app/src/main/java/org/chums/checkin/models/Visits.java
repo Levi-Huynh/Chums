@@ -23,7 +23,7 @@ public class Visits extends ArrayList<Visit> {
             String jsonBody = this.toJson();
             String jsonResponse = Json.post(url, jsonBody);
         } catch (Exception ex) {
-            int a=0;
+            ErrorLogs.error(ex);
         }
     }
 
@@ -35,7 +35,7 @@ public class Visits extends ArrayList<Visit> {
             String jsonResponse = Json.get(url);
             result = inflate(jsonResponse);
         } catch (Exception ex) {
-            int a=0;
+            ErrorLogs.error(ex);
         }
         return result;
     }
