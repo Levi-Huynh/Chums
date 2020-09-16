@@ -3,9 +3,8 @@ import { BaseHttpController } from "inversify-express-utils";
 import { TYPES } from "../constants";
 import { Repositories } from "../repositories";
 import express from "express";
-import { WinstonLogger } from "../logger";
+import { WinstonLogger } from "../helpers/Logger";
 import { AuthenticatedUser } from '../auth'
-import { OmitEmpty } from '../helpers/OmitEmpty';
 
 
 export class CustomBaseController extends BaseHttpController {
@@ -35,14 +34,17 @@ export class CustomBaseController extends BaseHttpController {
 
     public async actionWrapper(req: express.Request, res: express.Response, fetchFunction: (au: AuthenticatedUser) => any): Promise<any> {
         try {
-            const data = await fetchFunction(this.authUser());
-            try {
-                const result = OmitEmpty.omitEmpty(data);
-                return result;
-            } catch { return data; }
+            const result = await fetchFunction(this.authUser());
+            await this.logger.flush();
+            return result;
         } catch (e) {
-            console.log(e);
-            this.logger.logger.error(e);
+            try {
+                this.logger.error(e);
+                await this.logger.flush();
+            } catch (e) {
+                console.log(e);
+            }
+
             return this.internalServerError(e);
         }
     }

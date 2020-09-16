@@ -24,7 +24,7 @@ import {
   Repositories
 } from "./repositories";
 import { TYPES } from "./constants";
-import { WinstonLogger } from "./logger";
+import { WinstonLogger } from "./helpers/Logger";
 
 // This is where all of the binding for constructor injection takes place
 export const bindings = new AsyncContainerModule(async (bind) => {
