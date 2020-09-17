@@ -146,7 +146,7 @@ public class PrintHandHelper {
                     }
                 };
                 Timer timer = new Timer("Timer");
-                timer.schedule(task, 2000);
+                timer.schedule(task, 3000);
 
 
 
@@ -303,9 +303,6 @@ public class PrintHandHelper {
 
     public void print2(final List<Bitmap> bitmaps, Context context)
     {
-
-
-
         try {
             IJob.Stub job = new IJob.Stub() {
                 @Override

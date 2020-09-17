@@ -73,6 +73,7 @@ CREATE TABLE `groups` (
   `categoryName` varchar(50) DEFAULT NULL,
   `name` varchar(50) DEFAULT NULL,
   `trackAttendance` bit(1) DEFAULT NULL,
+  `parentPickup` bit(1) DEFAULT NULL,
   `removed` bit(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=555 DEFAULT CHARSET=latin1;

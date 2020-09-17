@@ -4,6 +4,7 @@ public class Group {
     private int id;
     private String categoryName;
     private String name;
+    public boolean parentPickup;
 
     public int getId() {
         return id;
@@ -27,5 +28,13 @@ public class Group {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean getParentPickup() {
+        return parentPickup;
+    }
+
+    public void setParentPickup(boolean parentPickup) {
+        this.parentPickup = parentPickup;
     }
 }

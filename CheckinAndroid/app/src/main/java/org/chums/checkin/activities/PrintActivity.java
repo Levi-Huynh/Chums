@@ -19,11 +19,13 @@ import org.chums.checkin.helpers.CachedData;
 import org.chums.checkin.helpers.PrintHandHelper;
 import org.chums.checkin.models.Person;
 import org.chums.checkin.models.Visit;
+import org.chums.checkin.models.Visits;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class PrintActivity extends AppCompatActivity {
     private WebView webView;
@@ -31,7 +33,9 @@ public class PrintActivity extends AppCompatActivity {
     List<Bitmap> bitmaps = null;
     int visitIndex = 0;
     TextView printStatus;
-    boolean pickupSlipPending=true;
+    boolean pickupSlipPending=false;
+    String pickupCode="";
+    Visits childVisits=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +87,27 @@ public class PrintActivity extends AppCompatActivity {
     {
         bitmaps = new ArrayList<Bitmap>();
         visitIndex = 0;
-        if (CachedData.PendingVisits.size()>0) prepareBitmap("1_1x3_5.html");
+        if (CachedData.PendingVisits.size()>0) {
+            childVisits = CachedData.PendingVisits.getWithParentPickup();
+            if (childVisits.size()>0) {
+                generatePickupCode();
+                pickupSlipPending=true;
+            }
+            prepareBitmap("1_1x3_5.html");
+        }
+    }
+
+    private void generatePickupCode()
+    {
+        //Omitted vowels and numbers that are substituted for vowels to avoid bad words from being formed
+        char[] characters = {'2', '3', '4', '5', '6', '7', '8', '9', 'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'};
+        this.pickupCode="";
+        Random rnd = new Random();
+        for (int i=0; i<4; i++)
+        {
+            int idx = rnd.nextInt(characters.length);
+            this.pickupCode+=characters[idx];
+        }
     }
 
 
@@ -129,16 +153,28 @@ public class PrintActivity extends AppCompatActivity {
         String result = html;
         result = result.replace("[Name]", p.getName().getDisplay());
         result = result.replace("[Sessions]", v.getVisitSessions().getDisplayText().replace(", ", "<br/>"));
+
+        boolean isChild = childVisits.getByPersonId(p.getId()) != null;
+
+        result = result.replace("[PickupCode]", (isChild) ? pickupCode : "");
         return result;
     }
 
     private String replaceValuesPickup(String html)
     {
-        //Visit v = CachedData.PendingVisits.get(visitIndex);
-        //Person p = CachedData.HouseholdMembers.getById(v.getPersonId());
+        ArrayList<String> childList = new ArrayList<String>();
+        for (Visit v : childVisits)
+        {
+            Person p = CachedData.HouseholdMembers.getById(v.getPersonId());
+            childList.add(p.getName().getDisplay() + " - " + v.getVisitSessions().getPickupText());
+        }
+
+        String childBullets = "";
+        for (String child : childList) childBullets = childBullets + "<li>" + child + "</li>";
 
         String result = html;
-        result = result.replace("[Children]", "childrenNamesHere");
+        result = result.replace("[Children]", childBullets);
+        result = result.replace("[PickupCode]", this.pickupCode);
         return result;
     }
 

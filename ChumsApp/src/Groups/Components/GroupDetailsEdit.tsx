@@ -18,6 +18,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
             case 'categoryName': g.categoryName = e.currentTarget.value; break;
             case 'name': g.name = e.currentTarget.value; break;
             case 'trackAttendance': g.trackAttendance = (e.currentTarget.value === 'true'); break;
+            case 'parentPickup': g.parentPickup = (e.currentTarget.value === 'true'); break;
         }
         setGroup(g);
     }
@@ -72,6 +73,15 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                     <FormGroup>
                         <FormLabel>Track Attendance</FormLabel>
                         <FormControl as="select" name="trackAttendance" value={group.trackAttendance?.toString() || 'false'} onChange={handleChange}>
+                            <option value="false">No</option>
+                            <option value="true">Yes</option>
+                        </FormControl>
+                    </FormGroup>
+                </Col>
+                <Col>
+                    <FormGroup>
+                        <FormLabel>Parent Pickup</FormLabel>
+                        <FormControl as="select" name="parentPickup" value={group.parentPickup?.toString() || 'false'} onChange={handleChange}>
                             <option value="false">No</option>
                             <option value="true">Yes</option>
                         </FormControl>

@@ -9,6 +9,24 @@ import java.util.ArrayList;
 
 public class Visits extends ArrayList<Visit> {
 
+    public Visits getWithParentPickup()
+    {
+        Visits result = new Visits();
+        for (Visit v : this)
+        {
+            boolean isChild=false;
+            for (VisitSession vs : v.getVisitSessions())
+            {
+                Session session = vs.getSession();
+                ServiceTime st = CachedData.ServiceTimes.getById(session.getServiceTimeId());
+                Group group = st.getGroups().getById(session.getGroupId());
+                if (group.getParentPickup()) isChild=true;
+            }
+            if (isChild) result.add(v);
+        }
+        return result;
+    }
+
     public Visit getByPersonId(int personId)
     {
         Visit result = null;

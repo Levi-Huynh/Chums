@@ -19,7 +19,8 @@ export const GroupDetails: React.FC<Props> = (props) => {
                 <Col><label>Name:</label> {props.group.name}</Col>
             </Row>
             <Row>
-                <Col lg={6}><label>Track Attendance:</label> {(props.group.trackAttendance?.toString().replace('false', 'No').replace('true', 'Yes') || '')}</Col>
+                <Col><label>Track Attendance:</label> {(props.group.trackAttendance?.toString().replace('false', 'No').replace('true', 'Yes') || '')}</Col>
+                <Col><label>Parent Pickup:</label> {(props.group.parentPickup?.toString().replace('false', 'No').replace('true', 'Yes') || '')}</Col>
             </Row>
             <ServiceTimes group={props.group} />
         </DisplayBox>

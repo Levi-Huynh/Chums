@@ -13,7 +13,7 @@ export interface FormInterface { id?: number, name?: string, contentType?: strin
 export interface FormSubmissionInterface { id?: number, formId?: number, contentType?: string, contentId?: number, form?: FormInterface, answers?: AnswerInterface[], questions?: QuestionInterface[] }
 export interface FundInterface { id: number, name: string }
 export interface FundDonationInterface { id?: number, donationId?: number, fundId?: number, amount?: number, donation?: DonationInterface }
-export interface GroupInterface { id?: number, name?: string, categoryName: string, memberCount: number, trackAttendance: boolean }
+export interface GroupInterface { id?: number, name?: string, categoryName: string, memberCount: number, trackAttendance: boolean, parentPickup: boolean }
 export interface GroupMemberInterface { id?: number, personId: number, person?: PersonInterface, groupId: number, group?: GroupInterface }
 export interface GroupServiceTimeInterface { id?: number, groupId?: number, serviceTimeId?: number, serviceTime?: ServiceTimeInterface }
 export interface HouseholdInterface { id?: number, name?: string }

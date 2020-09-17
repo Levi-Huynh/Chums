@@ -29,6 +29,16 @@ public class VisitSessions extends ArrayList<VisitSession> {
         return names.stream().collect(Collectors.joining(", "));
     }
 
+    public String getPickupText()
+    {
+        ArrayList<String> names = new ArrayList<String>();
+        for (VisitSession vs : this) {
+            String text = vs.getPickupText();
+            if (text!="") names.add(text);
+        }
+        return names.stream().collect(Collectors.joining(", "));
+    }
+
     public VisitSessions getByServiceTimeId(int serviceTimeId)
     {
         VisitSessions result = new VisitSessions();

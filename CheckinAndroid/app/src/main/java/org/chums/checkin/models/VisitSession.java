@@ -11,6 +11,14 @@ public class VisitSession {
         return st.getName() + " - " + st.getGroups().getById(getSession().getGroupId()).getName();
     }
 
+    public String getPickupText()
+    {
+        ServiceTime st = CachedData.ServiceTimes.getById(getSession().getServiceTimeId());
+        Group g = st.getGroups().getById(getSession().getGroupId());
+        if (g.parentPickup) return g.getName();
+        else return "";
+    }
+
     public Session getSession() {
         return session;
     }

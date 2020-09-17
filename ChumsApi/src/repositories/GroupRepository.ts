@@ -11,15 +11,15 @@ export class GroupRepository {
 
     public async create(group: Group) {
         return DB.query(
-            "INSERT INTO groups (churchId, categoryName, name, trackAttendance, removed) VALUES (?, ?, ?, ?, 0);",
-            [group.churchId, group.categoryName, group.name, group.trackAttendance]
+            "INSERT INTO groups (churchId, categoryName, name, trackAttendance, parentPickup, removed) VALUES (?, ?, ?, ?, ?, 0);",
+            [group.churchId, group.categoryName, group.name, group.trackAttendance, group.parentPickup]
         ).then((row: any) => { group.id = row.insertId; return group; });
     }
 
     public async update(group: Group) {
         return DB.query(
-            "UPDATE groups SET churchId=?, categoryName=?, name=?, trackAttendance=? WHERE id=? and churchId=?",
-            [group.churchId, group.categoryName, group.name, group.trackAttendance, group.id, group.churchId]
+            "UPDATE groups SET churchId=?, categoryName=?, name=?, trackAttendance=?, parentPickup=? WHERE id=? and churchId=?",
+            [group.churchId, group.categoryName, group.name, group.trackAttendance, group.parentPickup, group.id, group.churchId]
         ).then(() => { return group });
     }
 
@@ -52,7 +52,7 @@ export class GroupRepository {
     }
 
     public convertToModel(churchId: number, data: any) {
-        const result: Group = { id: data.id, categoryName: data.categoryName, name: data.name, trackAttendance: data.trackAttendance, memberCount: data.memberCount };
+        const result: Group = { id: data.id, categoryName: data.categoryName, name: data.name, trackAttendance: data.trackAttendance, parentPickup: data.parentPickup, memberCount: data.memberCount };
         return result;
     }
 
