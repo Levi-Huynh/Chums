@@ -25,10 +25,24 @@ public class LoginActivity extends AppCompatActivity {
     String email;
     String password;
 
+    private void initEnvironment()
+    {
+        CachedData.IsProd = false;
+
+        if (!CachedData.IsProd)
+        {
+            CachedData.AccessManagementApiRoot = "https://api.staging.livecs.org";
+            CachedData.ApiRoot = "https://api.staging.chums.org";
+            CachedData.ContentBaseUrl = "https://app.staging.chums.org";
+        }
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        initEnvironment();
     }
 
     @Override

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import org.chums.checkin.R;
 import org.chums.checkin.helpers.CachedData;
 import org.chums.checkin.helpers.PrintHandHelper;
+import org.chums.checkin.helpers.PrinterHelper;
 import org.chums.checkin.models.Person;
 import org.chums.checkin.models.Visit;
 import org.chums.checkin.models.Visits;
@@ -60,18 +61,25 @@ public class PrintActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         printStatus =  (TextView)this.findViewById(R.id.printStatus);
-        if (this.phh.isReady()) startProcess(); else nextScreen();
+        //if (this.phh.isReady()) startProcess(); else nextScreen();
+        startProcess();
     }
 
     private void startProcess()
     {
-        printStatus.setText("Printing to " + PrintHandHelper.PrinterName);
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() { nextScreen(); }
-        }, 10000);
-        populateBitmaps();
+        if (PrinterHelper.readyToPrint) {
+            printStatus.setText("Printing to " + PrintHandHelper.PrinterName);
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    nextScreen();
+                }
+            }, 10000);
+            populateBitmaps();
+        } else {
+            printStatus.setText("Checkin complete.");
+        }
     }
 
 

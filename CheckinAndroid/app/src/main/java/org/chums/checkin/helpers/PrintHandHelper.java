@@ -256,12 +256,14 @@ public class PrintHandHelper {
 
                 @Override
                 public void finish(com.dynamixsoftware.printingsdk.Result arg0) {
-                    isInitialized=true;
-                    setPrinterStatus("Initialized");
+
                     //toastInMainThread(appContext, "ISetupPrinterListener finish " + arg0.name());
                     if (arg0.getType().equals(ResultType.ERROR_LIBRARY_PACK_NOT_INSTALLED)) {
                         setPrinterStatus("PrintHand not installed.");
                         // printingSdk.setup should be called with forceInstall = true to download required drivers
+                    } else {
+                        isInitialized=true;
+                        setPrinterStatus("Initialized");
                     }
                 }
             });
@@ -272,22 +274,26 @@ public class PrintHandHelper {
 
     public void initSdk(final Context context)
     {
-        printingSdk = new PrintingSdk(context);
-        appContext = context.getApplicationContext();
+        try {
+            printingSdk = new PrintingSdk(context);
+            appContext = context.getApplicationContext();
 
-        printingSdk.startService(new com.dynamixsoftware.printingsdk.IServiceCallback() {
-            @Override
-            public void onServiceConnected() {
-                initRecent();
-                Toast.makeText(context.getApplicationContext(), "Service connected", Toast.LENGTH_SHORT).show();
-            }
+            printingSdk.startService(new com.dynamixsoftware.printingsdk.IServiceCallback() {
+                @Override
+                public void onServiceConnected() {
+                    initRecent();
+                    Toast.makeText(context.getApplicationContext(), "Service connected", Toast.LENGTH_SHORT).show();
+                }
 
-            @Override
-            public void onServiceDisconnected() {
-                isInitialized=false;
-                Toast.makeText(context.getApplicationContext(), "Service disconnected", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onServiceDisconnected() {
+                    isInitialized = false;
+                    Toast.makeText(context.getApplicationContext(), "Service disconnected", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception ex) {
+            setPrinterStatus("PrintHand not installed");
+        }
     }
 
     public void print(final List<Bitmap> bitmaps, Context context)

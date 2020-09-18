@@ -7,6 +7,7 @@ public class PrinterHelper {
     static PrintHandHelper phh;
     static Context context = null;
     static Runnable statusChangeRunnable;
+    public static boolean readyToPrint=false;
 
 
 
@@ -15,8 +16,12 @@ public class PrinterHelper {
     {
         Runnable r = new Runnable() { @Override public void run() {
             if (phh.Status=="Initialized") setStatus("Initialized");
+            else if (phh.Status == "PrintHand not installed.") setStatus("PrintHand required to enable printing.  You may still checkin.");
             else if (phh.Status == "Printer not configured.") setStatus(phh.Status);
-            else if (phh.Status.contains("Printer ready")) setStatus(phh.Status);
+            else if (phh.Status.contains("Printer ready")) {
+                setStatus(phh.Status);
+                readyToPrint=true;
+            }
             checkPrinterStatus();
         } };
         phh = new PrintHandHelper(r);
@@ -45,7 +50,8 @@ public class PrinterHelper {
     public static void checkPrinterStatus()
     {
         if (Status=="Pending init") { setStatus("Initializing print service."); phh.initSdk(context); }
-        if (Status=="Initialized") { attachToPrinter(); }
+        else if (phh.Status == "PrintHand not installed.") setStatus("PrintHand required to enable printing.  You may still checkin.");
+        else if (Status=="Initialized") { attachToPrinter(); }
     }
 
     private static void attachToPrinter()
@@ -56,7 +62,11 @@ public class PrinterHelper {
 
     public static void configure()
     {
-        phh.configurePrinter();
+        try {
+            phh.configurePrinter();
+        } catch (Exception ex) {
+            setStatus("Please install PrintHand application.");
+        }
     }
 
 

@@ -5,11 +5,11 @@ import org.chums.checkin.models.ServiceTimes;
 import org.chums.checkin.models.Visits;
 
 public class CachedData {
+    public static boolean IsProd = true;
     public static String ApiKey;
-    public static String AccessManagementApiRoot = "https://api.staging.livecs.org";
-    public static String ApiRoot = "https://api.staging.chums.org";
-    //public static String ApiRoot = "http://192.168.1.34:8081";
-    public static String ContentBaseUrl = "https://app.staging.chums.org";
+    public static String AccessManagementApiRoot = "https://api.livecs.org";
+    public static String ApiRoot = "https://api.chums.org";
+    public static String ContentBaseUrl = "https://app.chums.org";
     public static int SelectedHouseholdId;
     public static int ServiceId;
     public static int ServiceTimeId;
@@ -19,5 +19,11 @@ public class CachedData {
     public static Visits LoadedVisits;
     public static Visits PendingVisits;
     public static int CheckinPersonId;
+
+    public CachedData()
+    {
+
+    }
+
 
 }
