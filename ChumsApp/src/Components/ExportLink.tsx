@@ -40,8 +40,10 @@ export const ExportLink: React.FC<Props> = (props) => {
                     result.push(prefix + names[i]);
                     break;
                 case 'object':
-                    var children: string[] = getPropertyNames(prefix + names[i] + '.', obj[names[i]]);
-                    for (let j = 0; j < children.length; j++) result.push(children[j]);
+                    if ((obj[names[i]] !== null)) {
+                        var children: string[] = getPropertyNames(prefix + names[i] + '.', obj[names[i]]);
+                        for (let j = 0; j < children.length; j++) result.push(children[j]);
+                    }
             }
         }
         return result;

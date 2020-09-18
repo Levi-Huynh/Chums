@@ -131,6 +131,7 @@ export class PersonController extends CustomBaseController {
                     promises.push(
                         this.repositories.person.save(person).then(async (p) => {
                             const r = this.repositories.person.convertToModel(au.churchId, p);
+                            r.churchId = au.churchId;
                             if (r.photo.startsWith("data:image/png;base64,")) await this.savePhoto(au.churchId, r);
                             return r;
                         })
@@ -153,10 +154,10 @@ export class PersonController extends CustomBaseController {
     private async savePhoto(churchId: number, person: Person) {
         const base64 = person.photo.split(',')[1];
         const key = "content/c/" + churchId + "/p/" + person.id + ".png";
-        return AwsHelper.S3Upload(key, "image/png", Buffer.from(base64, 'base64')).then(() => {
+        return AwsHelper.S3Upload(key, "image/png", Buffer.from(base64, 'base64')).then(async () => {
             person.photoUpdated = new Date();
             person.photo = "/" + key + "?dt=" + person.photoUpdated.getTime().toString();
-            this.repositories.person.save(person);
+            await this.repositories.person.save(person);
         });
     }
 

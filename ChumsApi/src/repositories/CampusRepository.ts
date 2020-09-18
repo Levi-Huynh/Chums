@@ -36,7 +36,7 @@ export class CampusRepository {
   }
 
   public convertToModel(churchId: number, data: any) {
-    const result: Campus = { id: data.id, name: data.name, address1: data.address1, address2: data.address2, city: data.city, state: data.state, zip: data.zip };
+    const result: Campus = { id: data.id, name: data.name, address1: data.address1, address2: data.address2, city: data.city, state: data.state, zip: data.zip, importKey: data.importKey };
     return result;
   }
 
