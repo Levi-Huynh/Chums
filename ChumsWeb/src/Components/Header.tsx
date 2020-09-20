@@ -12,7 +12,7 @@ export const Header: React.FC = () => {
                     </Col>
                     <div className="col-6 col-lg-2-5 text-right" id="navRight" >
                         <a href="https://app.chums.org/" className="link">Login</a>
-                        <a href="#register" className="btn btn-success btn-sm">Get Started</a>
+                        <a href="/#register" className="btn btn-success btn-sm">Get Started</a>
                     </div>
                 </Row>
             </Container>

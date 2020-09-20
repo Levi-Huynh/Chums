@@ -62,8 +62,7 @@ export class ServiceTimeController extends CustomBaseController {
         const allGroupServiceTimes: GroupServiceTime[] = await this.repositories.groupServiceTime.loadByServiceTimeIds(churchId, timeIds);
         const allGroupIds: number[] = [];
         allGroupServiceTimes.forEach(gst => { if (allGroupIds.indexOf(gst.groupId) === -1) allGroupIds.push(gst.groupId); });
-        const allGroups: Group[] = await this.repositories.group.loadByIds(churchId, allGroupIds);
-
+        const allGroups: any[] = await this.repositories.group.loadByIds(churchId, allGroupIds);
         times.forEach(t => {
             const groups: Group[] = [];
             allGroupServiceTimes.forEach(gst => {

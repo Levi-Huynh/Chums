@@ -129,6 +129,7 @@ export class ImportHelper {
         if (result === null) {
             result = data as ImportGroupInterface;
             result.trackAttendance = (data.trackAttendance === "TRUE");
+            result.parentPickup = (data.parentPickup === "TRUE");
             if (result.importKey === '') result.importKey = (groups.length + 1).toString();
             groups.push(result);
         }

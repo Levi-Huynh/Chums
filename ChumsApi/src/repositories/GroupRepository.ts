@@ -1,6 +1,7 @@
 import { injectable } from "inversify";
 import { DB } from "../db";
 import { Group } from "../models";
+import { WinstonLogger } from '../helpers/Logger';
 
 @injectable()
 export class GroupRepository {

@@ -48,7 +48,7 @@ export const HomeRegister: React.FC = () => {
             promises.push(ApiHelper.apiPost("/households", [household]).then(h => household = h));
             var fund: FundInterface = { name: "General Fund" };
             promises.push(ApiHelper.apiPost("/funds", [fund]).then(f => fund = f));
-            var group: GroupInterface = { name: "Worship Service", categoryName: "Worship Service", trackAttendance: true };
+            var group: GroupInterface = { name: "Worship Service", categoryName: "Worship Service", trackAttendance: true, parentPickup: false };
             promises.push(ApiHelper.apiPost("/groups", [group]).then(f => fund = f));
             await Promise.all(promises);
 
@@ -65,12 +65,13 @@ export const HomeRegister: React.FC = () => {
             var groupServiceTime: GroupServiceTimeInterface = { groupId: group.id, serviceTimeId: serviceTime.id };
             await ApiHelper.apiPost("/groupservicetimes", [groupServiceTime]).then(gst => groupServiceTime = gst)
 
-            //setRedirectUrl(EnvironmentHelper.AppUrl);
+            setRedirectUrl(EnvironmentHelper.AppUrl);
         }
 
         btn.innerHTML = "Register"
         btn.removeAttribute("disabled");
         setProcessing(false);
+
     }
 
 

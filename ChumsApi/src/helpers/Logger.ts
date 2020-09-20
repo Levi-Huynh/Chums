@@ -3,6 +3,7 @@ import "reflect-metadata";
 import winston from "winston";
 import WinstonCloudWatch from "winston-cloudwatch";
 import AWS from 'aws-sdk';
+import { StaticLogger } from "./StaticLogger";
 
 @injectable()
 export class WinstonLogger {
@@ -11,6 +12,7 @@ export class WinstonLogger {
     private pendingMessages = false;
     private logGroupName = "ChumsDev";
     private logDestination = "console";
+
 
 
     public error(msg: string | object) {

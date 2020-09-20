@@ -4,7 +4,7 @@ import mysql from "mysql";
 dotenv.config();
 
 export const mySQLPool = mysql.createPool({
-  connectionLimit: 5, // process.env.CONNECTION_LIMIT,
+  connectionLimit: 10, // process.env.CONNECTION_LIMIT,
   host: process.env.DB_HOST,
   database: process.env.DB_DATABASE,
   user: process.env.DB_USER,
@@ -13,8 +13,10 @@ export const mySQLPool = mysql.createPool({
   typeCast: function castField(field, useDefaultTypeCasting) {
     // convert bit(1) to bool
     if ((field.type === "BIT") && (field.length === 1)) {
-      const bytes = field.buffer();
-      return (bytes[0] === 1);
+      try {
+        const bytes = field.buffer();
+        return (bytes[0] === 1);
+      } catch (e) { return false; }
     }
 
     return (useDefaultTypeCasting());

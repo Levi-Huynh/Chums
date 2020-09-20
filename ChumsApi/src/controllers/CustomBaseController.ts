@@ -4,6 +4,7 @@ import { TYPES } from "../constants";
 import { Repositories } from "../repositories";
 import express from "express";
 import { WinstonLogger } from "../helpers/Logger";
+import { StaticLogger } from "../helpers/StaticLogger";
 import { AuthenticatedUser } from '../auth'
 
 
@@ -34,6 +35,7 @@ export class CustomBaseController extends BaseHttpController {
 
     public async actionWrapper(req: express.Request, res: express.Response, fetchFunction: (au: AuthenticatedUser) => any): Promise<any> {
         try {
+            StaticLogger.current = this.logger;
             const result = await fetchFunction(this.authUser());
             await this.logger.flush();
             return result;

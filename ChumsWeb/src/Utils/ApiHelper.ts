@@ -2,7 +2,7 @@ import { EnvironmentHelper } from "./";
 
 export interface CampusInterface { id?: number, name?: string }
 export interface ContactInfoInterface { address1?: string, address2?: string, city?: string, state?: string, zip?: string, homePhone?: string, mobilePhone?: string, workPhone?: string, email?: string }
-export interface GroupInterface { id?: number, name?: string, categoryName?: string, memberCount?: number, trackAttendance?: boolean }
+export interface GroupInterface { id?: number, name?: string, categoryName?: string, memberCount?: number, trackAttendance?: boolean, parentPickup?: boolean }
 export interface GroupServiceTimeInterface { id?: number, groupId?: number, serviceTimeId?: number, serviceTime?: ServiceTimeInterface }
 export interface HouseholdInterface { id?: number, name?: string }
 export interface FundInterface { id?: number, name?: string }

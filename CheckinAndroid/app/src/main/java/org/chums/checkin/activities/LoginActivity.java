@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initEnvironment()
     {
-        CachedData.IsProd = false;
+        CachedData.IsProd = true;
 
         if (!CachedData.IsProd)
         {
@@ -41,8 +41,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
         initEnvironment();
+        setContentView(R.layout.activity_login);
     }
 
     @Override
@@ -127,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void run() {
                 LoginResponse resp = LoginRequest.login(email, password);
-                if (resp.getToken()!=null) {
+                if (resp!=null && resp.getToken()!=null) {
                     CachedData.ApiKey = resp.getToken();
                     nextScreen();
                 }

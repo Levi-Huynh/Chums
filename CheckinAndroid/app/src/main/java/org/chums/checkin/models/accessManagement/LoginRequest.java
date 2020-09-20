@@ -47,7 +47,7 @@ public class LoginRequest {
         try {
             String jsonResponse = Json.post(url, jsonBody);
             result = LoginResponse.inflate(jsonResponse);
-            if (result.getToken() != null) {
+            if (result!=null && result.getToken() != null) {
                 CachedData.ApiKey = result.getToken();
                 result = SwitchAppRequest.switchApp(result);
             }
