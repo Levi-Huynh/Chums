@@ -1,15 +1,25 @@
 import React from 'react';
 import { ApiHelper, DisplayBox, UserHelper, RoleMemberInterface, PersonHelper, PersonInterface, RoleInterface, ExportLink } from './';
-import { Link } from 'react-router-dom';
 import { Table } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { UserInterface } from '../../Utils';
 
 interface Props { role: RoleInterface, addedPerson?: PersonInterface, addedCallback?: () => void }
 
 export const RoleMembers: React.FC<Props> = (props) => {
 
     const [roleMembers, setRoleMembers] = React.useState<RoleMemberInterface[]>([]);
+    const [people, setPeople] = React.useState<PersonInterface[]>([]);
 
-    const loadData = React.useCallback(() => ApiHelper.apiGet('/rolemembers?roleId=' + props.role.id).then(data => setRoleMembers(data)), [props.role]);
+    const loadData = React.useCallback(() => {
+        ApiHelper.accessGet('/rolemembers/roles/' + props.role.id + '?include=users').then((data: any) => {
+            setRoleMembers(data);
+            var userIds: number[] = [];
+            data.forEach((d: any) => { if (userIds.indexOf(d.userId) === -1) userIds.push(d.userId) });
+            ApiHelper.apiGet('/people/userids/?userIds=' + userIds).then(data2 => setPeople(data2));
+        });
+    }, [props.role]);
+
     const getEditContent = () => { return (<ExportLink data={roleMembers} spaceAfter={true} filename="rolemembers.csv" />) }
     const handleRemove = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -18,7 +28,7 @@ export const RoleMembers: React.FC<Props> = (props) => {
         var members = [...roleMembers];
         var member = members.splice(idx, 1)[0];
         setRoleMembers(members);
-        ApiHelper.apiDelete('/rolemembers/' + member.id);
+        ApiHelper.accessDelete('/rolemembers/' + member.id);
     }
 
     const getMemberByPersonId = React.useCallback((personId: number) => {
@@ -28,6 +38,14 @@ export const RoleMembers: React.FC<Props> = (props) => {
         for (var i = 0; i < roleMembers.length; i++) if (roleMembers[i].personId === personId) result = roleMembers[i];
         return result;*/
     }, [roleMembers]);
+
+    const getPersonByUser = (user: UserInterface) => {
+        var result: PersonInterface = { name: { display: user.email }, contactInfo: { email: user.email } };
+        people.forEach(p => {
+            if (p.userId === user.id) result = p;
+        });
+        return result;
+    }
 
     const handleAdd = React.useCallback(() => {
         if (getMemberByPersonId(props.addedPerson.id) === null) {
@@ -41,22 +59,22 @@ export const RoleMembers: React.FC<Props> = (props) => {
     }, [props, roleMembers, getMemberByPersonId]);
 
     const getRows = () => {
-        return <></>;
-        /*
+
         var canEdit = UserHelper.checkAccess('Group Members', 'Edit');
         var rows = [];
         for (let i = 0; i < roleMembers.length; i++) {
             var rm = roleMembers[i];
+            var p = getPersonByUser(rm.user);
             var editLink = (canEdit) ? <a href="about:blank" onClick={handleRemove} data-index={i} className="text-danger" ><i className="fas fa-user-times"></i> Remove</a> : <></>
             rows.push(
                 <tr key={i}>
-                    <td><img src={PersonHelper.getPhotoUrl(rm.person)} alt="avatar" /></td>
-                    <td><Link to={"/people/" + rm.personId}>{rm.person.displayName}</Link></td>
+                    <td><img src={PersonHelper.getPhotoUrl(p)} alt="avatar" /></td>
+                    <td><Link to={"/people/" + p.id}>{p.name.display}</Link></td>
                     <td>{editLink}</td>
                 </tr>
             );
         }
-        return rows;*/
+        return rows;
     }
 
 

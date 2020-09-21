@@ -16,12 +16,16 @@ export class UserHelper {
         else {
             UserHelper.currentChurch = church;
             UserHelper.currentChurch.apps.forEach(app => {
-                if (app.name === "CHUMS") UserHelper.currentPermissions = app.permissions;
+                if (app.name === "CHUMS") {
+                    UserHelper.currentPermissions = app.permissions;
+                    console.log(UserHelper.currentPermissions);
+                }
             })
 
             const data: SwitchAppRequestInterface = { appName: "CHUMS", churchId: UserHelper.currentChurch.id };
             ApiHelper.apiPost(EnvironmentHelper.AccessManagementApiUrl + '/users/switchApp', data).then((resp: LoginResponseInterface) => {
                 ApiHelper.jwt = resp.token;
+
 
                 ApiHelper.apiGet('/people/userid/' + UserHelper.user.id).then((person: PersonInterface) => {
                     UserHelper.person = person;

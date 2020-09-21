@@ -117,6 +117,7 @@ export const HomeRegister: React.FC = () => {
         permissions.push({ churchId: church.id, contentType: "Groups", action: "Edit", roleId: role.id });
         permissions.push({ churchId: church.id, contentType: "Groups", action: "View", roleId: role.id });
         permissions.push({ churchId: church.id, contentType: "Roles", action: "View", roleId: role.id });
+        permissions.push({ churchId: church.id, contentType: "Roles", action: "Edit", roleId: role.id });
         permissions.push({ churchId: church.id, contentType: "RoleMembers", action: "View", roleId: role.id });
         permissions.push({ churchId: church.id, contentType: "RoleMembers", action: "Edit", roleId: role.id });
         permissions.push({ churchId: church.id, contentType: "RolePermissions", action: "View", roleId: role.id });

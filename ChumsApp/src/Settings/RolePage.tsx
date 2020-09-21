@@ -9,22 +9,33 @@ type TParams = { id?: string };
 export const RolePage = ({ match }: RouteComponentProps<TParams>) => {
     const [role, setRole] = React.useState<RoleInterface>({} as RoleInterface);
 
-    const loadData = () => { ApiHelper.apiGet('/roles/' + match.params.id).then(data => setRole(data)); }
+    const loadData = () => { ApiHelper.accessGet('/roles/' + match.params.id).then(data => setRole(data)); }
 
-    /*
-        const addPerson = (p: PersonInterface) => {
-            var rm: RoleMemberInterface = { roleId: role.id, personId: p.id };
-            ApiHelper.apiPost('/rolemembers', [rm]).then(loadData);
+    const addPerson = (p: PersonInterface) => {
+        const email = p.contactInfo?.email;
+        if (email === undefined || email === null || email === "") alert("You must first enter an email address for this person.");
+        else {
+            var rm: RoleMemberInterface = {
+                roleId: role.id,
+                userId: p.userId,
+                user: { name: p.name.display, email: p.contactInfo.email }
+            };
         }
-        */
+        ApiHelper.accessPost('/rolemembers', [rm]).then(async (data: RoleMemberInterface[]) => {
+            if (p.userId === undefined || p.userId === null || p.userId === 0) {
+                p.userId = data[0].userId;
+                await ApiHelper.apiPost("/people", [p]);
+            }
+            loadData();
+        });
+    }
+
     const getSidebar = () => {
-        return <></>
-        /*
         if (!UserHelper.checkAccess('Roles', 'Edit')) return (null);
         else return (<>
             <DisplayBox id="roleMemberAddBox" headerIcon="fas fa-user" headerText="Add Person"><PersonAdd addFunction={addPerson} /></DisplayBox>
             <RolePermissions role={role} />
-        </>);*/
+        </>);
     }
 
     React.useEffect(loadData, []);

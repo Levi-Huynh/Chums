@@ -11,21 +11,26 @@ export const RoleEdit: React.FC<Props> = (props) => {
     const [role, setRole] = React.useState<RoleInterface>({} as RoleInterface);
 
     const loadData = () => {
-        if (props.roleId > 0) ApiHelper.apiGet('/roles/' + props.roleId).then((data: RoleInterface) => setRole(data));
+        if (props.roleId > 0) ApiHelper.accessGet('/roles/' + props.roleId).then((data: RoleInterface) => setRole(data));
         else setRole({} as RoleInterface);
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         var r = { ...role };
         r.name = e.currentTarget.value;
+
         setRole(r);
     }
 
-    const handleSave = () => ApiHelper.apiPost('/roles', [role]).then(() => props.updatedFunction());
+    const handleSave = () => {
+        const r = { ...role };
+        r.appName = "CHUMS";
+        ApiHelper.accessPost('/roles', [r]).then(() => props.updatedFunction());
+    }
     const handleCancel = () => props.updatedFunction();
     const handleDelete = () => {
         if (window.confirm('Are you sure you wish to permanently delete this role?')) {
-            ApiHelper.apiDelete('/roles/' + role.id).then(() => props.updatedFunction());
+            ApiHelper.accessDelete('/roles/' + role.id).then(() => props.updatedFunction());
         }
     }
 

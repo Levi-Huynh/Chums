@@ -6,7 +6,7 @@ interface Props { role: RoleInterface }
 
 export const RolePermissions: React.FC<Props> = (props) => {
     const [rolePermissions, setRolePermissions] = React.useState<RolePermissionInterface[]>([]);
-    const loadData = React.useCallback(() => { ApiHelper.apiGet('/rolepermissions?roleId=' + props.role.id).then(data => setRolePermissions(data)); }, [props.role]);
+    const loadData = React.useCallback(() => { ApiHelper.accessGet('/rolepermissions/roles/' + props.role.id).then(data => setRolePermissions(data)); }, [props.role]);
     React.useEffect(() => { if (props.role.id !== undefined) loadData() }, [props.role, loadData]);
 
     return (

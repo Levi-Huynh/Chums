@@ -54,6 +54,21 @@ export class PersonController extends CustomBaseController {
         });
     }
 
+    @httpGet("/userids")
+    public async getByUserIds(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
+        return this.actionWrapper(req, res, async (au) => {
+            console.log("made it");
+            const userIdList = req.query.userIds.toString().split(',');
+            const userIds: number[] = [];
+            userIdList.forEach(userId => userIds.push(parseInt(userId, 0)));
+            console.log("USER IDS");
+            console.log(userIds);
+            const data = await this.repositories.person.loadByUserIds(au.churchId, userIds);
+            console.log(data);
+            return this.repositories.person.convertAllToModel(au.churchId, data);
+        });
+    }
+
     @httpGet("/attendance")
     public async loadAttendees(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
@@ -108,6 +123,7 @@ export class PersonController extends CustomBaseController {
             return this.repositories.person.convertToModel(au.churchId, data);
         });
     }
+
 
 
 

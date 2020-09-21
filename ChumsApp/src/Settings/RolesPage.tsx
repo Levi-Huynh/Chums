@@ -2,12 +2,13 @@ import React from 'react';
 import { ApiHelper, DisplayBox, RoleInterface, RoleEdit, UserHelper } from './Components';
 import { Link } from 'react-router-dom'
 import { Row, Col, Table } from 'react-bootstrap';
+import { EnvironmentHelper } from "./Components";
 
 export const RolesPage = () => {
     const [roles, setRoles] = React.useState<RoleInterface[]>([]);
     const [selectedRoleId, setSelectedRoleId] = React.useState(-1);
 
-    const loadData = () => { ApiHelper.apiGet('/roles').then(data => setRoles(data)); }
+    const loadData = () => { ApiHelper.accessGet('/roles/app/CHUMS').then(data => setRoles(data)); }
     const getEditContent = () => {
         if (!UserHelper.checkAccess('Roles', 'Edit')) return null;
         else return (<a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); setSelectedRoleId(0); }} ><i className="fas fa-plus"></i></a>);

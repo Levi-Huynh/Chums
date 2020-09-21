@@ -1,5 +1,4 @@
 context('People', () => {
-    Cypress.Cookies.defaults({ whitelist: ['.AspNetCore.Session', '.AspNetCore.Cookies'] })
     it('Log into app', () => { cy.login() });
     searchForPerson();
     testEdit();

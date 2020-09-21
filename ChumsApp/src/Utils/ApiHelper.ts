@@ -54,15 +54,26 @@ export class ApiHelper {
         else return EnvironmentHelper.ChumsApiUrl + path;
     }
 
+    static getAccessUrl(path: string) {
+        if (path.indexOf("://") > -1) return path;
+        else return EnvironmentHelper.AccessManagementApiUrl + path;
+    }
+
     static async apiGet(path: string) {
         try {
             const requestOptions = { method: 'GET', headers: { 'Authorization': 'Bearer ' + this.jwt } };
             return fetch(this.getUrl(path), requestOptions).then(response => response.json())
         } catch (e) {
-            console.log(path);
-            console.log(e);
             throw (e);
+        }
+    }
 
+    static async accessGet(path: string) {
+        try {
+            const requestOptions = { method: 'GET', headers: { 'Authorization': 'Bearer ' + this.amJwt } };
+            return fetch(this.getAccessUrl(path), requestOptions).then(response => response.json())
+        } catch (e) {
+            throw (e);
         }
     }
 
@@ -75,12 +86,29 @@ export class ApiHelper {
         return fetch(this.getUrl(path), requestOptions).then(response => response.json())
     }
 
+    static async accessPost(path: string, data: any[] | {}) {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + this.amJwt, 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        };
+        return fetch(this.getAccessUrl(path), requestOptions).then(response => response.json())
+    }
+
     static async apiDelete(path: string) {
         const requestOptions = {
             method: 'DELETE',
             headers: { 'Authorization': 'Bearer ' + this.jwt }
         };
         return fetch(this.getUrl(path), requestOptions);
+    }
+
+    static async accessDelete(path: string) {
+        const requestOptions = {
+            method: 'DELETE',
+            headers: { 'Authorization': 'Bearer ' + this.amJwt }
+        };
+        return fetch(this.getAccessUrl(path), requestOptions);
     }
 
     static async apiPostAnonymous(path: string, data: any[] | {}) {

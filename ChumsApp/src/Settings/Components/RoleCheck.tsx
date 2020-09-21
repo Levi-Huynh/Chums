@@ -22,13 +22,13 @@ export const RoleCheck: React.FC<Props> = (props) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.checked) {
             var rp: RolePermissionInterface = { roleId: props.roleId, contentType: props.contentType, action: props.action }
-            ApiHelper.apiPost('/rolepermissions/', [rp]).then(data => {
+            ApiHelper.accessPost('/rolepermissions/', [rp]).then(data => {
                 rp.id = data[0];
                 setRolePermission(rp);
             });
 
         } else {
-            ApiHelper.apiDelete('/rolepermissions/' + rolePermission.id);
+            ApiHelper.accessDelete('/rolepermissions/' + rolePermission.id);
             setRolePermission(null);
         }
     }
