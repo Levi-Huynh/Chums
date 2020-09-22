@@ -62,12 +62,10 @@ export class PersonRepository {
     }
 
     public async loadByUserIds(churchId: number, userIds: number[]) {
-        console.log("SELECT * FROM people WHERE userId IN (" + userIds.join(",") + ") AND churchId=? AND removed=0;");
         return DB.query("SELECT * FROM people WHERE userId IN (" + userIds.join(",") + ") AND churchId=? AND removed=0;", [churchId]);
     }
 
     public async search(churchId: number, term: string) {
-        console.log(term);
         return DB.query(
             "SELECT * FROM people WHERE churchId=? AND concat(IFNULL(FirstName,''), ' ', IFNULL(MiddleName,''), ' ', IFNULL(NickName,''), ' ', IFNULL(LastName,'')) LIKE ? AND removed=0 LIMIT 100;",
             [churchId, "%" + term.replace(" ", "%") + "%"]
@@ -109,7 +107,6 @@ export class PersonRepository {
     }
 
     public convertToModel(churchId: number, data: any) {
-        console.log(data);
         const result: Person = {
             name: { first: data.firstName, last: data.lastName, middle: data.middleName, nick: data.nickName, prefix: data.prefix, suffix: data.suffix },
             contactInfo: { address1: data.address1, address2: data.address2, city: data.city, state: data.state, zip: data.zip, homePhone: data.homePhone, workPhone: data.workPhone, email: data.email },

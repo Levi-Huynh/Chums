@@ -27,7 +27,7 @@ export class DonationController extends CustomBaseController {
             else {
                 const data = await this.repositories.donation.load(au.churchId, id);
                 const result = this.repositories.donation.convertToModel(au.churchId, data);
-                if (this.include(req, "person")) await this.appendPerson(au.churchId, result);
+                if (this.include(req, "person") && result.personId !== null) await this.appendPerson(au.churchId, result);
                 return result;
             }
         });

@@ -45,7 +45,8 @@ export const FormQuestionEdit: React.FC<Props> = (props) => {
         </div>);
     }
 
-    React.useEffect(loadData, [props.questionId | props.formId]);
+
+    React.useEffect(loadData, [props.questionId || props.formId]);
 
 
     return (

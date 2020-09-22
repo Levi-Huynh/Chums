@@ -2,7 +2,7 @@
   "chromeWebSecurity": false,
   "baseUrl": "https://app.staging.chums.org",
   "env": {
-    "email": "demo5@chums.org",
+    "email": "test@chums.org",
     "password": "password"
   },
   "projectId": "16cb4g"

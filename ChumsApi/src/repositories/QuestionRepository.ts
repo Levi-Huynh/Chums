@@ -10,16 +10,18 @@ export class QuestionRepository {
     }
 
     public async create(question: Question) {
+        const sql = "INSERT INTO questions (churchId, formId, parentId, title, description, fieldType, placeholder, sort, choices, removed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0);";
+        const params = [question.churchId, question.formId, question.parentId, question.title, question.description, question.fieldType, question.placeholder, question.sort, JSON.stringify(question.choices)];
         return DB.query(
             "INSERT INTO questions (churchId, formId, parentId, title, description, fieldType, placeholder, sort, choices, removed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0);",
-            [question.churchId, question.formId, question.parentId, question.title, question.description, question.fieldType, question.placeholder, question.sort, question.choices]
+            [question.churchId, question.formId, question.parentId, question.title, question.description, question.fieldType, question.placeholder, question.sort, JSON.stringify(question.choices)]
         ).then((row: any) => { question.id = row.insertId; return question; });
     }
 
     public async update(question: Question) {
         return DB.query(
             "UPDATE questions SET formId=?, parentId=?, title=?, description=?, fieldType=?, placeholder=?, sort=?, choices=? WHERE id=? and churchId=?",
-            [question.formId, question.parentId, question.title, question.description, question.fieldType, question.placeholder, question.sort, question.choices, question.id, question.churchId]
+            [question.formId, question.parentId, question.title, question.description, question.fieldType, question.placeholder, question.sort, JSON.stringify(question.choices), question.id, question.churchId]
         ).then(() => { return question });
     }
 
@@ -40,7 +42,8 @@ export class QuestionRepository {
     }
 
     public convertToModel(churchId: number, data: any) {
-        const result: Question = { id: data.id, formId: data.formId, parentId: data.parentId, title: data.title, description: data.description, fieldType: data.fieldType, placeholder: data.placeholder, sort: data.sort, choices: data.choices };
+
+        const result: Question = { id: data.id, formId: data.formId, parentId: data.parentId, title: data.title, description: data.description, fieldType: data.fieldType, placeholder: data.placeholder, sort: data.sort, choices: JSON.parse(data.choices) };
         return result;
     }
 
