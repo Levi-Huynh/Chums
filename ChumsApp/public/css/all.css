@@ -87,6 +87,7 @@ h1 { border-bottom:1px solid #CCC; padding-bottom:10px; margin-bottom:25px; }
 .inputBox .content label {color:#999;}
 .inputBox .section {font-weight:600; font-size:16px; padding:10px; color:#333; border-bottom:1px solid #DDD; }
 
+.inputBox .content {overflow-x: hidden;}
 .inputBox .content ul {padding-left:0px;}
 .inputBox .content li {list-style-type:none;margin-bottom:10px;}
 .inputBox .content li i {margin-right:5px;}

@@ -41,7 +41,6 @@ export const Login: React.FC = (props: any) => {
             resp.churches.forEach(c => {
                 var add = false;
                 c.apps.forEach(a => {
-                    console.log(a.name);
                     if (a.name === "CHUMS") add = true;
                 })
                 if (add) UserHelper.churches.push(c);

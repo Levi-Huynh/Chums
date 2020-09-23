@@ -57,14 +57,10 @@ export class PersonController extends CustomBaseController {
     @httpGet("/userids")
     public async getByUserIds(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            console.log("made it");
             const userIdList = req.query.userIds.toString().split(',');
             const userIds: number[] = [];
             userIdList.forEach(userId => userIds.push(parseInt(userId, 0)));
-            console.log("USER IDS");
-            console.log(userIds);
             const data = await this.repositories.person.loadByUserIds(au.churchId, userIds);
-            console.log(data);
             return this.repositories.person.convertAllToModel(au.churchId, data);
         });
     }
@@ -147,7 +143,6 @@ export class PersonController extends CustomBaseController {
                     if (person.contactInfo === undefined) person.contactInfo = {};
                     promises.push(
                         this.repositories.person.save(person).then(async (p) => {
-                            console.log("Converting to model");
                             const r = this.repositories.person.convertToModel(au.churchId, p);
                             r.churchId = au.churchId;
                             if (r.photo.startsWith("data:image/png;base64,")) await this.savePhoto(au.churchId, r);

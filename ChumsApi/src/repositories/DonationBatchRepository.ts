@@ -46,7 +46,6 @@ export class DonationBatchRepository {
     }
 
     public convertAllToModel(churchId: number, data: any[]) {
-        console.log(data);
         const result: DonationBatch[] = [];
         data.forEach(d => result.push(this.convertToModel(churchId, d)));
         return result;

@@ -92,8 +92,6 @@ export class VisitSessionController extends CustomBaseController {
                 const personId = parseInt(req.query.personId.toString(), 0);
                 const sessionId = parseInt(req.query.sessionId.toString(), 0);
                 const visit = await this.repositories.visit.loadForSessionPerson(au.churchId, sessionId, personId);
-                console.log("visit");
-                console.log(visit);
                 if (visit !== null) {
                     const existingSession = await this.repositories.visitSession.loadByVisitIdSessionId(au.churchId, visit.id, sessionId);
                     if (existingSession !== null) await this.repositories.visitSession.delete(au.churchId, existingSession.id);

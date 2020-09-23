@@ -118,7 +118,7 @@ CREATE TABLE `people` (
   `homePhone` varchar(20) DEFAULT NULL,
   `mobilePhone` varchar(20) DEFAULT NULL,
   `workPhone` varchar(20) DEFAULT NULL,
-  `email` varchar(50) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
   `address1` varchar(50) DEFAULT NULL,
   `address2` varchar(50) DEFAULT NULL,
   `city` varchar(30) DEFAULT NULL,
