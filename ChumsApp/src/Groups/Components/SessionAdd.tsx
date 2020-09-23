@@ -10,7 +10,7 @@ export const SessionAdd: React.FC<Props> = (props) => {
     const [serviceTimeId, setServiceTimeId] = React.useState(0);
 
     const handleCancel = () => { props.updatedFunction(null); }
-
+    const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === 'Enter') { e.preventDefault(); handleSave(); } }
     const loadData = React.useCallback(() => {
         ApiHelper.apiGet('/groupservicetimes?groupId=' + props.group.id).then(data => {
             setGroupServiceTimes(data);
@@ -48,7 +48,7 @@ export const SessionAdd: React.FC<Props> = (props) => {
             return (
                 <div className="form-group">
                     <label>Service Time</label>
-                    <select className="form-control" value={serviceTimeId} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => { setServiceTimeId(parseInt(e.currentTarget.value)) }} >{options}</select>
+                    <select className="form-control" value={serviceTimeId} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => { setServiceTimeId(parseInt(e.currentTarget.value)) }} onKeyDown={handleKeyDown} >{options}</select>
                 </div>);
         }
     }
@@ -62,7 +62,7 @@ export const SessionAdd: React.FC<Props> = (props) => {
 
             <div className="form-group">
                 <label>Session Date</label>
-                <input type="date" className="form-control" value={Helper.formatHtml5Date(sessionDate)} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSessionDate(new Date(e.currentTarget.value))} />
+                <input type="date" className="form-control" value={Helper.formatHtml5Date(sessionDate)} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSessionDate(new Date(e.currentTarget.value))} onKeyDown={handleKeyDown} />
             </div>
         </InputBox>
 

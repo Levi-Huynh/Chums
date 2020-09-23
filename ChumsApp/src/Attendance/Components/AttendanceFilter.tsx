@@ -13,6 +13,7 @@ export const AttendanceFilter: React.FC<Props> = (props) => {
     const [groups, setGroups] = React.useState<GroupInterface[]>([]);
 
     const handleUpdate = () => { props.updatedFunction(filter); }
+    const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === 'Enter') { e.preventDefault(); handleUpdate(); } }
     const loadCampuses = () => ApiHelper.apiGet('/campuses').then(data => { setCampuses(data) });
     const loadServices = () => { ApiHelper.apiGet('/services/search?campusId=' + filter.campusId).then(data => setServices(data)); }
     const loadServiceTimes = () => {
@@ -102,13 +103,13 @@ export const AttendanceFilter: React.FC<Props> = (props) => {
                 <Col>
                     <FormGroup>
                         <FormLabel>Week</FormLabel>
-                        <FormControl size="sm" type="date" name="week" value={Helper.formatHtml5Date(filter.startDate)} onChange={handleChange} />
+                        <FormControl size="sm" type="date" name="week" value={Helper.formatHtml5Date(filter.startDate)} onChange={handleChange} onKeyDown={handleKeyDown} />
                     </FormGroup>
                 </Col>
                 <Col>
                     <FormGroup>
                         <FormLabel>Campus</FormLabel>
-                        <FormControl as="select" name="campus" data-testid="campus" value={filter.campusId} onChange={handleChange}>{getCampusOptions()}</FormControl>
+                        <FormControl as="select" name="campus" data-testid="campus" value={filter.campusId} onChange={handleChange} onKeyDown={handleKeyDown}>{getCampusOptions()}</FormControl>
                     </FormGroup>
                 </Col>
             </Row>
@@ -116,13 +117,13 @@ export const AttendanceFilter: React.FC<Props> = (props) => {
                 <Col>
                     <FormGroup>
                         <FormLabel>Service</FormLabel>
-                        <FormControl as="select" name="service" value={filter.serviceId} onChange={handleChange} >{getServiceOptions()}</FormControl>
+                        <FormControl as="select" name="service" value={filter.serviceId} onChange={handleChange} onKeyDown={handleKeyDown} >{getServiceOptions()}</FormControl>
                     </FormGroup>
                 </Col>
                 <Col>
                     <FormGroup>
                         <FormLabel>Time</FormLabel>
-                        <FormControl as="select" name="serviceTime" value={filter.serviceTimeId} onChange={handleChange} >{getServiceTimeOptions()}</FormControl>
+                        <FormControl as="select" name="serviceTime" value={filter.serviceTimeId} onChange={handleChange} onKeyDown={handleKeyDown} >{getServiceTimeOptions()}</FormControl>
                     </FormGroup>
                 </Col>
             </Row>
@@ -130,13 +131,13 @@ export const AttendanceFilter: React.FC<Props> = (props) => {
                 <Col>
                     <FormGroup>
                         <FormLabel>Category</FormLabel>
-                        <FormControl as="select" name="category" value={filter.categoryName} onChange={handleChange} >{getCategoryOptions()}</FormControl>
+                        <FormControl as="select" name="category" value={filter.categoryName} onChange={handleChange} onKeyDown={handleKeyDown} >{getCategoryOptions()}</FormControl>
                     </FormGroup>
                 </Col>
                 <Col>
                     <FormGroup>
                         <FormLabel>Group</FormLabel>
-                        <FormControl as="select" name="group" value={filter.groupId} onChange={handleChange} >{getGroupOptions()}</FormControl>
+                        <FormControl as="select" name="group" value={filter.groupId} onChange={handleChange} onKeyDown={handleKeyDown} >{getGroupOptions()}</FormControl>
                     </FormGroup>
                 </Col>
             </Row>

@@ -9,6 +9,7 @@ export const BatchEdit: React.FC<Props> = (props) => {
     const handleCancel = () => { props.updatedFunction(); }
     const handleSave = () => ApiHelper.apiPost('/donationbatches', [batch]).then(() => props.updatedFunction());
     const getDeleteFunction = () => { return (props.batchId > 0) ? handleDelete : undefined; }
+    const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === 'Enter') { e.preventDefault(); handleSave(); } }
 
     const handleDelete = () => {
         if (window.confirm('Are you sure you wish to permanently delete this batch?')) {
@@ -39,11 +40,11 @@ export const BatchEdit: React.FC<Props> = (props) => {
         <InputBox id="batchBox" headerIcon="fas fa-hand-holding-usd" headerText="Edit Batch" cancelFunction={handleCancel} deleteFunction={getDeleteFunction()} saveFunction={handleSave} >
             <div className="form-group">
                 <label>Name (optional)</label>
-                <input type="text" className="form-control" name='name' value={batch.name} onChange={handleChange} />
+                <input type="text" className="form-control" name='name' value={batch.name} onChange={handleChange} onKeyDown={handleKeyDown} />
             </div>
             <div className="form-group">
                 <label>Date</label>
-                <input type="date" className="form-control" name='date' value={Helper.formatHtml5Date(batch.batchDate)} onChange={handleChange} />
+                <input type="date" className="form-control" name='date' value={Helper.formatHtml5Date(batch.batchDate)} onChange={handleChange} onKeyDown={handleKeyDown} />
             </div>
         </InputBox >
     );

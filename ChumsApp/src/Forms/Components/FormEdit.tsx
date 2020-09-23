@@ -25,6 +25,7 @@ export const FormEdit: React.FC<Props> = (props) => {
         setForm(f);
     }
 
+    const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === 'Enter') { e.preventDefault(); handleSave(); } }
     const handleSave = () => ApiHelper.apiPost('/forms', [form]).then(() => props.updatedFunction());
     const handleCancel = () => props.updatedFunction();
     const handleDelete = () => {
@@ -40,11 +41,11 @@ export const FormEdit: React.FC<Props> = (props) => {
         <InputBox id="formBox" headerIcon="fas fa-align-left" headerText="Edit Form" saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={(props.formId > 0) ? handleDelete : undefined} >
             <div className="form-group">
                 <label>Form Name</label>
-                <input name="formName" type="text" className="form-control" value={form.name} onChange={handleChange} />
+                <input name="formName" type="text" className="form-control" value={form.name} onChange={handleChange} onKeyDown={handleKeyDown} />
             </div>
             <div className="form-group">
                 <label>Associate With</label>
-                <select name="contentType" className="form-control" value={form.contentType} onChange={handleChange}>
+                <select name="contentType" className="form-control" value={form.contentType} onChange={handleChange} onKeyDown={handleKeyDown}>
                     <option>Independent Form</option>
                     <option value="person">People</option>
                     <option value="group">Groups</option>

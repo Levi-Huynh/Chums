@@ -9,7 +9,7 @@ export const CampusEdit: React.FC<Props> = (props) => {
 
     const handleSave = () => { if (validate()) ApiHelper.apiPost('/campuses', [campus]).then(props.updatedFunction); }
     const handleDelete = () => { if (window.confirm('Are you sure you wish to permanently delete this campus?')) ApiHelper.apiDelete('/campus/' + campus.id).then(props.updatedFunction); }
-
+    const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === 'Enter') { e.preventDefault(); handleSave(); } }
     const validate = () => {
         var errors = [];
         if (campus.name === '') errors.push("Campus name cannot be blank.");
@@ -33,7 +33,7 @@ export const CampusEdit: React.FC<Props> = (props) => {
             <ErrorMessages errors={errors} />
             <div className="form-group">
                 <label>Campus Name</label>
-                <input id="campusName" type="text" className="form-control" value={campus?.name || ''} onChange={handleChange} />
+                <input id="campusName" type="text" className="form-control" value={campus?.name || ''} onChange={handleChange} onKeyDown={handleKeyDown} />
             </div>
         </InputBox>
     );

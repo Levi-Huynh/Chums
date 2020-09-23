@@ -12,6 +12,7 @@ export const HouseholdEdit: React.FC<Props> = (props) => {
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => { let h = { ...household }; h.name = e.currentTarget.value; setHousehold(h); }
     const handleCancel = () => { props.updatedFunction(); }
     const handleAdd = (e: React.MouseEvent) => { e.preventDefault(); setShowAdd(true); }
+    const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === 'Enter') { e.preventDefault(); handleSave(); } }
 
     const handleRemove = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
@@ -59,7 +60,7 @@ export const HouseholdEdit: React.FC<Props> = (props) => {
                     <td><img src={PersonHelper.getPhotoUrl(m)} alt="avatar" /></td>
                     <td>
                         {m.name.display}
-                        <select value={m.householdRole} onChange={handleChangeRole} className="form-control form-control-sm">
+                        <select value={m.householdRole} onChange={handleChangeRole} className="form-control form-control-sm" onKeyDown={handleKeyDown} >
                             <option value="Head">Head</option>
                             <option value="Spouse">Spouse</option>
                             <option value="Child">Child</option>
@@ -77,7 +78,7 @@ export const HouseholdEdit: React.FC<Props> = (props) => {
         <InputBox id="householdBox" headerIcon="fas fa-users" headerText={household.name + " Household"} saveFunction={handleSave} cancelFunction={handleCancel} >
             <div className="form-group">
                 <label>Household Name</label>
-                <input name="householdName" type="text" className="form-control" value={household.name} onChange={handleChange} />
+                <input name="householdName" type="text" className="form-control" value={household.name} onChange={handleChange} onKeyDown={handleKeyDown} />
             </div>
             <Table size="sm" id="householdMemberTable">
                 <tbody>

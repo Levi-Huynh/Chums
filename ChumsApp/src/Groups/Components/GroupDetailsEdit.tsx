@@ -11,6 +11,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
     const [redirect, setRedirect] = React.useState('');
 
     const handleCancel = () => props.updatedFunction(group);
+    const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === 'Enter') { e.preventDefault(); handleSave(); } }
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         e.preventDefault();
         var g = { ...group };
@@ -58,13 +59,13 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                 <Col>
                     <FormGroup>
                         <FormLabel>Category Name</FormLabel>
-                        <FormControl type="text" name="categoryName" value={group.categoryName} onChange={handleChange} />
+                        <FormControl type="text" name="categoryName" value={group.categoryName} onChange={handleChange} onKeyDown={handleKeyDown} />
                     </FormGroup>
                 </Col>
                 <Col>
                     <FormGroup>
                         <FormLabel>Group Name</FormLabel>
-                        <FormControl type="text" name="name" value={group.name} onChange={handleChange} />
+                        <FormControl type="text" name="name" value={group.name} onChange={handleChange} onKeyDown={handleKeyDown} />
                     </FormGroup>
                 </Col>
             </Row>
@@ -72,7 +73,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                 <Col>
                     <FormGroup>
                         <FormLabel>Track Attendance</FormLabel>
-                        <FormControl as="select" name="trackAttendance" value={group.trackAttendance?.toString() || 'false'} onChange={handleChange}>
+                        <FormControl as="select" name="trackAttendance" value={group.trackAttendance?.toString() || 'false'} onChange={handleChange} onKeyDown={handleKeyDown}>
                             <option value="false">No</option>
                             <option value="true">Yes</option>
                         </FormControl>
@@ -81,7 +82,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                 <Col>
                     <FormGroup>
                         <FormLabel>Parent Pickup</FormLabel>
-                        <FormControl as="select" name="parentPickup" value={group.parentPickup?.toString() || 'false'} onChange={handleChange}>
+                        <FormControl as="select" name="parentPickup" value={group.parentPickup?.toString() || 'false'} onChange={handleChange} onKeyDown={handleKeyDown}>
                             <option value="false">No</option>
                             <option value="true">Yes</option>
                         </FormControl>

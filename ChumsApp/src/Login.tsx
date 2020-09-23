@@ -11,6 +11,7 @@ export const Login: React.FC = (props: any) => {
     const [password, setPassword] = React.useState('');
     const [errors, setErrors] = React.useState([]);
 
+    const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmit(null); } }
     const getCookieValue = (a: string) => { var b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)'); return b ? b.pop() : ''; }
     const validate = () => {
         var errors = [];
@@ -21,12 +22,13 @@ export const Login: React.FC = (props: any) => {
     }
 
     const handleSubmit = (e: React.MouseEvent) => {
-        e.preventDefault();
+        if (e !== null) e.preventDefault();
         if (validate()) login({ email: email, password: password });
     }
 
     const init = () => {
         let search = new URLSearchParams(props.location.search);
+        console.log(document.cookie);
         var jwt = search.get('jwt') || getCookieValue('jwt');
         if (jwt !== "undefined" && jwt !== '') login({ jwt: jwt });
     }
@@ -69,8 +71,8 @@ export const Login: React.FC = (props: any) => {
                 <ErrorMessages errors={errors} />
                 <div id="loginBox">
                     <h2>Please sign in</h2>
-                    <FormControl id="email" name="email" value={email} onChange={e => { e.preventDefault(); setEmail(e.currentTarget.value) }} placeholder="Email address" />
-                    <FormControl id="password" name="password" type="password" placeholder="Password" value={password} onChange={e => { e.preventDefault(); setPassword(e.currentTarget.value) }} />
+                    <FormControl id="email" name="email" value={email} onChange={e => { e.preventDefault(); setEmail(e.currentTarget.value) }} placeholder="Email address" onKeyDown={handleKeyDown} />
+                    <FormControl id="password" name="password" type="password" placeholder="Password" value={password} onChange={e => { e.preventDefault(); setPassword(e.currentTarget.value) }} onKeyDown={handleKeyDown} />
                     <Button id="signInButton" size="lg" variant="primary" block onClick={handleSubmit} >Sign in</Button>
                     <br />
                     <div className="text-right">

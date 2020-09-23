@@ -10,9 +10,8 @@ export const Attendance: React.FC<Props> = (props) => {
     const [filter, setFilter] = React.useState<AttendanceFilterInterface>(props.filter);
     const [records, setRecords] = React.useState<AttendanceRecordInterface[]>([]);
 
-    const loadData = () => {
-        AttendanceHelper.loadData(filter).then((data: AttendanceRecordInterface[]) => setRecords(data))
-    }
+
+    const loadData = () => { AttendanceHelper.loadData(filter).then((data: AttendanceRecordInterface[]) => setRecords(data)) }
 
     const getWeekRecords = (weekNum: number) => {
         var result: AttendanceRecordInterface[] = [];

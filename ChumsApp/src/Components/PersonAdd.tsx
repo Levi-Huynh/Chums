@@ -9,7 +9,11 @@ export const PersonAdd: React.FC<Props> = (props) => {
     const [searchText, setSearchText] = React.useState('');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => { e.preventDefault(); setSearchText(e.currentTarget.value); }
-    const handleSearch = (e: React.MouseEvent) => { e.preventDefault(); ApiHelper.apiGet('/people/search?term=' + escape(searchText)).then(data => setSearchResults(data)); }
+    const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === 'Enter') { e.preventDefault(); handleSearch(null); } }
+    const handleSearch = (e: React.MouseEvent) => {
+        if (e !== null) e.preventDefault();
+        ApiHelper.apiGet('/people/search?term=' + escape(searchText)).then(data => setSearchResults(data));
+    }
     const handleAdd = (e: React.MouseEvent) => {
         e.preventDefault();
         var anchor = e.currentTarget as HTMLAnchorElement;
@@ -37,7 +41,7 @@ export const PersonAdd: React.FC<Props> = (props) => {
     return (
         <>
             <InputGroup>
-                <FormControl id="personAddText" value={searchText} onChange={handleChange} />
+                <FormControl id="personAddText" value={searchText} onChange={handleChange} onKeyDown={handleKeyDown} />
                 <div className="input-group-append"><Button id="personAddButton" variant="primary" onClick={handleSearch} ><i className="fas fa-search"></i> Search</Button></div>
             </InputGroup>
             <Table size="sm" id="householdMemberAddTable"><tbody>{rows}</tbody></Table>

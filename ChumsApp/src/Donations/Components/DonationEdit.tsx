@@ -11,7 +11,7 @@ export const DonationEdit: React.FC<Props> = (props) => {
     const [showSelectPerson, setShowSelectPerson] = React.useState(false);
 
     //const getEditContent = () => { return (<a href="about:blank"><i className="fas fa-plus"></i></a>); }
-
+    const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === 'Enter') { e.preventDefault(); handleSave(); } }
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         var d = { ...donation } as DonationInterface;
         var value = e.target.value;
@@ -115,11 +115,11 @@ export const DonationEdit: React.FC<Props> = (props) => {
             </div>
             <div className="form-group">
                 <label>Date</label>
-                <input type="date" className="form-control" name='date' value={Helper.formatHtml5Date(donation.donationDate)} onChange={handleChange} />
+                <input type="date" className="form-control" name='date' value={Helper.formatHtml5Date(donation.donationDate)} onChange={handleChange} onKeyDown={handleKeyDown} />
             </div>
             <div className="form-group">
                 <label>Method</label>
-                <select name="method" className="form-control" value={donation.method} onChange={handleChange}>
+                <select name="method" className="form-control" value={donation.method} onChange={handleChange} onKeyDown={handleKeyDown} >
                     <option value="Check">Check</option>
                     <option value="Cash">Cash</option>
                     <option value="Card">Card</option>
@@ -129,7 +129,7 @@ export const DonationEdit: React.FC<Props> = (props) => {
             <FundDonations fundDonations={fundDonations} funds={props.funds} updatedFunction={handleFundDonationsChange} />
             <div className="form-group">
                 <label>Notes</label>
-                <textarea className="form-control" name="notes" value={donation.notes} onChange={handleChange}></textarea>
+                <textarea className="form-control" name="notes" value={donation.notes} onChange={handleChange} onKeyDown={handleKeyDown}></textarea>
             </div>
         </InputBox >
     );

@@ -14,7 +14,7 @@ export const PeopleSearchResults: React.FC<Props> = (props) => {
     const [errors, setErrors] = React.useState<string[]>([]);
 
     const handleAdd = (e: React.MouseEvent) => {
-        e.preventDefault();
+        if (e !== null) e.preventDefault();
         if (validate()) {
             var person = { name: { first: firstName, last: lastName } } as PersonInterface;
             var household = { name: lastName } as HouseholdInterface;
@@ -28,6 +28,8 @@ export const PeopleSearchResults: React.FC<Props> = (props) => {
             });
         }
     }
+
+    const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === 'Enter') { e.preventDefault(); handleAdd(null); } }
 
     const validate = () => {
         var errors = []
@@ -56,8 +58,8 @@ export const PeopleSearchResults: React.FC<Props> = (props) => {
                 <ErrorMessages errors={errors} />
                 <b>Add a New Person</b>
                 <Row>
-                    <Col><FormControl placeholder="First Name" name="firstName" value={firstName} onChange={e => setFirstName(e.currentTarget.value)} /></Col>
-                    <Col><FormControl placeholder="Last Name" name="lastName" value={lastName} onChange={e => setLastName(e.currentTarget.value)} /></Col>
+                    <Col><FormControl placeholder="First Name" name="firstName" value={firstName} onChange={e => setFirstName(e.currentTarget.value)} onKeyDown={handleKeyDown} /></Col>
+                    <Col><FormControl placeholder="Last Name" name="lastName" value={lastName} onChange={e => setLastName(e.currentTarget.value)} onKeyDown={handleKeyDown} /></Col>
                     <Col><Button variant="primary" onClick={handleAdd} >Add</Button></Col>
                 </Row>
             </>);

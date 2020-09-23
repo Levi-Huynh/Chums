@@ -18,6 +18,7 @@ export const GroupPage = ({ match }: RouteComponentProps<TParams>) => {
     const loadData = () => { ApiHelper.apiGet('/groups/' + match.params.id).then(data => setGroup(data)); }
     const handleSessionAdd = (session: SessionInterface) => { setAddedSession(session); setAddSessionVisible(false); }
 
+
     React.useEffect(loadData, []);
 
 

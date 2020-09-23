@@ -13,6 +13,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
 
     const handleSave = () => { if (validate()) ApiHelper.apiPost('/services', [service]).then(props.updatedFunction); }
     const handleDelete = () => { if (window.confirm('Are you sure you wish to permanently delete this service?')) ApiHelper.apiDelete('/services/' + service.id).then(props.updatedFunction); }
+    const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === 'Enter') { e.preventDefault(); handleSave(); } }
     const loadData = React.useCallback(() => {
         ApiHelper.apiGet('/campuses').then(data => {
             setCampuses(data);
@@ -59,11 +60,11 @@ export const ServiceEdit: React.FC<Props> = (props) => {
             <ErrorMessages errors={errors} />
             <div className="form-group">
                 <label>Campus</label>
-                <select name="campus" className="form-control" value={service?.campusId || 0} onChange={handleChange}>{getCampusOptions()}</select>
+                <select name="campus" className="form-control" value={service?.campusId || 0} onChange={handleChange} onKeyDown={handleKeyDown}>{getCampusOptions()}</select>
             </div>
             <div className="form-group">
                 <label>Service Name</label>
-                <input name="serviceName" type="text" className="form-control" value={service?.name || ''} onChange={handleChange} />
+                <input name="serviceName" type="text" className="form-control" value={service?.name || ''} onChange={handleChange} onKeyDown={handleKeyDown} />
             </div>
         </InputBox>
     );

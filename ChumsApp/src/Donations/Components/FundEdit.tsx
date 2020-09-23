@@ -13,6 +13,7 @@ export const FundEdit: React.FC<Props> = (props) => {
             ApiHelper.apiDelete('/funds/' + fund.id).then(() => props.updatedFunction());
         }
     };
+    const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === 'Enter') { e.preventDefault(); handleSave(); } }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         var f = { ...fund };
@@ -27,7 +28,7 @@ export const FundEdit: React.FC<Props> = (props) => {
         <InputBox id="fundsBox" headerIcon="fas fa-hand-holding-usd" headerText="Edit Fund" cancelFunction={handleCancel} saveFunction={handleSave} deleteFunction={(fund.id === 0) ? undefined : handleDelete} >
             <div className="form-group">
                 <label>Name</label>
-                <input name="fundName" type="text" className="form-control" value={fund.name} onChange={handleChange} />
+                <input name="fundName" type="text" className="form-control" value={fund.name} onChange={handleChange} onKeyDown={handleKeyDown} />
             </div>
         </InputBox >
 

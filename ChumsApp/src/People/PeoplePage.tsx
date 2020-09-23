@@ -7,7 +7,7 @@ export const PeoplePage = () => {
     const [searchResults, setSearchResults] = React.useState(null);
 
     const handleSubmit = (e: React.MouseEvent) => {
-        e.preventDefault();
+        if (e !== null) e.preventDefault();
         ApiHelper.apiGet('/people/search?term=' + escape(searchText)).then(data => setSearchResults(data));
     }
 
@@ -18,6 +18,8 @@ export const PeoplePage = () => {
         else return (<ExportLink data={searchResults} filename="people.csv" />);
     }
 
+    const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmit(null); } }
+
     return (
         <>
             <h1><i className="fas fa-user"></i> People</h1>
@@ -25,7 +27,7 @@ export const PeoplePage = () => {
                 <Col lg={8}>
                     <DisplayBox id="peopleBox" headerIcon="fas fa-user" headerText="Search" editContent={getEditContent()} >
                         <InputGroup>
-                            <FormControl id="searchText" name="searchText" type="text" placeholder="Name" value={searchText} onChange={handleChange} />
+                            <FormControl id="searchText" name="searchText" type="text" placeholder="Name" value={searchText} onChange={handleChange} onKeyDown={handleKeyDown} />
                             <InputGroup.Append><Button id="searchButton" variant="primary" onClick={handleSubmit}>Search</Button></InputGroup.Append>
                         </InputGroup>
                         <br />
