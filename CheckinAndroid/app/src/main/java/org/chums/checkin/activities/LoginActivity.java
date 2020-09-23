@@ -24,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText passwordText;
     String email;
     String password;
+    static boolean initialLoad=true;
 
     private void initEnvironment()
     {
@@ -73,7 +74,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        if (!pref.getString("password", "").equals("")) login();
+        if (initialLoad) {
+            if (!pref.getString("password", "").equals("")) login();
+            initialLoad = false;
+        }
 
     }
 

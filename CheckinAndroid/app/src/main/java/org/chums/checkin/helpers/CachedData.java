@@ -5,7 +5,7 @@ import org.chums.checkin.models.ServiceTimes;
 import org.chums.checkin.models.Visits;
 
 public class CachedData {
-    public static boolean IsProd = true;
+    public static boolean IsProd = false;
     public static String ApiKey;
     public static String AccessManagementApiRoot = "https://api.livecs.org";
     public static String ApiRoot = "https://api.chums.org";
