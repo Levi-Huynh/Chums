@@ -11,6 +11,8 @@ export const PeoplePage = () => {
         ApiHelper.apiGet('/people/search?term=' + escape(searchText)).then(data => setSearchResults(data));
     }
 
+    const loadData = () => { ApiHelper.apiGet('/people/recent').then(data => setSearchResults(data)); }
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setSearchText(e.currentTarget.value);
 
     const getEditContent = () => {
@@ -19,6 +21,8 @@ export const PeoplePage = () => {
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmit(null); } }
+
+    React.useEffect(loadData, []);
 
     return (
         <>

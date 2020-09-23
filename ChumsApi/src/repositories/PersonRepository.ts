@@ -57,6 +57,10 @@ export class PersonRepository {
         return DB.query("SELECT * FROM people WHERE churchId=? AND removed=0;", [churchId]);
     }
 
+    public async loadRecent(churchId: number) {
+        return DB.query("SELECT * FROM (SELECT * FROM people WHERE churchId=? AND removed=0 order by id desc limit 25) people ORDER BY lastName, firstName;", [churchId]);
+    }
+
     public async loadByHousehold(churchId: number, householdId: number) {
         return DB.query("SELECT * FROM people WHERE churchId=? and householdId=? AND removed=0;", [churchId, householdId]);
     }

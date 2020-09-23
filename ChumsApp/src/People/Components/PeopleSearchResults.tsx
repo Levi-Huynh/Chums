@@ -67,7 +67,7 @@ export const PeopleSearchResults: React.FC<Props> = (props) => {
 
 
     if (redirectUrl !== '') return <Redirect to={redirectUrl}></Redirect>;
-    else if (props.people === undefined || props.people === null) return <></>
+    else if (props.people === undefined || props.people === null) return (<div className="alert alert-info">Use the search box above to search for a member or add a new one.</div>)
     else if (props.people.length === 0) return (<>
         <p>No results found.  Please search for a different name or add a new person</p>
         {getAddPerson()}

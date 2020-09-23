@@ -1,12 +1,20 @@
-import { controller, httpPost, httpGet, interfaces, requestParam, httpDelete, results } from "inversify-express-utils";
+import { controller, httpPost, httpGet, interfaces, requestParam, httpDelete } from "inversify-express-utils";
 import express from "express";
 import { CustomBaseController } from "./CustomBaseController"
 import { Person, Household, FormSubmission, Form } from "../models"
-import { AwsHelper, PersonHelper } from "../helpers"
-import { FormSubmissionController, FormController } from "./"
+import { AwsHelper } from "../helpers"
+
 
 @controller("/people")
 export class PersonController extends CustomBaseController {
+
+    @httpGet("/recent")
+    public async getRecent(req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
+        return this.actionWrapper(req, res, async (au) => {
+            const data = await this.repositories.person.loadRecent(au.churchId);
+            return this.repositories.person.convertAllToModel(au.churchId, data);
+        });
+    }
 
     @httpGet("/household/:householdId")
     public async getHouseholdMembers(@requestParam("householdId") householdId: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
