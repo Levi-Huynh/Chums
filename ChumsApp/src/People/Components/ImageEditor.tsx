@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { InputBox, PersonHelper, ApiHelper, PersonInterface } from './';
+import { InputBox, PersonHelper, PersonInterface } from './';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 import { Button } from 'react-bootstrap';

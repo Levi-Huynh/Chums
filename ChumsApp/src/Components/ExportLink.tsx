@@ -53,7 +53,7 @@ export const ExportLink: React.FC<Props> = (props) => {
     else {
         var items = [];
         if (props.spaceBefore) items.push(' ');
-        items.push(<CSVLink data={props.data} headers={getHeaders()} filename={props.filename || 'export.csv'} > <i className="fas fa-download" > </i></CSVLink >);
+        items.push(<CSVLink key={props.filename} data={props.data} headers={getHeaders()} filename={props.filename || 'export.csv'} > <i className="fas fa-download" > </i></CSVLink >);
         if (props.spaceAfter) items.push(' ');
         return (<>{items}</>);
     }

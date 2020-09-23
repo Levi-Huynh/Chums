@@ -144,8 +144,10 @@ export class PersonController extends CustomBaseController {
                 const promises: Promise<Person>[] = [];
                 req.body.forEach(person => {
                     person.churchId = au.churchId;
+                    if (person.contactInfo === undefined) person.contactInfo = {};
                     promises.push(
                         this.repositories.person.save(person).then(async (p) => {
+                            console.log("Converting to model");
                             const r = this.repositories.person.convertToModel(au.churchId, p);
                             r.churchId = au.churchId;
                             if (r.photo.startsWith("data:image/png;base64,")) await this.savePhoto(au.churchId, r);

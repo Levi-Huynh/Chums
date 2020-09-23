@@ -38,7 +38,7 @@ export const Attendance: React.FC<Props> = (props) => {
         }
 
         var rows: JSX.Element[] = [];
-        for (let i = 0; i < displayNames.length; i++) rows.push(<tr><td>{displayNames[i]}</td><td>{totals[displayNames[i]]}</td></tr>);
+        for (let i = 0; i < displayNames.length; i++) rows.push(<tr key={i}><td>{displayNames[i]}</td><td>{totals[displayNames[i]]}</td></tr>);
         return rows;
     }
 

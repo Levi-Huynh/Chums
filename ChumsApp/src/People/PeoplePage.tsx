@@ -4,7 +4,7 @@ import { Row, Col, InputGroup, FormControl, Button } from 'react-bootstrap';
 
 export const PeoplePage = () => {
     const [searchText, setSearchText] = React.useState('');
-    const [searchResults, setSearchResults] = React.useState([]);
+    const [searchResults, setSearchResults] = React.useState(null);
 
     const handleSubmit = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -14,8 +14,8 @@ export const PeoplePage = () => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setSearchText(e.currentTarget.value);
 
     const getEditContent = () => {
-        //return <></>;
-        return (<ExportLink data={searchResults} filename="people.csv" />);
+        if (searchResults == null) return <></>;
+        else return (<ExportLink data={searchResults} filename="people.csv" />);
     }
 
     return (

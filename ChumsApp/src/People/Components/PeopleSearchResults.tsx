@@ -18,12 +18,13 @@ export const PeopleSearchResults: React.FC<Props> = (props) => {
         if (validate()) {
             var person = { name: { first: firstName, last: lastName } } as PersonInterface;
             var household = { name: lastName } as HouseholdInterface;
-            var promises = [];
-            promises.push(ApiHelper.apiPost('/people', [person]).then(data => person.id = data[0]));
-            promises.push(ApiHelper.apiPost('/households', [household]).then(data => household.id = data[0]));
-            Promise.all(promises).then(() => {
-                var householdMember = { householdId: household.id, personId: person.id, role: 'Head' };
-                ApiHelper.apiPost('/householdmembers/' + household.id, [householdMember]).then(() => setRedirectUrl('/people/' + person.id));
+            ApiHelper.apiPost('/households', [household]).then(data => {
+                household.id = data[0].id;
+                person.householdId = household.id;
+                ApiHelper.apiPost('/people', [person]).then(data => {
+                    person.id = data[0].id
+                    setRedirectUrl('/people/' + person.id);
+                });
             });
         }
     }
@@ -64,7 +65,11 @@ export const PeopleSearchResults: React.FC<Props> = (props) => {
 
 
     if (redirectUrl !== '') return <Redirect to={redirectUrl}></Redirect>;
-    else if (props.people === undefined || props.people === null || props.people.length === 0) return <></>
+    else if (props.people === undefined || props.people === null) return <></>
+    else if (props.people.length === 0) return (<>
+        <p>No results found.  Please search for a different name or add a new person</p>
+        {getAddPerson()}
+    </>);
     else {
         var result =
             <>

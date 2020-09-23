@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react';
-import { InputBox, PersonAdd, PersonHelper, ApiHelper, HouseholdInterface, HouseholdMemberInterface, PersonInterface } from './';
+import { InputBox, PersonAdd, PersonHelper, ApiHelper, HouseholdInterface, PersonInterface } from './';
 import { Table } from 'react-bootstrap';
 
 interface Props { updatedFunction: () => void, household: HouseholdInterface, members: PersonInterface[] }

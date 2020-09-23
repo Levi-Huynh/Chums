@@ -1,4 +1,4 @@
-import { PersonInterface, HouseholdMemberInterface, CampusInterface, ServiceInterface, ServiceTimeInterface, GroupInterface, GroupMemberInterface, GroupServiceTimeInterface, HouseholdInterface, SessionInterface, VisitInterface, VisitSessionInterface, DonationBatchInterface, FundInterface, DonationInterface, FundDonationInterface, ArrayHelper } from './';
+import { PersonInterface, CampusInterface, ServiceInterface, ServiceTimeInterface, GroupInterface, GroupMemberInterface, GroupServiceTimeInterface, HouseholdInterface, SessionInterface, VisitInterface, VisitSessionInterface, DonationBatchInterface, FundInterface, DonationInterface, FundDonationInterface, ArrayHelper } from './';
 
 export interface ImportCampusInterface extends CampusInterface { importKey: string }
 export interface ImportServiceInterface extends ServiceInterface { importKey: string, campusKey?: string }
