@@ -1,9 +1,12 @@
 const { createServer, proxy } = require('aws-serverless-express');
 const { init } = require('./dist/app');
+const { Pool } = require('./dist/Pool');
 
 const winston = require("winston");
 const WinstonCloudWatch = require("winston-cloudwatch");
 const AWS = require('aws-sdk');
+
+Pool.initPool();
 
 module.exports.universal = function universal(event, context) {
     /*
