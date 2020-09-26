@@ -9,13 +9,7 @@ const AWS = require('aws-sdk');
 Pool.initPool();
 
 module.exports.universal = function universal(event, context) {
-    /*
     AWS.config.update({ region: 'us-east-2' });
-    let logger = winston.createLogger({
-        transports: [new WinstonCloudWatch({ logGroupName: 'AccessManagementStage', logStreamName: 'API' })],
-        format: winston.format.json()
-    });
-    logger.info("Lambda Logger initialized");*/
 
     init().then(app => {
         const server = createServer(app);

@@ -6,7 +6,7 @@ dotenv.config();
 export class Pool {
   public static current: mysql.Pool;
 
-  private static initPool() {
+  public static initPool() {
     Pool.current = mysql.createPool({
       connectionLimit: 10, // process.env.CONNECTION_LIMIT,
       host: process.env.DB_HOST,
