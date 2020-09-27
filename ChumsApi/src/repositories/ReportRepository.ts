@@ -25,6 +25,10 @@ export class ReportRepository {
         DB.query("DELETE FROM reports WHERE id=?;", [id]);
     }
 
+    public async loadByKeyName(keyName: string) {
+        return DB.queryOne("SELECT * FROM reports WHERE keyName=?;", [keyName]);
+    }
+
     public async load(id: number) {
         return DB.queryOne("SELECT * FROM reports WHERE id=?;", [id]);
     }
@@ -34,7 +38,7 @@ export class ReportRepository {
     }
 
     public convertToModel(data: any) {
-        const result: Report = { id: data.id, keyName: data.keyName, title: data.title, query: data.query, parameters: data.parameters, groupBy: data.groupBy };
+        const result: Report = { id: data.id, keyName: data.keyName, title: data.title, query: data.query, parameters: data.parameters, groupBy: data.groupBy, results: data.results };
         return result;
     }
 
@@ -43,5 +47,11 @@ export class ReportRepository {
         data.forEach(d => result.push(this.convertToModel(d)));
         return result;
     }
+
+    public runReport(query: string, params: string[]) {
+        return DB.query(query, params);
+    }
+
+
 
 }

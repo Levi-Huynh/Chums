@@ -5,4 +5,5 @@ export class Report {
     public query?: string;
     public parameters?: string;
     public groupBy?: string;
+    public results?: any[];
 }

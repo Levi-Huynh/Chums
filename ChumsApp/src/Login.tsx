@@ -58,6 +58,7 @@ export const Login: React.FC = (props: any) => {
 
     const selectChurch = () => {
         UserHelper.selectChurch(UserHelper.churches[0].id, context);
+        console.log(ApiHelper.jwt);
     }
 
     const context = React.useContext(UserContext)

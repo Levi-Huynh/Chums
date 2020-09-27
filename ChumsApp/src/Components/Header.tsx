@@ -11,6 +11,7 @@ export const Header: React.FC = () => {
     const getUserMenu = () => {
         if (showUserMenu) {
             const items = [];
+            items.push(<Link to="/reports">Reports</Link>);
             if (UserHelper.checkAccess('Site', 'Admin')) items.push(<Link to="/admin/reports">Admin reports</Link>);
             return (
                 <div className="container" id="userMenu">
