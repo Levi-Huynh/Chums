@@ -16,6 +16,7 @@ import {
   NoteRepository,
   PersonRepository,
   QuestionRepository,
+  ReportRepository,
   ServiceRepository,
   ServiceTimeRepository,
   SessionRepository,
@@ -45,6 +46,7 @@ export const bindings = new AsyncContainerModule(async (bind) => {
   bind<NoteRepository>(TYPES.NoteRepository).to(NoteRepository).inSingletonScope();
   bind<PersonRepository>(TYPES.PersonRepository).to(PersonRepository).inSingletonScope();
   bind<QuestionRepository>(TYPES.QuestionRepository).to(QuestionRepository).inSingletonScope();
+  bind<ReportRepository>(TYPES.ReportRepository).to(ReportRepository).inSingletonScope();
   bind<ServiceRepository>(TYPES.ServiceRepository).to(ServiceRepository).inSingletonScope();
   bind<ServiceTimeRepository>(TYPES.ServiceTimeRepository).to(ServiceTimeRepository).inSingletonScope();
   bind<SessionRepository>(TYPES.SessionRepository).to(SessionRepository).inSingletonScope();

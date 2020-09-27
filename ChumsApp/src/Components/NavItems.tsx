@@ -18,6 +18,7 @@ export const NavItems: React.FC<Props> = (props) => {
         if (url.indexOf('/donations') > -1) result = 'donations';
         if (url.indexOf('/forms') > -1) result = 'forms';
         if (url.indexOf('/settings') > -1) result = 'settings';
+
         return result;
     }
 

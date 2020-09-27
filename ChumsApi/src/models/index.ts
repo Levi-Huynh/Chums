@@ -19,6 +19,7 @@ export { Name } from './Name';
 export { Note } from './Note';
 export { Person } from './Person';
 export { Question } from './Question';
+export { Report } from './Report';
 export { Service } from './Service';
 export { ServiceTime } from './ServiceTime';
 export { Session } from './Session';

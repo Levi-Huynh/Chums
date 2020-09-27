@@ -10,6 +10,8 @@ import { DonationsPage } from './Donations/DonationsPage'
 import { DonationBatchPage } from './Donations/DonationBatchPage'
 import { FundPage } from './Donations/FundPage'
 import { FormsPage } from './Forms/FormsPage'
+import { ReportPage } from './Admin/ReportPage'
+import { ReportsPage } from './Admin/ReportsPage'
 import { RolesPage } from './Settings/RolesPage'
 import { RolePage } from './Settings/RolePage'
 import { ExportPage } from './Settings/ExportPage'
@@ -31,6 +33,8 @@ export const Authenticated = () => {
                     <Route path="/groups/:id" component={GroupPage}></Route>
                     <Route path="/groups"><GroupsPage /></Route>
                     <Route path="/attendance"><AttendancePage /></Route>
+                    <Route path="/admin/reports/:id" component={ReportPage}></Route>
+                    <Route path="/admin/reports"><ReportsPage /></Route>
                     <Route path="/donations/funds/:id" component={FundPage}></Route>
                     <Route path="/donations/:id" component={DonationBatchPage}></Route>
                     <Route path="/donations"><DonationsPage /></Route>

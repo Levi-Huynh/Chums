@@ -15,6 +15,7 @@ export const TYPES = {
   NoteRepository: Symbol("NoteRepository"),
   PersonRepository: Symbol("PersonRepository"),
   QuestionRepository: Symbol("QuestionRepository"),
+  ReportRepository: Symbol("ReportRepository"),
   ServiceRepository: Symbol("ServiceRepository"),
   ServiceTimeRepository: Symbol("ServiceTimeRepository"),
   SessionRepository: Symbol("SessionRepository"),

@@ -38,7 +38,7 @@ export class QuestionController extends CustomBaseController {
     @httpDelete("/:id")
     public async delete(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
         return this.actionWrapper(req, res, async (au) => {
-            if (!au.checkAccess("Donations", "Edit")) return this.json({}, 401);
+            if (!au.checkAccess("Forms", "Edit")) return this.json({}, 401);
             else await this.repositories.question.delete(au.churchId, id);
         });
     }

@@ -17,6 +17,7 @@ import {
   NoteRepository,
   PersonRepository,
   QuestionRepository,
+  ReportRepository,
   ServiceRepository,
   ServiceTimeRepository,
   SessionRepository,
@@ -42,6 +43,7 @@ export class Repositories {
   public note: NoteRepository;
   public person: PersonRepository;
   public question: QuestionRepository;
+  public report: ReportRepository;
   public service: ServiceRepository;
   public serviceTime: ServiceTimeRepository;
   public session: SessionRepository;
@@ -66,6 +68,7 @@ export class Repositories {
     @inject(TYPES.NoteRepository) noteRepository: NoteRepository,
     @inject(TYPES.PersonRepository) personRepository: PersonRepository,
     @inject(TYPES.QuestionRepository) questionRepository: QuestionRepository,
+    @inject(TYPES.ReportRepository) reportRepository: ReportRepository,
     @inject(TYPES.ServiceRepository) serviceRepository: ServiceRepository,
     @inject(TYPES.ServiceTimeRepository) serviceTimeRepository: ServiceTimeRepository,
     @inject(TYPES.SessionRepository) sessionRepository: SessionRepository,
@@ -88,6 +91,7 @@ export class Repositories {
     this.note = noteRepository;
     this.person = personRepository;
     this.question = questionRepository;
+    this.report = reportRepository;
     this.service = serviceRepository;
     this.serviceTime = serviceTimeRepository;
     this.session = sessionRepository;

@@ -14,6 +14,7 @@ export { HouseholdRepository } from "./HouseholdRepository";
 export { NoteRepository } from "./NoteRepository";
 export { PersonRepository } from "./PersonRepository";
 export { QuestionRepository } from "./QuestionRepository";
+export { ReportRepository } from "./ReportRepository";
 export { ServiceRepository } from "./ServiceRepository";
 export { ServiceTimeRepository } from "./ServiceTimeRepository";
 export { SessionRepository } from "./SessionRepository";

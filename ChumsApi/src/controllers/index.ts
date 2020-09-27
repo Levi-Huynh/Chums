@@ -14,6 +14,7 @@ export { HouseholdController } from "./HouseholdController";
 export { NoteController } from "./NoteController";
 export { PersonController } from "./PersonController";
 export { QuestionController } from "./QuestionController";
+export { ReportController } from "./ReportController";
 export { ServiceController } from "./ServiceController";
 export { ServiceTimeController } from "./ServiceTimeController";
 export { SessionController } from "./SessionController";

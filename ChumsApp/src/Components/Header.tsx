@@ -9,13 +9,18 @@ export const Header: React.FC = () => {
     const toggleUserMenu = (e: React.MouseEvent) => { e.preventDefault(); setShowUserMenu(!showUserMenu); }
 
     const getUserMenu = () => {
-        if (showUserMenu) return (
-            <div className="container" id="userMenu">
-                <div>
-                    <ul className="nav flex-column d-xl-none"><NavItems /></ul>
-                    <Link to="/logout">Logout</Link>
-                </div>
-            </div>)
+        if (showUserMenu) {
+            const items = [];
+            if (UserHelper.checkAccess('Site', 'Admin')) items.push(<Link to="/admin/reports">Admin reports</Link>);
+            return (
+                <div className="container" id="userMenu">
+                    <div>
+                        <ul className="nav flex-column d-xl-none"><NavItems /></ul>
+                        {items}
+                        <Link to="/logout">Logout</Link>
+                    </div>
+                </div>);
+        }
         else return null;
     }
 
