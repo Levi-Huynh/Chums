@@ -29,12 +29,14 @@ export const ReportPage = ({ match }: RouteComponentProps<TParams>) => {
             case 'title': r.title = e.currentTarget.value; break;
             case 'query': r.query = e.currentTarget.value; break;
             case 'parameters': r.parameters = e.currentTarget.value; break;
+            case 'reportType': r.reportType = e.currentTarget.value; break;
             case 'groupBy': r.groupBy = e.currentTarget.value; break;
+            case 'columns': r.columns = e.currentTarget.value; break;
         }
         setReport(r);
     }
 
-    React.useEffect(loadData, []);
+    React.useEffect(loadData, [match.params]);
 
     if (redirectUrl !== '') return <Redirect to={redirectUrl}></Redirect>;
     else return (
@@ -72,6 +74,23 @@ export const ReportPage = ({ match }: RouteComponentProps<TParams>) => {
                                 <FormGroup>
                                     <FormLabel>Parameters</FormLabel>
                                     <FormControl type="text" name="parameters" value={report.parameters} onChange={handleChange} onKeyDown={handleKeyDown} />
+                                </FormGroup>
+                            </Col>
+                            <Col>
+                                <FormGroup>
+                                    <FormLabel>Report Type</FormLabel>
+                                    <FormControl as="select" name="reportType" value={report.reportType} onChange={handleChange} onKeyDown={handleKeyDown}>
+                                        <option value="Grouped">Grouped</option>
+                                        <option value="Bar Chart">Bar Chart</option>
+                                    </FormControl>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <FormGroup>
+                                    <FormLabel>Columns</FormLabel>
+                                    <FormControl type="text" name="columns" value={report.columns} onChange={handleChange} onKeyDown={handleKeyDown} />
                                 </FormGroup>
                             </Col>
                             <Col>

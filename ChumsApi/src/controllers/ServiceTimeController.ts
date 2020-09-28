@@ -29,7 +29,9 @@ export class ServiceTimeController extends CustomBaseController {
             let result = null;
             if (req.query.serviceId !== undefined) result = await this.repositories.serviceTime.loadNamesByServiceId(au.churchId, parseInt(req.query.serviceId.toString(), 0));
             else result = await this.repositories.serviceTime.loadNamesWithCampusService(au.churchId);
+            console.log(result);
             result = this.repositories.serviceTime.convertAllToModel(au.churchId, result);
+            console.log(result);
             if (result.length > 0 && this.include(req, "groups")) await this.appendGroups(au.churchId, result);
             return result;
         });

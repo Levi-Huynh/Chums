@@ -1,14 +1,13 @@
 import React from 'react';
-import { ApiHelper, DisplayBox, ReportInterface } from './';
+import { ApiHelper, DisplayBox, ReportInterface } from '.';
 import { Link } from 'react-router-dom';
 
 interface Props { report?: ReportInterface }
 
-export const GroupingReport = (props: Props) => {
+export const GroupedReport = (props: Props) => {
 
 
     const getRows = () => {
-        console.log(props);
         if (props.report === undefined || props.report === null || props.report.groupBy === undefined) return null;
         else {
             const prevValues: any[] = [];

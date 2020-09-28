@@ -4,6 +4,8 @@ export class Report {
     public title?: string;
     public query?: string;
     public parameters?: string;
+    public reportType?: string;
     public groupBy?: string;
+    public columns?: string;
     public results?: any[];
 }

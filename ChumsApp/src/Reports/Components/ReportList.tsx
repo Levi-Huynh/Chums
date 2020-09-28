@@ -12,7 +12,7 @@ export const ReportList = () => {
         else {
             const result: JSX.Element[] = [];
             reports.forEach(r => {
-                result.push(<Link to={"/reports/" + r.id}>{r.title}</Link>)
+                result.push(<tr><td><Link to={"/reports/" + r.id}>{r.title}</Link></td></tr>)
             });
             return result;
         }

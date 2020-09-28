@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, ReportList, ReportInterface, InputBox, ErrorMessages, GroupingReport } from './Components';
+import { ApiHelper, ReportList, ReportInterface, InputBox, ErrorMessages, GroupedReport } from './Components';
 import { Row, Col, FormGroup, FormLabel, InputGroup, FormControl, Button } from 'react-bootstrap';
 import { RouteComponentProps, Redirect } from 'react-router-dom';
 
@@ -19,7 +19,7 @@ export const ReportPage = ({ match }: RouteComponentProps<TParams>) => {
             <h1><i className="far fa-chart-bar"></i> {report.title}</h1>
             <Row>
                 <Col lg={8}>
-                    <GroupingReport report={report} />
+                    <GroupedReport report={report} />
                 </Col>
                 <Col lg={4}>
                     <ReportList />

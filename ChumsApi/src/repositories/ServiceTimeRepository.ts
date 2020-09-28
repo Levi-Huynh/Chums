@@ -52,7 +52,7 @@ export class ServiceTimeRepository {
     }
 
     public convertToModel(churchId: number, data: any) {
-        const result: ServiceTime = { id: data.id, serviceId: data.serviceId, name: data.name };
+        const result: ServiceTime = { id: data.id, serviceId: data.serviceId, name: data.name, longName: data.longName };
         return result;
     }
 

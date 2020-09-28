@@ -5,5 +5,5 @@ export class Session {
     public serviceTimeId?: number;
     public sessionDate?: Date;
 
-    public disalayName?: string;
+    public displayName?: string;
 }

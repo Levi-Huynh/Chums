@@ -10,10 +10,14 @@ export class ServiceRepository {
     }
 
     public async create(service: Service) {
-        return DB.query(
-            "INSERT INTO services (churchId, campusId, name, removed) VALUES (?, ?, ?, 0);",
-            [service.churchId, service.campusId, service.name]
-        ).then((row: any) => { service.id = row.insertId; return service; });
+        const sql = "INSERT INTO services (churchId, campusId, name, removed) VALUES (?, ?, ?, 0);"
+        const params = [service.churchId, service.campusId, service.name];
+        console.log(sql);
+        console.log(params);
+        return DB.query(sql, params).then((row: any) => {
+            console.log(row);
+            service.id = row.insertId; return service;
+        });
     }
 
     public async update(service: Service) {

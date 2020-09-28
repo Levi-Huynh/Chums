@@ -57,7 +57,7 @@ export class SessionRepository {
     }
 
     public convertToModel(churchId: number, data: any) {
-        const result: Session = { id: data.id, groupId: data.groupId, serviceTimeId: data.serviceTimeId, sessionDate: data.sessionDate };
+        const result: Session = { id: data.id, groupId: data.groupId, serviceTimeId: data.serviceTimeId, sessionDate: data.sessionDate, displayName: data.displayName };
         return result;
     }
 
