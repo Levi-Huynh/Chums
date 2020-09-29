@@ -10,14 +10,14 @@ export class ReportRepository {
     }
 
     public async create(report: Report) {
-        const sql = "INSERT INTO reports (keyName, title, query, parameters, reportType, columns, groupBy) VALUES (?, ?, ? ?, ?, ?, ?);";
-        const params = [report.keyName, report.title, report.query, report.parameters, report.reportType, report.columns, report.groupBy];
+        const sql = "INSERT INTO reports (keyName, title, query, parameters, reportType, columns, groupLevels) VALUES (?, ?, ? ?, ?, ?, ?);";
+        const params = [report.keyName, report.title, report.query, report.parameters, report.reportType, JSON.stringify(report.columns), report.groupLevels];
         return DB.query(sql, params).then((row: any) => { report.id = row.insertId; return report; });
     }
 
     public async update(report: Report) {
-        const sql = "UPDATE reports SET keyName=?, title=?, query=?, parameters=?, reportType=?, columns=?, groupBy=? WHERE id=?";
-        const params = [report.keyName, report.title, report.query, report.parameters, report.reportType, report.columns, report.groupBy, report.id]
+        const sql = "UPDATE reports SET keyName=?, title=?, query=?, parameters=?, reportType=?, columns=?, groupLevels=? WHERE id=?";
+        const params = [report.keyName, report.title, report.query, report.parameters, report.reportType, JSON.stringify(report.columns), report.groupLevels, report.id]
         return DB.query(sql, params).then(() => { return report });
     }
 
@@ -38,7 +38,8 @@ export class ReportRepository {
     }
 
     public convertToModel(data: any) {
-        const result: Report = { id: data.id, keyName: data.keyName, title: data.title, query: data.query, parameters: data.parameters, groupBy: data.groupBy, reportType: data.reportType, columns: data.columns, results: data.results };
+        const result: Report = { id: data.id, keyName: data.keyName, title: data.title, query: data.query, parameters: data.parameters, reportType: data.reportType, groupLevels: data.groupLevels, results: data.results };
+        if (typeof data.columns === "string") result.columns = JSON.parse(data.columns);
         return result;
     }
 

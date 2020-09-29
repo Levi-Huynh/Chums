@@ -49,14 +49,14 @@ h1 { border-bottom:1px solid #CCC; padding-bottom:10px; margin-bottom:25px; }
 .statusList li:before, .statusList li.complete:before { content:"\f00c"; color:#1c7430; }
 
 .report .heading1 {font-weight: bold; font-size: 20px;}
-.report .heading2 {font-weight: bold; font-size: 18px; margin-left: 20px;}
-.report .heading3 {font-weight: bold; font-size: 16px; margin-left: 40px;}
-.report .heading4 {font-weight: bold; margin-left: 60px;}
+.report .heading2 {font-weight: bold; font-size: 18px; padding-left: 20px;}
+.report .heading3 {font-weight: bold; font-size: 16px; padding-left: 40px;}
+.report .heading4 {font-weight: bold; padding-left: 60px;}
 
-.report .indent2 { margin-left: 20px;}
-.report .indent3 { margin-left: 40px;}
-.report .indent4 { margin-left: 60px;}
-.report .indent5 { margin-left: 80px;}
+.report .indent2 { padding-left: 20px;}
+.report .indent3 { padding-left: 40px;}
+.report .indent4 { padding-left: 60px;}
+.report .indent5 { padding-left: 80px;}
 
 
 

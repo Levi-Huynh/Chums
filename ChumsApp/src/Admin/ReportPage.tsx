@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, ReportList, ReportInterface, InputBox, ErrorMessages } from './Components';
+import { ApiHelper, ReportList, ReportInterface, InputBox, ErrorMessages, ColumnEdit, ReportColumnInterface } from './Components';
 import { Row, Col, FormGroup, FormLabel, InputGroup, FormControl, Button } from 'react-bootstrap';
 import { RouteComponentProps, Redirect } from 'react-router-dom';
 
@@ -8,12 +8,14 @@ export const ReportPage = ({ match }: RouteComponentProps<TParams>) => {
     const [report, setReport] = React.useState({} as ReportInterface);
     const [errors, setErrors] = React.useState([]);
     const [redirectUrl, setRedirectUrl] = React.useState("");
+    const [editColumnIndex, setEditColumnIndex] = React.useState(-1);
 
     const loadData = () => { ApiHelper.apiGet('/reports/' + match.params.id).then(data => setReport(data)); }
     const redirect = () => { setRedirectUrl("/admin/reports"); }
     const handleSave = () => { if (validate()) ApiHelper.apiPost('/reports', [report]).then(redirect) }
     const handleDelete = () => { if (window.confirm('Are you sure you wish to permanently delete this report?')) ApiHelper.apiDelete('/reports/' + report.id).then(redirect); }
     const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === 'Enter') { e.preventDefault(); handleSave(); } }
+
     const validate = () => {
         var errors = [];
         if (report.title === '') errors.push("Title cannot be blank.");
@@ -30,11 +32,94 @@ export const ReportPage = ({ match }: RouteComponentProps<TParams>) => {
             case 'query': r.query = e.currentTarget.value; break;
             case 'parameters': r.parameters = e.currentTarget.value; break;
             case 'reportType': r.reportType = e.currentTarget.value; break;
-            case 'groupBy': r.groupBy = e.currentTarget.value; break;
-            case 'columns': r.columns = e.currentTarget.value; break;
+            case 'groupLevels': r.groupLevels = parseInt(e.currentTarget.value, 0); break;
+            //case 'columns': r.columns = e.currentTarget.value; break;
         }
         setReport(r);
     }
+
+    const moveUp = (e: React.MouseEvent) => {
+        e.preventDefault();
+        var anchor = e.currentTarget as HTMLAnchorElement;
+        var row = anchor.parentNode.parentNode as HTMLElement;
+        var idx = parseInt(row.getAttribute('data-index'));
+        var tmpReport = { ...report };
+        var col = tmpReport.columns.splice(idx, 1)[0];
+        tmpReport.columns.splice(idx - 1, 0, col);
+        setReport(tmpReport);
+    }
+
+    const moveDown = (e: React.MouseEvent) => {
+        e.preventDefault();
+        var anchor = e.currentTarget as HTMLAnchorElement;
+        var row = anchor.parentNode.parentNode as HTMLElement;
+        var idx = parseInt(row.getAttribute('data-index'));
+        var tmpReport = { ...report };
+        var col = tmpReport.columns.splice(idx, 1)[0];
+        tmpReport.columns.splice(idx + 1, 0, col);
+        setReport(tmpReport);
+    }
+
+    const editColumn = (e: React.MouseEvent) => {
+        e.preventDefault();
+        var anchor = e.currentTarget as HTMLAnchorElement;
+        var row = anchor.parentNode.parentNode as HTMLElement;
+        var idx = parseInt(row.getAttribute('data-index'));
+        setEditColumnIndex(idx);
+    }
+
+    const deleteColumn = (e: React.MouseEvent) => {
+        e.preventDefault();
+        var anchor = e.currentTarget as HTMLAnchorElement;
+        var row = anchor.parentNode.parentNode as HTMLElement;
+        var idx = parseInt(row.getAttribute('data-index'));
+        var tmpReport = { ...report };
+        var col = tmpReport.columns.splice(idx, 1)[0];
+        if (window.confirm("Are you sure you wish to remove the column " + col.heading + "?")) setReport(tmpReport);
+    }
+
+
+
+
+    const getColumns = () => {
+        const result: JSX.Element[] = [];
+        if (report?.columns !== undefined) {
+            for (let i = 0; i < report.columns.length; i++) {
+                var upArrow = (i === 0) ? <span style={{ display: 'inline-block', width: 20 }} /> : <> &nbsp; <a href="about:blank" onClick={moveUp}><i className="fas fa-arrow-up" /></a> </>
+                var downArrow = (i === report.columns.length - 1) ? <></> : <> &nbsp; <a href="about:blank" onClick={moveDown}><i className="fas fa-arrow-down" /></a></>
+                const editLink = <a href="about:blank" onClick={editColumn}><i className="fas fa-pencil-alt" /></a>
+                const deleteLink = <a href="about:blank" onClick={deleteColumn}><i className="fas fa-trash-alt" /></a>
+                result.push(
+                    <tr key={i} data-index={i} >
+                        <td>{report.columns[i].heading}</td>
+                        <td style={{ textAlign: 'right' }}>{editLink}{upArrow}{downArrow}{deleteLink}</td>
+                    </tr>
+                );
+            }
+        }
+        return result;
+    }
+
+    const getColumnEditor = () => {
+        if (editColumnIndex < 0) return null;
+        else {
+            const col = (editColumnIndex >= report?.columns?.length) ? {} : report.columns[editColumnIndex];
+            return <ColumnEdit column={col} updatedFunction={handleColumnUpdate} />
+        }
+    }
+
+    const handleColumnUpdate = (column: ReportColumnInterface) => {
+        if (editColumnIndex >= report.columns.length) report.columns.push(column);
+        else report.columns[editColumnIndex] = column;
+        setEditColumnIndex(-1);
+    }
+
+    const handleAdd = (e: React.MouseEvent) => {
+        e.preventDefault();
+        if (report.columns === undefined) report.columns = [];
+        setEditColumnIndex(report?.columns?.length);
+    }
+
 
     React.useEffect(loadData, [match.params]);
 
@@ -89,14 +174,25 @@ export const ReportPage = ({ match }: RouteComponentProps<TParams>) => {
                         <Row>
                             <Col>
                                 <FormGroup>
-                                    <FormLabel>Columns</FormLabel>
-                                    <FormControl type="text" name="columns" value={report.columns} onChange={handleChange} onKeyDown={handleKeyDown} />
+                                    <div>
+                                        <span className="float-right"><a href="about:blank" onClick={handleAdd}><i className="fas fa-plus"></i></a></span>
+                                        <FormLabel>
+
+                                            Columns
+                                        </FormLabel>
+                                    </div>
+                                    <table className="table table-sm">
+                                        <tbody>
+                                            {getColumns()}
+                                        </tbody>
+                                    </table>
+
                                 </FormGroup>
                             </Col>
                             <Col>
                                 <FormGroup>
-                                    <FormLabel>Groupings</FormLabel>
-                                    <FormControl type="text" name="groupBy" value={report.groupBy} onChange={handleChange} onKeyDown={handleKeyDown} />
+                                    <FormLabel>Group Levels</FormLabel>
+                                    <FormControl type="text" name="groupLevels" value={report.groupLevels} onChange={handleChange} onKeyDown={handleKeyDown} />
                                 </FormGroup>
                             </Col>
                         </Row>
@@ -104,6 +200,7 @@ export const ReportPage = ({ match }: RouteComponentProps<TParams>) => {
                 </Col>
                 <Col lg={4}>
                     <ReportList />
+                    {getColumnEditor()}
                 </Col>
             </Row>
         </>

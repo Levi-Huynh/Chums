@@ -76,7 +76,6 @@ export class ReportController extends CustomBaseController {
         }
 
         report.results = await this.repositories.report.runReport(report.query, params);
-        console.log(report);
         return report;
     }
 

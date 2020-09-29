@@ -21,7 +21,8 @@ export interface HouseholdMemberInterface { id?: number, householdId?: number, h
 export interface NameInterface { first?: string, middle?: string, last?: string, nick?: string, display?: string }
 export interface NoteInterface { dateAdded?: string, person?: PersonInterface }
 /*export interface PermissionInterface { contentType?: string, action?: string }*/
-export interface ReportInterface { id?: string, keyName?: string, title?: string, query?: string, parameters?: string, reportType: string, groupBy?: string, columns: string, results: any[] }
+export interface ReportInterface { id?: string, keyName?: string, title?: string, query?: string, parameters?: string, reportType: string, groupLevels?: number, columns?: ReportColumnInterface[], results?: any[] }
+export interface ReportColumnInterface { field?: string, heading?: string }
 export interface PersonInterface { id?: number, name: NameInterface, contactInfo: ContactInfoInterface, membershipStatus?: string, gender?: string, birthDate?: Date, maritalStatus?: string, anniversary?: Date, photo?: string, photoUpdated?: Date, householdId?: number, householdRole?: string, userId?: number, formSubmissions?: [FormSubmissionInterface] }
 export interface QuestionInterface { id?: number, formId?: number, title?: string, fieldType?: string, placeholder?: string, description?: string, choices?: [{ value?: string, text?: string }] }
 export interface RegisterInterface { churchName?: string, firstName?: string, lastName?: string, email?: string, password?: string }
