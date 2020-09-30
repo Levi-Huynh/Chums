@@ -11,7 +11,7 @@ export const ReportPage = ({ match }: RouteComponentProps<TParams>) => {
         const postData = [{ id: match.params.id }]
         ApiHelper.apiPost('/reports/run', postData).then(data => setReport(data[0]));
     }
-    React.useEffect(loadData, []);
+    React.useEffect(loadData, [match.params]);
 
 
     return (
