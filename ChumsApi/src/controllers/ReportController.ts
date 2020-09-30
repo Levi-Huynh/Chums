@@ -68,14 +68,14 @@ export class ReportController extends CustomBaseController {
     }
 
     private async runReport(rrr: RunReportRequest, au: AuthenticatedUser) {
+        console.log("run report")
         const report: Report = (rrr.id !== undefined) ? await this.repositories.report.load(rrr.id) : await this.repositories.report.loadByKeyName(rrr.keyName);
+        report.values = rrr.values;
+        console.log(JSON.stringify(report));
 
-        const params: any[] = report.parameters.split(',');
-        for (let i = 0; i < params.length; i++) {
-            if (params[i] === "churchId") params[i] = au.churchId;
-        }
-
-        report.results = await this.repositories.report.runReport(report.query, params);
+        report.values.forEach(v => { if (v.key === "churchId") v.value = au.churchId; });
+        console.log(JSON.stringify(report.values));
+        report.results = await this.repositories.report.runReport(report.query, report.parameters.split(','), report.values);
         return report;
     }
 

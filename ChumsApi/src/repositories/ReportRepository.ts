@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import { DB } from "../db";
-import { Report } from "../models";
+import { Report, ReportValue } from "../models";
 
 @injectable()
 export class ReportRepository {
@@ -38,7 +38,7 @@ export class ReportRepository {
     }
 
     public convertToModel(data: any) {
-        const result: Report = { id: data.id, keyName: data.keyName, title: data.title, query: data.query, parameters: data.parameters, reportType: data.reportType, groupLevels: data.groupLevels, results: data.results };
+        const result: Report = { id: data.id, keyName: data.keyName, title: data.title, query: data.query, parameters: data.parameters, reportType: data.reportType, groupLevels: data.groupLevels, results: data.results, values: data.values };
         if (typeof data.columns === "string") result.columns = JSON.parse(data.columns);
         return result;
     }
@@ -49,7 +49,12 @@ export class ReportRepository {
         return result;
     }
 
-    public runReport(query: string, params: string[]) {
+    public runReport(query: string, params: string[], values: ReportValue[]) {
+        values.forEach(v => {
+            for (let i = 0; i < params.length; i++) if (params[i] === v.key) params[i] = v.value;
+        })
+        console.log(query);
+        console.log(JSON.stringify(params));
         return DB.query(query, params);
     }
 

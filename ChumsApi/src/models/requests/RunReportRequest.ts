@@ -1,5 +1,7 @@
+import { ReportValue } from "../ReportValue";
+
 export type RunReportRequest = {
     id?: number;
     keyName?: string;
-    parameters?: string[];
+    values?: ReportValue[]
 };
