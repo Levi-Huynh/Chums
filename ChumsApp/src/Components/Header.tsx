@@ -14,32 +14,17 @@ export const Header: React.FC = () => {
   const getUserMenu = () => {
     if (showUserMenu) {
       const items = [];
-      items.push(
-        <li
-          key="reports"
-          className="nav-item"
-          onClick={toggleUserMenu}
-          id="reportsTab"
-        >
-          <Link to="/reports">Reports</Link>
-        </li>
-      );
-      if (UserHelper.checkAccess("Site", "Admin"))
-        items.push(
-          <li
-            key="admin-reports"
-            className="nav-item"
-            onClick={toggleUserMenu}
-            id="adminReportsTab"
-          >
-            <Link to="/admin/reports">Admin reports</Link>
-          </li>
-        );
+      items.push(<li key="reports" className="nav-item" onClick={toggleUserMenu} id="reportsTab" ><Link to="/reports">Reports</Link></li>);
+      if (UserHelper.checkAccess("Site", "Admin")) items.push(<li key="admin-reports" className="nav-item" onClick={toggleUserMenu} id="adminReportsTab" ><Link to="/admin/reports">Admin reports</Link></li>);
+      console.log(items);
+
       return (
         <div className="container" id="userMenu">
           <div>
             <ul className="nav flex-column d-xl-none">
               <NavItems toggleUserMenu={toggleUserMenu} />
+            </ul>
+            <ul className="nav flex-column">
               {items}
             </ul>
             <Link to="/logout">Logout</Link>
@@ -59,28 +44,14 @@ export const Header: React.FC = () => {
                 <img src="/images/logo.png" alt="logo" />
               </a>
             </div>
-            <Col
-              className="d-none d-xl-block"
-              xl={7}
-              style={{
-                borderLeft: "2px solid #EEE",
-                borderRight: "2px solid #EEE",
-              }}
-            >
+            <Col className="d-none d-xl-block" xl={7} style={{ borderLeft: "2px solid #EEE", borderRight: "2px solid #EEE" }} >
               <ul className="nav nav-fill">
                 <NavItems prefix="main" />
               </ul>
             </Col>
-            <div
-              className="col-6 col-lg-2-5 text-right"
-              style={{ paddingTop: 17 }}
-              id="navRight"
-            >
+            <div className="col-6 col-lg-2-5 text-right" style={{ paddingTop: 17 }} id="navRight" >
               <a href="about:blank" onClick={toggleUserMenu} id="userMenuLink">
-                <img
-                  src={PersonHelper.getPhotoUrl(UserHelper.person)}
-                  alt="user"
-                />
+                <img src={PersonHelper.getPhotoUrl(UserHelper.person)} alt="user" />
                 {UserHelper.person.name.display}{" "}
                 <i className="fas fa-caret-down"></i>
               </a>

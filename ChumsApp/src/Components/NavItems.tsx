@@ -30,12 +30,7 @@ export const NavItems: React.FC<Props> = (props) => {
 
   const getTab = (key: string, url: string, icon: string, label: string) => {
     return (
-      <li
-        key={key}
-        className="nav-item"
-        onClick={props.toggleUserMenu}
-        id={(props.prefix || "") + key + "Tab"}
-      >
+      <li key={key} className="nav-item" onClick={props.toggleUserMenu} id={(props.prefix || "") + key + "Tab"} >
         <Link className={getClass(key)} to={url}>
           <i className={icon}></i> {label}
         </Link>
@@ -46,25 +41,11 @@ export const NavItems: React.FC<Props> = (props) => {
   const getTabs = () => {
     var tabs = [];
     tabs.push(getTab("people", "/people", "fas fa-user", "People"));
-    if (UserHelper.checkAccess("Groups", "View"))
-      tabs.push(getTab("groups", "/groups", "fas fa-list-ul", "Groups"));
-    if (UserHelper.checkAccess("Attendance", "View Summary"))
-      tabs.push(
-        getTab("attendance", "/attendance", "far fa-calendar-alt", "Attendance")
-      );
-    if (UserHelper.checkAccess("Donations", "View Summary"))
-      tabs.push(
-        getTab(
-          "donations",
-          "/donations",
-          "fas fa-hand-holding-usd",
-          "Donations"
-        )
-      );
-    if (UserHelper.checkAccess("Forms", "View"))
-      tabs.push(getTab("forms", "/forms", "fas fa-align-left", "Forms"));
-    if (UserHelper.checkAccess("Roles", "View"))
-      tabs.push(getTab("settings", "/settings", "fas fa-cog", "Settings"));
+    if (UserHelper.checkAccess("Groups", "View")) tabs.push(getTab("groups", "/groups", "fas fa-list-ul", "Groups"));
+    if (UserHelper.checkAccess("Attendance", "View Summary")) tabs.push(getTab("attendance", "/attendance", "far fa-calendar-alt", "Attendance"));
+    if (UserHelper.checkAccess("Donations", "View Summary")) tabs.push(getTab("donations", "/donations", "fas fa-hand-holding-usd", "Donations"));
+    if (UserHelper.checkAccess("Forms", "View")) tabs.push(getTab("forms", "/forms", "fas fa-align-left", "Forms"));
+    if (UserHelper.checkAccess("Roles", "View")) tabs.push(getTab("settings", "/settings", "fas fa-cog", "Settings"));
     return tabs;
   };
 
