@@ -1,14 +1,15 @@
 import React from 'react';
 import { ApiHelper, DisplayBox, ReportInterface } from './';
-import { Link } from 'react-router-dom';
-import { InputBox, ReportValueInterface, Helper } from '../../Components';
+import { InputBox, ReportValueInterface, Helper, ServiceInterface } from './';
 import { FormControl, FormGroup, FormLabel } from 'react-bootstrap';
 
 interface Props { report?: ReportInterface, updateFunction: (values: ReportValueInterface[]) => void }
 
 export const ReportFilter = (props: Props) => {
     const [report, setReport] = React.useState<ReportInterface>(null);
+    const [services, setServices] = React.useState<ServiceInterface[]>(null);
 
+    const loadServices = () => { ApiHelper.apiGet("/services").then(data => setServices(data)); }
     const handleUpdate = () => { props.updateFunction(report.values); }
     const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === 'Enter') { e.preventDefault(); handleUpdate(); } }
 
@@ -19,10 +20,21 @@ export const ReportFilter = (props: Props) => {
         setReport(r);
     }
 
+    const getServiceOptions = () => {
+        var result: JSX.Element[] = [];
+        if (services !== null) {
+            services.forEach(s => {
+                result.push(<option value={s.id}>{s.name}</option>)
+            });
+        }
+        return result;
+    }
+
     const getPrettyName = (parameterName: string) => {
         var result = parameterName;
         switch (parameterName) {
             case "week": result = "Week"; break;
+            case "serviceId": result = "Service"; break;
         }
         return result;
     }
@@ -32,6 +44,9 @@ export const ReportFilter = (props: Props) => {
         switch (v.key) {
             case "week":
                 result = <FormControl type="date" name={v.key} value={Helper.formatHtml5Date(v.value)} onChange={handleChange} onKeyDown={handleKeyDown} />;
+                break;
+            case "serviceId":
+                result = (<FormControl as="select" name={v.key} onChange={handleChange} onKeyDown={handleKeyDown} >{getServiceOptions()}</FormControl>);
                 break;
         }
         return result;
@@ -52,7 +67,18 @@ export const ReportFilter = (props: Props) => {
 
     }
 
-    React.useEffect(() => { setReport(props.report) }, [props.report]);
+    React.useEffect(() => {
+        if (props.report?.values !== undefined && props.report?.values !== null) {
+            props.report.values.forEach(v => {
+                switch (v.key) {
+                    case "serviceId":
+                        if (services === null) loadServices();
+                        break;
+                }
+            });
+            setReport(props.report);
+        }
+    }, [props.report]);
 
     console.log(report);
     if (report?.values?.length > 1) return (

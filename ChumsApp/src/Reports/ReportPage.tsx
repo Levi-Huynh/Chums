@@ -19,6 +19,7 @@ export const ReportPage = ({ match }: RouteComponentProps<TParams>) => {
         r.values = [];
         r.parameters.split(',').forEach(p => {
             if (p === "churchId") r.values.push({ key: "churchId", value: 0 });
+            if (p === "serviceId") r.values.push({ key: "serviceId", value: 0 });
             if (p === "week") r.values.push({ key: "week", value: Helper.getLastSunday() });
         });
     }
