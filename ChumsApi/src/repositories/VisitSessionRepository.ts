@@ -58,7 +58,7 @@ export class VisitSessionRepository {
     }
 
     public async loadForSession(churchId: number, sessionId: number) {
-        const sql = "SELECT vs.*, v.personId, p.photoUpdated, p.firstName, p.lastName, p.nickName, p.email, p.photoUpdated FROM"
+        const sql = "SELECT vs.*, v.personId, p.photoUpdated, p.displayName, p.email, p.photoUpdated FROM"
             + " visitSessions vs"
             + " INNER JOIN visits v on v.id = vs.visitId"
             + " INNER JOIN people p on p.id = v.personId"
@@ -70,8 +70,7 @@ export class VisitSessionRepository {
         const result: VisitSession = { id: data.id, visitId: data.visitId, sessionId: data.sessionId };
         if (data.personId !== undefined) {
             result.visit = { id: result.visitId, personId: data.personId }
-            result.visit.person = { id: result.visit.personId, photoUpdated: data.photoUpdated, name: { first: data.firstName, last: data.lastName, nick: data.nickName }, contactInfo: { email: data.email } };
-            result.visit.person.name.display = PersonHelper.getDisplayName(result.visit.person);
+            result.visit.person = { id: result.visit.personId, photoUpdated: data.photoUpdated, name: { display: data.displayName }, contactInfo: { email: data.email } };
             result.visit.person.photo = PersonHelper.getPhotoUrl(churchId, result.visit.person);
         }
         return result;

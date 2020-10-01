@@ -7,15 +7,16 @@ import { PersonHelper } from "../helpers";
 export class PersonRepository {
 
     public async save(person: Person) {
+        person.name.display = PersonHelper.getDisplayName(person);
         if (person.id > 0) return this.update(person); else return this.create(person);
     }
 
     public async create(person: Person) {
         return DB.query(
-            "INSERT INTO people (churchId, userId, firstName, middleName, lastName, nickName, prefix, suffix, birthDate, gender, maritalStatus, anniversary, membershipStatus, homePhone, mobilePhone, workPhone, email, address1, address2, city, state, zip, photoUpdated, householdId, householdRole, removed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0);",
+            "INSERT INTO people (churchId, userId, displayName, firstName, middleName, lastName, nickName, prefix, suffix, birthDate, gender, maritalStatus, anniversary, membershipStatus, homePhone, mobilePhone, workPhone, email, address1, address2, city, state, zip, photoUpdated, householdId, householdRole, removed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0);",
             [
                 person.churchId, person.userId,
-                person.name.first, person.name.middle, person.name.last, person.name.nick, person.name.prefix, person.name.suffix,
+                person.name.display, person.name.first, person.name.middle, person.name.last, person.name.nick, person.name.prefix, person.name.suffix,
                 person.birthDate, person.gender, person.maritalStatus, person.anniversary, person.membershipStatus,
                 person.contactInfo.homePhone, person.contactInfo.mobilePhone, person.contactInfo.workPhone, person.contactInfo.email, person.contactInfo.address1, person.contactInfo.address2, person.contactInfo.city, person.contactInfo.state, person.contactInfo.zip,
                 person.photoUpdated, person.householdId, person.householdRole
@@ -25,10 +26,10 @@ export class PersonRepository {
 
     public async update(person: Person) {
         return DB.query(
-            "UPDATE people SET userId=?, firstName=?, middleName=?, lastName=?, nickName=?, prefix=?, suffix=?, birthDate=?, gender=?, maritalStatus=?, anniversary=?, membershipStatus=?, homePhone=?, mobilePhone=?, workPhone=?, email=?, address1=?, address2=?, city=?, state=?, zip=?, photoUpdated=?, householdId=?, householdRole=? WHERE id=? and churchId=?",
+            "UPDATE people SET userId=?, displayName=?, firstName=?, middleName=?, lastName=?, nickName=?, prefix=?, suffix=?, birthDate=?, gender=?, maritalStatus=?, anniversary=?, membershipStatus=?, homePhone=?, mobilePhone=?, workPhone=?, email=?, address1=?, address2=?, city=?, state=?, zip=?, photoUpdated=?, householdId=?, householdRole=? WHERE id=? and churchId=?",
             [
                 person.userId,
-                person.name.first, person.name.middle, person.name.last, person.name.nick, person.name.prefix, person.name.suffix,
+                person.name.display, person.name.first, person.name.middle, person.name.last, person.name.nick, person.name.prefix, person.name.suffix,
                 person.birthDate, person.gender, person.maritalStatus, person.anniversary, person.membershipStatus,
                 person.contactInfo.homePhone, person.contactInfo.mobilePhone, person.contactInfo.workPhone, person.contactInfo.email, person.contactInfo.address1, person.contactInfo.address2, person.contactInfo.city, person.contactInfo.state, person.contactInfo.zip,
                 person.photoUpdated, person.householdId, person.householdRole, person.id, person.churchId
@@ -90,7 +91,7 @@ export class PersonRepository {
         params.push(startDate);
         params.push(endDate);
 
-        let sql = "SELECT p.Id, p.churchId, p.firstName, p.middleName, p.lastName, p.nickName, p.photoUpdated"
+        let sql = "SELECT p.Id, p.churchId, p.displayName, p.firstName, p.middleName, p.lastName, p.nickName, p.photoUpdated"
             + " FROM visitSessions vs"
             + " INNER JOIN visits v on v.id = vs.visitId"
             + " INNER JOIN sessions s on s.id = vs.sessionId"
@@ -105,19 +106,18 @@ export class PersonRepository {
         if (serviceTimeId > 0) { sql += " AND st.id=?"; params.push(serviceTimeId); }
         if (categoryName !== "") { sql += " AND g.categoryName=?"; params.push(categoryName); }
         if (groupId > 0) { sql += " AND g.id=?"; params.push(groupId); }
-        sql += " GROUP BY p.id, p.firstName, p.middleName, p.lastName, p.nickName, p.photoUpdated";
+        sql += " GROUP BY p.id, p.displayName, p.firstName, p.middleName, p.lastName, p.nickName, p.photoUpdated";
         sql += " ORDER BY p.lastName, p.firstName";
         return DB.query(sql, params);
     }
 
     public convertToModel(churchId: number, data: any) {
         const result: Person = {
-            name: { first: data.firstName, last: data.lastName, middle: data.middleName, nick: data.nickName, prefix: data.prefix, suffix: data.suffix },
+            name: { display: data.displayName, first: data.firstName, last: data.lastName, middle: data.middleName, nick: data.nickName, prefix: data.prefix, suffix: data.suffix },
             contactInfo: { address1: data.address1, address2: data.address2, city: data.city, state: data.state, zip: data.zip, homePhone: data.homePhone, workPhone: data.workPhone, email: data.email },
             photo: data.photo, anniversary: data.anniversary, birthDate: data.birthDate, gender: data.gender, householdId: data.householdId, householdRole: data.householdRole, maritalStatus: data.maritalStatus,
             membershipStatus: data.membershipStatus, photoUpdated: data.photoUpdated, id: data.id, userId: data.userId, importKey: data.importKey
         }
-        result.name.display = PersonHelper.getDisplayName(result);
         if (result.photo === undefined) result.photo = PersonHelper.getPhotoUrl(churchId, result);
         return result;
     }

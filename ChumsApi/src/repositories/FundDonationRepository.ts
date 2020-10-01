@@ -41,20 +41,19 @@ export class FundDonationRepository {
     }
 
     public async loadByFundId(churchId: number, fundId: number) {
-        return DB.query("SELECT fd.*, d.donationDate, d.batchId, d.personId, p.firstName, p.lastName, p.nickName FROM fundDonations fd INNER JOIN donations d ON d.id=fd.donationId LEFT JOIN people p on p.Id=d.personId WHERE fd.churchId=? AND fd.fundId=? ORDER by d.donationDate desc;", [churchId, fundId]);
+        return DB.query("SELECT fd.*, d.donationDate, d.batchId, d.personId, p.displayName FROM fundDonations fd INNER JOIN donations d ON d.id=fd.donationId LEFT JOIN people p on p.Id=d.personId WHERE fd.churchId=? AND fd.fundId=? ORDER by d.donationDate desc;", [churchId, fundId]);
     }
 
     public async loadByFundIdDate(churchId: number, fundId: number, startDate: Date, endDate: Date) {
-        return DB.query("SELECT fd.*, d.donationDate, d.batchId, d.personId, p.firstName, p.lastName, p.nickName FROM fundDonations fd INNER JOIN donations d ON d.id=fd.donationId LEFT JOIN people p on p.Id=d.personId WHERE fd.churchId=? AND fd.fundId=? AND d.donationDate BETWEEN ? AND ? ORDER by d.donationDate desc;", [churchId, fundId, startDate, endDate]);
+        return DB.query("SELECT fd.*, d.donationDate, d.batchId, d.personId, p.displayName FROM fundDonations fd INNER JOIN donations d ON d.id=fd.donationId LEFT JOIN people p on p.Id=d.personId WHERE fd.churchId=? AND fd.fundId=? AND d.donationDate BETWEEN ? AND ? ORDER by d.donationDate desc;", [churchId, fundId, startDate, endDate]);
     }
 
     public convertToModel(churchId: number, data: any) {
         const result: FundDonation = { id: data.id, donationId: data.donationId, fundId: data.fundId, amount: data.amount };
         if (data.batchId !== undefined) {
             result.donation = { id: result.donationId, donationDate: data.donationDate, batchId: data.batchId, personId: data.personId };
-            if (data.lastName !== undefined) {
-                result.donation.person = { id: result.donation.personId, name: { first: data.firstName, last: data.lastName, nick: data.nickName } };
-                result.donation.person.name.display = PersonHelper.getDisplayName(result.donation.person);
+            if (data.displayName !== undefined) {
+                result.donation.person = { id: result.donation.personId, name: { display: data.displayName } };
             }
         }
         return result;

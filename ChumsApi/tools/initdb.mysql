@@ -104,6 +104,7 @@ CREATE TABLE `people` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `churchId` int(11) DEFAULT NULL,
   `userId` int(11) DEFAULT NULL,
+  `displayName` varchar(100) DEFAULT NULL,
   `firstName` varchar(50) DEFAULT NULL,
   `middleName` varchar(50) DEFAULT NULL,
   `lastName` varchar(50) DEFAULT NULL,

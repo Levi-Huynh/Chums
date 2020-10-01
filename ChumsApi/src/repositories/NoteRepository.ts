@@ -33,7 +33,7 @@ export class NoteRepository {
     }
 
     public async loadForContent(churchId: number, contentType: string, contentId: number) {
-        return DB.query("SELECT n.*, p.photoUpdated, p.firstName, p.lastName, p.nickName FROM notes n INNER JOIN people p on p.churchId=n.churchId AND p.userId=n.addedBy WHERE n.churchId=? AND n.contentType=? AND n.contentId=?;", [churchId, contentType, contentId]);
+        return DB.query("SELECT n.*, p.photoUpdated, p.displayName FROM notes n INNER JOIN people p on p.churchId=n.churchId AND p.userId=n.addedBy WHERE n.churchId=? AND n.contentType=? AND n.contentId=?;", [churchId, contentType, contentId]);
     }
 
     public async loadAll(churchId: number) {
@@ -43,11 +43,10 @@ export class NoteRepository {
 
     public convertToModel(churchId: number, data: any) {
         const result: Note = {
-            person: { photoUpdated: data.photoUpdate, name: { first: data.firstName, last: data.lastName, nick: data.nickName } },
+            person: { photoUpdated: data.photoUpdate, name: { display: data.displayName } },
             contentId: data.contentId, contentType: data.contentType, contents: data.contents, id: data.id, addedBy: data.addedBy, dateAdded: data.dateAdded, noteType: data.noteType
         }
         result.person.photo = PersonHelper.getPhotoUrl(churchId, result.person);
-        result.person.name.display = PersonHelper.getDisplayName(result.person);
         return result;
     }
 
