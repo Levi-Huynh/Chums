@@ -91,7 +91,7 @@ export class PersonRepository {
         params.push(startDate);
         params.push(endDate);
 
-        let sql = "SELECT p.Id, p.churchId, p.displayName, p.firstName, p.middleName, p.lastName, p.nickName, p.photoUpdated"
+        let sql = "SELECT p.Id, p.churchId, p.displayName, p.firstName, p.lastName, p.photoUpdated"
             + " FROM visitSessions vs"
             + " INNER JOIN visits v on v.id = vs.visitId"
             + " INNER JOIN sessions s on s.id = vs.sessionId"
@@ -106,14 +106,14 @@ export class PersonRepository {
         if (serviceTimeId > 0) { sql += " AND st.id=?"; params.push(serviceTimeId); }
         if (categoryName !== "") { sql += " AND g.categoryName=?"; params.push(categoryName); }
         if (groupId > 0) { sql += " AND g.id=?"; params.push(groupId); }
-        sql += " GROUP BY p.id, p.displayName, p.firstName, p.middleName, p.lastName, p.nickName, p.photoUpdated";
+        sql += " GROUP BY p.id, p.displayName, p.firstName, p.lastName, p.photoUpdated";
         sql += " ORDER BY p.lastName, p.firstName";
         return DB.query(sql, params);
     }
 
     public convertToModel(churchId: number, data: any) {
         const result: Person = {
-            name: { display: data.displayName, first: data.firstName, last: data.lastName, middle: data.middleName, nick: data.nickName, prefix: data.prefix, suffix: data.suffix },
+            name: { display: data.displayName, first: data.firstName, last: data.lastName },
             contactInfo: { address1: data.address1, address2: data.address2, city: data.city, state: data.state, zip: data.zip, homePhone: data.homePhone, workPhone: data.workPhone, email: data.email },
             photo: data.photo, anniversary: data.anniversary, birthDate: data.birthDate, gender: data.gender, householdId: data.householdId, householdRole: data.householdRole, maritalStatus: data.maritalStatus,
             membershipStatus: data.membershipStatus, photoUpdated: data.photoUpdated, id: data.id, userId: data.userId, importKey: data.importKey

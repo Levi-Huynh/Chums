@@ -37,7 +37,7 @@ export class DonationRepository {
     }
 
     public async loadByBatchId(churchId: number, batchId: number) {
-        return DB.query("SELECT d.*, p.displayName, p.firstName, p.lastName, p.nickName FROM donations d LEFT OUTER JOIN people p on p.Id=d.personId WHERE d.churchId=? AND d.batchId=?;", [churchId, batchId]);
+        return DB.query("SELECT d.*, p.displayName FROM donations d LEFT OUTER JOIN people p on p.Id=d.personId WHERE d.churchId=? AND d.batchId=?;", [churchId, batchId]);
     }
 
     public async loadByPersonId(churchId: number, personId: number) {
@@ -65,7 +65,7 @@ export class DonationRepository {
     public convertToModel(churchId: number, data: any) {
         const result: Donation = { id: data.id, batchId: data.batchId, personId: data.personId, donationDate: data.donationDate, amount: data.amount, method: data.method, methodDetails: data.methodDetails, notes: data.notes };
         if (data.displayName !== undefined && data.displayName !== null) {
-            result.person = { id: result.personId, name: { display: data.displayName, first: data.firstName, last: data.lastName, nick: data.nickName } };
+            result.person = { id: result.personId, name: { display: data.displayName } };
         }
         if (data.fundName !== undefined) result.fund = { id: data.fundId, name: data.fundName };
         return result;
