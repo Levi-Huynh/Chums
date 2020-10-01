@@ -42,8 +42,9 @@ export class QuestionRepository {
     }
 
     public convertToModel(churchId: number, data: any) {
-
-        const result: Question = { id: data.id, formId: data.formId, parentId: data.parentId, title: data.title, description: data.description, fieldType: data.fieldType, placeholder: data.placeholder, sort: data.sort, choices: JSON.parse(data.choices) };
+        const result: Question = { id: data.id, formId: data.formId, parentId: data.parentId, title: data.title, description: data.description, fieldType: data.fieldType, placeholder: data.placeholder, sort: data.sort };
+        if (typeof data.choices === "string") result.choices = JSON.parse(data.choices);
+        else result.choices = data.choices;
         return result;
     }
 

@@ -1,18 +1,14 @@
 import React from 'react';
 import { ApiHelper, InputBox, FormInterface } from './';
 
-interface Props {
-    formId: number,
-    updatedFunction: () => void
-}
-
+interface Props { formId: number, updatedFunction: () => void }
 
 export const FormEdit: React.FC<Props> = (props) => {
     const [form, setForm] = React.useState<FormInterface>({} as FormInterface);
 
     const loadData = () => {
         if (props.formId > 0) ApiHelper.apiGet('/forms/' + props.formId).then((data: FormInterface) => setForm(data));
-        else setForm({} as FormInterface);
+        else setForm({ contentType: "person" } as FormInterface);
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -46,9 +42,7 @@ export const FormEdit: React.FC<Props> = (props) => {
             <div className="form-group">
                 <label>Associate With</label>
                 <select name="contentType" className="form-control" value={form.contentType} onChange={handleChange} onKeyDown={handleKeyDown}>
-                    <option>Independent Form</option>
                     <option value="person">People</option>
-                    <option value="group">Groups</option>
                 </select>
             </div>
         </InputBox>
