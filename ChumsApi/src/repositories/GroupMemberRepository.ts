@@ -37,7 +37,7 @@ export class GroupMemberRepository {
     }
 
     public async loadForGroup(churchId: number, groupId: number) {
-        const sql = "SELECT gm.*, p.photoUpdated, p.firstName, p.lastName, p.nickName, p.email"
+        const sql = "SELECT gm.*, p.photoUpdated, p.displayName, p.email"
             + " FROM groupMembers gm"
             + " INNER JOIN people p on p.id=gm.personId"
             + " WHERE gm.churchId=? AND gm.groupId=?"
@@ -57,9 +57,8 @@ export class GroupMemberRepository {
 
     public convertToModel(churchId: number, data: any) {
         const result: GroupMember = { id: data.id, groupId: data.groupId, personId: data.personId, joinDate: data.joinDate }
-        if (data.firstName !== undefined) {
-            result.person = { id: result.personId, photoUpdated: data.photoUpdated, name: { first: data.firstName, last: data.lastName, nick: data.nickName }, contactInfo: { email: data.email } };
-            result.person.name.display = PersonHelper.getDisplayName(result.person);
+        if (data.displayName !== undefined) {
+            result.person = { id: result.personId, photoUpdated: data.photoUpdated, name: { display: data.displayName }, contactInfo: { email: data.email } };
             result.person.photo = PersonHelper.getPhotoUrl(churchId, result.person);
         }
         if (data.groupName !== undefined) result.group = { id: result.groupId, name: data.groupName };
