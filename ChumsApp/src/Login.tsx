@@ -10,6 +10,7 @@ export const Login: React.FC = (props: any) => {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [errors, setErrors] = React.useState([]);
+    const [loading, setLoading] = React.useState(false);
 
     const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmit(null); } }
     const getCookieValue = (a: string) => { var b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)'); return b ? b.pop() : ''; }
@@ -23,36 +24,48 @@ export const Login: React.FC = (props: any) => {
 
     const handleSubmit = (e: React.MouseEvent) => {
         if (e !== null) e.preventDefault();
-        if (validate()) login({ email: email, password: password });
+       
+           
+        if (validate()) { 
+            login({ email: email, password: password })
+        };
     }
 
     const init = () => {
         let search = new URLSearchParams(props.location.search);
         console.log(document.cookie);
         var jwt = search.get('jwt') || getCookieValue('jwt');
-        if (jwt !== "undefined" && jwt !== '') login({ jwt: jwt });
+        if (jwt !== "undefined" && jwt !== '') {
+            login({ jwt: jwt })
+        };
     }
 
     const login = (data: {}) => {
+        setLoading(true)
         ApiHelper.apiPostAnonymous(EnvironmentHelper.AccessManagementApiUrl + '/users/login', data).then((resp: LoginResponseInterface) => {
+            if(Object.keys(resp).length!==0){
             document.cookie = "jwt=" + resp.token;
             ApiHelper.jwt = resp.token;
             ApiHelper.amJwt = resp.token;
             UserHelper.user = resp.user;
             UserHelper.churches = [];
-            resp.churches.forEach(c => {
-                var add = false;
-                c.apps.forEach(a => {
-                    if (a.name === "CHUMS") add = true;
-                })
-                if (add) UserHelper.churches.push(c);
-            });
-            selectChurch();
-        }).catch((e) => {
+                resp.churches.forEach(c => {
+                    var add = false;
+                    c.apps.forEach(a => {
+                        if (a.name === "CHUMS") add = true;
+                    })
+                    if (add) UserHelper.churches.push(c);
+                });
+                selectChurch();
+            }
+            else {
+                setErrors(['Invalid login. Please check your email or password.'])
+                setLoading(false)
+            }
+            }).catch((e) => {
             throw e;
             //window.location.href = '/';
         });
-
     }
 
 
@@ -74,7 +87,7 @@ export const Login: React.FC = (props: any) => {
                     <h2>Please sign in</h2>
                     <FormControl id="email" name="email" value={email} onChange={e => { e.preventDefault(); setEmail(e.currentTarget.value) }} placeholder="Email address" onKeyDown={handleKeyDown} />
                     <FormControl id="password" name="password" type="password" placeholder="Password" value={password} onChange={e => { e.preventDefault(); setPassword(e.currentTarget.value) }} onKeyDown={handleKeyDown} />
-                    <Button id="signInButton" size="lg" variant="primary" block onClick={handleSubmit} >Sign in</Button>
+                    <Button id="signInButton" size="lg" variant="primary" block onClick={!loading ?handleSubmit: null } disabled={loading} >{loading ? 'Please wait...' : 'Sign in'}</Button>
                     <br />
                     <div className="text-right">
                         <a href="/forgot">Forgot Password</a>&nbsp;
