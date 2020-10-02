@@ -1,6 +1,6 @@
 import React from 'react';
 import { ApiHelper, ReportList, ReportInterface, InputBox, ErrorMessages, ColumnEdit, ReportColumnInterface } from './Components';
-import { Row, Col, FormGroup, FormLabel, InputGroup, FormControl, Button } from 'react-bootstrap';
+import { Row, Col, FormGroup, FormLabel, FormControl} from 'react-bootstrap';
 import { RouteComponentProps, Redirect } from 'react-router-dom';
 
 type TParams = { id?: string };
@@ -13,7 +13,7 @@ export const ReportPage = ({ match }: RouteComponentProps<TParams>) => {
     const loadData = () => { ApiHelper.apiGet('/reports/' + match.params.id).then(data => setReport(data)); }
     const redirect = () => { setRedirectUrl("/admin/reports"); }
     const handleSave = () => { if (validate()) ApiHelper.apiPost('/reports', [report]).then(redirect) }
-    const handleDelete = () => { if (window.confirm('Are you sure you wish to permanently delete this report?')) ApiHelper.apiDelete('/reports/' + report.id).then(redirect); }
+    // const handleDelete = () => { if (window.confirm('Are you sure you wish to permanently delete this report?')) ApiHelper.apiDelete('/reports/' + report.id).then(redirect); }
     const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === 'Enter') { e.preventDefault(); handleSave(); } }
 
     const validate = () => {
