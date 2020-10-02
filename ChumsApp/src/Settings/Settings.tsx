@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Switch, Route } from "react-router-dom";
 import { RolesPage } from './RolesPage'
 import { RolePage } from './RolePage'
 import { ExportPage } from './ExportPage'
