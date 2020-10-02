@@ -1,7 +1,7 @@
 import React from 'react';
-import { ApiHelper, InputBox, ReportColumnInterface } from './';
-import { Row, Col, FormGroup, FormLabel, InputGroup, FormControl, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import {InputBox, ReportColumnInterface } from './';
+import { Row, Col, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
+
 
 interface Props { column: ReportColumnInterface, updatedFunction: (column: ReportColumnInterface) => void }
 
