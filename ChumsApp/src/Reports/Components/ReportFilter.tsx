@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, DisplayBox, ReportInterface } from './';
+import { ApiHelper, ReportInterface } from './';
 import { InputBox, ReportValueInterface, Helper, ServiceInterface } from './';
 import { FormControl, FormGroup, FormLabel } from 'react-bootstrap';
 
@@ -78,7 +78,7 @@ export const ReportFilter = (props: Props) => {
             });
             setReport(props.report);
         }
-    }, [props.report]);
+    }, [props.report]);// eslint-disable-line react-hooks/exhaustive-deps
 
     console.log(report);
     if (report?.values?.length > 1) return (
