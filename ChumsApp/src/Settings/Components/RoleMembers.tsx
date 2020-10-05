@@ -37,6 +37,7 @@ export const RoleMembers: React.FC<Props> = (props) => {
         var result = null;
         for (var i = 0; i < roleMembers.length; i++) if (roleMembers[i].personId === personId) result = roleMembers[i];
         return result;*/
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [roleMembers]);
 
     const getPersonByUser = (user: UserInterface) => {
