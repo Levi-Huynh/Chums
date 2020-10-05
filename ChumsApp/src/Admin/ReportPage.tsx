@@ -3,6 +3,7 @@ import { ApiHelper, ReportList, ReportInterface, InputBox, ErrorMessages, Column
 import { Row, Col, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
 import { RouteComponentProps, Redirect, Link } from 'react-router-dom';
 
+
 type TParams = { id?: string };
 export const ReportPage = ({ match }: RouteComponentProps<TParams>) => {
     const [report, setReport] = React.useState({} as ReportInterface);

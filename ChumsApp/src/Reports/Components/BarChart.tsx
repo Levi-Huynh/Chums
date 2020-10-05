@@ -1,8 +1,7 @@
 import React from 'react';
-import { DisplayBox, ReportInterface, ReportGroupings } from '.';
+import { ReportInterface, ReportGroupings } from '.';
 import { ReportHelper } from '../../Utils';
 import { Chart } from 'react-google-charts';
-import { ReportFilter } from './ReportFilter';
 
 interface Props { report?: ReportInterface }
 
@@ -19,11 +18,12 @@ export const BarChart = (props: Props) => {
     }
 
     const getChartHeader = (rows: any[], groupings: ReportGroupings) => {
+        var header: any[] = [];
         if (groupings.secondaryCol === null) {
-            var header: any[] = ['Grouping', groupings.valueCol.heading, { role: 'annotation' }];
+            header = ['Grouping', groupings.valueCol.heading, { role: 'annotation' }];
             rows.push(header);
         } else {
-            var header: any[] = ["Grouping"];
+            header = ["Grouping"];
             for (let i = 0; i < groupings.secondaryGroupValues.length; i++) header.push(groupings.secondaryGroupValues[i]);
             header.push({ role: "annotation" });
             rows.push(header);
