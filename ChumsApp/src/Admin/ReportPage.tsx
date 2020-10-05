@@ -13,7 +13,7 @@ export const ReportPage = ({ match }: RouteComponentProps<TParams>) => {
     const loadData = () => { ApiHelper.apiGet('/reports/' + match.params.id).then(data => setReport(data)); }
     const redirect = () => { setRedirectUrl("/admin/reports"); }
     const handleSave = () => { if (validate()) ApiHelper.apiPost('/reports', [report]).then(redirect) }
-    // const handleDelete = () => { if (window.confirm('Are you sure you wish to permanently delete this report?')) ApiHelper.apiDelete('/reports/' + report.id).then(redirect); }
+    const handleDelete = () => { if (window.confirm('Are you sure you wish to permanently delete this report?')) ApiHelper.apiDelete('/reports/' + report.id).then(redirect); }
     const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === 'Enter') { e.preventDefault(); handleSave(); } }
 
     const validate = () => {
@@ -130,7 +130,7 @@ export const ReportPage = ({ match }: RouteComponentProps<TParams>) => {
             <Row>
                 <Col lg={8}>
 
-                    <InputBox headerIcon="far fa-chart-bar" headerText="Edit Report" saveFunction={handleSave} >
+                    <InputBox headerIcon="far fa-chart-bar" headerText="Edit Report" saveFunction={handleSave} deleteFunction={handleDelete} >
                         <ErrorMessages errors={errors} />
                         <Row>
                             <Col>
