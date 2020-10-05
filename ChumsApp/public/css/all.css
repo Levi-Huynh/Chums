@@ -109,7 +109,7 @@ h1 { border-bottom:1px solid #CCC; padding-bottom:10px; margin-bottom:25px; }
 .btn-primary:hover { background-color:#55aa00; border-color:#55aa00; }
 */
 .btn-info { background-color: #03a9f4; border-color: #03a9f4; }
-.btn-primary { background-color:#03a9f4; border-color:#03a9f4; }
+.btn-primary, .btn-primary:disabled { background-color:#03a9f4; border-color:#03a9f4; }
 .btn-primary:hover { background-color:#0099e4; border-color:#0099e4; }
 .btn-success { background-color:#77cc00; border-color:#70db86; }
 .btn-success:hover { background-color:#55aa00; border-color:#55aa00; }
@@ -117,6 +117,8 @@ h1 { border-bottom:1px solid #CCC; padding-bottom:10px; margin-bottom:25px; }
 .btn-danger:hover { background-color:#bb0000; border-color:#bb0000; }
 
 .card-header {padding-top:5px;padding-bottom: 5px;}
+
+.nav-tabs {border-bottom: none;}
 
 
 @media (min-width: 1200px) {

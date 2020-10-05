@@ -9,6 +9,5 @@ export class Report {
     public reportType?: string;
     public columns?: ReportColumn[];
     public values?: ReportValue[];
-    public groupLevels?: number;
     public results?: any[];
 }

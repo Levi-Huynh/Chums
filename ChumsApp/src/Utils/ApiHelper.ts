@@ -13,7 +13,7 @@ export interface FormInterface { id?: number, name?: string, contentType?: strin
 export interface FormSubmissionInterface { id?: number, formId?: number, contentType?: string, contentId?: number, form?: FormInterface, answers?: AnswerInterface[], questions?: QuestionInterface[] }
 export interface FundInterface { id: number, name: string }
 export interface FundDonationInterface { id?: number, donationId?: number, fundId?: number, amount?: number, donation?: DonationInterface }
-export interface GroupInterface { id?: number, name?: string, categoryName: string, memberCount: number, trackAttendance: boolean, parentPickup: boolean }
+export interface GroupInterface { id?: number, name?: string, categoryName?: string, memberCount?: number, trackAttendance?: boolean, parentPickup?: boolean }
 export interface GroupMemberInterface { id?: number, personId: number, person?: PersonInterface, groupId: number, group?: GroupInterface }
 export interface GroupServiceTimeInterface { id?: number, groupId?: number, serviceTimeId?: number, serviceTime?: ServiceTimeInterface }
 export interface HouseholdInterface { id?: number, name?: string }
@@ -21,14 +21,14 @@ export interface HouseholdMemberInterface { id?: number, householdId?: number, h
 export interface NameInterface { first?: string, middle?: string, last?: string, nick?: string, display?: string }
 export interface NoteInterface { dateAdded?: string, person?: PersonInterface }
 /*export interface PermissionInterface { contentType?: string, action?: string }*/
-export interface ReportInterface { id?: string, keyName?: string, title?: string, query?: string, parameters?: string, reportType: string, groupLevels?: number, columns?: ReportColumnInterface[], values?: ReportValueInterface[], results?: any[] }
-export interface ReportColumnInterface { field?: string, heading?: string }
+export interface ReportInterface { id?: number, keyName?: string, title?: string, query?: string, parameters?: string, reportType: string, columns?: ReportColumnInterface[], values?: ReportValueInterface[], results?: any[] }
+export interface ReportColumnInterface { field?: string, heading?: string, grouped?: boolean, formatType?: string }
 export interface ReportValueInterface { key?: string, value?: any }
 export interface PersonInterface { id?: number, name: NameInterface, contactInfo: ContactInfoInterface, membershipStatus?: string, gender?: string, birthDate?: Date, maritalStatus?: string, anniversary?: Date, photo?: string, photoUpdated?: Date, householdId?: number, householdRole?: string, userId?: number, formSubmissions?: [FormSubmissionInterface] }
 export interface QuestionInterface { id?: number, formId?: number, title?: string, fieldType?: string, placeholder?: string, description?: string, choices?: [{ value?: string, text?: string }] }
 export interface RegisterInterface { churchName?: string, firstName?: string, lastName?: string, email?: string, password?: string }
-export interface ServiceInterface { id: number, campusId: number, name: string }
-export interface ServiceTimeInterface { id: number, name: string, longName?: string, serviceId: number }
+export interface ServiceInterface { id?: number, campusId?: number, name?: string }
+export interface ServiceTimeInterface { id?: number, name?: string, longName?: string, serviceId?: number }
 export interface SessionInterface { id: number, groupId: number, serviceTimeId: number, sessionDate: Date, displayName: string }
 export interface UserInterface { id?: number, name: string }
 export interface VisitInterface { id?: number, personId?: number, serviceId?: number, groupId?: number, visitDate?: Date, visitSessions?: VisitSessionInterface[], person?: PersonInterface }

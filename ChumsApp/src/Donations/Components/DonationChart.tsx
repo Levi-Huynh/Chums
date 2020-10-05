@@ -3,6 +3,8 @@ import { ApiHelper, DonationSummaryInterface, Helper } from './';
 import { DisplayBox } from './';
 import { Chart } from 'react-google-charts';
 
+//*** NOTE:  This comonent is currently unused and is planned to be removed in the future */
+
 interface Props { startDate: Date, endDate: Date }
 export const DonationChart: React.FC<Props> = (props) => {
     const [records, setRecords] = React.useState<DonationSummaryInterface[]>([]);

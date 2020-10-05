@@ -1,4 +1,6 @@
 export class ReportColumn {
-    public field?: string;
     public heading?: string;
+    public field?: string;
+    public grouped?: boolean;
+    public formatType?: string;
 }

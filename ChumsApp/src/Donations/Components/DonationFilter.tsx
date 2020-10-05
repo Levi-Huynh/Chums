@@ -3,6 +3,8 @@ import { InputBox, Helper } from './';
 
 interface Props { startDate: Date, endDate: Date, updateFunction: (startDate: Date, endDate: Date) => void }
 
+//*** NOTE:  This comonent is currently unused and is planned to be removed in the future */
+
 export const DonationFilter: React.FC<Props> = (props) => {
     const [startDate, setStartDate] = React.useState<Date>(new Date());
     const [endDate, setEndDate] = React.useState<Date>(new Date());

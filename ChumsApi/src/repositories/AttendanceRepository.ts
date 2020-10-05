@@ -93,7 +93,6 @@ export class AttendanceRepository {
         if (data.campusId !== undefined || data.campusName !== undefined) result.campus = { id: data.campusId, name: data.campusName };
         if (data.serviceId !== undefined || data.serviceName !== undefined) result.service = { id: data.serviceId, name: data.serviceName, campusId: data.campusId };
         if (data.serviceTimeId !== undefined || data.serviceTimeName !== undefined) result.serviceTime = { id: data.serviceTimeId, name: data.serviceTimeName, serviceId: data.serviceId };
-        console.log(result);
         return result;
     }
 

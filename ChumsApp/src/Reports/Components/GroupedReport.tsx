@@ -7,9 +7,10 @@ interface Props { report?: ReportInterface }
 export const GroupedReport = (props: Props) => {
 
     const getTableHeader = () => {
-        if (props.report === undefined || props.report === null || props.report.groupLevels === undefined) return null;
+        if (props.report === undefined || props.report === null || props.report.columns === undefined) return null;
+        const groupLevels = getGroupLevels();
         const cells: JSX.Element[] = [];
-        for (let j = props.report.groupLevels; j < props.report.columns.length; j++) {
+        for (let j = groupLevels; j < props.report.columns.length; j++) {
             const val = props.report.columns[j].heading
             cells.push(<th>{val}</th>);
         }
@@ -17,11 +18,12 @@ export const GroupedReport = (props: Props) => {
     }
 
     const getRows = () => {
-        if (props.report === undefined || props.report === null || props.report.groupLevels === undefined) return null;
+        if (props.report?.results === undefined) return null;
         else {
+            const groupLevels = getGroupLevels();
             const prevValues: any[] = [];
             const result: JSX.Element[] = [];
-            props.report.results.forEach(r => { addRow(result, r, props.report.groupLevels, props.report.columns, prevValues); });
+            props.report.results.forEach(r => { addRow(result, r, groupLevels, props.report.columns, prevValues); });
             return result;
         }
     }
@@ -42,7 +44,7 @@ export const GroupedReport = (props: Props) => {
         const cells: JSX.Element[] = [];
         for (let j = groupLevels; j < columns.length; j++) {
             const val = row[columns[j].field];
-            if (j === groupLevels) cells.push(<td className={"indent" + (props.report.groupLevels + 1)}>{val}</td>);
+            if (j === groupLevels) cells.push(<td className={"indent" + (groupLevels + 1)}>{val}</td>);
             else cells.push(<td>{val}</td>);
         }
         result.push(<tr>{cells}</tr>);
@@ -50,17 +52,25 @@ export const GroupedReport = (props: Props) => {
 
     }
 
+    const getGroupLevels = () => {
+        var result = 0;
+        if (props.report.columns !== undefined) {
+            for (let i = 0; i < props.report.columns.length; i++) {
+                if (props.report.columns[i].grouped) result = i + 1;
+            }
+        }
+        return result;
+    }
+
 
     return (
-        <DisplayBox headerIcon="far fa-chart-bar" headerText="Reports" >
-            <table className="table report table-sm">
-                <thead className="thead-dark">
-                    {getTableHeader()}
-                </thead>
-                <tbody>
-                    {getRows()}
-                </tbody>
-            </table>
-        </DisplayBox>
+        <table className="table report table-sm">
+            <thead className="thead-dark">
+                {getTableHeader()}
+            </thead>
+            <tbody>
+                {getRows()}
+            </tbody>
+        </table>
     );
 }
