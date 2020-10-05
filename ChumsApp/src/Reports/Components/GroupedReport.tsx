@@ -1,5 +1,5 @@
 import React from 'react';
-import { DisplayBox, ReportInterface } from '.';
+import { ReportInterface } from '.';
 import { ReportColumnInterface } from '../../Utils';
 
 interface Props { report?: ReportInterface }

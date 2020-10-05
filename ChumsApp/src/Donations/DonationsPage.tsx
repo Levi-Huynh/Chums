@@ -1,15 +1,12 @@
 import React from 'react';
-import { ApiHelper, DisplayBox, BatchEdit, DonationBatchInterface, Helper, Funds, DonationChart, UserHelper, DonationFilter, ExportLink, ReportInterface, ReportHelper, ReportValueInterface } from './Components';
+import { ApiHelper, DisplayBox, BatchEdit, DonationBatchInterface, Helper, Funds, UserHelper, ExportLink, ReportInterface, ReportHelper, ReportValueInterface } from './Components';
 import { Link } from 'react-router-dom';
-import { set } from 'date-fns'
 import { Row, Col, Table } from 'react-bootstrap';
 import { ReportView, ReportFilter } from "../Reports/Components";
 
 export const DonationsPage = () => {
     const [editBatchId, setEditBatchId] = React.useState(-1);
     const [batches, setBatches] = React.useState<DonationBatchInterface[]>([]);
-    //const [startDate, setStartDate] = React.useState<Date>(new Date());
-    //const [endDate, setEndDate] = React.useState<Date>(new Date());
     const [report, setReport] = React.useState({} as ReportInterface);
 
     const loadReport = () => {

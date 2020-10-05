@@ -3,7 +3,6 @@ import { ApiHelper, ReportInterface } from './';
 import { InputBox, ReportValueInterface, Helper, ServiceInterface, ServiceTimeInterface, GroupInterface, ReportHelper } from './';
 import { FormControl, FormGroup, FormLabel } from 'react-bootstrap';
 import { CampusInterface, FundInterface } from '../../Utils';
-import { getLineAndCharacterOfPosition } from 'typescript';
 
 interface Props { report?: ReportInterface, updateFunction: (values: ReportValueInterface[]) => void }
 
@@ -66,7 +65,6 @@ export const ReportFilter = (props: Props) => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
-        const _report = { ...report };
         setValue(e.currentTarget.name, e.currentTarget.value);
     }
 
@@ -76,19 +74,6 @@ export const ReportFilter = (props: Props) => {
         setReport(_report);
     }
 
-    /*
-        const hasKey = (key: string) => {
-            var result = false;
-            _report.values.forEach(v => { if (v.key === key) result = true });
-            return result;
-        }
-    
-        const getValue = (key: string) => {
-            var result: string = null;
-            _report.values.forEach(v => { if (v.key === key) result = v.value.toString() });
-            return result;
-        }
-    */
     const getCampusOptions = () => {
         var result: JSX.Element[] = [];
         if (campuses !== null) campuses.forEach(c => { result.push(<option value={c.id}>{c.name}</option>) });
@@ -109,7 +94,7 @@ export const ReportFilter = (props: Props) => {
 
     const getGroupCategoryOptions = () => {
         var categories: string[] = [];
-        if (groups !== null) groups.forEach(g => { if (categories.indexOf(g.categoryName) == -1) categories.push(g.categoryName) });
+        if (groups !== null) groups.forEach(g => { if (categories.indexOf(g.categoryName) === -1) categories.push(g.categoryName) });
 
         var result: JSX.Element[] = [];
         categories.forEach(c => {

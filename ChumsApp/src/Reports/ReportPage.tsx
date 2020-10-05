@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiHelper, ReportList, ReportInterface, ReportFilter, ReportValueInterface, ReportView, ReportHelper } from './Components';
+import { ApiHelper, ReportInterface, ReportFilter, ReportValueInterface, ReportView, ReportHelper } from './Components';
 import { Row, Col } from 'react-bootstrap';
 import { RouteComponentProps, } from 'react-router-dom';
 

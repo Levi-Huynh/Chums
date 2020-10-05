@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserHelper, AttendanceFilterInterface, Individuals, Attendance, ReportWithFilter } from './';
+import { UserHelper, ReportWithFilter } from './';
 
 
 //interface Props { filter: AttendanceFilterInterface }
