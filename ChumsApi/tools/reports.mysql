@@ -1,0 +1,108 @@
+USE `chums`;
+DROP procedure IF EXISTS `report_groupAttendance`;
+DROP procedure IF EXISTS `report_donationTrend`;
+DROP procedure IF EXISTS `report_attendanceTrend`;
+
+DELIMITER $$
+USE `chums`$$
+
+
+
+CREATE PROCEDURE `report_groupAttendance` (
+	IN p_churchId int,
+    IN p_serviceId int,
+    IN p_week DateTime
+)
+BEGIN
+	SELECT ser.name as serviceName, st.name as serviceTimeName, g.name as groupName, concat(p.firstName, ' ', p.lastName) as personName
+	FROM visits v
+	INNER JOIN visitSessions vs on vs.churchId=v.churchId AND vs.visitId=v.id
+	INNER JOIN sessions s on s.id=vs.sessionId
+	INNER JOIN groups g on g.id=s.groupId
+	INNER JOIN serviceTimes st on st.id=s.serviceTimeId
+	INNER JOIN services ser on ser.id=st.serviceId
+	INNER JOIN people p on p.id=v.personId
+	WHERE v.churchId=p_churchId
+	AND (p_serviceId=0 OR ser.id=p_serviceId) 
+	AND s.sessionDate BETWEEN p_week AND DATE_ADD(p_week, INTERVAL 7 DAY)
+	ORDER by ser.name, st.name, g.name, p.lastName, p.firstName;
+END$$
+
+
+
+CREATE PROCEDURE `report_donationTrend` (
+	IN p_churchId int,
+    IN p_startDate datetime,
+    IN p_endDate datetime
+)
+BEGIN
+    SELECT STR_TO_DATE(concat(year(d.donationDate), ' ', week(d.donationDate, 0), ' Sunday'), '%X %V %W') AS week, SUM(fd.amount) as totalAmount, f.name as fundName
+    FROM donations d
+    INNER JOIN fundDonations fd on fd.donationId = d.id
+    INNER JOIN funds f on f.id = fd.fundId
+    WHERE d.churchId=p_churchId
+    AND d.donationDate BETWEEN p_startDate AND p_endDate
+    GROUP BY year(d.donationDate), week(d.donationDate, 0), f.name
+    ORDER BY year(d.donationDate), week(d.donationDate, 0), f.name;
+END$$
+
+
+
+
+CREATE PROCEDURE `report_attendanceTrend` (
+	IN p_churchId int,
+	IN p_campusId int,
+	IN p_serviceId int,
+	IN p_serviceTimeId int,
+	IN p_categoryName varchar(45),
+	IN p_groupId int
+)
+BEGIN
+	SELECT STR_TO_DATE(concat(year(v.visitDate), ' ', week(v.visitDate, 0), ' Sunday'), '%X %V %W') AS week, count(distinct(v.id)) as visits
+	FROM visits v
+	LEFT JOIN visitSessions vs on vs.churchId=p_churchId AND vs.visitId=v.id
+    LEFT JOIN sessions s on s.churchId=p_churchId AND s.id = vs.sessionId
+	LEFT JOIN groups g on g.churchId=p_churchId AND g.id = s.groupId
+    LEFT JOIN groupServiceTimes gst on gst.churchId=p_churchId AND gst.groupId = g.id
+    LEFT JOIN serviceTimes st on st.churchId=p_churchId AND st.id = gst.serviceTimeId
+    LEFT JOIN services ser on ser.churchId=p_churchId AND ser.id = st.serviceId
+	WHERE v.churchId=p_churchId
+    AND (p_groupId=0 OR g.id=p_groupId)
+    AND (p_categoryName='' OR g.categoryName=p_categoryName)
+    AND (p_serviceTimeId=0 OR st.id=p_serviceTimeId)
+    AND (p_serviceId=0 OR ser.id=p_serviceId)
+    AND (p_campusId=0 OR ser.campusId=p_campusId)
+	GROUP BY year(v.visitDate), week(v.visitDate, 0)
+	ORDER BY year(v.visitDate), week(v.visitDate, 0);
+END$$
+
+
+
+DELIMITER ;
+
+INSERT INTO reports (keyName, title, query, parameters, reportType, columns) VALUES (
+	'groupAttendance', 
+	'Attendance', 
+	'CALL report_groupAttendance(?, ?, ?)', 
+	'churchId,serviceId,week', 
+	'Grouped',
+	'[{"heading":"Service Time","field":"serviceTimeName","grouped":true},{"heading":"Group","field":"groupName","grouped":true},{"column":"personName","header":"Name","heading":"Person","field":"personName"}]'
+);
+
+INSERT INTO reports (keyName, title, query, parameters, reportType, columns) VALUES (
+	'donationSummary', 
+	'Donation Summary', 
+	'CALL report_donationTrend(?, ?, ?);', 
+	'churchId,startDate,endDate', 
+	'Bar Chart',
+	'[{"heading":"Week","field":"week","grouped":true,"formatType":"date"},{"heading":"Fund","field":"fundName","grouped":true},{"heading":"Amount","field":"totalAmount"}]'
+);
+
+INSERT INTO reports (keyName, title, query, parameters, reportType, columns) VALUES (
+	'attendanceTrend', 
+	'Attendance Trend', 
+	'CALL report_attendanceTrend(?);',
+	'churchId', 
+	'Area Chart',
+	'[{"heading":"Week","field":"week","formatType":"date"},{"heading":"Visits","field":"visits"}]'
+);

@@ -14,7 +14,7 @@ export const Header: React.FC = () => {
   const getUserMenu = () => {
     if (showUserMenu) {
       const items = [];
-      items.push(<li key="reports" className="nav-item" onClick={toggleUserMenu} id="reportsTab" ><Link to="/reports">Reports</Link></li>);
+      //items.push(<li key="reports" className="nav-item" onClick={toggleUserMenu} id="reportsTab" ><Link to="/reports">Reports</Link></li>);
       if (UserHelper.checkAccess("Site", "Admin")) items.push(<li key="admin-reports" className="nav-item" onClick={toggleUserMenu} id="adminReportsTab" ><Link to="/admin/reports">Admin reports</Link></li>);
       console.log(items);
 

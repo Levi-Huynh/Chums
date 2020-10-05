@@ -43,6 +43,7 @@ export const Authenticated = () => {
                 </Switch>
 
             </div>
+            <iframe style={{ display: "none" }} src="about:blank" id="printFrame" ></iframe>
             <script src="/js/cp.js"></script>
         </>
     );

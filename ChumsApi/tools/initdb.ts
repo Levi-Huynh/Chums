@@ -4,22 +4,22 @@ import mysql from "mysql";
 import util from "util";
 
 const init = async () => {
-  // read environment variables
   dotenv.config();
-  // create an instance of the MySQL client
-  console.log(process.env.DB_HOST);
-
-  const conn = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    debug: true,
-  });
-
+  const conn = mysql.createConnection({ host: process.env.DB_HOST, user: process.env.DB_USER, password: process.env.DB_PASSWORD, debug: true });
   const query = util.promisify(conn.query).bind(conn);
 
   try {
-    var sql = await fs.readFile("./tools/initdb.mysql", { encoding: "UTF-8" });
+    await runFile(query, "./tools/initdb.mysql");
+    await runFile(query, "./tools/reports.mysql");
+  } catch (err) {
+    console.log(err); throw err;
+  } finally { conn.end(); }
+
+};
+
+const runFile = async (query: any, fileName: string) => {
+  try {
+    var sql = await fs.readFile(fileName, { encoding: "UTF-8" });
     const statements = sql.split(/;\s*$/m);
     for (const statement of statements) {
       if (statement.length > 3) {
@@ -28,18 +28,9 @@ const init = async () => {
         await query(statement);
       }
     }
-  } catch (err) {
-    console.log(err);
-    throw err;
-  } finally {
-    conn.end();
-  }
-};
+  } catch (err) { console.log(err); throw err; }
+}
 
 init()
-  .then(() => {
-    console.log("Database Created");
-  })
-  .catch(() => {
-    console.log("Database not created due to errors");
-  });
+  .then(() => { console.log("Database Created"); })
+  .catch(() => { console.log("Database not created due to errors"); });

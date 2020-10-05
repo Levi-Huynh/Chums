@@ -1,5 +1,6 @@
 import React from 'react';
-import { ApiHelper, Tabs, AttendanceHelper, AttendanceFilter, DisplayBox, AttendanceInterface, CampusInterface, CampusEdit, ServiceEdit, ServiceInterface, ServiceTimeEdit, ServiceTimeInterface, AttendanceFilterInterface } from './Components';
+import { ApiHelper, AttendanceHelper, DisplayBox, AttendanceInterface, CampusInterface, CampusEdit, ServiceEdit, ServiceInterface, ServiceTimeEdit, ServiceTimeInterface, AttendanceFilterInterface, Tabs } from './Components';
+
 import { Link } from 'react-router-dom';
 import { Row, Col, Table } from 'react-bootstrap';
 
@@ -8,15 +9,17 @@ export const AttendancePage = () => {
     const [selectedCampus, setSelectedCampus] = React.useState<CampusInterface>(null);
     const [selectedService, setSelectedService] = React.useState<ServiceInterface>(null);
     const [selectedServiceTime, setSelectedServiceTime] = React.useState<ServiceTimeInterface>(null);
-    const [filter, setFilter] = React.useState<AttendanceFilterInterface>(AttendanceHelper.createFilter());
+    //const [filter, setFilter] = React.useState<AttendanceFilterInterface>(AttendanceHelper.createFilter());
 
 
     const handleUpdated = () => { removeEditors(); loadData(); }
     const selectCampus = (campus: CampusInterface) => { removeEditors(); if (campus.name !== 'Undefined') setSelectedCampus(campus); }
     const selectService = (service: ServiceInterface) => { removeEditors(); setSelectedService(service); }
     const selectServiceTime = (service: ServiceTimeInterface) => { removeEditors(); setSelectedServiceTime(service); }
-    const loadData = () => { ApiHelper.apiGet('/attendancerecords/groups').then(data => setAttendance(data)); }
     const removeEditors = () => { setSelectedCampus(null); setSelectedService(null); setSelectedServiceTime(null); }
+
+    const loadData = () => { ApiHelper.apiGet('/attendancerecords/groups').then(data => setAttendance(data)); }
+
 
     React.useEffect(loadData, []);
 
@@ -64,9 +67,10 @@ export const AttendancePage = () => {
         );
     }
 
+    /*
     const handleFilterUpdated = (f: AttendanceFilterInterface) => {
         setFilter({ ...f });
-    }
+    }*/
 
 
     return (
@@ -87,14 +91,8 @@ export const AttendancePage = () => {
                     <ServiceTimeEdit serviceTime={selectedServiceTime} updatedFunction={handleUpdated} />
                 </Col>
             </Row>
-            <Row>
-                <Col lg={8}>
-                    <Tabs filter={filter} />
-                </Col>
-                <Col lg={4}>
-                    <AttendanceFilter filter={filter} updatedFunction={handleFilterUpdated} />
-                </Col>
-            </Row>
+            <Tabs />
+
 
         </form >
     );

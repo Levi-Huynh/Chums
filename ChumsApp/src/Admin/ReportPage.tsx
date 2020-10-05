@@ -1,7 +1,7 @@
 import React from 'react';
 import { ApiHelper, ReportList, ReportInterface, InputBox, ErrorMessages, ColumnEdit, ReportColumnInterface } from './Components';
-import { Row, Col, FormGroup, FormLabel, InputGroup, FormControl, Button } from 'react-bootstrap';
-import { RouteComponentProps, Redirect } from 'react-router-dom';
+import { Row, Col, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
+import { RouteComponentProps, Redirect, Link } from 'react-router-dom';
 
 type TParams = { id?: string };
 export const ReportPage = ({ match }: RouteComponentProps<TParams>) => {
@@ -32,7 +32,6 @@ export const ReportPage = ({ match }: RouteComponentProps<TParams>) => {
             case 'query': r.query = e.currentTarget.value; break;
             case 'parameters': r.parameters = e.currentTarget.value; break;
             case 'reportType': r.reportType = e.currentTarget.value; break;
-            case 'groupLevels': r.groupLevels = parseInt(e.currentTarget.value, 0); break;
             //case 'columns': r.columns = e.currentTarget.value; break;
         }
         setReport(r);
@@ -126,11 +125,15 @@ export const ReportPage = ({ match }: RouteComponentProps<TParams>) => {
     if (redirectUrl !== '') return <Redirect to={redirectUrl}></Redirect>;
     else return (
         <>
+            <div className="float-right">
+                <Link to={"/reports/" + report.id} className="btn btn-success">Run Report</Link>
+            </div>
+
             <h1><i className="far fa-chart-bar"></i> Edit Report</h1>
             <Row>
                 <Col lg={8}>
 
-                    <InputBox headerIcon="far fa-chart-bar" headerText="Edit Report" saveFunction={handleSave} >
+                    <InputBox headerIcon="far fa-chart-bar" headerText="Edit Report" saveFunction={handleSave} deleteFunction={handleDelete} >
                         <ErrorMessages errors={errors} />
                         <Row>
                             <Col>
@@ -167,6 +170,7 @@ export const ReportPage = ({ match }: RouteComponentProps<TParams>) => {
                                     <FormControl as="select" name="reportType" value={report.reportType} onChange={handleChange} onKeyDown={handleKeyDown}>
                                         <option value="Grouped">Grouped</option>
                                         <option value="Bar Chart">Bar Chart</option>
+                                        <option value="Area Chart">Area Chart</option>
                                     </FormControl>
                                 </FormGroup>
                             </Col>
@@ -177,7 +181,6 @@ export const ReportPage = ({ match }: RouteComponentProps<TParams>) => {
                                     <div>
                                         <span className="float-right"><a href="about:blank" onClick={handleAdd}><i className="fas fa-plus"></i></a></span>
                                         <FormLabel>
-
                                             Columns
                                         </FormLabel>
                                     </div>
@@ -187,12 +190,6 @@ export const ReportPage = ({ match }: RouteComponentProps<TParams>) => {
                                         </tbody>
                                     </table>
 
-                                </FormGroup>
-                            </Col>
-                            <Col>
-                                <FormGroup>
-                                    <FormLabel>Group Levels</FormLabel>
-                                    <FormControl type="text" name="groupLevels" value={report.groupLevels} onChange={handleChange} onKeyDown={handleKeyDown} />
                                 </FormGroup>
                             </Col>
                         </Row>

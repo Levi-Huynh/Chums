@@ -68,6 +68,7 @@ export const Attendance: React.FC<Props> = (props) => {
             row.push('');
             rows.push(row);
         }
+        console.log(rows);
         return rows;
     }
 

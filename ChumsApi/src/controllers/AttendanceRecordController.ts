@@ -36,7 +36,6 @@ export class AttendanceRecordController extends CustomBaseController {
                     result = await this.repositories.attendance.load(au.churchId, campusId, serviceId, serviceTimeId, categoryName, groupId, startDate, endDate, groupBy, trend);
                 }
             }
-            console.log(result);
             return this.repositories.attendance.convertAllToModel(au.churchId, result);
         });
     }

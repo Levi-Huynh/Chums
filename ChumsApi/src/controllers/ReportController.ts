@@ -1,7 +1,7 @@
 import { controller, httpPost, httpGet, interfaces, requestParam, httpDelete } from "inversify-express-utils";
 import express from "express";
 import { CustomBaseController } from "./CustomBaseController"
-import { Report, RunReportRequest } from "../models"
+import { Report, ReportValue, RunReportRequest } from "../models"
 import { AuthenticatedUser } from "../auth";
 
 @controller("/reports")
@@ -26,6 +26,12 @@ export class ReportController extends CustomBaseController {
         });
     }
 
+    @httpGet("/keyName/:keyName")
+    public async getByKeyName(@requestParam("keyName") keyName: string, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
+        return this.actionWrapper(req, res, async (au) => {
+            return this.repositories.report.convertToModel(await this.repositories.report.loadByKeyName(keyName));
+        });
+    }
 
     @httpGet("/:id")
     public async get(@requestParam("id") id: number, req: express.Request<{}, {}, null>, res: express.Response): Promise<interfaces.IHttpActionResult> {
@@ -34,6 +40,8 @@ export class ReportController extends CustomBaseController {
             else return this.repositories.report.convertToModel(await this.repositories.report.load(id));
         });
     }
+
+
 
 
     @httpGet("/")
@@ -68,15 +76,29 @@ export class ReportController extends CustomBaseController {
     }
 
     private async runReport(rrr: RunReportRequest, au: AuthenticatedUser) {
-        console.log("run report")
         const report: Report = (rrr.id !== undefined) ? await this.repositories.report.load(rrr.id) : await this.repositories.report.loadByKeyName(rrr.keyName);
-        report.values = rrr.values;
-        console.log(JSON.stringify(report));
+        report.values = this.formatValues(rrr.values);
 
         report.values.forEach(v => { if (v.key === "churchId") v.value = au.churchId; });
-        console.log(JSON.stringify(report.values));
         report.results = await this.repositories.report.runReport(report.query, report.parameters.split(','), report.values);
+        if (report.query.toUpperCase().indexOf("CALL ") === 0) report.results = report.results[0];
         return report;
+    }
+
+    private formatValues(values: ReportValue[]) {
+        const result: ReportValue[] = [];
+        values.forEach(v => {
+            const val = { ...v };
+            switch (v.key) {
+                case "week":
+                case "startDate":
+                case "endDate":
+                    val.value = new Date(val.value);
+                    break;
+            }
+            result.push(val);
+        });
+        return result;
     }
 
 }
