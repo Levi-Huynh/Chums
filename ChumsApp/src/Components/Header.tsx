@@ -1,65 +1,90 @@
 import React from "react";
 import { UserHelper, PersonHelper, NavItems } from "./";
 import { Link } from "react-router-dom";
-import { Row, Col, Container } from "react-bootstrap";
+import { Col, Container } from "react-bootstrap";
 
 export const Header: React.FC = () => {
-  const [showUserMenu, setShowUserMenu] = React.useState(false);
+  const [userName] = React.useState(UserHelper.person.name.display);
 
-  const toggleUserMenu = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setShowUserMenu(!showUserMenu);
+  const toggleMenuItems = () => {
+    let menuNav = document.getElementById("nav-menu");
+    let listItems = Array.from(menuNav.children);
+    listItems.forEach((_, i) => {
+      if (i < (userName.length <= 5 ? 3 : userName.length < 24 ? 2 : 1)) {
+        listItems[i].classList.add("d-md-none");
+      } else if (
+        i < (userName.length <= 5 ? 5 : userName.length < 24 ? 4 : 3)
+      ) {
+        listItems[i].classList.add("d-lg-none");
+      } else if (i < (userName.length < 24 ? 6 : 5)) {
+        listItems[i].classList.add("d-xl-none");
+      }
+    });
   };
 
-  const getUserMenu = () => {
-    if (showUserMenu) {
-      const items = [];
-      //items.push(<li key="reports" className="nav-item" onClick={toggleUserMenu} id="reportsTab" ><Link to="/reports">Reports</Link></li>);
-      if (UserHelper.checkAccess("Site", "Admin")) items.push(<li key="admin-reports" className="nav-item" onClick={toggleUserMenu} id="adminReportsTab" ><Link to="/admin/reports">Admin reports</Link></li>);
-      console.log(items);
-
-      return (
-        <div className="container" id="userMenu">
-          <div>
-            <ul className="nav flex-column d-xl-none">
-              <NavItems toggleUserMenu={toggleUserMenu} />
-            </ul>
-            <ul className="nav flex-column">
-              {items}
-            </ul>
-            <Link to="/logout">Logout</Link>
-          </div>
-        </div>
-      );
-    } else return null;
-  };
+  React.useEffect(() => {
+    toggleMenuItems();
+  });
 
   return (
     <>
-      <div id="navbar" className="fixed-top">
+      <div id="navbar" className=" fixed-top">
         <Container>
-          <Row>
-            <div className="col-6 col-lg-2-5">
+          <div className="d-flex justify-content-between">
+            <div>
               <a className="navbar-brand" href="/">
                 <img src="/images/logo.png" alt="logo" />
               </a>
             </div>
-            <Col className="d-none d-xl-block" xl={7} style={{ borderLeft: "2px solid #EEE", borderRight: "2px solid #EEE" }} >
-              <ul className="nav nav-fill">
+
+            <Col
+              className="d-none d-md-block"
+              style={{
+                borderLeft: "2px solid #EEE",
+                borderRight: "2px solid #EEE",
+                maxWidth: "703px",
+                margin: "0 15px",
+              }}
+            >
+              <ul
+                id="nav-main"
+                className="nav nav-fill d-flex overflow-hidden"
+                style={{
+                  height: "55px",
+                }}
+              >
                 <NavItems prefix="main" />
               </ul>
             </Col>
-            <div className="col-6 col-lg-2-5 text-right" style={{ paddingTop: 17 }} id="navRight" >
-              <a href="about:blank" onClick={toggleUserMenu} id="userMenuLink">
-                <img src={PersonHelper.getPhotoUrl(UserHelper.person)} alt="user" />
-                {UserHelper.person.name.display}{" "}
-                <i className="fas fa-caret-down"></i>
+
+            <div className="d-flex align-items-center" id="navRight">
+              <a
+                href="about:blank"
+                id="userMenuLink"
+                data-toggle="collapse"
+                data-target="#userMenu"
+                aria-controls="navbarToggleMenu"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <img
+                  src={PersonHelper.getPhotoUrl(UserHelper.person)}
+                  alt="user"
+                />
+                {userName} <i className="fas fa-caret-down"></i>
               </a>
             </div>
-          </Row>
+          </div>
         </Container>
       </div>
-      {getUserMenu()}
+      <div className="container collapse" id="userMenu">
+        <div>
+          <ul id="nav-menu" className="nav d-flex flex-column">
+            <NavItems />
+            <Link to="/logout">Logout</Link>
+          </ul>
+        </div>
+      </div>
       <div id="navSpacer"></div>
     </>
   );

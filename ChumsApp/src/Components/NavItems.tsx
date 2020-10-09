@@ -5,12 +5,10 @@ import { useLocation } from "react-router-dom";
 
 interface Props {
   prefix?: String;
-  toggleUserMenu?: (e: React.MouseEvent) => void;
 }
 
 export const NavItems: React.FC<Props> = (props) => {
   const location = useLocation();
-
   const getSelected = (): string => {
     var url = location.pathname;
     var result = "people";
@@ -30,7 +28,13 @@ export const NavItems: React.FC<Props> = (props) => {
 
   const getTab = (key: string, url: string, icon: string, label: string) => {
     return (
-      <li key={key} className="nav-item" onClick={props.toggleUserMenu} id={(props.prefix || "") + key + "Tab"} >
+      <li
+        key={key}
+        className="nav-item"
+        data-toggle={props.prefix === "main" ? null : "collapse"}
+        data-target={props.prefix === "main" ? null : "#userMenu"}
+        id={(props.prefix || "") + key + "Tab"}
+      >
         <Link className={getClass(key)} to={url}>
           <i className={icon}></i> {label}
         </Link>
@@ -41,11 +45,30 @@ export const NavItems: React.FC<Props> = (props) => {
   const getTabs = () => {
     var tabs = [];
     tabs.push(getTab("people", "/people", "fas fa-user", "People"));
-    if (UserHelper.checkAccess("Groups", "View")) tabs.push(getTab("groups", "/groups", "fas fa-list-ul", "Groups"));
-    if (UserHelper.checkAccess("Attendance", "View Summary")) tabs.push(getTab("attendance", "/attendance", "far fa-calendar-alt", "Attendance"));
-    if (UserHelper.checkAccess("Donations", "View Summary")) tabs.push(getTab("donations", "/donations", "fas fa-hand-holding-usd", "Donations"));
-    if (UserHelper.checkAccess("Forms", "View")) tabs.push(getTab("forms", "/forms", "fas fa-align-left", "Forms"));
-    if (UserHelper.checkAccess("Roles", "View")) tabs.push(getTab("settings", "/settings", "fas fa-cog", "Settings"));
+    if (UserHelper.checkAccess("Groups", "View"))
+      tabs.push(getTab("groups", "/groups", "fas fa-list-ul", "Groups"));
+    if (UserHelper.checkAccess("Attendance", "View Summary"))
+      tabs.push(
+        getTab("attendance", "/attendance", "far fa-calendar-alt", "Attendance")
+      );
+    if (UserHelper.checkAccess("Donations", "View Summary"))
+      tabs.push(
+        getTab(
+          "donations",
+          "/donations",
+          "fas fa-hand-holding-usd",
+          "Donations"
+        )
+      );
+    if (UserHelper.checkAccess("Forms", "View"))
+      tabs.push(getTab("forms", "/forms", "fas fa-align-left", "Forms"));
+    if (UserHelper.checkAccess("Roles", "View"))
+      tabs.push(getTab("settings", "/settings", "fas fa-cog", "Settings"));
+    tabs.push(getTab("reports", "/reports", null, "Reports"));
+    if (UserHelper.checkAccess("Site", "Admin"))
+      tabs.push(
+        getTab("admin-reports", "/admin/reports", null, "Admin reports")
+      );
     return tabs;
   };
 
