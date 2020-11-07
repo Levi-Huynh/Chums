@@ -123,7 +123,8 @@ export const HomeRegister: React.FC = () => {
         permissions.push({ churchId: church.id, contentType: "RolePermissions", action: "View", roleId: role.id });
         permissions.push({ churchId: church.id, contentType: "RolePermissions", action: "Edit", roleId: role.id });
         permissions.push({ churchId: church.id, contentType: "Services", action: "Edit", roleId: role.id });
-        permissions.push({ churchId: church.id, contentType: "Admin", action: "Import", roleId: role.id });
+        permissions.push({ churchId: church.id, contentType: "Admin", action: "Import", roleId: role.id })
+        permissions.push({ churchId: church.id, contentType: "Admin", action: "Edit", roleId: role.id });
         await ApiHelper.apiPost(EnvironmentHelper.AccessManagementApiUrl + '/rolepermissions', permissions);
     }
 
