@@ -65,6 +65,7 @@ export const RolePermissions: React.FC<Props> = (props) => {
                     <div><b>Admin:</b></div>
                     <RoleCheck roleId={props.role.id} rolePermissions={rolePermissions} contentType="Admin" action="Import" label="Import/Export" />
                     <RoleCheck roleId={props.role.id} rolePermissions={rolePermissions} contentType="Admin" action="Delete Church" label="Delete Account" />
+                    <RoleCheck roleId={props.role.id} rolePermissions={rolePermissions} contentType="Admin" action="Edit Settings" label="Edit Settings" />
                 </Col>
             </Row>
         </DisplayBox>
